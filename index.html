@@ -667,19 +667,16 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。</p>
 </blockquote>
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><p><code>Golang</code>采用首字母大小写的方式控制访问权限。举个例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// lib/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;  // 定义对象</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123; // 可通过a.PrintInf() 访问该函数</span><br><span class="line">	print(a.private, a.Public)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    print(a.Public, a.private) // a.private不可包外访问，编译报错</span><br><span class="line"></span><br><span class="line">    print(learn.private, learn.Public) // learn.private不可包外访问，编译报错</span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>和 <code>C++/Java/Python</code>等常见的面向对象语言不同，<code>Golang</code>的结构体中不支持函数的定义。某个结构体的函数，可以通过函数名前的归属生命来表示。</p>
-<h2 id="访问结构体私有成员"><a href="#访问结构体私有成员" class="headerlink" title="访问结构体私有成员"></a>访问结构体私有成员</h2><p>这是个很有意思的话题。<code>C++</code>和<code>Python</code>都是有方法可以越过结构体的访问限制的，<code>Golang</code>通过<code>unsafe.Pointer</code>类型的转换也可以达到相同的目的。举个例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// learn/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123;</span><br><span class="line">    print(a.private, a.Public)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">/* 测试golang封装、继承、多态特性</span><br><span class="line"> */</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;unsafe&quot;</span><br><span class="line"></span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type AA struct&#123;</span><br><span class="line">    Private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    //print(a.Public, a.private)</span><br><span class="line"></span><br><span class="line">    //print(learn.Public, learn.private)</span><br><span class="line">    p := unsafe.Pointer(&amp;a)</span><br><span class="line">    aa := &amp;AA&#123;&#125;</span><br><span class="line">    aa = (*AA)(p) // golang unsafe.Pointer 更加接近 C/C++中指针的用法，编译器进行的校验较少；</span><br><span class="line">    print(aa.Private, aa.Public) // 可以正常运行。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单备注了下<code>Golang</code>封装的特性。后续再备注下继承、多态的使用吧。由于<code>Golang</code>采用鸭子式的继承检查思想，继承和多态的特性使用会相对较繁琐。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/04/08/golang-%E7%BB%A7%E6%89%BF/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2133,6 +2130,14 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
 
 
 
@@ -2289,6 +2294,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

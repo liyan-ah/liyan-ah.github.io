@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。  封装访问权限控制Golang采用首字母大小写的方式控制访问权限。举个例子： 1234567891011121314151617181920212223242526272829303132333435&#x2F;&#x2F; lib&#x2F;pub.gopackage learntype A struc">
+<meta name="description" content="golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang 封装">
 <meta property="og:url" content="http://yoursite.com/2021/04/08/golang-%E7%BB%A7%E6%89%BF/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。  封装访问权限控制Golang采用首字母大小写的方式控制访问权限。举个例子： 1234567891011121314151617181920212223242526272829303132333435&#x2F;&#x2F; lib&#x2F;pub.gopackage learntype A struc">
+<meta property="og:description" content="golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-04-08T13:16:00.000Z">
-<meta property="article:modified_time" content="2021-07-14T13:01:54.333Z">
+<meta property="article:modified_time" content="2021-07-19T11:29:49.005Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -354,6 +354,7 @@
         <blockquote>
 <p>golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。</p>
 </blockquote>
+<span id="more"></span>
 <h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><p><code>Golang</code>采用首字母大小写的方式控制访问权限。举个例子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// lib/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;  // 定义对象</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123; // 可通过a.PrintInf() 访问该函数</span><br><span class="line">	print(a.private, a.Public)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    print(a.Public, a.private) // a.private不可包外访问，编译报错</span><br><span class="line"></span><br><span class="line">    print(learn.private, learn.Public) // learn.private不可包外访问，编译报错</span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>和 <code>C++/Java/Python</code>等常见的面向对象语言不同，<code>Golang</code>的结构体中不支持函数的定义。某个结构体的函数，可以通过函数名前的归属生命来表示。</p>
@@ -583,6 +584,14 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
 
 
 
@@ -758,6 +767,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   
