@@ -87,7 +87,7 @@
 <meta property="og:description" content="从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-07-15T11:29:10.000Z">
-<meta property="article:modified_time" content="2021-07-19T03:17:38.557Z">
+<meta property="article:modified_time" content="2021-07-20T09:53:40.751Z">
 <meta property="article:author" content="李岩">
 <meta name="twitter:card" content="summary">
 
@@ -368,10 +368,13 @@
 <h1 id="问题结论"><a href="#问题结论" class="headerlink" title="问题结论"></a>问题结论</h1><p>上次提出了两个问题，后来经过测试，有了结论。这里贴一下。</p>
 <ul>
 <li>单个goroutine 崩溃时，该进程内其他的goroutine也会崩溃。通常的做法是使用一层wrapper，进行recover获取及现场、日志等保存；</li>
-<li>golang中线程的实现，runtime中，初始化时会申请内核态线程；见<code>runtime/proc.go</code>；<h1 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h1></li>
-<li>http1.0, http1.1, http2.0, http3.0, websocket, quic协议的介绍；</li>
-<li>rpc调用与websocket通信之间的网络延时对比；<h1 id="文章推荐"><a href="#文章推荐" class="headerlink" title="文章推荐"></a>文章推荐</h1><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAwMDAxNjU4Mg==&mid=2247484725&idx=1&sn=63941cdb8ba8961457ae7667eed84448&scene=21#wechat_redirect">net/http长链接&amp;连接池使用时的超时陷阱</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39898645/article/details/109181736">换电脑后，hexo-next 窝火的报错</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/diaosssss/article/details/92830934">golang调度器初始化</a></li>
+<li>golang中线程的实现，runtime中，初始化时会申请内核态线程；见<code>runtime/proc.go</code>；</li>
 </ul>
+<h1 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h1><ul>
+<li>http1.0, http1.1, http2.0, http3.0, websocket, quic协议的介绍；</li>
+<li>rpc调用与websocket通信之间的网络延时对比；</li>
+</ul>
+<h1 id="文章推荐"><a href="#文章推荐" class="headerlink" title="文章推荐"></a>文章推荐</h1><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAwMDAxNjU4Mg==&mid=2247484725&idx=1&sn=63941cdb8ba8961457ae7667eed84448&scene=21#wechat_redirect">net/http长链接&amp;连接池使用时的超时陷阱</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39898645/article/details/109181736">换电脑后，hexo-next 窝火的报错</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/diaosssss/article/details/92830934">golang调度器初始化</a></p>
 
       
     </div>
@@ -405,6 +408,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/07/22/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/" rel="prev" title="go-simplejson 插入数组">
+                go-simplejson 插入数组 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -485,7 +492,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -496,7 +503,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -507,7 +514,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
