@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blacker-32x32-next.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blacker-16x16-next.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="emacs,golang,lsp,rust,python,c/c++," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置  rust这里使用 rust-analyzer 作为 rust 的语言服务器，在安装 rust-mode后，通过绑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="emacs-若干语言 lsp 配置备注">
+<meta property="og:url" content="http://yoursite.com/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/index.html">
+<meta property="og:site_name" content="李岩&#39;s Blog">
+<meta property="og:description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置  rust这里使用 rust-analyzer 作为 rust 的语言服务器，在安装 rust-mode后，通过绑">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-10-12T12:26:00.000Z">
+<meta property="article:modified_time" content="2021-10-12T13:01:30.348Z">
+<meta property="article:author" content="李岩">
+<meta property="article:tag" content="emacs">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="lsp">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="c&#x2F;c++">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/10/12/emacs-若干语言-lsp-配置备注/"/>
+
+
+
+
+
+  <title>emacs-若干语言 lsp 配置备注 | 李岩's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李岩's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">努力做个程序员</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">emacs-若干语言 lsp 配置备注</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-12T20:26:00+08:00">
+                2021-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code/" itemprop="url" rel="index">
+                    <span itemprop="name">code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.1k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>微软推出的<a target="_blank" rel="noopener" href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20">language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</p>
+</blockquote>
+<h1 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h1><p>这里使用 <code>rust-analyzer</code> 作为 <code>rust</code> 的语言服务器，在安装 <code>rust-mode</code>后，通过绑定语言服务器信息，即可在打开由 <code>cargo</code> 创建的工程时，顺利进入 <code>lsp-mode</code>。需要关注的是，在非<code>cargo</code>创建的项目中，笔者的<code>lsp-mode</code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是<code>rust-analyzer</code>主要是针对<code>cargo</code>项目进行的设置，也可能是笔者设置的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;; config for rust-lsp for emacs</span><br><span class="line">;; rls install address: https://github.com/rust-lang-nursery/rls</span><br><span class="line">(unless (package-installed-p &#x27;rust-mode)</span><br><span class="line">  (w-install &#x27;rust-mode))</span><br><span class="line">(add-to-list &#x27;auto-mode-alist &#x27;(&quot;\\.rs\\&#x27;&quot; . rust-mode))</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;lsp)</span><br><span class="line">(unless (package-installed-p &#x27;rustic)</span><br><span class="line">  (w-install &#x27;rustic))</span><br><span class="line">(unless (package-installed-p &#x27;cargo)</span><br><span class="line">  (w-install &#x27;cargo))</span><br><span class="line">(use-package rustic) ; lsp-compatible rust mode</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;rustic-mode)</span><br><span class="line">(add-hook &#x27;rustic-mode-hook</span><br><span class="line">  (lambda ()</span><br><span class="line">    (setq rustic-lsp-server &#x27;rust-analyzer) ; not rls</span><br><span class="line">    (setq lsp-rust-analyzer-server-command &#x27;(&quot;/opt/homebrew/bin/rust-analyzer&quot;))</span><br><span class="line">                                        ;(setq rustic-format-on-save t) ; has annoying bug move point to other buffer bug</span><br><span class="line">  (setq rustic-indent-offset 4)</span><br><span class="line">    (setq rustic-match-angle-brackets nil)</span><br><span class="line">    ;; thought this would be better, was wrong.</span><br><span class="line">    ;(setq rustic-compile-display-method &#x27;popwin:display-buffer-1) ; display if possible in popup-win</span><br><span class="line">    ))</span><br><span class="line">(use-package cargo)</span><br><span class="line">(setq lsp-rust-server &#x27;rust-analyzer)</span><br></pre></td></tr></table></figure>
+<h1 id="golang"><a href="#golang" class="headerlink" title="golang"></a>golang</h1><p><code>golang</code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且<code>gopls</code>的使用体验非常好，完全不逊色与目前用户较多的<code>goland</code>及<code>vscode</code>。配合<code>dlv-mode</code>使用，在调试上笔者认为能够更加的贴合<code>unix</code>风格，也更加方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;; Go - lsp-mode</span><br><span class="line">;; Set up before-save hooks to format buffer and add/delete imports.</span><br><span class="line">;; go install github.com/golang/tools/cmd/gopls</span><br><span class="line">;;(require &#x27;lsp-mode)</span><br><span class="line">(setq lsp-ui-mode nil)</span><br><span class="line">(defun lsp-go-install-save-hooks ()</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-format-buffer t t)</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-organize-imports t t))</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-go-install-save-hooks)</span><br><span class="line"></span><br><span class="line">;; Start LSP Mode and YASnippet mode</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-deferred)</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;yas-minor-mode)</span><br></pre></td></tr></table></figure>
+<h1 id="python"><a href="#python" class="headerlink" title="python"></a>python</h1><p><code>python</code>的语言服务器，笔者目前使用的是<code>lsp-python-ms</code>进行配置的。这个插件解决了很多<code>python lsp</code>的问题（实际上，在碰到这个插件之前，笔者一度要放弃安装<code>python lsp</code>）。由于<code>python</code>是解释型语言，对象的成员都较为灵活，一般编码阶段很难确认对象的成员及其确切的类型。所以在<code>pylsp</code>使用过程中，往往会碰到无法有效提示的情况。满足一般提示需求吧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;;; set env for python</span><br><span class="line">;; copied from</span><br><span class="line">;; https://gitee.com/nutora-emacs/lsp-python-ms</span><br><span class="line">;; python lsp-server use python-lsp-server</span><br><span class="line">;; install as: pip3 install python-lsp-server</span><br><span class="line">(ensure-package-installed &#x27;lsp-python-ms)</span><br><span class="line">(require &#x27;lsp-python-ms)</span><br><span class="line">(setq lsp-python-ms-auto-install-server t)</span><br><span class="line">(add-hook &#x27;python-mode-hook #&#x27;lsp)</span><br></pre></td></tr></table></figure>
+<h1 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h1><p>实际上，笔者很喜欢<code>c/c++</code>的语言服务器，简单、方便，安装时无比的顺畅。完全符合笔者对<code>c</code>语言简单、强大、靠谱的印象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">;; brew install llvm</span><br><span class="line">;; https://clangd.llvm.org/installation</span><br><span class="line">(unless (package-installed-p &#x27;eglot)</span><br><span class="line">  (w-install &#x27;eglot))</span><br><span class="line">(require &#x27;eglot)</span><br><span class="line">(add-to-list &#x27;eglot-server-programs &#x27;((c++-mode c-mode) &quot;clangd&quot;))</span><br><span class="line">(add-hook &#x27;c-mode-hook &#x27;eglot-ensure)</span><br><span class="line">(add-hook &#x27;c++-mode-hook &#x27;eglot-ensure)</span><br></pre></td></tr></table></figure>
+<h1 id="使用的一点备注"><a href="#使用的一点备注" class="headerlink" title="使用的一点备注"></a>使用的一点备注</h1><p>这里唠叨一点</p>
+<h2 id="lsp-的管理单位是文件目录"><a href="#lsp-的管理单位是文件目录" class="headerlink" title="lsp 的管理单位是文件目录"></a>lsp 的管理单位是文件目录</h2><p>这里对于<code>golang</code>及<code>rust</code>尤为明显。在使用<code>emacs</code>打开一个关联了有效语言服务器的文件时，底部会提示为当前文件选择一个工作目录。尤其是，当路径<code>A</code>已经设为工作目录时，再将<code>A/B</code>设为工作目录，<code>A/B</code>的打开状态是会出现异常的。所以尽量保持每个工作目录的独特。<br>这里附上一些<code>emacs lsp-mode</code>中笔者常用的函数： </p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>lsp-workspace-folders-remove</code></td>
+<td>将工作目录移除</td>
+</tr>
+<tr>
+<td><code>lsp-workspace-folders-add</code></td>
+<td>添加工作目录</td>
+</tr>
+<tr>
+<td><code>lsp-workspace-restart</code></td>
+<td>重启工作目录</td>
+</tr>
+</tbody></table>
+<h2 id="其他备注"><a href="#其他备注" class="headerlink" title="其他备注"></a>其他备注</h2><p>当安装了一个语言的<code>lsp</code>服务及对应的<code>emacs</code>客户端配置时，如果打开对应语言的文件发现<code>lsp</code>没有生效，且打开<code>toggle-debug-on-error</code>设置开启也没有发现任何报错，笔者建议重启<code>emacs</code>。似乎<code>emacs</code>热加载功能往往不会如人所愿。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a target="_blank" rel="noopener" href="https://emacs-lsp.github.io/lsp-mode/">emacs lsp mode</a><br>及其他网络文献</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/emacs/" rel="tag"># emacs</a>
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+            <a href="/tags/lsp/" rel="tag"># lsp</a>
+          
+            <a href="/tags/rust/" rel="tag"># rust</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/c-c/" rel="tag"># c/c++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/18/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/" rel="next" title="redisgo 连接报错">
+                <i class="fa fa-chevron-left"></i> redisgo 连接报错
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+   <div id="gitalk-container">
+   </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rust"><span class="nav-number">1.</span> <span class="nav-text">rust</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#golang"><span class="nav-number">2.</span> <span class="nav-text">golang</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python"><span class="nav-number">3.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-c"><span class="nav-number">4.</span> <span class="nav-text">c&#x2F;c++</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E7%82%B9%E5%A4%87%E6%B3%A8"><span class="nav-number">5.</span> <span class="nav-text">使用的一点备注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lsp-%E7%9A%84%E7%AE%A1%E7%90%86%E5%8D%95%E4%BD%8D%E6%98%AF%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="nav-number">5.1.</span> <span class="nav-text">lsp 的管理单位是文件目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%A4%87%E6%B3%A8"><span class="nav-number">5.2.</span> <span class="nav-text">其他备注</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李岩</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '0aac24bb2cd38e93b69a',
+          clientSecret: '713022435077d3170511b3861b78cf0876ff3372',
+          repo: 'blacker1230.github.io',
+          owner: 'blacker1230',
+          admin: ['blacker1230'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
