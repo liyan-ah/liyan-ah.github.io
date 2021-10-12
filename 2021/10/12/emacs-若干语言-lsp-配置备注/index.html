@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="emacs,golang,lsp,rust,python,c/c++," />
+  <meta name="keywords" content="emacs,lsp,golang,rust,python,c/c++," />
 
 
 
@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置  rust这里使用 rust-analyzer 作为 rust 的语言服务器，在安装 rust-mode后，通过绑">
+<meta name="description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="emacs-若干语言 lsp 配置备注">
 <meta property="og:url" content="http://yoursite.com/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置  rust这里使用 rust-analyzer 作为 rust 的语言服务器，在安装 rust-mode后，通过绑">
+<meta property="og:description" content="微软推出的language server protol 确实提升了文本编辑器的使用体验。就 emacs 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 emacs 中的 rust, golang, python, c&#x2F;c++ lsp 配置">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-10-12T12:26:00.000Z">
-<meta property="article:modified_time" content="2021-10-12T13:01:30.348Z">
+<meta property="article:modified_time" content="2021-10-12T13:03:43.996Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="emacs">
-<meta property="article:tag" content="golang">
 <meta property="article:tag" content="lsp">
+<meta property="article:tag" content="golang">
 <meta property="article:tag" content="rust">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="c&#x2F;c++">
@@ -386,6 +386,8 @@
         <blockquote>
 <p>微软推出的<a target="_blank" rel="noopener" href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20">language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</p>
 </blockquote>
+<span id="more"></span>
+
 <h1 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h1><p>这里使用 <code>rust-analyzer</code> 作为 <code>rust</code> 的语言服务器，在安装 <code>rust-mode</code>后，通过绑定语言服务器信息，即可在打开由 <code>cargo</code> 创建的工程时，顺利进入 <code>lsp-mode</code>。需要关注的是，在非<code>cargo</code>创建的项目中，笔者的<code>lsp-mode</code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是<code>rust-analyzer</code>主要是针对<code>cargo</code>项目进行的设置，也可能是笔者设置的问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;; config for rust-lsp for emacs</span><br><span class="line">;; rls install address: https://github.com/rust-lang-nursery/rls</span><br><span class="line">(unless (package-installed-p &#x27;rust-mode)</span><br><span class="line">  (w-install &#x27;rust-mode))</span><br><span class="line">(add-to-list &#x27;auto-mode-alist &#x27;(&quot;\\.rs\\&#x27;&quot; . rust-mode))</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;lsp)</span><br><span class="line">(unless (package-installed-p &#x27;rustic)</span><br><span class="line">  (w-install &#x27;rustic))</span><br><span class="line">(unless (package-installed-p &#x27;cargo)</span><br><span class="line">  (w-install &#x27;cargo))</span><br><span class="line">(use-package rustic) ; lsp-compatible rust mode</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;rustic-mode)</span><br><span class="line">(add-hook &#x27;rustic-mode-hook</span><br><span class="line">  (lambda ()</span><br><span class="line">    (setq rustic-lsp-server &#x27;rust-analyzer) ; not rls</span><br><span class="line">    (setq lsp-rust-analyzer-server-command &#x27;(&quot;/opt/homebrew/bin/rust-analyzer&quot;))</span><br><span class="line">                                        ;(setq rustic-format-on-save t) ; has annoying bug move point to other buffer bug</span><br><span class="line">  (setq rustic-indent-offset 4)</span><br><span class="line">    (setq rustic-match-angle-brackets nil)</span><br><span class="line">    ;; thought this would be better, was wrong.</span><br><span class="line">    ;(setq rustic-compile-display-method &#x27;popwin:display-buffer-1) ; display if possible in popup-win</span><br><span class="line">    ))</span><br><span class="line">(use-package cargo)</span><br><span class="line">(setq lsp-rust-server &#x27;rust-analyzer)</span><br></pre></td></tr></table></figure>
 <h1 id="golang"><a href="#golang" class="headerlink" title="golang"></a>golang</h1><p><code>golang</code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且<code>gopls</code>的使用体验非常好，完全不逊色与目前用户较多的<code>goland</code>及<code>vscode</code>。配合<code>dlv-mode</code>使用，在调试上笔者认为能够更加的贴合<code>unix</code>风格，也更加方便。</p>
@@ -437,9 +439,9 @@
           
             <a href="/tags/emacs/" rel="tag"># emacs</a>
           
-            <a href="/tags/golang/" rel="tag"># golang</a>
-          
             <a href="/tags/lsp/" rel="tag"># lsp</a>
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
           
             <a href="/tags/rust/" rel="tag"># rust</a>
           
