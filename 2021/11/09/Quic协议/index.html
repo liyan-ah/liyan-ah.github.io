@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；  Quic 协议Quic协议是应用层（5层网络模型下，由于基于传输层协议，笔者倾向于认为其是应用层协议，但是博文中多次标注其是传输层协议），对标 HTTP 协议，基于 UDP 协议构建。 Quic 协议优点 建立连接延时低。相对于 HTTP 协议的至少">
+<meta name="description" content="Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Quic协议">
 <meta property="og:url" content="http://yoursite.com/2021/11/09/Quic%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；  Quic 协议Quic协议是应用层（5层网络模型下，由于基于传输层协议，笔者倾向于认为其是应用层协议，但是博文中多次标注其是传输层协议），对标 HTTP 协议，基于 UDP 协议构建。 Quic 协议优点 建立连接延时低。相对于 HTTP 协议的至少">
+<meta property="og:description" content="Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-11-09T13:11:00.000Z">
-<meta property="article:modified_time" content="2021-11-09T13:14:37.511Z">
+<meta property="article:modified_time" content="2021-11-10T08:18:12.320Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary">
@@ -352,7 +352,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  439字
+                  444字
                 </span>
               
 
@@ -392,6 +392,8 @@
         <blockquote>
 <p>Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；</p>
 </blockquote>
+<span id="more"></span>
+
 <h1 id="Quic-协议"><a href="#Quic-协议" class="headerlink" title="Quic 协议"></a>Quic 协议</h1><p><code>Quic</code>协议是应用层（5层网络模型下，由于基于传输层协议，笔者倾向于认为其是<code>应用层协议</code>，但是博文中多次标注其是<code>传输层协议</code>），对标 <code>HTTP</code> 协议，基于 <code>UDP</code> 协议构建。</p>
 <h1 id="Quic-协议优点"><a href="#Quic-协议优点" class="headerlink" title="Quic 协议优点"></a>Quic 协议优点</h1><ul>
 <li>建立连接延时低。相对于 HTTP 协议的至少 3RTT 的建联，Quic 协议可以实现 0RTT 建联；</li>
@@ -401,7 +403,7 @@
 </li>
 <li>基于 <code>Connection</code> 及 <code>Stream</code> 进行多路复用；</li>
 <li>消除队头阻塞，更好的支持多路复用，处理多个会话时，不会因为其中一个会话的丢失，导致其他会话结果也重传(TCP消息重传逻辑)；</li>
-<li>默认支持加密认证；<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><code>Quic</code> 协议相当于在 <code>UDP</code> 的基础上，在更高层次协议上实现了 <code>TCP</code> 的大部分功能：可靠传输，拥塞控制等，同时对 <code>TCP</code> 进行了优化；<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><a target="_blank" rel="noopener" href="http://www.52im.net/thread-1309-1-1.html">技术扫盲：新一代基于UDP的低延时网络传输层协议——QUIC详解</a></li>
+<li>默认支持加密认证；<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><code>Quic</code> 协议相当于在 <code>UDP</code> 的基础上，在更高层次协议上实现了 <code>TCP</code> 的大部分功能：可靠传输，拥塞控制等，同时对 <code>TCP</code> 的这些功能进行了优化；<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><a target="_blank" rel="noopener" href="http://www.52im.net/thread-1309-1-1.html">技术扫盲：新一代基于UDP的低延时网络传输层协议——QUIC详解</a></li>
 </ul>
 
       

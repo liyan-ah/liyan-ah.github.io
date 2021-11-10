@@ -347,7 +347,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  439字
+                  444字
                 </span>
               
 
@@ -385,23 +385,16 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；</p>
 </blockquote>
-<h1 id="Quic-协议"><a href="#Quic-协议" class="headerlink" title="Quic 协议"></a>Quic 协议</h1><p><code>Quic</code>协议是应用层（5层网络模型下，由于基于传输层协议，笔者倾向于认为其是<code>应用层协议</code>，但是博文中多次标注其是<code>传输层协议</code>），对标 <code>HTTP</code> 协议，基于 <code>UDP</code> 协议构建。</p>
-<h1 id="Quic-协议优点"><a href="#Quic-协议优点" class="headerlink" title="Quic 协议优点"></a>Quic 协议优点</h1><ul>
-<li>建立连接延时低。相对于 HTTP 协议的至少 3RTT 的建联，Quic 协议可以实现 0RTT 建联；</li>
-<li>改进了拥塞控制。将拥塞控制算法的选择交由应用程序控制；同时抛弃了基于 TCP 的 <code>seq</code> 标记，改由严格递增的 <code>package number</code> + <code>offset</code>，优化了拥塞时的重传；<ul>
-<li>举例，需要传递 <code>N,N+1,N+2</code> 三个包，传递过程中，<code>N</code> 丢失了；<code>TCP</code>的重传会将<code>N,N+1,N+2</code>三个包都重传；<code>Quic</code> 会重传一个 <code>N+3</code>，但是 <code>offset</code> 记为 <code>0</code>。这样在另一端将三个包按照 <code>offset</code> 重新进行组织；</li>
-</ul>
-</li>
-<li>基于 <code>Connection</code> 及 <code>Stream</code> 进行多路复用；</li>
-<li>消除队头阻塞，更好的支持多路复用，处理多个会话时，不会因为其中一个会话的丢失，导致其他会话结果也重传(TCP消息重传逻辑)；</li>
-<li>默认支持加密认证；<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><code>Quic</code> 协议相当于在 <code>UDP</code> 的基础上，在更高层次协议上实现了 <code>TCP</code> 的大部分功能：可靠传输，拥塞控制等，同时对 <code>TCP</code> 进行了优化；<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><a target="_blank" rel="noopener" href="http://www.52im.net/thread-1309-1-1.html">技术扫盲：新一代基于UDP的低延时网络传输层协议——QUIC详解</a></li>
-</ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/09/Quic%E5%8D%8F%E8%AE%AE/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
