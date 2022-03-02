@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="系统稳定性,压力测试,自我修养,读代码," />
+  <meta name="keywords" content="eBPF,翻译," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以Go语言高级编程 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对Jmeter及golang ratelimit中的流量限制方法进行描述。   起因 漏桶法 令牌桶法 Jmeter中流量吞吐控制 golang ratelimit">
+<meta name="description" content="最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。原文地址：What Is eBPF and Why Does It">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ratelimit服务流量限制">
-<meta property="og:url" content="http://yoursite.com/2021/02/07/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/index.html">
+<meta property="og:title" content="eBPF及其对可观测的意义【译文】">
+<meta property="og:url" content="http://yoursite.com/2022/03/02/eBPF%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E3%80%90%E8%AF%91%E6%96%87%E3%80%91/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以Go语言高级编程 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对Jmeter及golang ratelimit中的流量限制方法进行描述。   起因 漏桶法 令牌桶法 Jmeter中流量吞吐控制 golang ratelimit">
+<meta property="og:description" content="最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。原文地址：What Is eBPF and Why Does It">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-02-07T09:30:00.000Z">
-<meta property="article:modified_time" content="2021-07-14T13:01:54.334Z">
+<meta property="article:published_time" content="2022-03-02T08:34:00.000Z">
+<meta property="article:modified_time" content="2022-03-02T08:40:10.709Z">
 <meta property="article:author" content="李岩">
-<meta property="article:tag" content="系统稳定性">
-<meta property="article:tag" content="压力测试">
-<meta property="article:tag" content="自我修养">
-<meta property="article:tag" content="读代码">
+<meta property="article:tag" content="eBPF">
+<meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary">
 
 
@@ -123,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2021/02/07/ratelimit服务流量限制/"/>
+  <link rel="canonical" href="http://yoursite.com/2022/03/02/eBPF及其对可观测的意义【译文】/"/>
 
 
 
 
 
-  <title>ratelimit服务流量限制 | 李岩's Blog</title>
+  <title>eBPF及其对可观测的意义【译文】 | 李岩's Blog</title>
   
 
 
@@ -256,7 +254,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/07/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/02/eBPF%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E3%80%90%E8%AF%91%E6%96%87%E3%80%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -273,7 +271,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">ratelimit服务流量限制</h2>
+          <h2 class="post-title" itemprop="name headline">eBPF及其对可观测的意义【译文】</h2>
         
 
         <div class="post-meta">
@@ -285,8 +283,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-07T17:30:00+08:00">
-                2021-02-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-02T16:34:00+08:00">
+                2022-03-02
               </time>
             
 
@@ -308,8 +306,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/" itemprop="url" rel="index">
-                    <span itemprop="name">code</span>
+                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
                   </a>
                 </span>
 
@@ -344,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.4k字
+                  2.1k字
                 </span>
               
 
@@ -360,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5分钟
+                  7分钟
                 </span>
               
             </div>
@@ -382,23 +380,33 @@
 
       
         <blockquote>
-<p>在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以<a target="_blank" rel="noopener" href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a> 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对<code>Jmeter</code>及<code>golang ratelimit</code>中的流量限制方法进行描述。</p>
+<p>最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。<br>原文地址：<a target="_blank" rel="noopener" href="https://newrelic.com/blog/best-practices/what-is-ebpf">What Is eBPF and Why Does It Matter for Observability?</a></p>
 </blockquote>
-<ol>
-<li>起因</li>
-<li>漏桶法</li>
-<li>令牌桶法</li>
-<li>Jmeter中流量吞吐控制</li>
-<li>golang ratelimit<span id="more"></span></li>
-</ol>
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>流量限制手段在系统流量控制以及系统质量评估上都有广泛的应用。对于有多个子模块/下游的系统，如果已知其中一个模块/下游是整个系统处理能力的瓶颈，从系统的入口添加流量限制并添加超量告警，不失为是保护系统的有效手段。从质量保证的手段来说，在衡量一个系统的稳定性时，需要有一个有效的手段来控制给予系统的压力并进行控制。<br>固定并发数量的流量控制方式是相对容易实现的：对于系统而言，可以添加一个连接池；对于请求方而言，维护一个请求并发池即可。对于固定QPS的流量控制手段而言，则又复杂一些：由于基本指令的直接支持，所以固定QPS的流量控制手段多在基于并发的流量控制上进行二次的封装。封装的措施实际上又会影响控制的效果。笔者曾经在搜索系统上，尝试基于Jmeter，使用1000个线程来产生一个固定的100QPS的并发数。由于Jmeter固定吞吐量实现的特点，导致实际产生的效果中，100个请求多集中在1分钟的前几秒，甚至是最开始1s的前若干ms。使得服务承受的顺势并发非常大，服务出现异常也是可以预见的事情了。<br>了解一些流量控制的手段还是有必要的。本文主要梳理一下<a target="_blank" rel="noopener" href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a>提到的漏桶及令牌桶两种方法，并且进行简单的实现。</p>
-<h1 id="漏桶法"><a href="#漏桶法" class="headerlink" title="漏桶法"></a>漏桶法</h1><p>基于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky_bucket</a>的描述，目前广泛流行的漏桶法存在两种模式：度量法（the leaky bucket as a meter）及队列法（the leaky bucket as a queue）。<br>度量法在处理时，单位时间内的请求如果超过了预设的数量，会将请求丢弃。比如，需要固定的流量为100QPS，我们以100ms作为一个衡量单元，即10 query/100ms。则，在单位的100ms内，如果请求数量超过了10，则将超过10的请求丢弃。对于队列法，则会将超过的请求均放在一个队列里，在下个时间单位内，按照先进先出的原则，处理队列内的请求。<br>在请求数量较多且分布均匀的场景下，度量法更加适用。系统已经处于处理的极限，额外的请求存储似乎不太现实。对于流量分布不均的场景下，队列法能够抹平流量的不均匀。在队列长度可控的场景下，队列法能够兼顾请求方（尽量不丢请求）及服务方（控制流量）。至于超出的部分，应该考虑引入告警等方式来把控风险。</p>
-<h1 id="令牌桶法"><a href="#令牌桶法" class="headerlink" title="令牌桶法"></a>令牌桶法</h1><p>对令牌桶法的详细介绍见<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Token_bucket">Token bucket</a>。令牌桶法可以认为是更加一般的漏桶法。严格意义上的漏桶法要求每次仅有一个单位的请求被允许，令牌桶法则将其扩展为固定时间段内，产出多个令牌，被请求申请。当令牌桶法每次仅允许一个令牌时，显然就成了漏桶法。</p>
-<h1 id="Jmeter中吞吐量的控制逻辑"><a href="#Jmeter中吞吐量的控制逻辑" class="headerlink" title="Jmeter中吞吐量的控制逻辑"></a>Jmeter中吞吐量的控制逻辑</h1><p>笔者找到的Jmeter最新版本为<a target="_blank" rel="noopener" href="https://github.com/apache/jmeter/blob/master/src/components/src/main/java/org/apache/jmeter/timers/ConstantThroughputTimer.java">ConstantThroughputTimer</a>。在该实现中，主要分为单线程、多线程、共享线程等模式下的吞吐量（Jmeter中的吞吐量为Query Per Minutes)等模式。可以看出，Jmeter在不同的限流逻辑下，计算每个线程需要的delay时间实现jmeter的请求调度，体现了漏桶法的思路。<br>相关代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">// Calculate the delay based on the mode</span><br><span class="line">private long calculateDelay() &#123;</span><br><span class="line">    long delay;</span><br><span class="line">    // N.B. we fetch the throughput each time, as it may vary during a test</span><br><span class="line">    double msPerRequest = MILLISEC_PER_MIN / getThroughput();</span><br><span class="line">    switch (mode) &#123;</span><br><span class="line">    case AllActiveThreads: // Total number of threads</span><br><span class="line">        delay = Math.round(JMeterContextService.getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup: // Active threads in this group</span><br><span class="line">        delay = Math.round(JMeterContextService.getContext().getThreadGroup().getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreads_Shared: // All threads - alternate calculation</span><br><span class="line">        delay = calculateSharedDelay(allThreadsInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup_Shared: //All threads in this group - alternate calculation</span><br><span class="line">        final org.apache.jmeter.threads.AbstractThreadGroup group =</span><br><span class="line">            JMeterContextService.getContext().getThreadGroup();</span><br><span class="line">        ThroughputInfo groupInfo = threadGroupsInfoMap.get(group);</span><br><span class="line">        if (groupInfo == null) &#123;</span><br><span class="line">            groupInfo = new ThroughputInfo();</span><br><span class="line">            ThroughputInfo previous = threadGroupsInfoMap.putIfAbsent(group, groupInfo);</span><br><span class="line">            if (previous != null) &#123; // We did not replace the entry</span><br><span class="line">                groupInfo = previous; // so use the existing one</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        delay = calculateSharedDelay(groupInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case ThisThreadOnly:</span><br><span class="line">    default: // e.g. 0</span><br><span class="line">        delay = Math.round(msPerRequest); // i.e. * 1</span><br><span class="line">        break;</span><br><span class="line">    return delay;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 
-<h1 id="golang-ratelimit介绍"><a href="#golang-ratelimit介绍" class="headerlink" title="golang ratelimit介绍"></a>golang ratelimit介绍</h1><p>golang中也有很多请求控制的方法。工程中经常使用的 <code>chan(bool)</code>+<code>WaitGroup</code>池化了请求限制，可以认为是令牌桶法的思路的一种简化；golang自带的<code>Ticker</code>则会在固定的时间间隔内产生一个就绪的状态，可以看出漏桶法的思想。更加工程化的选择，可以看下<a target="_blank" rel="noopener" href="https://github.com/uber-go/ratelimit">golang ratelimit</a>uber开源的这个golang版本的ratelimit实现。水平优先，就贴一个网上找来的源码分析文章<a target="_blank" rel="noopener" href="https://www.cyhone.com/articles/analysis-of-uber-go-ratelimit/">uber-go 漏桶限流器使用与原理分析</a>。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文对常用的两个限流方法<code>漏桶法</code>及<code>令牌桶法</code>进行了简单的描述。同时简单涉及了下<code>Jmeter</code>中的流量限制及<code>golang</code>中不同请求限制措施的思路。  </p>
+<h1 id="eBPF-及其对可观测领域的影响"><a href="#eBPF-及其对可观测领域的影响" class="headerlink" title="eBPF 及其对可观测领域的影响"></a>eBPF 及其对可观测领域的影响</h1><p>当实现安全性、网络化以及可观测的特性时，在linux 内核中工作是非常理想化的。然而，它并非缺少挑战。无论是变更内核源码或者新增<br>内核模块，开发者通常会面对复杂的架构及难以调试的抽象层。<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/bpf/index.html">扩展的 BPF(eBPF)</a> 能够解决这两个问题。<br>伯克利包过滤器扩展技术(Extended Berkeley Packet Filter, eBPF) 是一种内核技术(自 Linux 4.x 引入)允许程序在无需变更内核源码或添加<br>额外的内核模块。你可以认为它是一种内核内置的轻量级的、沙箱式的虚拟机，编程人员可以通过 BPF 字节码来最大化的利用内核的资源。<br>使用 eBPF 消除了变更内核源码并且简化了软件利用现有层级的能力。因此，它是一种强大的技术，有可能从根本上改变网络、可观测性及安全<br>服务的工作方式。<br>这是一篇 eBPF 是什么、怎么工作以及什么时候考虑利用这种技术的文章。</p>
+<h1 id="eBPF-是怎么工作的"><a href="#eBPF-是怎么工作的" class="headerlink" title="eBPF 是怎么工作的"></a>eBPF 是怎么工作的</h1><p>eBPF 是事件驱动的，并且绑定到特定的代码路径。代码路径包含特殊的触发点(triggers)，或者称为钩子(hooks)。触发时，会执行所有绑定<br>到上面的 eBPF 程序。一些钩子的示例包括网络事件、系统调用、函数执行以及内核跟踪点。<br>当被触发时，代码会首先被编译成 BPF 字节码。然后，字节码会在执行前被校验，以确保不包含任何循环。校验会确保程序不会有意或无意的<br>破坏内核。<br>当代码在一个钩子上执行后，会产生辅助调用(helper calls)。这些辅助调用是一些eBPF访问内存的函数。辅助调用需要内核提前定义，目前<br><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man7/bpf-helpers.7.html">调用的函数列表</a>仍在持续增长中。<br>eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安全性的工具。然而，时至今日，它已经成为一种用来让用户态的程序更加安全、<br>便捷、表现更好的工具。</p>
+<h1 id="eBPF-的优势"><a href="#eBPF-的优势" class="headerlink" title="eBPF 的优势"></a>eBPF 的优势</h1><p>eBPF 通常被用来进行<a target="_blank" rel="noopener" href="https://blog.px.dev/ebpf-function-tracing/">追踪</a>用户态的进程，这里列出一些它的优势：</p>
+<ul>
+<li>高速、高效。eBPF 可以将网络包从内核态移动至用户态。而且，eBPF支持一个运行时（just-in-time, JIT）的编译器。在字节码被编译出来<br>后即可被执行，毋需基于平台重新解释；</li>
+<li>低侵入性。当被用作调试器时，eBPF 无需停止服务便可以观测它的状态；</li>
+<li>安全性。程序会被高效地加载到沙盒中，意味着内核源码被保护起来不会发生变更。执行时的校验能够确保资源不会由于程序陷入死循环而<br>阻塞；</li>
+<li>便捷。相对于构建并维护内核的模块，编写内核的函数钩子要简单的多；</li>
+<li>一致追踪。eBPF能够带来一个单一、有效、可用性强的追踪程序的框架。这增加了可视化及安全性；</li>
+<li>可编程性。使用 eBPF 在不引入额外架构层的情况下，丰富了系统的特性。而且，由于代码是直接运行在内核里的，在不同的eBPF事件间存储<br>数据，而非像其他追踪程序一样转存出来，是可行的；</li>
+<li>表达丰富。eBPF极具表达能力，这通常只能在其他高级语言中能够看到；<h1 id="eBPF-最佳实践"><a href="#eBPF-最佳实践" class="headerlink" title="eBPF 最佳实践"></a>eBPF 最佳实践</h1>考虑到 eBPF 仍然是一项新的技术，很多使用仍待进一步开发。关于 eBPF 的最佳实践仍在随着这种技术的改进而不断增加。虽然没有已定义的<br>最佳实践存在，仍然有一些措施可以采纳以确保程序高效、便捷。<br>如果你在生态系统中使用了 eBPF，我们建议你：</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://clang.llvm.org/">LLVM Clang</a> 来将 C 代码编辑为 eBPF 字节码。当 eBPF 刚出现时，编码及汇编均需要手动操作。然后，<br>开发者使用内核的汇编器生成字节码。幸运的是，现在已经不再需要这样操作了。Clang 为 C 语言编写的 eBPF 提供了前端及工具；</li>
+<li>使用 BCC 工具集来编写 BPF 程序。<a target="_blank" rel="noopener" href="https://github.com/iovisor/bcc">BPF 编译器集合（BPF Compiler Collection, BCC）</a> 是一个帮助<br>构建高效内核追踪及管理程序的工具集。针对性能分析及网络拥塞控制相关的任务尤其合适。<h1 id="eBPF-的不足"><a href="#eBPF-的不足" class="headerlink" title="eBPF 的不足"></a>eBPF 的不足</h1>尽管很强大，eBPF 并不是适合所有项目/生态系统的万金油。eBPF 有一些显而易见的不足，这些不足会让它在一些场景下不适用。一些开发者<br>可能会发现在如下场景下 eBPF 不适用：</li>
+<li>eBPF 限制在 Linux 系统及较新的内核版本。eBPF 是在 Linux 内核上发展并且完全聚焦在其上。这导致它相对于其他工具而言移植性不强。<br>此外，你需要一个相当新的内核。如果运行在任何早于 v4.13 的内核上，你将不能使用它。</li>
+<li>沙盒编程是存在限制的。eBPF 通过限制应用程序可以接触的资源来提升安全性。然而，由于限制了操作系统的访问，功能上也被限制了。<h1 id="eBPF-适用哪些领域"><a href="#eBPF-适用哪些领域" class="headerlink" title="eBPF 适用哪些领域"></a>eBPF 适用哪些领域</h1>eBPF <a target="_blank" rel="noopener" href="https://newrelic.com/solutions/cloud-adoption">云原生应用</a> 领域正迅速的获得关注。目前，eBPF 在以下两个场景中获得普遍<br>使用：</li>
+<li>需要使用内核追踪实现可观测性。在这种场景下，eBPF 表现得更加快速、高效。这里不涉及到<a target="_blank" rel="noopener" href="https://www.quora.com/What-is-context-switching-in-Linux">上下文切换</a>，并且 eBPF 程序是事件驱动的所以毋需一个特定的触发器–所以你不会存在精度上的问题。</li>
+<li>传统的安全监控不起作用。eBPF 在分布式及容器化的环境中有巨大的应用潜力，包括<a target="_blank" rel="noopener" href="https://kubernetes.io/blog/2017/12/using-ebpf-in-kubernetes/">Kubernets</a>。<br>在这些环境中，eBPF 可以缩小可见性的差距，因为他可以提供<a target="_blank" rel="noopener" href="https://blog.pixielabs.ai/ebpf-http-tracing/">HTTP 可见性追踪</a>。<br>在如下安全度量领域，你也可以发现 eBPF 被使用：</li>
+<li>防火墙；</li>
+<li>设备驱动；</li>
+<li>网络性能监控；<h1 id="New-Relic-and-eBPF"><a href="#New-Relic-and-eBPF" class="headerlink" title="New Relic and eBPF"></a>New Relic and eBPF</h1><a target="_blank" rel="noopener" href="https://newrelic.com/platform/kubernetes-pixie">Pixie</a> (acquired by New Relic), is an open source, kubernetes-native-in-cluster observability platform that provides instant visibility into Kubernetes workloads with no manual instrumentation. eBPF provides most of the magic behind the Pixie platform. As described earlier, eBPF allows you to run restricted code when an event is triggered. This event could be a function call either in kernel space(kprobes) or userspace(uprobes). Pixie uses both uprobes and kprobes to enable observability across services and applications.</li>
+</ul>
+<p>Pixie automatically harvests telemetry data by leveraging eBPF, and its edge-machine intelligence connects this data with Kubernetes metadata to provide visibility while maintaining data locality. This visibility complements New Relic’s powerful Kubernetes observability solution. And starting in late May, you’ll be able to send Pixie-generated telemetry data to New Relic One, gaining scalable retention, powerful visualizations, advanced correlation, and intelligent alerting capabilities.</p>
+<h1 id="eBPF-正在可见的创造效率"><a href="#eBPF-正在可见的创造效率" class="headerlink" title="eBPF 正在可见的创造效率"></a>eBPF 正在可见的创造效率</h1><p>eBPF 是一个提升 Linux 内核可观测、网络及安全性的新技术。它毋需变更内核源码或者添加新的模块，所以你可以在不引入复杂性的前提下，<br>提升系统的基础建设。<br>我们简要的谈到 eBPF 是什么、如何工作以及为什么它在分布式环境中如此有用。通过监控内核层，很多云上的可观测问题被解决了。你可以<br>享受数据中更深层次的可见性、更丰富的上下文以及更准确的信息。</p>
 
       
     </div>
@@ -416,13 +424,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A8%B3%E5%AE%9A%E6%80%A7/" rel="tag"># 系统稳定性</a>
+            <a href="/tags/eBPF/" rel="tag"># eBPF</a>
           
-            <a href="/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/" rel="tag"># 压力测试</a>
-          
-            <a href="/tags/%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" rel="tag"># 自我修养</a>
-          
-            <a href="/tags/%E8%AF%BB%E4%BB%A3%E7%A0%81/" rel="tag"># 读代码</a>
+            <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
           
         </div>
       
@@ -435,8 +439,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/01/11/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/" rel="next" title="org-mode使用备注">
-                <i class="fa fa-chevron-left"></i> org-mode使用备注
+              <a href="/2022/02/24/centos-%E6%9E%84%E5%BB%BA-k8s-%E9%9B%86%E7%BE%A4/" rel="next" title="centos 构建 local-k8s">
+                <i class="fa fa-chevron-left"></i> centos 构建 local-k8s
               </a>
             
           </div>
@@ -444,10 +448,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/04/08/golang-%E7%BB%A7%E6%89%BF/" rel="prev" title="golang 封装">
-                golang 封装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -583,7 +583,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%A1%B6%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">漏桶法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A4%E7%89%8C%E6%A1%B6%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">令牌桶法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jmeter%E4%B8%AD%E5%90%9E%E5%90%90%E9%87%8F%E7%9A%84%E6%8E%A7%E5%88%B6%E9%80%BB%E8%BE%91"><span class="nav-number">4.</span> <span class="nav-text">Jmeter中吞吐量的控制逻辑</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#golang-ratelimit%E4%BB%8B%E7%BB%8D"><span class="nav-number">5.</span> <span class="nav-text">golang ratelimit介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E9%A2%86%E5%9F%9F%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.</span> <span class="nav-text">eBPF 及其对可观测领域的影响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">eBPF 是怎么工作的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">3.</span> <span class="nav-text">eBPF 的优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">4.</span> <span class="nav-text">eBPF 最佳实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="nav-number">5.</span> <span class="nav-text">eBPF 的不足</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E9%80%82%E7%94%A8%E5%93%AA%E4%BA%9B%E9%A2%86%E5%9F%9F"><span class="nav-number">6.</span> <span class="nav-text">eBPF 适用哪些领域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#New-Relic-and-eBPF"><span class="nav-number">7.</span> <span class="nav-text">New Relic and eBPF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eBPF-%E6%AD%A3%E5%9C%A8%E5%8F%AF%E8%A7%81%E7%9A%84%E5%88%9B%E9%80%A0%E6%95%88%E7%8E%87"><span class="nav-number">8.</span> <span class="nav-text">eBPF 正在可见的创造效率</span></a></li></ol></div>
             
 
           </div>
