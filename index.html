@@ -336,7 +336,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  136字
+                  131字
                 </span>
               
 
@@ -378,8 +378,9 @@
             <blockquote>
 <p>goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。</p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (&quot;M:N scheduling&quot;). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that&#x27;s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there&#x27;s not enough room, the runtime copies the entire goroutine&#x27;s stack to another place in memory where it has enough room to expand.</span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (“M:N scheduling”). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that’s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there’s not enough room, the runtime copies the entire goroutine’s stack to another place in memory where it has enough room to expand.  </p>
+</blockquote>
 <p><a target="_blank" rel="noopener" href="https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/">Challenges of BPF Tracing Go</a></p>
 
           
