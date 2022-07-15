@@ -87,7 +87,7 @@
 <meta property="og:description" content="为了更好的live in emacs，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把org-mode这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。  org-mode介绍在神的编辑器emacs的传说中，往往有org-mode的身影。虽然按照(org官网)orgmode官网的描述，org-mode并不仅限于在emacs中使用，如开始使用 Org 模式吧，在没有 Emac">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-10T12:30:00.000Z">
-<meta property="article:modified_time" content="2022-07-15T12:21:21.996Z">
+<meta property="article:modified_time" content="2022-07-15T12:31:12.494Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="emacs">
 <meta property="article:tag" content="org-mode">
@@ -398,7 +398,50 @@
 <h1 id="org-mode介绍"><a href="#org-mode介绍" class="headerlink" title="org-mode介绍"></a>org-mode介绍</h1><p>在<code>神的编辑器emacs</code>的传说中，往往有<code>org-mode</code>的身影。虽然按照(org官网)<a target="_blank" rel="noopener" href="https://orgmode.org/">orgmode</a>官网的描述，<code>org-mode</code>并不仅限于在<code>emacs</code>中使用，如<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57800574">开始使用 Org 模式吧，在没有 Emacs 的情况下</a>这篇文章就详细讲解了在<code>vscode</code>中使用<code>org-mode</code>的方式，但是配合<code>emacs</code>的万物皆系于<code>kbd</code>之上的使用习惯，<code>org-mode</code>确实能够发挥最大的功能。<br><code>org-mode</code>的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。</p>
 <span id="more"></span>
 <p>这里贴一下<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/os-world-trip/content/42.html">开源世界旅行手册</a>中涉及的<code>org-mode</code>与<code>oneNote</code>的对比，能够更加直观的了解<code>org-mode</code>的功能：</p>
-<p>|org-mode vs oneNote|<br>|——–|——–|——|<br>||Org-mode|    OneNote|<br>|标签|    强大|    不支持|<br>|日程表|    强大|    不支持|<br>|界面|    字符|    漂亮|<br>|TablePC|    不支持|    非常好|<br>|摘录|    保持源格式|<br>|便捷|    Emacs 内置|    安装麻烦|</p>
+<table>
+<thead>
+<tr>
+<th>org-mode vs oneNote</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>Org-mode</td>
+<td>OneNote</td>
+</tr>
+<tr>
+<td>标签</td>
+<td>强大</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>日程表</td>
+<td>强大</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>界面</td>
+<td>字符</td>
+<td>漂亮</td>
+</tr>
+<tr>
+<td>TablePC</td>
+<td>不支持</td>
+<td>非常好</td>
+</tr>
+<tr>
+<td>摘录</td>
+<td>保持源格式</td>
+<td></td>
+</tr>
+<tr>
+<td>便捷</td>
+<td>Emacs 内置</td>
+<td>安装麻烦</td>
+</tr>
+</tbody></table>
 <h1 id="基本使用流程"><a href="#基本使用流程" class="headerlink" title="基本使用流程"></a>基本使用流程</h1><p>目前还处于探索阶段了，简单描述下<code>org-mode</code>的配置流程。<br>0. 版本<br>使用的是<code>emacs-27.1</code>版本，默认内置了<code>org-mode</code>(值得一提的是，当我在写一篇文章时，发现hexo#admin编辑器是支持部分<code>emacs</code>快捷键的，又反映了<code>emacs</code>影响之广)。</p>
 <ol>
 <li>设置<br><code>org-mode</code>在使用时，一般是在文本文档中编辑待办内容，将待办内容加入<code>org-mode</code>的日程表。而后通过<code>org-agenda</code>来查看指定日期的待办内容，并随着待办内容设置事务的进度。<br>使用前，如果是使用<code>emacs</code>进行编辑的话，可以在<code>emacs</code>配置文件中作如下设置：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">;; 将.org结尾的文档，均以org-mode打开</span><br><span class="line">(add-to-list &#x27;auto-mode-alist &#x27;(&quot;\\.org\\&#x27;&quot; . org-mode))</span><br><span class="line">;; 将org-agenda绑定为Ctrl-c a 快捷键</span><br><span class="line">(global-set-key (kbd &quot;C-c a&quot;) &#x27;org-agenda)</span><br></pre></td></tr></table></figure>
