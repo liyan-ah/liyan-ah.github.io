@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blacker-32x32-next.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blacker-16x16-next.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="emacs,lsp,c-mode,clang-format," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="liam同学在让 Vim 在保存文件时自动格式化代码一文中展示了保存时自动化格式代码的vim配置。作为emacs用户，自然有自己的解决方案。以下呈现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让emacs在保存文件时自动格式化代码">
+<meta property="og:url" content="http://yoursite.com/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/index.html">
+<meta property="og:site_name" content="李岩&#39;s Blog">
+<meta property="og:description" content="liam同学在让 Vim 在保存文件时自动格式化代码一文中展示了保存时自动化格式代码的vim配置。作为emacs用户，自然有自己的解决方案。以下呈现。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-15T12:34:00.000Z">
+<meta property="article:modified_time" content="2022-07-15T13:07:33.689Z">
+<meta property="article:author" content="李岩">
+<meta property="article:tag" content="emacs">
+<meta property="article:tag" content="lsp">
+<meta property="article:tag" content="c-mode">
+<meta property="article:tag" content="clang-format">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/07/15/让emacs在保存文件时自动格式化代码/"/>
+
+
+
+
+
+  <title>让emacs在保存文件时自动格式化代码 | 李岩's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李岩's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">努力做个程序员</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">让emacs在保存文件时自动格式化代码</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-15T20:34:00+08:00">
+                2022-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  506字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://liam.page/">liam</a>同学在<a target="_blank" rel="noopener" href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/">让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a target="_blank" rel="noopener" href="https://microsoft.github.io/language-server-protocol/"><code>lsp</code></a>配置也一并带上了，不同于<a target="_blank" rel="noopener" href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">;; 使用国内 elpa 源来加速插件安装</span><br><span class="line">(defun w-install(pkg)</span><br><span class="line">  ;; would be a wrapper for package-install</span><br><span class="line">  (require &#x27;package)</span><br><span class="line">  (setq package-archives</span><br><span class="line">	&#x27;((&quot;gnu&quot;   . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&quot;)</span><br><span class="line">	   (&quot;melpa&quot; . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&quot;)))</span><br><span class="line">  (package-initialize)</span><br><span class="line">  (package-refresh-contents)</span><br><span class="line">  (unless (package-installed-p pkg)</span><br><span class="line">    (package-install pkg)))</span><br><span class="line"></span><br><span class="line">;; 辅助判断插件安装通用函数</span><br><span class="line">(defun ensure-package-installed (&amp;rest packages)</span><br><span class="line">  &quot;Assure every package was installed, ask for installation if it&#x27;s not.</span><br><span class="line">a list of installed packages or nil for every skipped package.&quot;</span><br><span class="line">  (mapcar</span><br><span class="line">   (lambda (package)</span><br><span class="line">          (if (package-installed-p package)</span><br><span class="line">              nil</span><br><span class="line">            (if (y-or-n-p (format &quot;Package %s is missing. Install it?&quot; package))</span><br><span class="line">                (w-install package)</span><br><span class="line">              package)))</span><br><span class="line">   packages))</span><br><span class="line"></span><br><span class="line">;; clang-format 在文件保存时格式化代码</span><br><span class="line">(ensure-package-installed &#x27;clang-format)</span><br><span class="line">(defun clang-format-on-save-hook()</span><br><span class="line">  &quot;Create a buffer local save hook.&quot;</span><br><span class="line">  (add-hook &#x27;before-save-hook</span><br><span class="line">            (lambda ()</span><br><span class="line">              (when (locate-dominating-file &quot;.&quot; &quot;.clang-format&quot;)</span><br><span class="line">                (clang-format-buffer))</span><br><span class="line">              ;; Continue to save</span><br><span class="line">              nil)</span><br><span class="line">            nil</span><br><span class="line">            ;; Buffer local hook.</span><br><span class="line">            t))</span><br><span class="line"></span><br><span class="line">;; Run this hook for c-mode-hook and c++-mode-hook</span><br><span class="line">(add-hook &#x27;c-mode-hook   (lambda () (clang-format-on-save-hook)))</span><br><span class="line">(add-hook &#x27;c++-mode-hook (lambda () (clang-format-on-save-hook)))</span><br><span class="line">;; create default clang-format file</span><br><span class="line">;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html</span><br><span class="line">;; clang-format -style=llvm -dump-config &gt; .clang-format</span><br><span class="line"></span><br><span class="line">;; 另外，这里列出使用的 lsp-language-server 配置。</span><br><span class="line">;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行</span><br><span class="line">;; https://github.com/MaskRay/ccls/wiki/Build</span><br><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">(ensure-package-installed &#x27;ccls)</span><br><span class="line">(use-package ccls</span><br><span class="line">  :hook ((c-mode c++-mode objc-mode cuda-mode) .</span><br><span class="line">         (lambda() (require &#x27;ccls) (lsp))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/ClangFormat.html">ClangFormat</a>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/emacs/" rel="tag"># emacs</a>
+          
+            <a href="/tags/lsp/" rel="tag"># lsp</a>
+          
+            <a href="/tags/c-mode/" rel="tag"># c-mode</a>
+          
+            <a href="/tags/clang-format/" rel="tag"># clang-format</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/" rel="next" title="golang 常见类型字节数">
+                <i class="fa fa-chevron-left"></i> golang 常见类型字节数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+   <div id="gitalk-container">
+   </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李岩</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '0aac24bb2cd38e93b69a',
+          clientSecret: '713022435077d3170511b3861b78cf0876ff3372',
+          repo: 'blacker1230.github.io',
+          owner: 'blacker1230',
+          admin: ['blacker1230'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
