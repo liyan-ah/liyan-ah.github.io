@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="lisp," />
+  <meta name="keywords" content="ebpf,golang,bpftrace,uprobe," />
 
 
 
@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="lisp语言的基本表达式为S-表达式。这与受Algol语言影响的C系语言有很大的不同。显然，这很有趣： ;the bellow is hello world function in lisp   (defun hello-world()     &quot;hello world function in lisp&quot;     (format t &quot;hello, world!&amp;qu">
+<meta name="description" content="bpftrace 基于 bcc 进行开发的工具，语法简洁、功能强大。用其分析Linux 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用bpftrace无侵入遍历链表成员的方式，介绍bpftrace attach uprobe 的使用。更多使用说明见:bpftrace官网使用文档">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lisp-hello world">
-<meta property="og:url" content="http://yoursite.com/2019/05/28/lisp-hello-world/index.html">
+<meta property="og:title" content="bpftrace 无侵入遍历golang链表">
+<meta property="og:url" content="http://yoursite.com/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="lisp语言的基本表达式为S-表达式。这与受Algol语言影响的C系语言有很大的不同。显然，这很有趣： ;the bellow is hello world function in lisp   (defun hello-world()     &quot;hello world function in lisp&quot;     (format t &quot;hello, world!&amp;qu">
+<meta property="og:description" content="bpftrace 基于 bcc 进行开发的工具，语法简洁、功能强大。用其分析Linux 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用bpftrace无侵入遍历链表成员的方式，介绍bpftrace attach uprobe 的使用。更多使用说明见:bpftrace官网使用文档">
 <meta property="og:locale">
-<meta property="article:published_time" content="2019-05-28T13:52:00.000Z">
-<meta property="article:modified_time" content="2021-07-14T13:01:54.333Z">
+<meta property="article:published_time" content="2022-07-22T13:48:00.000Z">
+<meta property="article:modified_time" content="2022-07-22T13:53:45.598Z">
 <meta property="article:author" content="李岩">
-<meta property="article:tag" content="lisp">
+<meta property="article:tag" content="ebpf">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="bpftrace">
+<meta property="article:tag" content="uprobe">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/28/lisp-hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2022/07/22/bpfTrace-追踪-uprobe/"/>
 
 
 
 
 
-  <title>lisp-hello world | 李岩's Blog</title>
+  <title>bpftrace 无侵入遍历golang链表 | 李岩's Blog</title>
   
 
 
@@ -253,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/28/lisp-hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -270,7 +273,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">lisp-hello world</h2>
+          <h2 class="post-title" itemprop="name headline">bpftrace 无侵入遍历golang链表</h2>
         
 
         <div class="post-meta">
@@ -282,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-28T21:52:00+08:00">
-                2019-05-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-22T21:48:00+08:00">
+                2022-07-22
               </time>
             
 
@@ -305,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/" itemprop="url" rel="index">
-                    <span itemprop="name">code</span>
+                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
                   </a>
                 </span>
 
@@ -341,7 +344,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  99字
+                  620字
                 </span>
               
 
@@ -357,7 +360,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1分钟
+                  2分钟
                 </span>
               
             </div>
@@ -378,13 +381,49 @@
       
 
       
-        <p>lisp语言的基本表达式为S-表达式。这与受<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ALGOL">Algol</a>语言影响的C系语言有很大的不同。显然，这很有趣：</p>
-<pre><code>;the bellow is hello world function in lisp
-  (defun hello-world()
-    &quot;hello world function in lisp&quot;
-    (format t &quot;hello, world!&quot;));```
-由&lt;code&gt;()&lt;/code&gt;所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。
+        <blockquote>
+<p><code>bpftrace</code> 基于 <code>bcc</code> 进行开发的工具，语法简洁、功能强大。用其分析<code>Linux</code> 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用<code>bpftrace</code>无侵入遍历链表成员的方式，介绍<code>bpftrace</code> <code>attach uprobe</code> 的使用。更多使用说明见:<a target="_blank" rel="noopener" href="https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md">bpftrace官网使用文档</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h1><p>下面直接给出执行结果。可以看到，通过<code>bpftrace</code>脚本输出的结果与代码中实际遍历的结果相同。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">./demo</span><br><span class="line">cur name: Alice, cur aget: 10</span><br><span class="line">cur name: Bob, cur aget: 11</span><br><span class="line">cur name: Claire, cur aget: 12</span><br><span class="line"></span><br><span class="line">sudo ./handle.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">=== enter main.handle.</span><br><span class="line">name: Alice</span><br><span class="line">age : 10</span><br><span class="line">name: Bob</span><br><span class="line">age : 11</span><br><span class="line">name: Claire</span><br><span class="line">age : 12</span><br><span class="line">=== total node: 3</span><br></pre></td></tr></table></figure>
+
+<h1 id="示例说明"><a href="#示例说明" class="headerlink" title="示例说明"></a>示例说明</h1><p>系统环境如下： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Linux 4.18.0-193.6.3.el8_2.v1.2.x86_64</span><br><span class="line">bpftrace v0.14.0-72-g6761-dirty</span><br><span class="line">go version go1.16.15 linux/amd64</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">示例环境目录：</span><br></pre></td></tr></table></figure>
+<p>.<br>├── demo<br>├── go.mod<br>├── handle.bt<br>└── main.go</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">其中：</span><br></pre></td></tr></table></figure>
+<p>// main.go<br>package main</p>
+<p>import (<br>    “context”<br>    “fmt”<br>)</p>
+<p>type Student struct {<br>    Name string<br>    Age  int64<br>    // Comment [600]Byte 这样会使得这个问题变得很麻烦，hhh<br>    Next *Student<br>}</p>
+<p>func handle(ctx context.Context, student *Student) {<br>    for cur := student; cur != nil; cur = cur.Next {<br>        fmt.Printf(“cur name: %s, cur aget: %d\n”, cur.Name, cur.Age)<br>    }<br>    return<br>}</p>
+<p>func main() {<br>    first := &amp;Student{<br>        Name: “Alice”,<br>        Age:  10,<br>        Next: &amp;Student{<br>            Name: “Bob”,<br>            Age:  11,<br>            Next: &amp;Student{<br>                Name: “Claire”,<br>                Age:  13,<br>                Next: nil,<br>            }}}<br>    handle(context.Background(), first)<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>// handle.bt<br>#!/bin/bpftrace</p>
+<p>// 当目标结构体较小时(使得整体栈开销 &lt; 512Byte)，可以直接构造使用<br>struct student{<br>    u64 name_ptr;<br>    u64 name_length;<br>    long  age;<br>    struct student *next;<br>};</p>
+<p>uprobe:./demo:main.handle<br>{<br>    printf(“=== enter main.handle.\n”);</p>
+<pre><code>$cur = (struct student *)sarg2;
+if ($cur == 0)&#123;
+    printf(&quot;input param is nil.\n&quot;);
+    return;
+&#125;
+$node_count = 1;
+unroll(10)&#123;  // 这里定义的最大节点数量为10
+    printf(&quot;name: %s\n&quot;, str($cur-&gt;name_ptr, $cur-&gt;name_length));
+    printf(&quot;age : %d\n&quot;, $cur-&gt;age);
+    $cur = $cur-&gt;next;
+    if ($cur == 0)&#123;
+        printf(&quot;=== total node: %d\n&quot;, $node_count);
+        return;
+    &#125;
+    $node_count += 1;
+&#125;
+
+printf(&quot;==== meet max\n&quot;);
+return;
 </code></pre>
+<p>}</p>
+<p>```<br>在编译完成<code>main.go</code>后，通过<code>sudo bpftrace -l &quot;uprobe:./demo/*&quot; &gt; uprobe.info</code>的方式，可以获取<code>demo</code>中所有可以<code>attach</code>的<code>uprobe</code>信息。这里说明下取<code>student*</code>指针值时，为什么取<code>sarg3</code>。<code>bpftrace</code>中对内存传参的参数支持是<code>sarg0, sarg1, sarg2...</code>，且每个参数实际只对应<code>8Byte</code>大小的空间。对于<code>func handle(ctx context.Context, student *Student)</code>函数来说，由于<code>context.Context</code>实际占用<code>2*8Byte</code>的空间（见<a target="_blank" rel="noopener" href="https://blacker1230.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/">golang常见类型字节数</a>)，因此需要使用<code>sarg2</code>来取<code>student</code>的值，而非直觉上的<code>sarg1</code>。<br>整个过程比较简单、明了。只要拥有<code>root</code>权限，基本上可以对系统内的任何进程进行详细的分析。</p>
 
       
     </div>
@@ -402,7 +441,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/lisp/" rel="tag"># lisp</a>
+            <a href="/tags/ebpf/" rel="tag"># ebpf</a>
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+            <a href="/tags/bpftrace/" rel="tag"># bpftrace</a>
+          
+            <a href="/tags/uprobe/" rel="tag"># uprobe</a>
           
         </div>
       
@@ -415,15 +460,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/" rel="next" title="让emacs在保存文件时自动格式化代码">
+                <i class="fa fa-chevron-left"></i> 让emacs在保存文件时自动格式化代码
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/28/clisp%E7%BC%96%E8%AF%91/" rel="prev" title="clisp编译">
-                clisp编译 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -479,8 +524,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -540,6 +594,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">执行结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">示例说明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
