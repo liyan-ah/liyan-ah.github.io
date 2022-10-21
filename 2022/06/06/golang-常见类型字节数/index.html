@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。  信息这里列出基本类型及其作为参数传递时，占用的空间大小如下表。      类型 长度 说明    指针 8B 64位机为 8Byte, 32位机位4Byte   context 16B interface 类型   interface 16B 2 个指针，详见d">
+<meta name="description" content="ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。  信息这里列出基本类型及其作为参数传递时，占用的空间大小如下表。      类型 长度 说明    指针 8B 64位机为 8Byte, 32位机位4Byte   context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang 常见类型字节数">
 <meta property="og:url" content="http://yoursite.com/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。  信息这里列出基本类型及其作为参数传递时，占用的空间大小如下表。      类型 长度 说明    指针 8B 64位机为 8Byte, 32位机位4Byte   context 16B interface 类型   interface 16B 2 个指针，详见d">
+<meta property="og:description" content="ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。  信息这里列出基本类型及其作为参数传递时，占用的空间大小如下表。      类型 长度 说明    指针 8B 64位机为 8Byte, 32位机位4Byte   context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-06-06T06:36:00.000Z">
-<meta property="article:modified_time" content="2022-07-19T06:01:35.372Z">
+<meta property="article:modified_time" content="2022-10-21T12:42:37.693Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="ebpf">
 <meta property="article:tag" content="golang">
@@ -399,7 +399,7 @@
 <tr>
 <td>context</td>
 <td>16B</td>
-<td>interface 类型</td>
+<td>interface 类型。其中，前8B是类型信息，后8B是对象的指针信息</td>
 </tr>
 <tr>
 <td>interface</td>
@@ -564,7 +564,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -586,7 +586,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
