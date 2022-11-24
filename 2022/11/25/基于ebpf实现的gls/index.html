@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blacker-32x32-next.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blacker-16x16-next.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ebpf,golang,code,gls," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。  基本功能本文中基于ebpf实现的gls具有如下功能：    基于goid的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于ebpf实现的gls">
+<meta property="og:url" content="http://yoursite.com/2022/11/25/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/index.html">
+<meta property="og:site_name" content="李岩&#39;s Blog">
+<meta property="og:description" content="虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。  基本功能本文中基于ebpf实现的gls具有如下功能：    基于goid的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-11-24T17:14:00.000Z">
+<meta property="article:modified_time" content="2022-11-24T19:50:29.819Z">
+<meta property="article:author" content="李岩">
+<meta property="article:tag" content="ebpf">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="code">
+<meta property="article:tag" content="gls">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/11/25/基于ebpf实现的gls/"/>
+
+
+
+
+
+  <title>基于ebpf实现的gls | 李岩's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李岩's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">努力做个程序员</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/11/25/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">基于ebpf实现的gls</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-11-25T01:14:00+08:00">
+                2022-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code-life/" itemprop="url" rel="index">
+                    <span itemprop="name">code life</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.2k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>虽然<code>golang</code>并不推荐使用<code>goid</code>来构建<code>gls</code>(<code>goroutine local storage</code>)，仍然有着很多的实现<code>gls</code>并使用的尝试。<a target="_blank" rel="noopener" href="https://github.com/jtolio/gls">github-gls</a>这里是一个常见的实现，基本表述了<code>golang</code>里<code>gls</code>的实现思路：获取<code>goid</code>，基于<code>goid</code>构建一个存储。本文中笔者尝试基于<code>ebpf</code>来构建一个<code>golang</code>的<code>gls</code>。</p>
+</blockquote>
+<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><p>本文中基于<code>ebpf</code>实现的<code>gls</code>具有如下功能：  </p>
+<ul>
+<li>基于<code>goid</code>的存储。即<code>map[goid]=value</code>；</li>
+<li>基于<code>goroutine</code>派生关系设置的<code>value</code>缺省值。即<code>map[goid=1]=121</code>，且<code>goid=1</code>派生<code>goid=2</code>，则<code>map[goid=2]=map[goid=1]=121</code>；<br>本文建议参照<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/#more">黑魔法-ebpf-对用户空间数据的写入</a>进行理解。  <span id="more"></span></li>
+</ul>
+<h1 id="用户态代码及效果"><a href="#用户态代码及效果" class="headerlink" title="用户态代码及效果"></a>用户态代码及效果</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;strconv&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var Len = 5</span><br><span class="line"></span><br><span class="line">// 当 info 为空时，使用父 goid 设置的值，否则存入 info</span><br><span class="line">func Go1(ctx context.Context, info string, wg *sync.WaitGroup) &#123;</span><br><span class="line">	defer wg.Done()</span><br><span class="line">	third := Third&#123;&#125;</span><br><span class="line">	if info != &quot;&quot; &#123;</span><br><span class="line">		third.Store(info)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/* 诸多其他的逻辑 */</span><br><span class="line">    </span><br><span class="line">	info1 := third.Get()</span><br><span class="line">	fmt.Printf(&quot;raw info: [%s], info get: [%s]\n&quot;, info, info1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func Set(info []byte) &#123;</span><br><span class="line">	if len(info) &gt; Len &#123;</span><br><span class="line">		info = info[:Len]</span><br><span class="line">	&#125;</span><br><span class="line">	if len(info) &lt; Len &#123;</span><br><span class="line">		tmp := make([]byte, Len-len(info))</span><br><span class="line">		info = append(tmp, info...)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;info: &quot;, string(info))</span><br><span class="line"></span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func Get(info []byte) []byte &#123;</span><br><span class="line">	// alalalala, magic come</span><br><span class="line">	return info</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Third struct &#123;</span><br><span class="line">	Info string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) Store(info string) &#123;</span><br><span class="line">	infoByt := []byte(info)</span><br><span class="line">	// 这里假设是个约束</span><br><span class="line">	infoByt = infoByt[:Len]</span><br><span class="line">	Set(infoByt)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) Get() string &#123;</span><br><span class="line">	infoByt := make([]byte, Len, Len)</span><br><span class="line">	infoByt = Get(infoByt)</span><br><span class="line">	return string(infoByt)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	third1 := Third&#123;&#125;</span><br><span class="line">	info := &quot;12345&quot;</span><br><span class="line">	third1.Store(info)</span><br><span class="line">	wg := &amp;sync.WaitGroup&#123;&#125;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	wg.Add(1)</span><br><span class="line">	go Go1(ctx, &quot;&quot;, wg) // 写入空数据，预期使用父 goid 数据，即 12345</span><br><span class="line">	for i := 1125; i &lt; 1130; i++ &#123;</span><br><span class="line">		wg.Add(1)</span><br><span class="line">		v := strconv.Itoa(i)</span><br><span class="line">		if i%10 == 0 &#123;</span><br><span class="line">			v = &quot;&quot;</span><br><span class="line">		&#125;</span><br><span class="line">		go Go1(ctx, v, wg)</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line"></span><br><span class="line">	/* very long handle logic*/</span><br><span class="line"></span><br><span class="line">	third2 := Third&#123;&#125;</span><br><span class="line">	infoGet := third2.Get()</span><br><span class="line">	fmt.Printf(&quot;in main, getInfo, [%s]\n&quot;, infoGet)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 未开启 bpf </span><br><span class="line">info:  12345</span><br><span class="line">info:  1129</span><br><span class="line">raw info: [1129], info get: []</span><br><span class="line">info:  1126</span><br><span class="line">raw info: [1126], info get: []</span><br><span class="line">info:  1128</span><br><span class="line">raw info: [1128], info get: []</span><br><span class="line">raw info: [], info get: []</span><br><span class="line">info:  1125</span><br><span class="line">info:  1127</span><br><span class="line">raw info: [1125], info get: []</span><br><span class="line">raw info: [1127], info get: []</span><br><span class="line">in main, getInfo, []</span><br><span class="line"></span><br><span class="line">// 开启 bpf</span><br><span class="line">info:  12345</span><br><span class="line">info:  1129</span><br><span class="line">raw info: [], info get: [12345]  // 传入空值，使用父 goid 存入数据</span><br><span class="line">raw info: [1129], info get: [1129]</span><br><span class="line">info:  1126</span><br><span class="line">raw info: [1126], info get: [1126]</span><br><span class="line">info:  1127</span><br><span class="line">raw info: [1127], info get: [1127]</span><br><span class="line">info:  1125</span><br><span class="line">raw info: [1125], info get: [1125]</span><br><span class="line">info:  1128</span><br><span class="line">raw info: [1128], info get: [1128]</span><br><span class="line">in main, getInfo, [12345]</span><br></pre></td></tr></table></figure>
+<p>上述示例对比了开启<code>bpf</code>前后的用户态代码输出。可以看到，当子<code>goroutine</code>缺少某个信息时，可以获取父<code>goroutine</code>的数据作为缺省值。  </p>
+<h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>意味着我们可以在父<code>goroutine</code>中存入我们需要的数据，而后无论是否创建新的<code>goroutine</code>，均能获取该信息。维护了<code>goroutine session</code>的数据。  </p>
+<h1 id="ebpf-逻辑"><a href="#ebpf-逻辑" class="headerlink" title="ebpf 逻辑"></a>ebpf 逻辑</h1><p>这里仍然附上了<code>ebpf</code>的主要逻辑以便说明实现过程。除了之前文章中涉及的<code>ebpf</code>向用户态写入数据，本文使用了<code>golang</code>创建<code>goroutine</code>相关的<code>uprobe</code>来维护<code>goroutine session</code>状态。  </p>
+<pre><code>struct &#123;
+  __uint(type, BPF_MAP_TYPE_LRU_HASH);
+  __uint(key_size, sizeof(u64));   // pid_tgid
+  __uint(value_size, sizeof(u64)); // parent goid
+  __uint(max_entries, MAX_ENTRIES);
+&#125; go_goid_map SEC(&quot;.maps&quot;);  // 用来获取 goid 状态
+
+struct &#123;
+  __uint(type, BPF_MAP_TYPE_HASH);
+  __uint(key_size, sizeof(u64));
+  __uint(value_size, sizeof(u8) * 5);
+  __uint(max_entries, 100);
+&#125; info_map SEC(&quot;.maps&quot;);  // 用来存储 goid-&gt;info
+
+struct &#123;
+  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+&#125; events SEC(&quot;.maps&quot;);
+
+static __always_inline u64 get_goid(u32 tgid, u32 pid) &#123;
+  unsigned long task_addr = (unsigned long)bpf_get_current_task();
+  unsigned long fsbase    = 0;
+  unsigned long g         = 0;
+  u64           goid      = 0;
+  // 直接基于 偏移量进行处理了
+  // offset(task_struct, thread) = 4992
+  // offset(thread_struct, fsbase) = 40
+  bpf_probe_read(&amp;fsbase, sizeof(fsbase),
+                 (void *)(task_addr + OFF_TASK_THRD + OFF_THRD_FSBASE));
+  bpf_probe_read(&amp;g, sizeof(g), (void *)(fsbase - 8));
+  bpf_probe_read(&amp;goid, sizeof(goid), (void *)(g + GOID_OFFSET));
+  return goid;
+&#125;
+
+SEC(&quot;uprobe/main_set&quot;)
+int uprobe__main_set(struct pt_regs *ctx) &#123;
+  uintptr_t info_p = 0;
+  u8        info[5];
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  u32       pid      = (u32)(pid_tgid &amp; 0x00FF);
+  u32       tgid     = (u32)(pid_tgid &gt;&gt; 32);
+  u64       goid     = 0;
+
+  goid = get_goid(tgid, pid);
+  SARG(ctx, 0, info_p);
+
+  bpf_probe_read(&amp;info, sizeof(info), (const void *)info_p);
+  bpf_map_update_elem(&amp;info_map, &amp;goid, &amp;info, BPF_ANY);
+
+  event_t event  = &#123;&#125;;
+  event.pid_tgid = pid_tgid;
+  memcpy(event.info, info, sizeof(info));
+  bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));
+
+  return 0;
+&#125;
+
+SEC(&quot;uprobe/main_get&quot;)
+int uprobe__main_get(struct pt_regs *ctx) &#123;
+  uintptr_t info_p   = 0;
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  u32       pid      = (u32)(pid_tgid &amp; 0x00FF);
+  u32       tgid     = (u32)(pid_tgid &gt;&gt; 32);
+  u64       goid     = 0;
+
+  goid = get_goid(tgid, pid);
+
+  void *r_info_p = NULL;
+  r_info_p       = bpf_map_lookup_elem(&amp;info_map, &amp;goid);
+  if (r_info_p == NULL) &#123;
+    return 0;
+  &#125;
+  event_t event  = &#123;&#125;;
+  event.pid_tgid = pid_tgid;
+
+  SARG(ctx, 0, info_p);
+
+  u8 info[5];
+  memcpy(info, r_info_p, sizeof(info));
+
+  memcpy(event.info, info, sizeof(event.info));
+
+  event.res  = bpf_probe_write_user((u8 *)info_p, info, sizeof(info));
+  event.addr = info_p;
+
+  bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));
+  return 0;
+&#125;
+
+/* golang_runtime_newproc1
+   func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g,
+ callerpc uintptr) *g &#123;
+*/
+SEC(&quot;uprobe/golang_runtime_newproc1&quot;)
+int uprobe__golang_runtime_newproc1(struct pt_regs *ctx) &#123;
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  uintptr_t g_addr   = 0;
+  u64       cur_goid = 0;
+
+  SARG(ctx, 3, g_addr);
+  bpf_probe_read(&amp;cur_goid, sizeof(cur_goid), (void *)(g_addr + GOID_OFFSET));
+  bpf_map_update_elem(&amp;go_goid_map, &amp;pid_tgid, &amp;cur_goid, BPF_ANY);
+  return 0;
+&#125;
+
+SEC(&quot;uprobe/golang_runtime_runqput&quot;)
+int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
+  u64       pid_tgid    = bpf_get_current_pid_tgid();
+  uintptr_t g_addr      = 0;
+  u64      *parent_goid = NULL;
+  u64       child_goid  = 0;
+  void     *v_p         = NULL;
+
+  parent_goid = bpf_map_lookup_elem(&amp;go_goid_map, &amp;pid_tgid);
+  if (parent_goid == NULL) &#123;
+    return 0;
+  &#125;
+
+  // 1. 获取新 goroutine 的 goid
+  SARG(ctx, 1, g_addr);
+  bpf_probe_read(&amp;child_goid, sizeof(child_goid),
+                 (void *)(g_addr + GOID_OFFSET));
+
+  // 2. 设置新 goid 绑定的 caller 信息
+  v_p = bpf_map_lookup_elem(&amp;info_map, parent_goid);
+  if (v_p == NULL) &#123;
+    return 0;
+  &#125;
+  // 设置子 goid 绑定 caller 为 父 goid 信息
+  bpf_map_update_elem(&amp;info_map, &amp;child_goid, v_p, BPF_ANY);
+
+  bpf_map_delete_elem(&amp;go_goid_map, &amp;pid_tgid);
+  return 0;
+&#125;
+</code></pre>
+<p>以上。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ebpf/" rel="tag"># ebpf</a>
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+            <a href="/tags/code/" rel="tag"># code</a>
+          
+            <a href="/tags/gls/" rel="tag"># gls</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/" rel="next" title="黑魔法--用 ebpf 构建用户空间数据的桥梁">
+                <i class="fa fa-chevron-left"></i> 黑魔法--用 ebpf 构建用户空间数据的桥梁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+   <div id="gitalk-container">
+   </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">基本功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%95%88%E6%9E%9C"><span class="nav-number">2.</span> <span class="nav-text">用户态代码及效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ebpf-%E9%80%BB%E8%BE%91"><span class="nav-number">4.</span> <span class="nav-text">ebpf 逻辑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李岩</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="https://rawgit.com/qhh0205/78e9e0b1f3114db6737f3ed8cdd51d3a/raw/3894c5be5aa2378336b1f5ee0f296fa0b22d06e9/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'ff1adfce430d1b277ae1',
+          clientSecret: 'fd0cebaa403e005ec6b5937b2a5aab75c47df0b3',
+          repo: 'liyan-ah.github.io',
+          owner: 'liyan-ah',
+          admin: ['liyan-ah'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
