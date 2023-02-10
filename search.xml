@@ -187,7 +187,7 @@ printf(&quot;==== meet max\n&quot;);
 return;
 </code></pre>
 <p>}</p>
-<p>```<br>在编译完成<code>main.go</code>后，通过<code>sudo bpftrace -l &quot;uprobe:./demo/*&quot; &gt; uprobe.info</code>的方式，可以获取<code>demo</code>中所有可以<code>attach</code>的<code>uprobe</code>信息。这里说明下取<code>student*</code>指针值时，为什么取<code>sarg3</code>。<code>bpftrace</code>中对内存传参的参数支持是<code>sarg0, sarg1, sarg2...</code>，且每个参数实际只对应<code>8Byte</code>大小的空间。对于<code>func handle(ctx context.Context, student *Student)</code>函数来说，由于<code>context.Context</code>实际占用<code>2*8Byte</code>的空间（见<a href="https://blacker1230.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/">golang常见类型字节数</a>)，因此需要使用<code>sarg2</code>来取<code>student</code>的值，而非直觉上的<code>sarg1</code>。<br>整个过程比较简单、明了。只要拥有<code>root</code>权限，基本上可以对系统内的任何进程进行详细的分析。</p>
+<p>```<br>在编译完成<code>main.go</code>后，通过<code>sudo bpftrace -l &quot;uprobe:./demo:*&quot; &gt; uprobe.info</code>的方式，可以获取<code>demo</code>中所有可以<code>attach</code>的<code>uprobe</code>信息。这里说明下取<code>student*</code>指针值时，为什么取<code>sarg3</code>。<code>bpftrace</code>中对内存传参的参数支持是<code>sarg0, sarg1, sarg2...</code>，且每个参数实际只对应<code>8Byte</code>大小的空间。对于<code>func handle(ctx context.Context, student *Student)</code>函数来说，由于<code>context.Context</code>实际占用<code>2*8Byte</code>的空间（见<a href="https://blacker1230.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/">golang常见类型字节数</a>)，因此需要使用<code>sarg2</code>来取<code>student</code>的值，而非直觉上的<code>sarg1</code>。<br>整个过程比较简单、明了。只要拥有<code>root</code>权限，基本上可以对系统内的任何进程进行详细的分析。</p>
 ]]></content>
       <categories>
         <category>程序人生</category>
@@ -1296,5 +1296,28 @@ int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
       <tags>
         <tag>lisp</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>emacs org-mode 绘制思维导图</title>
+    <url>/2023/02/10/emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</url>
+    <content><![CDATA[<blockquote>
+<p>工作中难免会搞一些思维导图。使用 emacs 来整理思维导图可以提升一些工作的效率，便于更加方便的对工作内容进行归档（比如把相关的文本都放到一起）。尤其是，能够发挥 emacs 作为统一操作界面的优势。live in emacs.</p>
+</blockquote>
+<h1 id="依赖内容"><a href="#依赖内容" class="headerlink" title="依赖内容"></a>依赖内容</h1><ul>
+<li>org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。</li>
+<li>freemind 软件。用来查看生成的 mm 文件。<br>笔者试了一下，<code>Xmind思维导图</code>看起来无法打开<code>mm</code>文件，<code>freemind</code>工作正常。也可能是我操作有问题。<br>此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="org-contrib-安装"><a href="#org-contrib-安装" class="headerlink" title="org-contrib 安装"></a>org-contrib 安装</h1><p>笔者使用的<code>emacs</code>发布版本默认没有<code>org-contrib</code>，需要自行安装。安装过程也比较简单，从<code>github</code>里把<code>org-contrib</code>拉下来，在<code>emacs init.el</code>里配置加载路径，然后主动加载需要的<code>ox-freemind.el</code>即可。<br><code>github org-contrib</code>地址为<code>git@github.com:emacsmirror/org-contrib.git</code>。目录地址可以视自己的需求确定。笔者的<code>emacs</code>配置都放到了<code>.emacs.d</code>里，<code>org-contrib</code>的本地目录也就放到了<code>~/.emacs.d/org-contrib</code>这里。扩展下载后，在<code>init.el</code>里做如下配置即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; ox-fremind</span><br><span class="line">;; 这里改成本地的 org-contrib 地址</span><br><span class="line">(add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)</span><br><span class="line">;; 目前只需要 ox-freemind，因此仅加载这个插件。</span><br><span class="line">(load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>安装结束后，需要重新加载一下<code>emacs</code>的配置文件，<code>ox-freemind</code>才能可用。</p>
+<h1 id="使用-org-mode-整理文档并转换"><a href="#使用-org-mode-整理文档并转换" class="headerlink" title="使用 org-mode 整理文档并转换"></a>使用 org-mode 整理文档并转换</h1><p>这里直接贴一个示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#+TITLE:  emacs org-mode 绘制思维导图</span><br><span class="line"></span><br><span class="line">* org-contrib 安装</span><br><span class="line">  org-contrib 可以直接从 github 下载，然后在 emacs 配置文件里加载。</span><br><span class="line">** org-contrib github 地址</span><br><span class="line">   git@github.com:emacsmirror/org-contrib.git</span><br><span class="line">** emacs 本地配置</span><br><span class="line">   (add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)</span><br><span class="line">   (load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br><span class="line">* org-mode 下文档编写</span><br><span class="line">** org-mode 是 emacs 下的神器</span><br><span class="line">   打开 freemind.org 文件，输入这个文本</span><br><span class="line">** 转换文本文件到 freemind mm 文件</span><br><span class="line">   M-x org-freemind-export-to-freemind</span><br><span class="line">* 查看 mm 文件</span><br><span class="line">  使用 freemind 查看生成的 freemind.mm</span><br></pre></td></tr></table></figure>
+
+<p>用<code>emacs</code>打开一个<code>freemind.org</code>，笔者这里直接触发了<code>org-mode</code>。如果没有触发<code>org-mode</code>的话，需要手动执行下<code>M-x org-mode</code>。然后执行<code>org-freemind-export-to-freemind</code>。如果没有这个函数，需要看下之前<code>org-contrib</code>的安装是否有问题，或者加载路径是否正常，加载是否有报错。如果函数执行异常，则需要查下原因。笔者安装后即可直接执行，因此没有报错处置的经验可供参考。  </p>
+<h1 id="安装freemind"><a href="#安装freemind" class="headerlink" title="安装freemind"></a>安装freemind</h1><p><code>mac</code>可以直接<code>brew install --cask freemind</code>。或者到其他下载源下载，如<a href="https://freemind.sourceforge.net/wiki/index.php/Download">freemind sourceforge 下载</a>。<br>最后使用<code>freemind</code>打开<code>freemind.org</code>同级目录生成的<code>freemind.mm</code>。<br>freemind.png<br><img src="/images/image.png" alt="upload successful"></p>
+]]></content>
   </entry>
 </search>
