@@ -160,12 +160,12 @@
 <p>// main.go<br>package main</p>
 <p>import (<br>    “context”<br>    “fmt”<br>)</p>
 <p>type Student struct {<br>    Name string<br>    Age  int64<br>    // Comment [600]Byte 这样会使得这个问题变得很麻烦，hhh<br>    Next *Student<br>}</p>
-<p>func handle(ctx context.Context, student *Student) {<br>    for cur := student; cur != nil; cur = cur.Next {<br>        fmt.Printf(“cur name: %s, cur aget: %d\n”, cur.Name, cur.Age)<br>    }<br>    return<br>}</p>
+<p>// 添加如下配置以防止函数被编译优化掉<br>//go:noinline<br>func handle(ctx context.Context, student *Student) {<br>    for cur := student; cur != nil; cur = cur.Next {<br>        fmt.Printf(“cur name: %s, cur aget: %d\n”, cur.Name, cur.Age)<br>    }<br>    return<br>}</p>
 <p>func main() {<br>    first := &amp;Student{<br>        Name: “Alice”,<br>        Age:  10,<br>        Next: &amp;Student{<br>            Name: “Bob”,<br>            Age:  11,<br>            Next: &amp;Student{<br>                Name: “Claire”,<br>                Age:  13,<br>                Next: nil,<br>            }}}<br>    handle(context.Background(), first)<br>}</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 <p>// handle.bt<br>#!/bin/bpftrace</p>
 <p>// 当目标结构体较小时(使得整体栈开销 &lt; 512Byte)，可以直接构造使用<br>struct student{<br>    u64 name_ptr;<br>    u64 name_length;<br>    long  age;<br>    struct student *next;<br>};</p>
-<p>uprobe:./demo:main.handle<br>{<br>    printf(“=== enter main.handle.\n”);</p>
+<p>uprobe:./demo:”main.handle”<br>{<br>    printf(“=== enter main.handle.\n”);</p>
 <pre><code>$cur = (struct student *)sarg2;
 if ($cur == 0)&#123;
     printf(&quot;input param is nil.\n&quot;);
