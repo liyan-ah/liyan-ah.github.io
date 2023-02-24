@@ -1321,4 +1321,137 @@ int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
 <h1 id="使用freemind查看及导出"><a href="#使用freemind查看及导出" class="headerlink" title="使用freemind查看及导出"></a>使用freemind查看及导出</h1><p><code>mac</code>可以直接<code>brew install --cask freemind</code>。或者到其他下载源下载，如<a href="https://freemind.sourceforge.net/wiki/index.php/Download">freemind sourceforge 下载</a>。<br>最后使用<code>freemind</code>打开<code>freemind.org</code>同级目录生成的<code>freemind.mm</code>。展示效果如下：<br><img src="/images/freemind.png" alt="upload successful"><br>最后，可以使用<code>emacs</code>查看导出的<code>freemind.png</code>（🐶，笔者还在探索如何在不打开<code>freemind</code>的情况下把<code>mm</code>文件转换成<code>png</code>)。</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>ebpf 采集ebpf 采集tag+tcp五元组</title>
+    <url>/2023/02/24/ebpf-%E9%87%87%E9%9B%86caller-func/</url>
+    <content><![CDATA[<blockquote>
+<p>在这里对服务文章题目作一些说明，因为笔者想了很长时间也无法给这篇<del>水文</del>文章想个题目。实际上使用<code>ebpf</code>来进行服务观测是有在进行的，比如获取目前<code>l1s</code>上的常见的四元组。但是本文不是介绍这部分内容的。文章希望解决的问题是：确认能够把请求触发里的一些信息和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。</p>
+</blockquote>
+<p>基于<code>ebpf</code>的丰富的特性能够获取服务很多的信息，不同特性的组合更是可以达到一般。尤其通过<code>uprobe</code>便捷的获取业务信息后，结合<code>kprobe</code>来获取系统调用里的内容，可以获取一般侵入式可观测代码无法获取的内容。笔者最近遇到的一个实际问题是：获取服务<code>A</code>的接口<code>/a</code>响应后，向下游<code>B</code>发起的请求时，所使用的传输层五元组，同时带上结合一些<code>/a</code>触发时的一些内容，比如<code>caller_fun</code>或者<code>traceId</code>。<br>这里值得说明的是，用户态请求的是一个域名。域名的解析是在<code>golang</code>的<code>http</code>里完成的。但是请注意，<code>golang</code>发起<code>tcp</code>请求时，<code>local port</code>设置的是<code>0</code>，然后由内核态的<code>tpc</code>处理来选择一个空闲的<code>port</code>作为<code>socket</code>里的<code>lport</code>。这部分的信息通过代码的埋点显然是无法获取的（详情可参考<a href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==&mid=2247485577&idx=1&sn=24220fcc3782f61b4a691585251f1c27&chksm=a6e309b2919480a4696c8a2944ad887951100b5068050d354eab40cf0c8f1124b6367176a0a6&scene=21#wechat_redirect">TCP连接中客户端的端口号是如何确定的？</a>）。<br>下面介绍下实现效果及思路。  </p>
+<blockquote>
+<p>关于<code>bpftrace</code>使用的介绍，可以参见：<a href="https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more">bpftrace 无侵入遍历golang链表</a>，关于<code>ebpf</code>来进行数据采集的实践，可以参见<a href="https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">ebpf采集mysql请求信息及ebpf对应用安全的思考</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h1><p>服务端启动、触发的效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 启动目标服务</span><br><span class="line">./caller_tuple</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    /echo                     --&gt; main.Echo (3 handlers)</span><br><span class="line"># 这里触发一次接口调用</span><br><span class="line">[GIN] 2023/02/24 - 22:05:29 | 200 |   85.618975ms |       127.0.0.1 | GET      &quot;/echo&quot;</span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line">`bpftrace` 采集端的效果：</span><br><span class="line">```   </span><br><span class="line"># 启动采集</span><br><span class="line">bpftrace ./caller.bt</span><br><span class="line">Attaching 3 probes...</span><br><span class="line">start to gather caller info.</span><br><span class="line">get caller path: /echo</span><br><span class="line"># 将 caller_path 和 传输层五元组结合起来（本机的IP实际上是输出的，但是为了信息安全，就使用 0.0.0.0 来代替了）</span><br><span class="line">caller info: /echo</span><br><span class="line">3326691  caller_tuple     0.0.0.0                            38610  110.242.68.66                           80</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>这里分别上一下目标服务<code>caller_func</code>以及采集脚本<code>caller.bt</code>的代码，来说明下实现思路。</p>
+<pre><code>// ./caller_tuple/main.go
+package main
+
+import (
+    &quot;net/http&quot;
+
+    &quot;github.com/gin-gonic/gin&quot;
+)
+
+type Resp struct &#123;
+    Errno int64  `json:&quot;errno&quot;`
+    Msg   string `json:&quot;msg&quot;`
+&#125;
+
+func Echo(c *gin.Context) &#123;
+    req, _ := http.NewRequest(http.MethodGet, &quot;http://baidu.com&quot;, nil)
+    client := http.Client&#123;&#125;
+    resp, err := client.Do(req)
+    if err != nil &#123;
+        c.JSON(http.StatusOK, &amp;Resp&#123;Errno: 1, Msg: &quot;request error&quot;&#125;)
+        return
+    &#125;
+    defer resp.Body.Close()
+    c.JSON(http.StatusOK, &amp;Resp&#123;Errno: 0, Msg: &quot;ok&quot;&#125;)
+    return
+&#125;
+
+func main() &#123;
+    r := gin.Default()
+    srv := &amp;http.Server&#123;
+        Addr: &quot;0.0.0.0:3344&quot;,
+    &#125;
+    r.GET(&quot;/echo&quot;, Echo)
+    srv.Handler = r
+    srv.ListenAndServe()
+&#125;
+
+
+// caller_tuple/caller.bt
+#!/usr/bin/env bpftrace
+
+#define AF_INET 2
+
+struct sock_common &#123;
+        union &#123;
+                struct &#123;
+                        __be32 skc_daddr;
+                        __be32 skc_rcv_saddr;
+                &#125;;
+        &#125;;
+        union &#123;
+                unsigned int skc_hash;
+                __u16 skc_u16hashes[2];
+        &#125;;
+        union &#123;
+                struct &#123;
+                        __be16 skc_dport;
+                        __u16 skc_num;
+                &#125;;
+        &#125;;
+        short unsigned int skc_family;
+&#125;;
+
+struct sock &#123;
+        struct sock_common __sk_common;
+&#125;;
+
+BEGIN&#123;
+    printf(&quot;start to gather caller info.\n&quot;);
+    @caller[pid] = &quot;none&quot;;
+&#125;
+
+// 这里通过 uprobe 来便捷的获取会话信息。同时将信息写入bpf_map
+uprobe:./caller_tuple:&quot;net/http.serverHandler.ServeHTTP&quot;&#123;
+    $req_ptr = sarg3;
+    $method_ptr = *(uint64*)($req_ptr);
+    $method_len = *(uint64*)($req_ptr+8);
+
+    /* read request.url.Path */
+    $url_ptr = *(uint64*)($req_ptr + 16);
+    $path_ptr = *(uint64*)($url_ptr+56);
+    $path_len = *(uint64*)($url_ptr+64);
+    printf(&quot;get caller path: %s\n&quot;, str($path_ptr, $path_len));
+    // 这里使用 pid 来作为 key 只是为了实现方便。实际可以采取其他更有区分性的内容。
+    @caller_ptr[pid]=$path_ptr;
+    @caller_len[pid]=$path_len;
+&#125;
+
+// 通过 kprobe 来获取用户态无法获取的内容。同时通过 bpf_map 来控制生效及内容的交互。
+kprobe:tcp_connect
+&#123;
+    if (@caller_ptr[pid] == 0)&#123;
+        return;
+    &#125;
+    $ptr = @caller_ptr[pid];
+    $len = @caller_len[pid];
+    printf(&quot;caller info: %s\n&quot;, str($ptr, $len));
+    @caller_ptr[pid] = 0;
+    @caller_len[pid] = 0;
+
+  $sk = ((struct sock *) arg0);
+  $inet_family = $sk-&gt;__sk_common.skc_family;
+
+  if ($inet_family == AF_INET) &#123;
+    $daddr = ntop($sk-&gt;__sk_common.skc_daddr);
+    $saddr = ntop($sk-&gt;__sk_common.skc_rcv_saddr);
+    $lport = $sk-&gt;__sk_common.skc_num;
+    $dport = $sk-&gt;__sk_common.skc_dport;
+    $dport = (((($dport) &gt;&gt; 8) &amp; 0xff) | ((($dport) &amp; 0xff) &lt;&lt; 8));
+    printf(&quot;%-8d %-16s &quot;, pid, comm);
+    printf(&quot;%-39s %-6d %-39s %-6d\n&quot;, $saddr, $lport, $daddr, $dport);
+  &#125;
+&#125;
+</code></pre>
+<p>这样就达到了笔者的目标。这只是<code>ebpf</code>应用的一个简单的场景，更多的<code>metric</code>采集内容仍在进行。<br>以上，周末愉快！</p>
+]]></content>
+  </entry>
 </search>
