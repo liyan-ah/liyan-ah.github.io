@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="在这里对服务文章题目作一些说明，因为笔者想了很长时间也无法给这篇水文文章想个题目。实际上使用ebpf来进行服务观测是有在进行的，比如获取目前l1s上的常见的四元组。但是本文不是介绍这部分内容的。文章希望解决的问题是：确认能够把请求触发里的一些信息和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇">
+<meta name="description" content="在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用ebpf来进行服务观测是有在进行的，比如获取目前l1s上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如trace及其他header等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-po">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ebpf 采集ebpf 采集tag+tcp五元组">
 <meta property="og:url" content="http://yoursite.com/2023/02/24/ebpf-%E9%87%87%E9%9B%86caller-func/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="在这里对服务文章题目作一些说明，因为笔者想了很长时间也无法给这篇水文文章想个题目。实际上使用ebpf来进行服务观测是有在进行的，比如获取目前l1s上的常见的四元组。但是本文不是介绍这部分内容的。文章希望解决的问题是：确认能够把请求触发里的一些信息和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇">
+<meta property="og:description" content="在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用ebpf来进行服务观测是有在进行的，比如获取目前l1s上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如trace及其他header等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-po">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-02-24T13:44:49.000Z">
-<meta property="article:modified_time" content="2023-02-24T14:46:47.899Z">
+<meta property="article:modified_time" content="2023-02-24T15:05:05.797Z">
 <meta property="article:author" content="李岩">
 <meta name="twitter:card" content="summary">
 
@@ -390,9 +390,9 @@
 
       
         <blockquote>
-<p>在这里对服务文章题目作一些说明，因为笔者想了很长时间也无法给这篇<del>水文</del>文章想个题目。实际上使用<code>ebpf</code>来进行服务观测是有在进行的，比如获取目前<code>l1s</code>上的常见的四元组。但是本文不是介绍这部分内容的。文章希望解决的问题是：确认能够把请求触发里的一些信息和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。</p>
+<p>在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用<code>ebpf</code>来进行服务观测是有在进行的，比如获取目前<code>l1s</code>上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如<code>trace</code>及其他<code>header</code>等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。</p>
 </blockquote>
-<p>基于<code>ebpf</code>的丰富的特性能够获取服务很多的信息，不同特性的组合更是可以达到一般。尤其通过<code>uprobe</code>便捷的获取业务信息后，结合<code>kprobe</code>来获取系统调用里的内容，可以获取一般侵入式可观测代码无法获取的内容。笔者最近遇到的一个实际问题是：获取服务<code>A</code>的接口<code>/a</code>响应后，向下游<code>B</code>发起的请求时，所使用的传输层五元组，同时带上结合一些<code>/a</code>触发时的一些内容，比如<code>caller_fun</code>或者<code>traceId</code>。<br>这里值得说明的是，用户态请求的是一个域名。域名的解析是在<code>golang</code>的<code>http</code>里完成的。但是请注意，<code>golang</code>发起<code>tcp</code>请求时，<code>local port</code>设置的是<code>0</code>，然后由内核态的<code>tpc</code>处理来选择一个空闲的<code>port</code>作为<code>socket</code>里的<code>lport</code>。这部分的信息通过代码的埋点显然是无法获取的（详情可参考<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==&mid=2247485577&idx=1&sn=24220fcc3782f61b4a691585251f1c27&chksm=a6e309b2919480a4696c8a2944ad887951100b5068050d354eab40cf0c8f1124b6367176a0a6&scene=21#wechat_redirect">TCP连接中客户端的端口号是如何确定的？</a>）。<br>下面介绍下实现效果及思路。  </p>
+<p>基于<code>ebpf</code>的丰富的特性能够获取服务很多的信息，不同特性的组合更是可以达到极强的数据整合能力。比如通过<code>uprobe</code>便捷的获取业务信息后，结合<code>kprobe</code>来获取系统调用里的内容，可以获取一般侵入式可观测代码无法获取的内容。笔者最近遇到的一个实际问题是：获取服务<code>A</code>的接口<code>/a</code>响应后，向下游<code>B</code>发起的请求时，所使用的传输层五元组，同时带上结合一些<code>/a</code>触发时的一些内容，比如<code>caller_fun</code>或者<code>traceId</code>。<br>这里值得说明的是，用户态请求的是一个域名。域名的解析是在<code>golang</code>的<code>http</code>里完成的。但是请注意，<code>golang</code>发起<code>tcp</code>请求时，<code>local port</code>设置的是<code>0</code>，然后由内核态的<code>tpc</code>处理来选择一个空闲的<code>port</code>作为<code>socket</code>里的<code>lport</code>。这部分的信息通过代码的埋点显然是无法获取的（详情可参考<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==&mid=2247485577&idx=1&sn=24220fcc3782f61b4a691585251f1c27&chksm=a6e309b2919480a4696c8a2944ad887951100b5068050d354eab40cf0c8f1124b6367176a0a6&scene=21#wechat_redirect">TCP连接中客户端的端口号是如何确定的？</a>）。<br>下面介绍下实现效果及思路。  </p>
 <blockquote>
 <p>关于<code>bpftrace</code>使用的介绍，可以参见：<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more">bpftrace 无侵入遍历golang链表</a>，关于<code>ebpf</code>来进行数据采集的实践，可以参见<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">ebpf采集mysql请求信息及ebpf对应用安全的思考</a>。</p>
 </blockquote>
