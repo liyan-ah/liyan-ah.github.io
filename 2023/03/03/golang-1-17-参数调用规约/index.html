@@ -81,13 +81,13 @@
 
 <meta name="description" content="go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C&#x2F;C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go-1.17 调用规约">
+<meta property="og:title" content="go-1.17+ 调用规约">
 <meta property="og:url" content="http://yoursite.com/2023/03/03/golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
 <meta property="og:description" content="go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C&#x2F;C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-03-03T12:59:00.000Z">
-<meta property="article:modified_time" content="2023-03-03T14:24:26.322Z">
+<meta property="article:modified_time" content="2023-03-31T13:08:42.634Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="golang">
 <meta property="article:tag" content="go-1.17">
@@ -127,7 +127,7 @@
 
 
 
-  <title>go-1.17 调用规约 | 李岩's Blog</title>
+  <title>go-1.17+ 调用规约 | 李岩's Blog</title>
   
 
 
@@ -305,7 +305,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">go-1.17 调用规约</h2>
+          <h2 class="post-title" itemprop="name headline">go-1.17+ 调用规约</h2>
         
 
         <div class="post-meta">
@@ -603,6 +603,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2023/03/29/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%9B%9B%E5%85%83%E7%BB%84/" rel="prev" title="无侵入观测服务四元组的一种实现">
+                无侵入观测服务四元组的一种实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -682,7 +686,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -693,7 +697,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -704,7 +708,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
