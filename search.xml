@@ -1,53 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Mac 绘图工具推荐</title>
-    <url>/2022/02/16/Mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</url>
-    <content><![CDATA[<p>之前办公一直在<code>Windows</code>系统中，诸如流程图、部署图等图表使用的是<code>visio</code>。迁移到<code>Mac</code>上后，<code>visio</code>便不能使用了。转战到<a href="https://www.sketch.com/"><code>sketch</code></a> 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。<br>目前在使用<a href="https://draw.io/"><code>draw.io</code></a> 进行日常绘图，开源、跨平台、免费、使用流畅，可以在线使用或者客户端使用。基本满足日常需求。用着还是比较好的。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>绘图</tag>
-        <tag>mac</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Mac使用备注</title>
-    <url>/2020/12/10/Mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>最近开始使用Mac了。在使用过程中，发现了一些<code>Mac OS</code>和<code>Centos</code>体验上不同的地方。在这里做一下备注。</p>
-</blockquote>
-<h3 id="部分Linux指令缺失"><a href="#部分Linux指令缺失" class="headerlink" title="部分Linux指令缺失"></a>部分Linux指令缺失</h3><p><code>Mac OS</code>并没有实现所有的<code>Linux</code>下的指令，如<code>realpath</code>这里就需要单独安装一些扩展包了：</p>
-<blockquote>
-<p>brew install coreutils</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="终端Basic颜色不友好"><a href="#终端Basic颜色不友好" class="headerlink" title="终端Basic颜色不友好"></a>终端Basic颜色不友好</h3><p>可以单独下载一些配色方案。从尽量使用原生配色的角度来说，只需要在<code>.bashrc</code>下面作如下配置即可：</p>
-<blockquote>
-<p># for color<br>export CLICOLOR=1<br># grep<br>alias grep=’grep –color=always’</p>
-</blockquote>
-<p>此外，配合<code>.vimrc</code>中配色变更食用更佳：</p>
-<blockquote>
-<p>“ 设置搜索高亮<br>set hlsearch<br>“ 设置语法高亮<br>syntax on </p>
-</blockquote>
-<h3 id="启动shell配置不同"><a href="#启动shell配置不同" class="headerlink" title="启动shell配置不同"></a>启动shell配置不同</h3><p><code>Mac OS</code>默认使用<code>zsh</code>作为登陆<code>shell</code>。所以设置<code>.bashrc</code>作为启动配置时，需要在<code>~/.zshrc</code>中进行配置：</p>
-<blockquote>
-<p>[ -f ~/.bashrc ] &amp;&amp; source ~/.bashrc</p>
-</blockquote>
-<p>后面碰到再补充吧。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>mac</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ELK-docker 实践</title>
     <url>/2022/01/04/ELK-docker-%E5%AE%9E%E8%B7%B5/</url>
     <content><![CDATA[<h1 id="ELK-docker-部署实践"><a href="#ELK-docker-部署实践" class="headerlink" title="ELK docker 部署实践"></a>ELK docker 部署实践</h1><blockquote>
@@ -96,6 +49,39 @@
       </tags>
   </entry>
   <entry>
+    <title>Mac使用备注</title>
+    <url>/2020/12/10/Mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
+    <content><![CDATA[<blockquote>
+<p>最近开始使用Mac了。在使用过程中，发现了一些<code>Mac OS</code>和<code>Centos</code>体验上不同的地方。在这里做一下备注。</p>
+</blockquote>
+<h3 id="部分Linux指令缺失"><a href="#部分Linux指令缺失" class="headerlink" title="部分Linux指令缺失"></a>部分Linux指令缺失</h3><p><code>Mac OS</code>并没有实现所有的<code>Linux</code>下的指令，如<code>realpath</code>这里就需要单独安装一些扩展包了：</p>
+<blockquote>
+<p>brew install coreutils</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="终端Basic颜色不友好"><a href="#终端Basic颜色不友好" class="headerlink" title="终端Basic颜色不友好"></a>终端Basic颜色不友好</h3><p>可以单独下载一些配色方案。从尽量使用原生配色的角度来说，只需要在<code>.bashrc</code>下面作如下配置即可：</p>
+<blockquote>
+<p># for color<br>export CLICOLOR=1<br># grep<br>alias grep=’grep –color=always’</p>
+</blockquote>
+<p>此外，配合<code>.vimrc</code>中配色变更食用更佳：</p>
+<blockquote>
+<p>“ 设置搜索高亮<br>set hlsearch<br>“ 设置语法高亮<br>syntax on </p>
+</blockquote>
+<h3 id="启动shell配置不同"><a href="#启动shell配置不同" class="headerlink" title="启动shell配置不同"></a>启动shell配置不同</h3><p><code>Mac OS</code>默认使用<code>zsh</code>作为登陆<code>shell</code>。所以设置<code>.bashrc</code>作为启动配置时，需要在<code>~/.zshrc</code>中进行配置：</p>
+<blockquote>
+<p>[ -f ~/.bashrc ] &amp;&amp; source ~/.bashrc</p>
+</blockquote>
+<p>后面碰到再补充吧。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>PHP-7.1升级至7.4兼容性</title>
     <url>/2021/08/02/PHP-7-1%E5%8D%87%E7%BA%A7%E8%87%B37-4%E5%85%BC%E5%AE%B9%E6%80%A7/</url>
     <content><![CDATA[<blockquote>
@@ -113,6 +99,20 @@
 </a><br><a href="https://blog.csdn.net/cbuy888/article/details/93618842">php7.2 安装 mcrypt扩展
 </a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Mac 绘图工具推荐</title>
+    <url>/2022/02/16/Mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<p>之前办公一直在<code>Windows</code>系统中，诸如流程图、部署图等图表使用的是<code>visio</code>。迁移到<code>Mac</code>上后，<code>visio</code>便不能使用了。转战到<a href="https://www.sketch.com/"><code>sketch</code></a> 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。<br>目前在使用<a href="https://draw.io/"><code>draw.io</code></a> 进行日常绘图，开源、跨平台、免费、使用流畅，可以在线使用或者客户端使用。基本满足日常需求。用着还是比较好的。</p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>mac</tag>
+        <tag>工具</tag>
+        <tag>绘图</tag>
+      </tags>
   </entry>
   <entry>
     <title>Quic协议</title>
@@ -140,72 +140,6 @@
       </categories>
       <tags>
         <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c++插件管理--pluma&lt;实践&gt;</title>
-    <url>/2020/10/29/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86-pluma/</url>
-    <content><![CDATA[<p>最近研究了一下<a href="http://pluma-framework.sourceforge.net/">pluma</a>的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。<br>下面重新整理了一个例子，作为备注。  </p>
-<span id="more"></span>
-
-<p>其中，<code>device</code>为一个虚基类，作为接口类存在。<code>keyboard</code>及<code>screen</code>作为实现了device的子类存在，实现具体的操作。在pluma上注册后，在<code>main</code>中调用接口，实现<code>keyboard</code>及<code>screen</code>的调用。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.hpp</span><br><span class="line">#ifndef _DEVICE_HPP_</span><br><span class="line">#define _DEVICE_HPP_</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Device&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual std::string getDescription() const=0;</span><br><span class="line">&#125;;</span><br><span class="line">// create DevicedProvider class</span><br><span class="line">PLUMA_PROVIDER_HEADER(Device);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.cpp</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">PLUMA_PROVIDER_SOURCE(Device, 6, 3);</span><br></pre></td></tr></table></figure>
-<p>如上所示，是<code>device</code>的定义。其中<code>PLUMA_PROVIDER_HEADER</code>和<code>PLUMA_PROVIDER_SOURCE</code><code>pluma</code>提供的宏。功能暂且不论。我们继续往下看。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// screen.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Screen: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;screen&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Screen, Device);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// keyboard.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Keyboard: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;keyboard&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Keyboard, Device);</span><br></pre></td></tr></table></figure>
-<p>上面实现了<code>screen</code>及<code>keyboard</code>的逻辑。实现了之后，需要进行注册：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// connect.cpp</span><br><span class="line"> #include &lt;Pluma/Connector.hpp&gt;</span><br><span class="line"> #include &quot;keyboard.hpp&quot;</span><br><span class="line"> #include &quot;screen.hpp&quot;</span><br><span class="line"></span><br><span class="line"> PLUMA_CONNECTOR</span><br><span class="line"> bool connect(pluma::Host&amp; host)&#123;</span><br><span class="line">     // add a keyboard provider to host</span><br><span class="line">     host.add( new KeyboardProvider() );</span><br><span class="line">     host.add( new ScreenProvider() );</span><br><span class="line">     return true;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>这里在<code>connect</code>中进行了两个子类的注册。之所以使用<code>connect</code>是因为后面的pluma使用的时候，官网给出的示例代码中，会从<code>connect</code>入口开始调用。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.cpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    pluma:: Pluma plugins;</span><br><span class="line">    plugins.acceptProviderType&lt;DeviceProvider&gt;();</span><br><span class="line">    plugins.load(&quot;./plugin/connect.so&quot;);</span><br><span class="line">    //plugins.load(&quot;./plugin/keyboard.so&quot;);</span><br><span class="line"></span><br><span class="line">    std::vector&lt;DeviceProvider*&gt; providers;</span><br><span class="line">    plugins.getProviders(providers);</span><br><span class="line"></span><br><span class="line">    std::cout&lt;&lt;&quot;size for providers are:&quot; &lt;&lt; providers.size()&lt;&lt; std:: endl;</span><br><span class="line">    if (!providers.empty())&#123;</span><br><span class="line">        for (std::vector&lt;DeviceProvider*&gt;::iterator device=providers.begin();</span><br><span class="line">            device != providers.end(); ++ device)&#123;</span><br><span class="line">            Device* myDevice = (*device)-&gt;create();</span><br><span class="line">            std::cout &lt;&lt; myDevice-&gt;getDescription() &lt;&lt; std::endl;</span><br><span class="line">            delete myDevice;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里就是主要的调用逻辑了。官网中<code>myDevice</code>附近的拼写有主意，这是个坑了。<br>这里回顾下目录结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── connect.cpp</span><br><span class="line">├── device.hpp</span><br><span class="line">├── device.cpp</span><br><span class="line">├── keyboard.hpp</span><br><span class="line">├── main.cpp</span><br><span class="line">├── plugin                          # 用来存储插件结果的目录</span><br><span class="line">├── Pluma                           # 为了方便，这里将Pluma的include及src文件均拷贝到这里</span><br><span class="line">│   ├── Config.hpp</span><br><span class="line">│   ├── Connector.hpp</span><br><span class="line">│   ├── Dir.cpp</span><br><span class="line">│   ├── Dir.hpp</span><br><span class="line">│   ├── DLibrary.cpp</span><br><span class="line">│   ├── DLibrary.hpp</span><br><span class="line">│   ├── Host.cpp</span><br><span class="line">│   ├── Host.hpp</span><br><span class="line">│   ├── PluginManager.cpp</span><br><span class="line">│   ├── PluginManager.hpp</span><br><span class="line">│   ├── Pluma.hpp</span><br><span class="line">│   ├── Pluma.inl</span><br><span class="line">│   ├── Provider.cpp</span><br><span class="line">│   ├── Provider.hpp</span><br><span class="line">│   └── uce-dirent.h</span><br><span class="line">└── screen.hpp</span><br></pre></td></tr></table></figure>
-<p>看下编译过程：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 生成device.so</span><br><span class="line">g++ connect.cpp device.cpp Pluma/*.cpp -shared -fPIC -o plugin/connect.so -I./</span><br><span class="line"></span><br><span class="line"># 生成main</span><br><span class="line">g++ main.cpp device.hpp device.cpp Pluma/*.cpp -o main -I./ -ldl</span><br></pre></td></tr></table></figure>
-<p>执行：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./main</span><br><span class="line">size for providers are:2</span><br><span class="line">keyboard</span><br><span class="line">screen</span><br></pre></td></tr></table></figure>
-<p>以上就是实践的内容了。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-        <tag>pluma</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos 安装docker并构建golang镜像</title>
-    <url>/2022/03/04/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。  </p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo  </span><br><span class="line">    </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io  </span><br><span class="line">\# 这里报了一个错</span><br><span class="line">\# (try to add &#x27;--allowerasing&#x27; to command line to replace conflicting packages or &#x27;--skip-broken&#x27; to skip uninstallable packages or &#x27;--nobest&#x27; to use not only best candidate packages)  </span><br><span class="line">\# 重新执行  </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io --allowerasing</span><br><span class="line"></span><br><span class="line">\# 启动 docker  </span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">\# 测试   </span><br><span class="line">sudo docker run hello-world </span><br><span class="line">\# Hello from Docker!  </span><br><span class="line">\# This message shows that your installation appears to be working correctly.  </span><br></pre></td></tr></table></figure>
-
-
-<h1 id="构建golang服务镜像"><a href="#构建golang服务镜像" class="headerlink" title="构建golang服务镜像"></a>构建golang服务镜像</h1><p>先看下工作目录的结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── gin-srv</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
-<p>简单写一个<code>golang</code>的程序:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;github.com/gin-gonic/gin&quot;</span><br><span class="line"></span><br><span class="line">type Resp struct&#123;</span><br><span class="line">	Errno int `json:&quot;errno&quot;`</span><br><span class="line">	Data map[string]int64 `json:&quot;data&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/ping&quot;, func(c *gin.Context)&#123;</span><br><span class="line">		resp := &amp;Resp&#123;Errno:0, Data: map[string]int64&#123;</span><br><span class="line">			&quot;now&quot;: time.Now().Unix(),</span><br><span class="line">		&#125;&#125;</span><br><span class="line">		c.JSON(200, &amp;resp)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run(&quot;0.0.0.0:8080&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>构建一个Dockerfile，以<code>centos</code>作为base以便能够正常登陆容器进行调试：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM centos:8</span><br><span class="line">ADD . ./</span><br><span class="line">EXPOSE 8080</span><br><span class="line">ENTRYPOINT [&quot;./gin-srv&quot;]</span><br></pre></td></tr></table></figure>
-<p>启动容器：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建镜像</span><br><span class="line">sudo docker build -t gin_docker .</span><br><span class="line"># 启动镜像</span><br><span class="line">sudo docker run --name gin_docker -p 8080:8080 -d gin_docker</span><br></pre></td></tr></table></figure>
-<p>访问容器中的服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ curl localhost:8080/ping</span><br><span class="line">&#123;&quot;errno&quot;:0,&quot;data&quot;:&#123;&quot;now&quot;:1646381863&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>容器起来了。可以继续后面的性能评估及agent启动工作了。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a><br><a href="https://article.itxueyuan.com/7DreWj">Golang应用打包docker镜像并运行</a></p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>eBPF</tag>
       </tags>
   </entry>
   <entry>
@@ -297,6 +231,72 @@ return;
       </tags>
   </entry>
   <entry>
+    <title>c++插件管理--pluma&lt;实践&gt;</title>
+    <url>/2020/10/29/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86-pluma/</url>
+    <content><![CDATA[<p>最近研究了一下<a href="http://pluma-framework.sourceforge.net/">pluma</a>的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。<br>下面重新整理了一个例子，作为备注。  </p>
+<span id="more"></span>
+
+<p>其中，<code>device</code>为一个虚基类，作为接口类存在。<code>keyboard</code>及<code>screen</code>作为实现了device的子类存在，实现具体的操作。在pluma上注册后，在<code>main</code>中调用接口，实现<code>keyboard</code>及<code>screen</code>的调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.hpp</span><br><span class="line">#ifndef _DEVICE_HPP_</span><br><span class="line">#define _DEVICE_HPP_</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Device&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual std::string getDescription() const=0;</span><br><span class="line">&#125;;</span><br><span class="line">// create DevicedProvider class</span><br><span class="line">PLUMA_PROVIDER_HEADER(Device);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.cpp</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">PLUMA_PROVIDER_SOURCE(Device, 6, 3);</span><br></pre></td></tr></table></figure>
+<p>如上所示，是<code>device</code>的定义。其中<code>PLUMA_PROVIDER_HEADER</code>和<code>PLUMA_PROVIDER_SOURCE</code><code>pluma</code>提供的宏。功能暂且不论。我们继续往下看。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// screen.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Screen: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;screen&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Screen, Device);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// keyboard.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Keyboard: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;keyboard&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Keyboard, Device);</span><br></pre></td></tr></table></figure>
+<p>上面实现了<code>screen</code>及<code>keyboard</code>的逻辑。实现了之后，需要进行注册：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// connect.cpp</span><br><span class="line"> #include &lt;Pluma/Connector.hpp&gt;</span><br><span class="line"> #include &quot;keyboard.hpp&quot;</span><br><span class="line"> #include &quot;screen.hpp&quot;</span><br><span class="line"></span><br><span class="line"> PLUMA_CONNECTOR</span><br><span class="line"> bool connect(pluma::Host&amp; host)&#123;</span><br><span class="line">     // add a keyboard provider to host</span><br><span class="line">     host.add( new KeyboardProvider() );</span><br><span class="line">     host.add( new ScreenProvider() );</span><br><span class="line">     return true;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这里在<code>connect</code>中进行了两个子类的注册。之所以使用<code>connect</code>是因为后面的pluma使用的时候，官网给出的示例代码中，会从<code>connect</code>入口开始调用。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.cpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    pluma:: Pluma plugins;</span><br><span class="line">    plugins.acceptProviderType&lt;DeviceProvider&gt;();</span><br><span class="line">    plugins.load(&quot;./plugin/connect.so&quot;);</span><br><span class="line">    //plugins.load(&quot;./plugin/keyboard.so&quot;);</span><br><span class="line"></span><br><span class="line">    std::vector&lt;DeviceProvider*&gt; providers;</span><br><span class="line">    plugins.getProviders(providers);</span><br><span class="line"></span><br><span class="line">    std::cout&lt;&lt;&quot;size for providers are:&quot; &lt;&lt; providers.size()&lt;&lt; std:: endl;</span><br><span class="line">    if (!providers.empty())&#123;</span><br><span class="line">        for (std::vector&lt;DeviceProvider*&gt;::iterator device=providers.begin();</span><br><span class="line">            device != providers.end(); ++ device)&#123;</span><br><span class="line">            Device* myDevice = (*device)-&gt;create();</span><br><span class="line">            std::cout &lt;&lt; myDevice-&gt;getDescription() &lt;&lt; std::endl;</span><br><span class="line">            delete myDevice;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就是主要的调用逻辑了。官网中<code>myDevice</code>附近的拼写有主意，这是个坑了。<br>这里回顾下目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── connect.cpp</span><br><span class="line">├── device.hpp</span><br><span class="line">├── device.cpp</span><br><span class="line">├── keyboard.hpp</span><br><span class="line">├── main.cpp</span><br><span class="line">├── plugin                          # 用来存储插件结果的目录</span><br><span class="line">├── Pluma                           # 为了方便，这里将Pluma的include及src文件均拷贝到这里</span><br><span class="line">│   ├── Config.hpp</span><br><span class="line">│   ├── Connector.hpp</span><br><span class="line">│   ├── Dir.cpp</span><br><span class="line">│   ├── Dir.hpp</span><br><span class="line">│   ├── DLibrary.cpp</span><br><span class="line">│   ├── DLibrary.hpp</span><br><span class="line">│   ├── Host.cpp</span><br><span class="line">│   ├── Host.hpp</span><br><span class="line">│   ├── PluginManager.cpp</span><br><span class="line">│   ├── PluginManager.hpp</span><br><span class="line">│   ├── Pluma.hpp</span><br><span class="line">│   ├── Pluma.inl</span><br><span class="line">│   ├── Provider.cpp</span><br><span class="line">│   ├── Provider.hpp</span><br><span class="line">│   └── uce-dirent.h</span><br><span class="line">└── screen.hpp</span><br></pre></td></tr></table></figure>
+<p>看下编译过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 生成device.so</span><br><span class="line">g++ connect.cpp device.cpp Pluma/*.cpp -shared -fPIC -o plugin/connect.so -I./</span><br><span class="line"></span><br><span class="line"># 生成main</span><br><span class="line">g++ main.cpp device.hpp device.cpp Pluma/*.cpp -o main -I./ -ldl</span><br></pre></td></tr></table></figure>
+<p>执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./main</span><br><span class="line">size for providers are:2</span><br><span class="line">keyboard</span><br><span class="line">screen</span><br></pre></td></tr></table></figure>
+<p>以上就是实践的内容了。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+        <tag>pluma</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos 安装docker并构建golang镜像</title>
+    <url>/2022/03/04/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。  </p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo  </span><br><span class="line">    </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io  </span><br><span class="line">\# 这里报了一个错</span><br><span class="line">\# (try to add &#x27;--allowerasing&#x27; to command line to replace conflicting packages or &#x27;--skip-broken&#x27; to skip uninstallable packages or &#x27;--nobest&#x27; to use not only best candidate packages)  </span><br><span class="line">\# 重新执行  </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io --allowerasing</span><br><span class="line"></span><br><span class="line">\# 启动 docker  </span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">\# 测试   </span><br><span class="line">sudo docker run hello-world </span><br><span class="line">\# Hello from Docker!  </span><br><span class="line">\# This message shows that your installation appears to be working correctly.  </span><br></pre></td></tr></table></figure>
+
+
+<h1 id="构建golang服务镜像"><a href="#构建golang服务镜像" class="headerlink" title="构建golang服务镜像"></a>构建golang服务镜像</h1><p>先看下工作目录的结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── gin-srv</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
+<p>简单写一个<code>golang</code>的程序:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;github.com/gin-gonic/gin&quot;</span><br><span class="line"></span><br><span class="line">type Resp struct&#123;</span><br><span class="line">	Errno int `json:&quot;errno&quot;`</span><br><span class="line">	Data map[string]int64 `json:&quot;data&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/ping&quot;, func(c *gin.Context)&#123;</span><br><span class="line">		resp := &amp;Resp&#123;Errno:0, Data: map[string]int64&#123;</span><br><span class="line">			&quot;now&quot;: time.Now().Unix(),</span><br><span class="line">		&#125;&#125;</span><br><span class="line">		c.JSON(200, &amp;resp)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run(&quot;0.0.0.0:8080&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构建一个Dockerfile，以<code>centos</code>作为base以便能够正常登陆容器进行调试：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM centos:8</span><br><span class="line">ADD . ./</span><br><span class="line">EXPOSE 8080</span><br><span class="line">ENTRYPOINT [&quot;./gin-srv&quot;]</span><br></pre></td></tr></table></figure>
+<p>启动容器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建镜像</span><br><span class="line">sudo docker build -t gin_docker .</span><br><span class="line"># 启动镜像</span><br><span class="line">sudo docker run --name gin_docker -p 8080:8080 -d gin_docker</span><br></pre></td></tr></table></figure>
+<p>访问容器中的服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ curl localhost:8080/ping</span><br><span class="line">&#123;&quot;errno&quot;:0,&quot;data&quot;:&#123;&quot;now&quot;:1646381863&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>容器起来了。可以继续后面的性能评估及agent启动工作了。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a><br><a href="https://article.itxueyuan.com/7DreWj">Golang应用打包docker镜像并运行</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>eBPF</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>eBPF及其对可观测的意义【译文】</title>
     <url>/2022/03/02/eBPF%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E3%80%90%E8%AF%91%E6%96%87%E3%80%91/</url>
     <content><![CDATA[<blockquote>
@@ -337,26 +337,23 @@ return;
       </tags>
   </entry>
   <entry>
-    <title>elscreen标签背景颜色</title>
-    <url>/2020/12/23/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</url>
+    <title>challenges of bpf tracing go</title>
+    <url>/2022/04/19/challenges-of-bpf-tracing-go/</url>
     <content><![CDATA[<blockquote>
-<p>使用<code>emacs</code>过程中，配合<code>evil</code>使用，按照<code>tab</code>的划分，将编辑、浏览、<code>leetcode</code>等任务划分到不同的<code>tab</code>便于切换及管理。美中不足的是，模拟标签的<code>elscreen</code>默认将其他标签的颜色设置成<code>:background blue  :foreground black</code>的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置<code>face-attribute</code>的方法，备注下。</p>
+<p>goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。</p>
 </blockquote>
-<p>在初始文件的最后添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 选中标签设置为绿底黑字，其他标签为黄底黑字</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-other-screen-face nil</span><br><span class="line">                    :background &quot;yellow&quot; :foreground &quot;black&quot;)</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-current-screen-face nil</span><br><span class="line">                    :background &quot;green&quot; :foreground &quot;black&quot;)</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>备注下<a href="https://github.com/knu/elscreen"><code>elscreen</code></a>原始代码：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defface elscreen-tab-current-screen-face</span><br><span class="line">  &#x27;((((class color))</span><br><span class="line">     (:background &quot;white&quot; :foreground &quot;black&quot;))</span><br><span class="line">    (t (:underline t)))</span><br><span class="line">  &quot;Face for current screen tab.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br><span class="line"></span><br><span class="line">(defface elscreen-tab-other-screen-face</span><br><span class="line">  &#x27;((((type x w32 mac ns) (class color))</span><br><span class="line">     :background &quot;Gray85&quot; :foreground &quot;Gray50&quot;)</span><br><span class="line">    (((class color))</span><br><span class="line">     (:background &quot;blue&quot; :foreground &quot;black&quot; :underline t)))</span><br><span class="line">  &quot;Face for tabs other than current screen one.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Faces.html">emacs defface</a></p>
+<blockquote>
+<p>Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (“M:N scheduling”). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that’s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there’s not enough room, the runtime copies the entire goroutine’s stack to another place in memory where it has enough room to expand.  </p>
+</blockquote>
+<p><a href="https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/">Challenges of BPF Tracing Go</a></p>
 ]]></content>
       <categories>
-        <category>code</category>
+        <category>程序人生</category>
       </categories>
       <tags>
-        <tag>emacs</tag>
-        <tag>vim</tag>
-        <tag>elscreen</tag>
+        <tag>ebpf</tag>
+        <tag>code</tag>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -380,42 +377,6 @@ return;
       </categories>
       <tags>
         <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ebpf采集mysql请求信息及ebpf对应用安全的思考</title>
-    <url>/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</url>
-    <content><![CDATA[<blockquote>
-<p>本文笔者继续介绍<code>ebpf</code> 的应用：使用<code>bpftrace</code>采集<code>mysql</code>连接信息，包括数据库地址、<code>db_name</code>、<code>user_name</code>。在展示采集操作的同时，附上对<code>ebpf</code>对云时代应用安全的一些思考。</p>
-</blockquote>
-<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>使用<code>bpftrace</code>对一个运行中进程的<code>mysql</code>请求进行采集，目标采集内容包括数据库地址、<code>db_name</code>、<code>user_name</code>。</p>
-<span id="more"></span>
-<p>目标进程代码如下:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// blog/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">	_ &quot;github.com/go-sql-driver/mysql&quot;</span><br><span class="line">	&quot;xorm.io/xorm&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var sqlE *xorm.Engine</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">	fmt.Println(&quot;init from main&quot;)</span><br><span class="line">	var err error</span><br><span class="line">	sqlE, err = xorm.NewEngine(&quot;mysql&quot;,</span><br><span class="line">		&quot;test:mysqltest@tcp(localhost:3306)/test_db?charset=utf8&amp;parseTime=true&quot;) // 随便写个数据库信息，假装是正确的</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Printf(&quot;init mysql failed: %+v\n&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Resp struct &#123;</span><br><span class="line">	Code int    `json:&quot;code&quot;`</span><br><span class="line">	Msg  string `json:&quot;msg&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type SqlInfo struct &#123;</span><br><span class="line">	Id      int64     `json:&quot;id&quot; xorm:&quot;pk bigint(20)&quot;`</span><br><span class="line">	Created time.Time `json:&quot;created&quot; xorm:&quot;created&quot;`</span><br><span class="line">	Info    string    `json:&quot;info&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (sql *SqlInfo) TableName() string &#123;</span><br><span class="line">	return &quot;sql_info&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Mysql(c *gin.Context) &#123;</span><br><span class="line">	info := c.Query(&quot;info&quot;)</span><br><span class="line">	if info == &quot;&quot; &#123;</span><br><span class="line">		now := time.Now().Format(&quot;2008-01-02 15:04:05&quot;)</span><br><span class="line">		info = now</span><br><span class="line">	&#125;</span><br><span class="line">	sqlInfo := SqlInfo&#123;</span><br><span class="line">		Info: info,</span><br><span class="line">	&#125;</span><br><span class="line">	affected, err := sqlE.Insert(&amp;sqlInfo)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Printf(&quot;insert db with error: %+v\n&quot;, err)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		log.Printf(&quot;affect column nums: %d\n&quot;, affected)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;Code: 0, Msg: &quot;mysql req over&quot;&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	srv := &amp;http.Server&#123;</span><br><span class="line">		Addr: &quot;0.0.0.0:9981&quot;,</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(&quot;server start at: 0.0.0.0:9981&quot;)</span><br><span class="line">	r.GET(&quot;/sql&quot;, Mysql)</span><br><span class="line">	srv.Handler = r</span><br><span class="line">	err := srv.ListenAndServe()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;error with start listener&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="bpftrace-代码"><a href="#bpftrace-代码" class="headerlink" title="bpftrace 代码"></a>bpftrace 代码</h1><p>直接上代码了：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#! /bin/bpftrace</span><br><span class="line"></span><br><span class="line">/* 保存在 blog/blog.bt 里</span><br><span class="line"> 这里使用的 uprobe 函数为 go-sql-driver 里的内容。源代码在：</span><br><span class="line"> https://github.com/go-sql-driver/mysql/blob/master/connector.go#L23</span><br><span class="line"> 定义为：</span><br><span class="line"> func (c *connector) Connect(ctx context.Context) (driver.Conn, error) &#123;...&#125;</span><br><span class="line">*/</span><br><span class="line">uprobe:./blog:&quot;github.com/go-sql-driver/mysql.(*connector).Connect&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Connect\n&quot;);</span><br><span class="line">    $cfg_addr = *(uint64*)sarg0; // 获取 c.cfg 的地址</span><br><span class="line">    $user_addr = *(uint64*)($cfg_addr); // 获取 c.cfg.User</span><br><span class="line">    $user_len = *(uint64*)($cfg_addr+8); // 获取 len(c.cfg.User)</span><br><span class="line">    //$pwd_addr = *(uint64*)($cfg_addr+16); // 请注意这里注释掉的内容</span><br><span class="line">    //$pwd_len = *(uint64*)($cfg_addr+24);</span><br><span class="line">    $addr_addr = *(uint64*)($cfg_addr+48);</span><br><span class="line">    $addr_len = *(uint64*)($cfg_addr+56);</span><br><span class="line">    $db_addr = *(uint64*)($cfg_addr+64);</span><br><span class="line">    $db_len = *(uint64*)($cfg_addr+72);</span><br><span class="line">    printf(&quot;user: %s\n&quot;, str($user_addr, $user_len));</span><br><span class="line">    //printf(&quot;pwd: %s\n&quot;, str($pwd_addr, $pwd_len));</span><br><span class="line">    printf(&quot;addr: %s\n&quot;, str($addr_addr, $addr_len));</span><br><span class="line">    printf(&quot;db: %s\n&quot;, str($db_addr, $db_len));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>而后启动应用程序<code>blog</code>，启动监听程序<code>sudo bpftrace ./blog.bt</code>，请求<code>blog</code>的<code>/sql</code>接口以触发<code>blog</code>对<code>sql</code>的请求。整个过程对<code>blog</code>程序来说没有任何的不平凡之处，但是我们已经获取了采集结果。<br>附上执行结果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ./blog</span><br><span class="line">init from main</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">2022/10/21 20:15:38 server start at: 0.0.0.0:9981</span><br><span class="line">[GIN-debug] GET    /sql                      --&gt; main.Mysql (3 handlers)</span><br><span class="line">2022/10/21 20:18:52 insert db with error: dial tcp 127.0.0.1:3306: connect: connection refused</span><br><span class="line">[GIN] 2022/10/21 - 20:18:52 | 200 |    3.679499ms |       127.0.0.1 | GET      &quot;/sql&quot;</span><br></pre></td></tr></table></figure>
-<p>此时，在采集侧：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo ./blog.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">Connect</span><br><span class="line">user: test</span><br><span class="line">addr: localhost:3306</span><br><span class="line">db: test_db</span><br></pre></td></tr></table></figure>
-<p>我们已经获取了需要的信息。</p>
-<h1 id="对采集代码的一些说明"><a href="#对采集代码的一些说明" class="headerlink" title="对采集代码的一些说明"></a>对采集代码的一些说明</h1><p><code>bpftrace</code>语法部分，参见<a href="https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md">github-bpftrace-reference_guid</a>。里面有<code>ebpf</code>的一些简单介绍以及<code>bpftrace</code>的使用说明。代码里的主要逻辑，则需要参见<code>golang</code>的语法来理解。部分简述如下：</p>
-<ul>
-<li>类里的方法，实际调用的时候，第一个参数为对象的地址；</li>
-<li>go-1.16 及之前的版本，参数存储在栈上；</li>
-</ul>
-<p>剩下的内容就比较好理解了：<code>ebpf</code>提供的核心功能包括按需读取用户空间内的数据。结合<a href="https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/#more">golang-常见类型字节数</a>可以比较快的推导出我们需要的信息在地址内的偏移量。同时，在<a href="https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more">bpftrace无侵入遍历golang链表</a>曾经提到过，如果目标对象比较大，无法在<code>ebpf</code>代码里完整定义该对象（内核限制单个<code>ebpf</code>的<code>hook</code>点程序的栈空间大小在<code>512B</code>），我们访问对象里的成员时，使用的方法就是偏移量访问。</p>
-<h1 id="ebpf-与应用安全的一些思考"><a href="#ebpf-与应用安全的一些思考" class="headerlink" title="ebpf 与应用安全的一些思考"></a>ebpf 与应用安全的一些思考</h1><p>最后提一点自己的思考。<br>请回到<code>bpftrace</code>代码里，里面的<code>pasword</code>信息获取的操作被注释掉了。其实我们去掉注释，仍然能够按照预期获取结果。这就意味着，如果我们拥有机器上的权限，并且机器满足我们的采集需求，应用里的核心信息（这里是数据库的密码）将被简单的获取。无论数据库密码如何存储：配置文件、源代码、通过网络配置下发等。只要有涉及数据库访问的用户态函数，有涉及数据库密码传递的内容，这些信息存在被获取的风险，只要采集人拥有<code>root</code>权限。<br>这里引出另外一个问题：如果一个用户拥有机器上的管理员权限，<code>TA</code>是否应该拥有机器上所有进程信息的准入权。这里的进程信息，显然是包括机器上容器内的进程信息的，无论是公有云或者私有云。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>ebpf</tag>
-        <tag>mysql</tag>
-        <tag>采集</tag>
-        <tag>信息安全</tag>
       </tags>
   </entry>
   <entry>
@@ -552,6 +513,105 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
+    <title>ebpf采集mysql请求信息及ebpf对应用安全的思考</title>
+    <url>/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<blockquote>
+<p>本文笔者继续介绍<code>ebpf</code> 的应用：使用<code>bpftrace</code>采集<code>mysql</code>连接信息，包括数据库地址、<code>db_name</code>、<code>user_name</code>。在展示采集操作的同时，附上对<code>ebpf</code>对云时代应用安全的一些思考。</p>
+</blockquote>
+<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>使用<code>bpftrace</code>对一个运行中进程的<code>mysql</code>请求进行采集，目标采集内容包括数据库地址、<code>db_name</code>、<code>user_name</code>。</p>
+<span id="more"></span>
+<p>目标进程代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// blog/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">	_ &quot;github.com/go-sql-driver/mysql&quot;</span><br><span class="line">	&quot;xorm.io/xorm&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var sqlE *xorm.Engine</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">	fmt.Println(&quot;init from main&quot;)</span><br><span class="line">	var err error</span><br><span class="line">	sqlE, err = xorm.NewEngine(&quot;mysql&quot;,</span><br><span class="line">		&quot;test:mysqltest@tcp(localhost:3306)/test_db?charset=utf8&amp;parseTime=true&quot;) // 随便写个数据库信息，假装是正确的</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Printf(&quot;init mysql failed: %+v\n&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Resp struct &#123;</span><br><span class="line">	Code int    `json:&quot;code&quot;`</span><br><span class="line">	Msg  string `json:&quot;msg&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type SqlInfo struct &#123;</span><br><span class="line">	Id      int64     `json:&quot;id&quot; xorm:&quot;pk bigint(20)&quot;`</span><br><span class="line">	Created time.Time `json:&quot;created&quot; xorm:&quot;created&quot;`</span><br><span class="line">	Info    string    `json:&quot;info&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (sql *SqlInfo) TableName() string &#123;</span><br><span class="line">	return &quot;sql_info&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Mysql(c *gin.Context) &#123;</span><br><span class="line">	info := c.Query(&quot;info&quot;)</span><br><span class="line">	if info == &quot;&quot; &#123;</span><br><span class="line">		now := time.Now().Format(&quot;2008-01-02 15:04:05&quot;)</span><br><span class="line">		info = now</span><br><span class="line">	&#125;</span><br><span class="line">	sqlInfo := SqlInfo&#123;</span><br><span class="line">		Info: info,</span><br><span class="line">	&#125;</span><br><span class="line">	affected, err := sqlE.Insert(&amp;sqlInfo)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Printf(&quot;insert db with error: %+v\n&quot;, err)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		log.Printf(&quot;affect column nums: %d\n&quot;, affected)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;Code: 0, Msg: &quot;mysql req over&quot;&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	srv := &amp;http.Server&#123;</span><br><span class="line">		Addr: &quot;0.0.0.0:9981&quot;,</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(&quot;server start at: 0.0.0.0:9981&quot;)</span><br><span class="line">	r.GET(&quot;/sql&quot;, Mysql)</span><br><span class="line">	srv.Handler = r</span><br><span class="line">	err := srv.ListenAndServe()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;error with start listener&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="bpftrace-代码"><a href="#bpftrace-代码" class="headerlink" title="bpftrace 代码"></a>bpftrace 代码</h1><p>直接上代码了：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#! /bin/bpftrace</span><br><span class="line"></span><br><span class="line">/* 保存在 blog/blog.bt 里</span><br><span class="line"> 这里使用的 uprobe 函数为 go-sql-driver 里的内容。源代码在：</span><br><span class="line"> https://github.com/go-sql-driver/mysql/blob/master/connector.go#L23</span><br><span class="line"> 定义为：</span><br><span class="line"> func (c *connector) Connect(ctx context.Context) (driver.Conn, error) &#123;...&#125;</span><br><span class="line">*/</span><br><span class="line">uprobe:./blog:&quot;github.com/go-sql-driver/mysql.(*connector).Connect&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Connect\n&quot;);</span><br><span class="line">    $cfg_addr = *(uint64*)sarg0; // 获取 c.cfg 的地址</span><br><span class="line">    $user_addr = *(uint64*)($cfg_addr); // 获取 c.cfg.User</span><br><span class="line">    $user_len = *(uint64*)($cfg_addr+8); // 获取 len(c.cfg.User)</span><br><span class="line">    //$pwd_addr = *(uint64*)($cfg_addr+16); // 请注意这里注释掉的内容</span><br><span class="line">    //$pwd_len = *(uint64*)($cfg_addr+24);</span><br><span class="line">    $addr_addr = *(uint64*)($cfg_addr+48);</span><br><span class="line">    $addr_len = *(uint64*)($cfg_addr+56);</span><br><span class="line">    $db_addr = *(uint64*)($cfg_addr+64);</span><br><span class="line">    $db_len = *(uint64*)($cfg_addr+72);</span><br><span class="line">    printf(&quot;user: %s\n&quot;, str($user_addr, $user_len));</span><br><span class="line">    //printf(&quot;pwd: %s\n&quot;, str($pwd_addr, $pwd_len));</span><br><span class="line">    printf(&quot;addr: %s\n&quot;, str($addr_addr, $addr_len));</span><br><span class="line">    printf(&quot;db: %s\n&quot;, str($db_addr, $db_len));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>而后启动应用程序<code>blog</code>，启动监听程序<code>sudo bpftrace ./blog.bt</code>，请求<code>blog</code>的<code>/sql</code>接口以触发<code>blog</code>对<code>sql</code>的请求。整个过程对<code>blog</code>程序来说没有任何的不平凡之处，但是我们已经获取了采集结果。<br>附上执行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ./blog</span><br><span class="line">init from main</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">2022/10/21 20:15:38 server start at: 0.0.0.0:9981</span><br><span class="line">[GIN-debug] GET    /sql                      --&gt; main.Mysql (3 handlers)</span><br><span class="line">2022/10/21 20:18:52 insert db with error: dial tcp 127.0.0.1:3306: connect: connection refused</span><br><span class="line">[GIN] 2022/10/21 - 20:18:52 | 200 |    3.679499ms |       127.0.0.1 | GET      &quot;/sql&quot;</span><br></pre></td></tr></table></figure>
+<p>此时，在采集侧：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo ./blog.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">Connect</span><br><span class="line">user: test</span><br><span class="line">addr: localhost:3306</span><br><span class="line">db: test_db</span><br></pre></td></tr></table></figure>
+<p>我们已经获取了需要的信息。</p>
+<h1 id="对采集代码的一些说明"><a href="#对采集代码的一些说明" class="headerlink" title="对采集代码的一些说明"></a>对采集代码的一些说明</h1><p><code>bpftrace</code>语法部分，参见<a href="https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md">github-bpftrace-reference_guid</a>。里面有<code>ebpf</code>的一些简单介绍以及<code>bpftrace</code>的使用说明。代码里的主要逻辑，则需要参见<code>golang</code>的语法来理解。部分简述如下：</p>
+<ul>
+<li>类里的方法，实际调用的时候，第一个参数为对象的地址；</li>
+<li>go-1.16 及之前的版本，参数存储在栈上；</li>
+</ul>
+<p>剩下的内容就比较好理解了：<code>ebpf</code>提供的核心功能包括按需读取用户空间内的数据。结合<a href="https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/#more">golang-常见类型字节数</a>可以比较快的推导出我们需要的信息在地址内的偏移量。同时，在<a href="https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more">bpftrace无侵入遍历golang链表</a>曾经提到过，如果目标对象比较大，无法在<code>ebpf</code>代码里完整定义该对象（内核限制单个<code>ebpf</code>的<code>hook</code>点程序的栈空间大小在<code>512B</code>），我们访问对象里的成员时，使用的方法就是偏移量访问。</p>
+<h1 id="ebpf-与应用安全的一些思考"><a href="#ebpf-与应用安全的一些思考" class="headerlink" title="ebpf 与应用安全的一些思考"></a>ebpf 与应用安全的一些思考</h1><p>最后提一点自己的思考。<br>请回到<code>bpftrace</code>代码里，里面的<code>pasword</code>信息获取的操作被注释掉了。其实我们去掉注释，仍然能够按照预期获取结果。这就意味着，如果我们拥有机器上的权限，并且机器满足我们的采集需求，应用里的核心信息（这里是数据库的密码）将被简单的获取。无论数据库密码如何存储：配置文件、源代码、通过网络配置下发等。只要有涉及数据库访问的用户态函数，有涉及数据库密码传递的内容，这些信息存在被获取的风险，只要采集人拥有<code>root</code>权限。<br>这里引出另外一个问题：如果一个用户拥有机器上的管理员权限，<code>TA</code>是否应该拥有机器上所有进程信息的准入权。这里的进程信息，显然是包括机器上容器内的进程信息的，无论是公有云或者私有云。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>ebpf</tag>
+        <tag>mysql</tag>
+        <tag>采集</tag>
+        <tag>信息安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>elscreen标签背景颜色</title>
+    <url>/2020/12/23/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</url>
+    <content><![CDATA[<blockquote>
+<p>使用<code>emacs</code>过程中，配合<code>evil</code>使用，按照<code>tab</code>的划分，将编辑、浏览、<code>leetcode</code>等任务划分到不同的<code>tab</code>便于切换及管理。美中不足的是，模拟标签的<code>elscreen</code>默认将其他标签的颜色设置成<code>:background blue  :foreground black</code>的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置<code>face-attribute</code>的方法，备注下。</p>
+</blockquote>
+<p>在初始文件的最后添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 选中标签设置为绿底黑字，其他标签为黄底黑字</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-other-screen-face nil</span><br><span class="line">                    :background &quot;yellow&quot; :foreground &quot;black&quot;)</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-current-screen-face nil</span><br><span class="line">                    :background &quot;green&quot; :foreground &quot;black&quot;)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>备注下<a href="https://github.com/knu/elscreen"><code>elscreen</code></a>原始代码：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defface elscreen-tab-current-screen-face</span><br><span class="line">  &#x27;((((class color))</span><br><span class="line">     (:background &quot;white&quot; :foreground &quot;black&quot;))</span><br><span class="line">    (t (:underline t)))</span><br><span class="line">  &quot;Face for current screen tab.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br><span class="line"></span><br><span class="line">(defface elscreen-tab-other-screen-face</span><br><span class="line">  &#x27;((((type x w32 mac ns) (class color))</span><br><span class="line">     :background &quot;Gray85&quot; :foreground &quot;Gray50&quot;)</span><br><span class="line">    (((class color))</span><br><span class="line">     (:background &quot;blue&quot; :foreground &quot;black&quot; :underline t)))</span><br><span class="line">  &quot;Face for tabs other than current screen one.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Faces.html">emacs defface</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>emacs</tag>
+        <tag>vim</tag>
+        <tag>elscreen</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>emacs org-mode 绘制思维导图</title>
+    <url>/2023/02/10/emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</url>
+    <content><![CDATA[<blockquote>
+<p>工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.</p>
+</blockquote>
+<h1 id="依赖内容"><a href="#依赖内容" class="headerlink" title="依赖内容"></a>依赖内容</h1><ul>
+<li>org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。</li>
+<li>freemind 软件。用来查看生成的 mm 文件。  </li>
+</ul>
+<p>笔者试了一下，<code>Xmind思维导图</code>看起来无法打开<code>mm</code>文件，<code>freemind</code>工作正常。也可能是我操作有问题。<br>此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。</p>
+<span id="more"></span>
+
+<h1 id="org-contrib-安装"><a href="#org-contrib-安装" class="headerlink" title="org-contrib 安装"></a>org-contrib 安装</h1><p>笔者使用的<code>emacs</code>发布版本默认没有<code>org-contrib</code>，需要自行安装。安装过程也比较简单，从<code>github</code>里把<code>org-contrib</code>拉下来，在<code>emacs init.el</code>里配置加载路径，然后主动加载需要的<code>ox-freemind.el</code>即可。<br><code>github org-contrib</code>地址为<code>git@github.com:emacsmirror/org-contrib.git</code>。目录地址可以视自己的需求确定。笔者的<code>emacs</code>配置都放到了<code>.emacs.d</code>里，<code>org-contrib</code>的本地目录也就放到了<code>~/.emacs.d/org-contrib</code>这里。扩展下载后，在<code>init.el</code>里做如下配置即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; ox-fremind</span><br><span class="line">;; 这里改成本地的 org-contrib 地址</span><br><span class="line">(add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)</span><br><span class="line">;; 目前只需要 ox-freemind，因此仅加载这个插件。</span><br><span class="line">(load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>安装结束后，需要重新加载一下<code>emacs</code>的配置文件，<code>ox-freemind</code>才能可用。</p>
+<h1 id="使用-org-mode-整理文档并转换"><a href="#使用-org-mode-整理文档并转换" class="headerlink" title="使用 org-mode 整理文档并转换"></a>使用 org-mode 整理文档并转换</h1><p>这里直接贴一个示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#+TITLE:  emacs org-mode 绘制思维导图</span><br><span class="line">#+OPTIONS: H:1000</span><br><span class="line"></span><br><span class="line">* org-contrib 安装</span><br><span class="line">   org-contrib 可以直接从 github 下载，然后在 emacs 配置文件里加载。</span><br><span class="line">** org-contrib github 地址</span><br><span class="line">*** git@github.com:emacsmirror/org-contrib.git</span><br><span class="line">** emacs 本地配置</span><br><span class="line">*** (add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)(load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br><span class="line">* org-mode 下文档编写</span><br><span class="line">** org-mode 是 emacs 下的神器</span><br><span class="line">*** 打开 freemind.org 文件，输入这个文本</span><br><span class="line">** 转换文本文件到 freemind mm 文件</span><br><span class="line">*** M-x org-freemind-export-to-freemind</span><br><span class="line">* 查看 mm 文件</span><br><span class="line">** 使用 freemind 查看生成的 freemind.mm</span><br></pre></td></tr></table></figure>
+
+<p>用<code>emacs</code>打开一个<code>freemind.org</code>，笔者这里直接触发了<code>org-mode</code>。如果没有触发<code>org-mode</code>的话，需要手动执行下<code>M-x org-mode</code>。然后执行<code>org-freemind-export-to-freemind</code>。如果没有这个函数，需要看下之前<code>org-contrib</code>的安装是否有问题，或者加载路径是否正常，加载是否有报错。如果函数执行异常，则需要查下原因。笔者安装后即可直接执行，因此没有报错处置的经验可供参考。  </p>
+<h1 id="使用freemind查看及导出"><a href="#使用freemind查看及导出" class="headerlink" title="使用freemind查看及导出"></a>使用freemind查看及导出</h1><p><code>mac</code>可以直接<code>brew install --cask freemind</code>。或者到其他下载源下载，如<a href="https://freemind.sourceforge.net/wiki/index.php/Download">freemind sourceforge 下载</a>。<br>最后使用<code>freemind</code>打开<code>freemind.org</code>同级目录生成的<code>freemind.mm</code>。展示效果如下：<br><img src="/images/freemind.png" alt="upload successful"><br>最后，可以使用<code>emacs</code>查看导出的<code>freemind.png</code>（🐶，笔者还在探索如何在不打开<code>freemind</code>的情况下把<code>mm</code>文件转换成<code>png</code>)。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>find匹配文件名</title>
+    <url>/2020/11/12/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</url>
+    <content><![CDATA[<p>目录内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">text  text.bak</span><br></pre></td></tr></table></figure>
+<p>希望从中找到<code>text.bak</code>。使用<code>find</code>实现。</p>
+<span id="more"></span>
+<p>错误操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;find -name *.bak* .</span><br><span class="line">find: paths must precede expression: .</span><br><span class="line">Usage: find [-H] [-L] [-P] [-Olevel] [-D help|tree|search|stat|rates|opt|exec] [path...] [expression]</span><br></pre></td></tr></table></figure>
+<p><code>-name</code>会作为<code>EXPRESSIONS</code>存在。<code>find</code>要求的参数位置为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]</span><br></pre></td></tr></table></figure>
+<p>所以，正确格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find . -name *.bak</span><br><span class="line">./text.bak</span><br></pre></td></tr></table></figure>
+<p>关于正则中<code>.</code>会作为通配符，如需匹配<code>text.bak</code>需要对<code>.</code>进行转义的情况，也需要关注下。本例中就不涉及了。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>emacs-若干语言 lsp 配置备注</title>
     <url>/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</url>
     <content><![CDATA[<blockquote>
@@ -605,66 +665,6 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>find匹配文件名</title>
-    <url>/2020/11/12/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</url>
-    <content><![CDATA[<p>目录内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">text  text.bak</span><br></pre></td></tr></table></figure>
-<p>希望从中找到<code>text.bak</code>。使用<code>find</code>实现。</p>
-<span id="more"></span>
-<p>错误操作：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;find -name *.bak* .</span><br><span class="line">find: paths must precede expression: .</span><br><span class="line">Usage: find [-H] [-L] [-P] [-Olevel] [-D help|tree|search|stat|rates|opt|exec] [path...] [expression]</span><br></pre></td></tr></table></figure>
-<p><code>-name</code>会作为<code>EXPRESSIONS</code>存在。<code>find</code>要求的参数位置为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]</span><br></pre></td></tr></table></figure>
-<p>所以，正确格式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find . -name *.bak</span><br><span class="line">./text.bak</span><br></pre></td></tr></table></figure>
-<p>关于正则中<code>.</code>会作为通配符，如需匹配<code>text.bak</code>需要对<code>.</code>进行转义的情况，也需要关注下。本例中就不涉及了。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>challenges of bpf tracing go</title>
-    <url>/2022/04/19/challenges-of-bpf-tracing-go/</url>
-    <content><![CDATA[<blockquote>
-<p>goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。</p>
-</blockquote>
-<blockquote>
-<p>Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (“M:N scheduling”). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that’s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there’s not enough room, the runtime copies the entire goroutine’s stack to another place in memory where it has enough room to expand.  </p>
-</blockquote>
-<p><a href="https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/">Challenges of BPF Tracing Go</a></p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>ebpf</tag>
-        <tag>code</tag>
-        <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>emacs org-mode 绘制思维导图</title>
-    <url>/2023/02/10/emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</url>
-    <content><![CDATA[<blockquote>
-<p>工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.</p>
-</blockquote>
-<h1 id="依赖内容"><a href="#依赖内容" class="headerlink" title="依赖内容"></a>依赖内容</h1><ul>
-<li>org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。</li>
-<li>freemind 软件。用来查看生成的 mm 文件。  </li>
-</ul>
-<p>笔者试了一下，<code>Xmind思维导图</code>看起来无法打开<code>mm</code>文件，<code>freemind</code>工作正常。也可能是我操作有问题。<br>此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。</p>
-<span id="more"></span>
-
-<h1 id="org-contrib-安装"><a href="#org-contrib-安装" class="headerlink" title="org-contrib 安装"></a>org-contrib 安装</h1><p>笔者使用的<code>emacs</code>发布版本默认没有<code>org-contrib</code>，需要自行安装。安装过程也比较简单，从<code>github</code>里把<code>org-contrib</code>拉下来，在<code>emacs init.el</code>里配置加载路径，然后主动加载需要的<code>ox-freemind.el</code>即可。<br><code>github org-contrib</code>地址为<code>git@github.com:emacsmirror/org-contrib.git</code>。目录地址可以视自己的需求确定。笔者的<code>emacs</code>配置都放到了<code>.emacs.d</code>里，<code>org-contrib</code>的本地目录也就放到了<code>~/.emacs.d/org-contrib</code>这里。扩展下载后，在<code>init.el</code>里做如下配置即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; ox-fremind</span><br><span class="line">;; 这里改成本地的 org-contrib 地址</span><br><span class="line">(add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)</span><br><span class="line">;; 目前只需要 ox-freemind，因此仅加载这个插件。</span><br><span class="line">(load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br></pre></td></tr></table></figure>
-
-<p>安装结束后，需要重新加载一下<code>emacs</code>的配置文件，<code>ox-freemind</code>才能可用。</p>
-<h1 id="使用-org-mode-整理文档并转换"><a href="#使用-org-mode-整理文档并转换" class="headerlink" title="使用 org-mode 整理文档并转换"></a>使用 org-mode 整理文档并转换</h1><p>这里直接贴一个示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#+TITLE:  emacs org-mode 绘制思维导图</span><br><span class="line">#+OPTIONS: H:1000</span><br><span class="line"></span><br><span class="line">* org-contrib 安装</span><br><span class="line">   org-contrib 可以直接从 github 下载，然后在 emacs 配置文件里加载。</span><br><span class="line">** org-contrib github 地址</span><br><span class="line">*** git@github.com:emacsmirror/org-contrib.git</span><br><span class="line">** emacs 本地配置</span><br><span class="line">*** (add-to-list &#x27;load-path &quot;~/.emacs.d/org-contrib/lisp&quot;)(load-file &quot;~/.emacs.d/org-contrib/lisp/ox-freemind.el&quot;)</span><br><span class="line">* org-mode 下文档编写</span><br><span class="line">** org-mode 是 emacs 下的神器</span><br><span class="line">*** 打开 freemind.org 文件，输入这个文本</span><br><span class="line">** 转换文本文件到 freemind mm 文件</span><br><span class="line">*** M-x org-freemind-export-to-freemind</span><br><span class="line">* 查看 mm 文件</span><br><span class="line">** 使用 freemind 查看生成的 freemind.mm</span><br></pre></td></tr></table></figure>
-
-<p>用<code>emacs</code>打开一个<code>freemind.org</code>，笔者这里直接触发了<code>org-mode</code>。如果没有触发<code>org-mode</code>的话，需要手动执行下<code>M-x org-mode</code>。然后执行<code>org-freemind-export-to-freemind</code>。如果没有这个函数，需要看下之前<code>org-contrib</code>的安装是否有问题，或者加载路径是否正常，加载是否有报错。如果函数执行异常，则需要查下原因。笔者安装后即可直接执行，因此没有报错处置的经验可供参考。  </p>
-<h1 id="使用freemind查看及导出"><a href="#使用freemind查看及导出" class="headerlink" title="使用freemind查看及导出"></a>使用freemind查看及导出</h1><p><code>mac</code>可以直接<code>brew install --cask freemind</code>。或者到其他下载源下载，如<a href="https://freemind.sourceforge.net/wiki/index.php/Download">freemind sourceforge 下载</a>。<br>最后使用<code>freemind</code>打开<code>freemind.org</code>同级目录生成的<code>freemind.mm</code>。展示效果如下：<br><img src="/images/freemind.png" alt="upload successful"><br>最后，可以使用<code>emacs</code>查看导出的<code>freemind.png</code>（🐶，笔者还在探索如何在不打开<code>freemind</code>的情况下把<code>mm</code>文件转换成<code>png</code>)。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>go-simplejson 插入数组</title>
     <url>/2021/07/22/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<blockquote>
@@ -687,55 +687,6 @@ kprobe:tcp_connect
       <tags>
         <tag>golang</tag>
         <tag>simplejson</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>golang GMP</title>
-    <url>/2021/04/15/golang-GMP/</url>
-    <content><![CDATA[<blockquote>
-<p>写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的<code>GMP</code>模型看看。最近在准备一篇<code>Golang</code>的<code>GC</code>实践。慢慢搞吧。</p>
-</blockquote>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>Golang</code>作为语言层面支持并发的语言，使用<code>go</code>可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及<code>Golang</code>的所谓<em>纤程</em>是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如<code>Python</code>的协程以及<code>Golang</code>的纤程，总是能够对应到操作系统认可的执行单元上。对于<code>Python</code>的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于<code>CPU</code>密集型的操作，仅使用协程是无法达到优化效果的：这种场景下<code>Python</code>会推荐多进程。相比起来，<code>Golang</code>的<code>go</code>野心更大一些：期望给用户以<code>go</code>作为接口，在语言内实现与操作系统调度单元的交互。<code>Golang</code>里实际的调度模型是<code>GMP</code>。  </p>
-<span id="more"></span>
-<h1 id="搬运"><a href="#搬运" class="headerlink" title="搬运"></a>搬运</h1><p>这里搬运一些文章，介绍<code>GMP</code>。<br><a href="https://learnku.com/articles/41728">[典藏版] Golang 调度器 GMP 原理与调度全分析</a> 从单进程开始介绍，后面的调试部分能学到一些东西<br><a href="https://juejin.cn/post/6844904034449489933">Go语言学习 - GMP模型</a> <code>G</code>调度这块说的比较详细，可以看看<br><a href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/">6.5 调度器 #</a> 日常膜拜  </p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><ul>
-<li><code>goroutine</code>还是运行在一个进程里的。多线程想对比多进程，稳定性上会差一些：如果线程内出现了coredump等异常，整个进程可能就退出了。所以<code>goroutine</code>运行在一个进程内，会不会一个<code>g</code>出现了crash，整个程序崩溃？</li>
-<li><code>Python</code>的进程及线程，解释器层面分别使用了<code>C</code>的<code>fork</code>以及<code>pthread</code>(Linux)进行实现。<code>g</code>的实现是怎么样的。</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>golang proto3 使用</title>
-    <url>/2022/05/19/golang-proto3-%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>一直都比较赞赏<a href="https://developers.google.com/protocol-buffers/docs/proto3"><code>protocol buffer</code></a>。由于其表现性强、压缩比高，可以把很多结构都写到<code>proto</code>文件中，同时添加很多的注释。当需要进行进行数据存储时，使用<code>proto</code>序列化结果替代<code>json</code>，可以省去很多的冗余字段。本篇找了一些<code>golang</code>中<code>protocol buffer</code>的使用示例，以及<code>protocol</code>对象与<code>json</code>对象互相转换的示例。  </p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="依赖环境"><a href="#依赖环境" class="headerlink" title="依赖环境"></a>依赖环境</h1><p>这部分主要参照<a href="https://developers.google.com/protocol-buffers/docs/gotutorial">官网教程</a>来：</p>
-<ul>
-<li><code>protoc</code> 安装：<br><a href="https://github.com/protocolbuffers/protobuf/releases">github-protobuf-releases</a> 下载对应平台的 <code>protoc</code> 编译器即可；</li>
-<li><code>protoc-gen-go</code> 安装：<br><code>go install google.golang.org/protobuf/cmd/protoc-gen-go@latest</code> 需要能够安装对应语言的插件，<code>proto</code> 文件才被翻译为对应语言可调用的模块； </li>
-</ul>
-<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><p>比较推荐将<code>proto</code>文件单独放入一个仓库。<code>proto</code>一般定义的是需要服务/模块间共享的，所以单独放在一个仓库里便于调用及约定的维护。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── main.go</span><br><span class="line">└── proto</span><br><span class="line">    └── user.proto</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;bytes&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	&quot;proto/message&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">	&quot;github.com/gogo/protobuf/jsonpb&quot;</span><br><span class="line">	jsoniter &quot;github.com/json-iterator/go&quot;</span><br><span class="line">	&quot;google.golang.org/protobuf/proto&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	msg := message.UserInfo&#123;UserList: []*message.UserInfo_User&#123;&#123;Username: &quot;test&quot;&#125;&#125;&#125;</span><br><span class="line">	msg.UserList = append(msg.UserList, &amp;message.UserInfo_User&#123;Username: &quot;test1&quot;&#125;)</span><br><span class="line"></span><br><span class="line">	// go message 可以直接序列化为 json byte</span><br><span class="line">	byt, err := jsoniter.Marshal(&amp;msg)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;cannot parse to json&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;json result: &quot;, string(byt))</span><br><span class="line"></span><br><span class="line">	// 可以将 json 对象反序列化为 go message 对象</span><br><span class="line">	msg1 := &amp;message.UserInfo&#123;&#125;</span><br><span class="line">	err = jsonpb.Unmarshal(bytes.NewReader(byt), msg1)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;parse failed, &quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(&quot;parsed: %+v\n&quot;, msg1)</span><br><span class="line"></span><br><span class="line">	// protobuf 本身的字符串表征</span><br><span class="line">	msg1Str := msg1.String()</span><br><span class="line">	fmt.Println(&quot;msg1 string, &quot;, msg1Str)</span><br><span class="line">    // protobuf 序列化</span><br><span class="line">	out, err := proto.Marshal(msg1)</span><br><span class="line">	fmt.Println(&quot;msg1 marshal result is, &quot;, string(out))</span><br><span class="line">	msg2 := message.UserInfo&#123;&#125;</span><br><span class="line">    // 将序列化后的结果，反序列化为 message 对象</span><br><span class="line">	proto.Unmarshal(out, &amp;msg2)</span><br><span class="line">	fmt.Printf(&quot;unmarshal result msg2 is: %+v\n&quot;, &amp;msg2)</span><br><span class="line"></span><br><span class="line">	engine := gin.Default()</span><br><span class="line">	engine.GET(&quot;check&quot;, func(c *gin.Context) &#123;</span><br><span class="line">    	// message 对象可以直接用来作为接口的返回值</span><br><span class="line">		c.JSON(http.StatusOK, &amp;msg1)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	srv := &amp;http.Server&#123;&#125;</span><br><span class="line">	srv.Addr = &quot;0.0.0.0:9988&quot;</span><br><span class="line">	srv.Handler = engine</span><br><span class="line">	srv.ListenAndServe()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// proto/user.proto</span><br><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">package user_info;</span><br><span class="line"></span><br><span class="line">// 对于 golang 的使用说，这里的 go_package 是必须的。表述的是编译后的模块名</span><br><span class="line">option go_package = &quot;./message&quot;;</span><br><span class="line"></span><br><span class="line">message UserInfo&#123;</span><br><span class="line">  message User&#123;</span><br><span class="line">    string username = 1;</span><br><span class="line">    uint32 age = 2;</span><br><span class="line">    string graduate = 3;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  repeated User user_list = 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>进行编译:<code>protoc -I./proto user.proto --go_out=./</code>，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── message</span><br><span class="line">│   └── user.pb.go</span><br><span class="line">└── proto</span><br><span class="line">    └── user.proto</span><br><span class="line"></span><br><span class="line">2 directories, 5 files</span><br></pre></td></tr></table></figure>
-
-<p>执行 <code>go run main.go</code>。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">go run main.go</span><br><span class="line">json result:  &#123;&quot;user_list&quot;:[&#123;&quot;username&quot;:&quot;test&quot;&#125;,&#123;&quot;username&quot;:&quot;test1&quot;&#125;]&#125;</span><br><span class="line">parsed: user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">msg1 string,  user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">msg1 marshal result is,</span><br><span class="line"></span><br><span class="line">test</span><br><span class="line"></span><br><span class="line">test1</span><br><span class="line">unmarshal result msg2 is: user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    /check_must               --&gt; main.main.func1 (3 handlers)</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>protocol buffer</code> 在大多数场景下，都能兼容<code>json</code>对象的使用场景。其劣势为序列化相关操作时额外的性能开销。对于与外部进行交互、不会进行频繁序列化、反序列化的数据，可以考虑优先使用<code>protocol buffer</code>。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>code</tag>
-        <tag>protobuf</tag>
       </tags>
   </entry>
   <entry>
@@ -899,6 +850,55 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
+    <title>golang GMP</title>
+    <url>/2021/04/15/golang-GMP/</url>
+    <content><![CDATA[<blockquote>
+<p>写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的<code>GMP</code>模型看看。最近在准备一篇<code>Golang</code>的<code>GC</code>实践。慢慢搞吧。</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>Golang</code>作为语言层面支持并发的语言，使用<code>go</code>可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及<code>Golang</code>的所谓<em>纤程</em>是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如<code>Python</code>的协程以及<code>Golang</code>的纤程，总是能够对应到操作系统认可的执行单元上。对于<code>Python</code>的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于<code>CPU</code>密集型的操作，仅使用协程是无法达到优化效果的：这种场景下<code>Python</code>会推荐多进程。相比起来，<code>Golang</code>的<code>go</code>野心更大一些：期望给用户以<code>go</code>作为接口，在语言内实现与操作系统调度单元的交互。<code>Golang</code>里实际的调度模型是<code>GMP</code>。  </p>
+<span id="more"></span>
+<h1 id="搬运"><a href="#搬运" class="headerlink" title="搬运"></a>搬运</h1><p>这里搬运一些文章，介绍<code>GMP</code>。<br><a href="https://learnku.com/articles/41728">[典藏版] Golang 调度器 GMP 原理与调度全分析</a> 从单进程开始介绍，后面的调试部分能学到一些东西<br><a href="https://juejin.cn/post/6844904034449489933">Go语言学习 - GMP模型</a> <code>G</code>调度这块说的比较详细，可以看看<br><a href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/">6.5 调度器 #</a> 日常膜拜  </p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><ul>
+<li><code>goroutine</code>还是运行在一个进程里的。多线程想对比多进程，稳定性上会差一些：如果线程内出现了coredump等异常，整个进程可能就退出了。所以<code>goroutine</code>运行在一个进程内，会不会一个<code>g</code>出现了crash，整个程序崩溃？</li>
+<li><code>Python</code>的进程及线程，解释器层面分别使用了<code>C</code>的<code>fork</code>以及<code>pthread</code>(Linux)进行实现。<code>g</code>的实现是怎么样的。</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>golang proto3 使用</title>
+    <url>/2022/05/19/golang-proto3-%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<blockquote>
+<p>一直都比较赞赏<a href="https://developers.google.com/protocol-buffers/docs/proto3"><code>protocol buffer</code></a>。由于其表现性强、压缩比高，可以把很多结构都写到<code>proto</code>文件中，同时添加很多的注释。当需要进行进行数据存储时，使用<code>proto</code>序列化结果替代<code>json</code>，可以省去很多的冗余字段。本篇找了一些<code>golang</code>中<code>protocol buffer</code>的使用示例，以及<code>protocol</code>对象与<code>json</code>对象互相转换的示例。  </p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="依赖环境"><a href="#依赖环境" class="headerlink" title="依赖环境"></a>依赖环境</h1><p>这部分主要参照<a href="https://developers.google.com/protocol-buffers/docs/gotutorial">官网教程</a>来：</p>
+<ul>
+<li><code>protoc</code> 安装：<br><a href="https://github.com/protocolbuffers/protobuf/releases">github-protobuf-releases</a> 下载对应平台的 <code>protoc</code> 编译器即可；</li>
+<li><code>protoc-gen-go</code> 安装：<br><code>go install google.golang.org/protobuf/cmd/protoc-gen-go@latest</code> 需要能够安装对应语言的插件，<code>proto</code> 文件才被翻译为对应语言可调用的模块； </li>
+</ul>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><p>比较推荐将<code>proto</code>文件单独放入一个仓库。<code>proto</code>一般定义的是需要服务/模块间共享的，所以单独放在一个仓库里便于调用及约定的维护。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── main.go</span><br><span class="line">└── proto</span><br><span class="line">    └── user.proto</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;bytes&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	&quot;proto/message&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">	&quot;github.com/gogo/protobuf/jsonpb&quot;</span><br><span class="line">	jsoniter &quot;github.com/json-iterator/go&quot;</span><br><span class="line">	&quot;google.golang.org/protobuf/proto&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	msg := message.UserInfo&#123;UserList: []*message.UserInfo_User&#123;&#123;Username: &quot;test&quot;&#125;&#125;&#125;</span><br><span class="line">	msg.UserList = append(msg.UserList, &amp;message.UserInfo_User&#123;Username: &quot;test1&quot;&#125;)</span><br><span class="line"></span><br><span class="line">	// go message 可以直接序列化为 json byte</span><br><span class="line">	byt, err := jsoniter.Marshal(&amp;msg)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;cannot parse to json&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;json result: &quot;, string(byt))</span><br><span class="line"></span><br><span class="line">	// 可以将 json 对象反序列化为 go message 对象</span><br><span class="line">	msg1 := &amp;message.UserInfo&#123;&#125;</span><br><span class="line">	err = jsonpb.Unmarshal(bytes.NewReader(byt), msg1)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		log.Fatal(&quot;parse failed, &quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(&quot;parsed: %+v\n&quot;, msg1)</span><br><span class="line"></span><br><span class="line">	// protobuf 本身的字符串表征</span><br><span class="line">	msg1Str := msg1.String()</span><br><span class="line">	fmt.Println(&quot;msg1 string, &quot;, msg1Str)</span><br><span class="line">    // protobuf 序列化</span><br><span class="line">	out, err := proto.Marshal(msg1)</span><br><span class="line">	fmt.Println(&quot;msg1 marshal result is, &quot;, string(out))</span><br><span class="line">	msg2 := message.UserInfo&#123;&#125;</span><br><span class="line">    // 将序列化后的结果，反序列化为 message 对象</span><br><span class="line">	proto.Unmarshal(out, &amp;msg2)</span><br><span class="line">	fmt.Printf(&quot;unmarshal result msg2 is: %+v\n&quot;, &amp;msg2)</span><br><span class="line"></span><br><span class="line">	engine := gin.Default()</span><br><span class="line">	engine.GET(&quot;check&quot;, func(c *gin.Context) &#123;</span><br><span class="line">    	// message 对象可以直接用来作为接口的返回值</span><br><span class="line">		c.JSON(http.StatusOK, &amp;msg1)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	srv := &amp;http.Server&#123;&#125;</span><br><span class="line">	srv.Addr = &quot;0.0.0.0:9988&quot;</span><br><span class="line">	srv.Handler = engine</span><br><span class="line">	srv.ListenAndServe()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// proto/user.proto</span><br><span class="line">syntax = &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">package user_info;</span><br><span class="line"></span><br><span class="line">// 对于 golang 的使用说，这里的 go_package 是必须的。表述的是编译后的模块名</span><br><span class="line">option go_package = &quot;./message&quot;;</span><br><span class="line"></span><br><span class="line">message UserInfo&#123;</span><br><span class="line">  message User&#123;</span><br><span class="line">    string username = 1;</span><br><span class="line">    uint32 age = 2;</span><br><span class="line">    string graduate = 3;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  repeated User user_list = 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进行编译:<code>protoc -I./proto user.proto --go_out=./</code>，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── message</span><br><span class="line">│   └── user.pb.go</span><br><span class="line">└── proto</span><br><span class="line">    └── user.proto</span><br><span class="line"></span><br><span class="line">2 directories, 5 files</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>go run main.go</code>。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">go run main.go</span><br><span class="line">json result:  &#123;&quot;user_list&quot;:[&#123;&quot;username&quot;:&quot;test&quot;&#125;,&#123;&quot;username&quot;:&quot;test1&quot;&#125;]&#125;</span><br><span class="line">parsed: user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">msg1 string,  user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">msg1 marshal result is,</span><br><span class="line"></span><br><span class="line">test</span><br><span class="line"></span><br><span class="line">test1</span><br><span class="line">unmarshal result msg2 is: user_list:&#123;username:&quot;test&quot;&#125;  user_list:&#123;username:&quot;test1&quot;&#125;</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    /check_must               --&gt; main.main.func1 (3 handlers)</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>protocol buffer</code> 在大多数场景下，都能兼容<code>json</code>对象的使用场景。其劣势为序列化相关操作时额外的性能开销。对于与外部进行交互、不会进行频繁序列化、反序列化的数据，可以考虑优先使用<code>protocol buffer</code>。</p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>protobuf</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>golang 常见类型字节数</title>
     <url>/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</url>
     <content><![CDATA[<blockquote>
@@ -971,40 +971,22 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>lisp-do循环</title>
-    <url>/2019/06/03/lisp-do%E5%BE%AA%E7%8E%AF/</url>
-    <content><![CDATA[<p>lisp中，do循环形象如下:  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do (variable-definition*)</span><br><span class="line">    (end-test-form result-form*)</span><br><span class="line">    statement*);</span><br></pre></td></tr></table></figure>
+    <title>golang 封装</title>
+    <url>/2021/04/08/golang-%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<blockquote>
+<p>golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。</p>
+</blockquote>
 <span id="more"></span>
-<p>其中，<code>(variable-definition*)</code>是一些行日<code>(var init next)</code>的赋值结构。在<code>do</code>开始时，<code>var</code>会被赋值为<code>init</code>。并且在一次循环结束后，<code>var</code>会被赋值为<code>next</code>所表示的内容。<br>形如：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do ((n 0 (+ 1 n))</span><br><span class="line">     (cur 0 next)</span><br><span class="line">     (next 1 (+ cur next)))</span><br><span class="line">    ((= 10 n) (format t &quot;|end ~d&quot; cur))</span><br><span class="line">  (format t &quot;~d|&quot; cur));</span><br></pre></td></tr></table></figure>
-<p>输出：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0|1|1|2|3|5|8|13|21|34||end 55</span><br></pre></td></tr></table></figure>
-<p>类似于python中的：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cur = 0</span><br><span class="line">next = 1</span><br><span class="line">for i in range(10):</span><br><span class="line">    print(&quot;%d|&quot; % cur)</span><br><span class="line">    cur, next = next, cur + next</span><br><span class="line">print(&quot;|end %d&quot; % cur)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lisp-hello world</title>
-    <url>/2019/05/28/lisp-hello-world/</url>
-    <content><![CDATA[<p>lisp语言的基本表达式为S-表达式。这与受<a href="https://en.wikipedia.org/wiki/ALGOL">Algol</a>语言影响的C系语言有很大的不同。显然，这很有趣：</p>
-<pre><code>;the bellow is hello world function in lisp
-  (defun hello-world()
-    &quot;hello world function in lisp&quot;
-    (format t &quot;hello, world!&quot;));```
-由&lt;code&gt;()&lt;/code&gt;所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。
-</code></pre>
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><p><code>Golang</code>采用首字母大小写的方式控制访问权限。举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// lib/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;  // 定义对象</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123; // 可通过a.PrintInf() 访问该函数</span><br><span class="line">	print(a.private, a.Public)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    print(a.Public, a.private) // a.private不可包外访问，编译报错</span><br><span class="line"></span><br><span class="line">    print(learn.private, learn.Public) // learn.private不可包外访问，编译报错</span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>和 <code>C++/Java/Python</code>等常见的面向对象语言不同，<code>Golang</code>的结构体中不支持函数的定义。某个结构体的函数，可以通过函数名前的归属生命来表示。</p>
+<h2 id="访问结构体私有成员"><a href="#访问结构体私有成员" class="headerlink" title="访问结构体私有成员"></a>访问结构体私有成员</h2><p>这是个很有意思的话题。<code>C++</code>和<code>Python</code>都是有方法可以越过结构体的访问限制的，<code>Golang</code>通过<code>unsafe.Pointer</code>类型的转换也可以达到相同的目的。举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// learn/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123;</span><br><span class="line">    print(a.private, a.Public)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">/* 测试golang封装、继承、多态特性</span><br><span class="line"> */</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;unsafe&quot;</span><br><span class="line"></span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type AA struct&#123;</span><br><span class="line">    Private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    //print(a.Public, a.private)</span><br><span class="line"></span><br><span class="line">    //print(learn.Public, learn.private)</span><br><span class="line">    p := unsafe.Pointer(&amp;a)</span><br><span class="line">    aa := &amp;AA&#123;&#125;</span><br><span class="line">    aa = (*AA)(p) // golang unsafe.Pointer 更加接近 C/C++中指针的用法，编译器进行的校验较少；</span><br><span class="line">    print(aa.Private, aa.Public) // 可以正常运行。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单备注了下<code>Golang</code>封装的特性。后续再备注下继承、多态的使用吧。由于<code>Golang</code>采用鸭子式的继承检查思想，继承和多态的特性使用会相对较繁琐。</p>
 ]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
       <tags>
-        <tag>lisp</tag>
+        <tag>golang</tag>
       </tags>
   </entry>
   <entry>
@@ -1056,63 +1038,6 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
-    <title>golang 封装</title>
-    <url>/2021/04/08/golang-%E7%BB%A7%E6%89%BF/</url>
-    <content><![CDATA[<blockquote>
-<p>golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。</p>
-</blockquote>
-<span id="more"></span>
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><p><code>Golang</code>采用首字母大小写的方式控制访问权限。举个例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// lib/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;  // 定义对象</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123; // 可通过a.PrintInf() 访问该函数</span><br><span class="line">	print(a.private, a.Public)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    print(a.Public, a.private) // a.private不可包外访问，编译报错</span><br><span class="line"></span><br><span class="line">    print(learn.private, learn.Public) // learn.private不可包外访问，编译报错</span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>和 <code>C++/Java/Python</code>等常见的面向对象语言不同，<code>Golang</code>的结构体中不支持函数的定义。某个结构体的函数，可以通过函数名前的归属生命来表示。</p>
-<h2 id="访问结构体私有成员"><a href="#访问结构体私有成员" class="headerlink" title="访问结构体私有成员"></a>访问结构体私有成员</h2><p>这是个很有意思的话题。<code>C++</code>和<code>Python</code>都是有方法可以越过结构体的访问限制的，<code>Golang</code>通过<code>unsafe.Pointer</code>类型的转换也可以达到相同的目的。举个例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// learn/pub.go</span><br><span class="line">package learn</span><br><span class="line"></span><br><span class="line">type A struct&#123;</span><br><span class="line">    private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (a A) PrintInf()&#123;</span><br><span class="line">    print(a.private, a.Public)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func NewA(private int, public string) A&#123;</span><br><span class="line">    return A&#123;private: private, Public: public&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">    private = 1</span><br><span class="line">    Public = &quot;aa&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// main.go</span><br><span class="line">/* 测试golang封装、继承、多态特性</span><br><span class="line"> */</span><br><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;unsafe&quot;</span><br><span class="line"></span><br><span class="line">    &quot;go_learn/lib&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type AA struct&#123;</span><br><span class="line">    Private int</span><br><span class="line">    Public  string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    a := learn.NewA(1, &quot;aa&quot;)</span><br><span class="line">    //print(a.Public, a.private)</span><br><span class="line"></span><br><span class="line">    //print(learn.Public, learn.private)</span><br><span class="line">    p := unsafe.Pointer(&amp;a)</span><br><span class="line">    aa := &amp;AA&#123;&#125;</span><br><span class="line">    aa = (*AA)(p) // golang unsafe.Pointer 更加接近 C/C++中指针的用法，编译器进行的校验较少；</span><br><span class="line">    print(aa.Private, aa.Public) // 可以正常运行。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单备注了下<code>Golang</code>封装的特性。后续再备注下继承、多态的使用吧。由于<code>Golang</code>采用鸭子式的继承检查思想，继承和多态的特性使用会相对较繁琐。</p>
-]]></content>
-      <tags>
-        <tag>golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lisp-lambda函数</title>
-    <url>/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>lisp中的lambda表达式，显然和python中的很相似。<br>参照《实用common lisp编程》：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;按照 min max, 步长step为参数的fn计算的长度输出 *</span><br><span class="line">(defun plot (fn min max step)</span><br><span class="line">  (loop for i from min to max by step do</span><br><span class="line">        (loop repeat (funcall fn i) do (format t &quot;*&quot;))</span><br><span class="line">        (format t &quot;~%&quot;)))</span><br><span class="line"></span><br><span class="line">(plot #&#x27;exp 0 4 1/2);</span><br><span class="line">(plot #&#x27;(lambda (x) (* 2 x)) 0 10 1);</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*</span><br><span class="line">**</span><br><span class="line">***</span><br><span class="line">*****</span><br><span class="line">********</span><br><span class="line">*************</span><br><span class="line">*********************</span><br><span class="line">**********************************</span><br><span class="line">*******************************************************</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">****</span><br><span class="line">******</span><br><span class="line">********</span><br><span class="line">**********</span><br><span class="line">************</span><br><span class="line">**************</span><br><span class="line">****************</span><br><span class="line">******************</span><br><span class="line">********************</span><br></pre></td></tr></table></figure>
-<p><code>#'</code>为lisp语言的语法糖，展开表示为<code>function</code>。后者将会把一个函数生成为一个函数对象，后者可以通过<code>funcall</code>调用。<br>interesting。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lisp-let变量声明</title>
-    <url>/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</url>
-    <content><![CDATA[<p>lisp声明、使用变量的一种方法，是使用<code>let</code>语句。<br>形如：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;(let ((variable declare1) (variable declare2) (...))</span><br><span class="line">;  (varaible used here));</span><br><span class="line">(defun foo(x)</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x)</span><br><span class="line">  (let ((x 2))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x)</span><br><span class="line">    (let ((x 3))</span><br><span class="line">      (format t &quot;Inner LET: ~a~%&quot; x))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x))</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x));</span><br><span class="line"></span><br><span class="line">(foo 10);</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>声明的作用域，和C语言很相似，存在覆盖的特点。输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Parameter: 10</span><br><span class="line">Outer LET: 2</span><br><span class="line">Inner LET: 3</span><br><span class="line">Outer LET: 2</span><br><span class="line">Parameter: 10</span><br></pre></td></tr></table></figure>
-<p>使用<code>let</code>声明时，变量声明域内，无法使用前一个在本声明域内声明的变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line"></span><br><span class="line">*** - LET: variable M has no value</span><br></pre></td></tr></table></figure>
-<p>使用<code>let*</code>可以进行如此操作：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let* ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line">Year:1</span><br><span class="line">Month:12</span><br><span class="line">Day:360</span><br></pre></td></tr></table></figure>
-<p>just like this.</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>http及websocket性能对比</title>
     <url>/2021/07/15/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</url>
     <content><![CDATA[<blockquote>
@@ -1136,6 +1061,161 @@ kprobe:tcp_connect
 </ul>
 <h1 id="文章推荐"><a href="#文章推荐" class="headerlink" title="文章推荐"></a>文章推荐</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDAxNjU4Mg==&mid=2247484725&idx=1&sn=63941cdb8ba8961457ae7667eed84448&scene=21#wechat_redirect">net/http长链接&amp;连接池使用时的超时陷阱</a><br><a href="https://blog.csdn.net/qq_39898645/article/details/109181736">换电脑后，hexo-next 窝火的报错</a><br><a href="https://blog.csdn.net/diaosssss/article/details/92830934">golang调度器初始化</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>lisp-let变量声明</title>
+    <url>/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<p>lisp声明、使用变量的一种方法，是使用<code>let</code>语句。<br>形如：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;(let ((variable declare1) (variable declare2) (...))</span><br><span class="line">;  (varaible used here));</span><br><span class="line">(defun foo(x)</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x)</span><br><span class="line">  (let ((x 2))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x)</span><br><span class="line">    (let ((x 3))</span><br><span class="line">      (format t &quot;Inner LET: ~a~%&quot; x))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x))</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x));</span><br><span class="line"></span><br><span class="line">(foo 10);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>声明的作用域，和C语言很相似，存在覆盖的特点。输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Parameter: 10</span><br><span class="line">Outer LET: 2</span><br><span class="line">Inner LET: 3</span><br><span class="line">Outer LET: 2</span><br><span class="line">Parameter: 10</span><br></pre></td></tr></table></figure>
+<p>使用<code>let</code>声明时，变量声明域内，无法使用前一个在本声明域内声明的变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line"></span><br><span class="line">*** - LET: variable M has no value</span><br></pre></td></tr></table></figure>
+<p>使用<code>let*</code>可以进行如此操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let* ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line">Year:1</span><br><span class="line">Month:12</span><br><span class="line">Day:360</span><br></pre></td></tr></table></figure>
+<p>just like this.</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>lisp-hello world</title>
+    <url>/2019/05/28/lisp-hello-world/</url>
+    <content><![CDATA[<p>lisp语言的基本表达式为S-表达式。这与受<a href="https://en.wikipedia.org/wiki/ALGOL">Algol</a>语言影响的C系语言有很大的不同。显然，这很有趣：</p>
+<pre><code>;the bellow is hello world function in lisp
+  (defun hello-world()
+    &quot;hello world function in lisp&quot;
+    (format t &quot;hello, world!&quot;));```
+由&lt;code&gt;()&lt;/code&gt;所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。
+</code></pre>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>org-mode使用备注</title>
+    <url>/2021/01/11/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
+    <content><![CDATA[<blockquote>
+<p>org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录</p>
+</blockquote>
+<p>以下操作均在<code>org-agenda</code>中的<code>agenda for current week or day</code>视图下快速编辑：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>变更任务状态</td>
+<td>t</td>
+</tr>
+<tr>
+<td>添加备注</td>
+<td>z</td>
+</tr>
+<tr>
+<td>添加日记</td>
+<td>i</td>
+</tr>
+<tr>
+<td>编辑note</td>
+<td>z</td>
+</tr>
+<tr>
+<td>重建agenda</td>
+<td>r</td>
+</tr>
+<tr>
+<td>打开日历</td>
+<td>a</td>
+</tr>
+<tr>
+<td>下周任务列表</td>
+<td>f</td>
+</tr>
+<tr>
+<td>上周任务列表</td>
+<td>b</td>
+</tr>
+<tr>
+<td>打开任务所在原始文件</td>
+<td>enter</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>emacs</tag>
+        <tag>org-mode</tag>
+        <tag>效率工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>lisp-do循环</title>
+    <url>/2019/06/03/lisp-do%E5%BE%AA%E7%8E%AF/</url>
+    <content><![CDATA[<p>lisp中，do循环形象如下:  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do (variable-definition*)</span><br><span class="line">    (end-test-form result-form*)</span><br><span class="line">    statement*);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>其中，<code>(variable-definition*)</code>是一些行日<code>(var init next)</code>的赋值结构。在<code>do</code>开始时，<code>var</code>会被赋值为<code>init</code>。并且在一次循环结束后，<code>var</code>会被赋值为<code>next</code>所表示的内容。<br>形如：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do ((n 0 (+ 1 n))</span><br><span class="line">     (cur 0 next)</span><br><span class="line">     (next 1 (+ cur next)))</span><br><span class="line">    ((= 10 n) (format t &quot;|end ~d&quot; cur))</span><br><span class="line">  (format t &quot;~d|&quot; cur));</span><br></pre></td></tr></table></figure>
+<p>输出：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0|1|1|2|3|5|8|13|21|34||end 55</span><br></pre></td></tr></table></figure>
+<p>类似于python中的：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cur = 0</span><br><span class="line">next = 1</span><br><span class="line">for i in range(10):</span><br><span class="line">    print(&quot;%d|&quot; % cur)</span><br><span class="line">    cur, next = next, cur + next</span><br><span class="line">print(&quot;|end %d&quot; % cur)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>lisp-lambda函数</title>
+    <url>/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>lisp中的lambda表达式，显然和python中的很相似。<br>参照《实用common lisp编程》：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;按照 min max, 步长step为参数的fn计算的长度输出 *</span><br><span class="line">(defun plot (fn min max step)</span><br><span class="line">  (loop for i from min to max by step do</span><br><span class="line">        (loop repeat (funcall fn i) do (format t &quot;*&quot;))</span><br><span class="line">        (format t &quot;~%&quot;)))</span><br><span class="line"></span><br><span class="line">(plot #&#x27;exp 0 4 1/2);</span><br><span class="line">(plot #&#x27;(lambda (x) (* 2 x)) 0 10 1);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*</span><br><span class="line">**</span><br><span class="line">***</span><br><span class="line">*****</span><br><span class="line">********</span><br><span class="line">*************</span><br><span class="line">*********************</span><br><span class="line">**********************************</span><br><span class="line">*******************************************************</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">****</span><br><span class="line">******</span><br><span class="line">********</span><br><span class="line">**********</span><br><span class="line">************</span><br><span class="line">**************</span><br><span class="line">****************</span><br><span class="line">******************</span><br><span class="line">********************</span><br></pre></td></tr></table></figure>
+<p><code>#'</code>为lisp语言的语法糖，展开表示为<code>function</code>。后者将会把一个函数生成为一个函数对象，后者可以通过<code>funcall</code>调用。<br>interesting。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redisgo 连接报错</title>
+    <url>/2021/08/18/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</url>
+    <content><![CDATA[<blockquote>
+<p>记一次<code>redisgo</code>库使用时，连接远程<code>redis</code>服务写数据报错的问题。</p>
+</blockquote>
+<p> <code>redis</code>写数据时，出现报错<code>write: broken pipe</code>及<code>write: connection reset by peer</code>。看着都是网络的问题，使用<code>redis-cli</code>可以登陆并且执行查询等操作。经过排查，是写的数据量过大，导致写数据持续时间过长，排查的思路是猜想-&gt;验证<code>@A@</code>。<br> 对于多个数据可以进行拆分。对于单个完整的数据，还没有太好的拆分思路（或许基于 <code>pb</code> 进行压缩，会是个好方式？）</p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p> <a href="https://blog.csdn.net/xieganyu3460/article/details/82884346">python redis读写报错：Broken Pipe Error Redis</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>redisgo</tag>
+        <tag>debug</tag>
+      </tags>
   </entry>
   <entry>
     <title>emacs! start org-mode! --org-mod使用备注</title>
@@ -1236,68 +1316,6 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>org-mode使用备注</title>
-    <url>/2021/01/11/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录</p>
-</blockquote>
-<p>以下操作均在<code>org-agenda</code>中的<code>agenda for current week or day</code>视图下快速编辑：</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>快捷键</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>变更任务状态</td>
-<td>t</td>
-</tr>
-<tr>
-<td>添加备注</td>
-<td>z</td>
-</tr>
-<tr>
-<td>添加日记</td>
-<td>i</td>
-</tr>
-<tr>
-<td>编辑note</td>
-<td>z</td>
-</tr>
-<tr>
-<td>重建agenda</td>
-<td>r</td>
-</tr>
-<tr>
-<td>打开日历</td>
-<td>a</td>
-</tr>
-<tr>
-<td>下周任务列表</td>
-<td>f</td>
-</tr>
-<tr>
-<td>上周任务列表</td>
-<td>b</td>
-</tr>
-<tr>
-<td>打开任务所在原始文件</td>
-<td>enter</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>life</category>
-      </categories>
-      <tags>
-        <tag>emacs</tag>
-        <tag>org-mode</tag>
-        <tag>效率工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ratelimit服务流量限制</title>
     <url>/2021/02/07/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</url>
     <content><![CDATA[<blockquote>
@@ -1344,6 +1362,24 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
+    <title>shell-访问字符串同名变量</title>
+    <url>/2019/06/04/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<p>考虑以下场景：<br>期望通过给定的变量名称<code>var_str</code>，打印出该名称对应的变量值<code>$&#123;var_str&#125;</code>。使用指令<code>eval</code>可以很方便的实现：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var_str=&quot;1213&quot;;</span><br><span class="line">ned_param_name=&quot;var_str&quot;;</span><br><span class="line">eval echo &#x27;$&#x27;&quot;$&#123;ned_param_name&#125;&quot;;</span><br></pre></td></tr></table></figure>
+<p>输出结果为<code>1213</code>;</p>
+<span id="more"></span>
+<p><code>eval</code>命令解释如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval [arg ...]</span><br><span class="line">    The  args  are read and concatenated together into a single command. </span><br><span class="line">    This command is then read and executed by the shell, and its exit status is returned as</span><br><span class="line">the value of eval.  If there are no args, or only null arguments, eval returns 0.</span><br><span class="line">eval [参数 ...]</span><br><span class="line">    参数将会被读取并作为一个指令被读入。然后这个指令将会被shell读取并执行，执行结果</span><br><span class="line">将会作为eval的结果。如果没有参数传入，或者只有空参数，eval指令将会返回0。</span><br></pre></td></tr></table></figure>
+<p>对于上述的例子，<code>echo $var_str</code>将会被读入，并被shell重新执行。输出结果为<code>1213</code>。该结果即作为<code>eval</code>的输出结果。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>x86_64 寄存器传参方式</title>
     <url>/2022/08/31/x86-64-%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<blockquote>
@@ -1365,89 +1401,77 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>redisgo 连接报错</title>
-    <url>/2021/08/18/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</url>
+    <title>无侵入观测服务四元组的一种实现</title>
+    <url>/2023/03/29/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%9B%9B%E5%85%83%E7%BB%84/</url>
     <content><![CDATA[<blockquote>
-<p>记一次<code>redisgo</code>库使用时，连接远程<code>redis</code>服务写数据报错的问题。</p>
+<p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入一些精力，这里做一下简单的回顾。</p>
 </blockquote>
-<p> <code>redis</code>写数据时，出现报错<code>write: broken pipe</code>及<code>write: connection reset by peer</code>。看着都是网络的问题，使用<code>redis-cli</code>可以登陆并且执行查询等操作。经过排查，是写的数据量过大，导致写数据持续时间过长，排查的思路是猜想-&gt;验证<code>@A@</code>。<br> 对于多个数据可以进行拆分。对于单个完整的数据，还没有太好的拆分思路（或许基于 <code>pb</code> 进行压缩，会是个好方式？）</p>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p> <a href="https://blog.csdn.net/xieganyu3460/article/details/82884346">python redis读写报错：Broken Pipe Error Redis</a></p>
+<p>服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务<code>A</code>的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务<code>B</code>, <code>C</code>的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                  service call                  </span><br><span class="line">                                                </span><br><span class="line">,-------.          ,-.          ,-.          ,-.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`---+---&#x27;          `+&#x27;          `+&#x27;          `+&#x27;</span><br><span class="line">    |      /a       |            |            | </span><br><span class="line">    |--------------&gt;|            |            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |    /b      |            | </span><br><span class="line">    |               |-----------&gt;|            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |           /c            | </span><br><span class="line">    |               |------------------------&gt;| </span><br><span class="line">,---+---.          ,+.          ,+.          ,+.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`-------&#x27;          `-&#x27;          `-&#x27;          `-&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>在弄清楚四元组是什么之后，下面进入今天的话题：如何使用<code>BPF</code>来采集四元组。需要说明的是，笔者这里的语言使用的是<code>golang-1.16</code>。<code>golang</code>不同语言间的区别，见：<a href="https://liyan-ah.github.io/2023/03/03/golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/#more">golang-1.17+调用规约</a>。<br>值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。<br>按照惯例，先看下效果吧：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 启动采集</span><br><span class="line">bpftrace ./http.bt</span><br><span class="line">Attaching 2 probes...  # 未触发请求前，停止在这里</span><br><span class="line">caller:                # 触发请求后，输出</span><br><span class="line"> 		caller_path: /handle</span><br><span class="line">callee:</span><br><span class="line"> 		method: GET</span><br><span class="line"> 		host: 0.0.0.0:9932</span><br><span class="line"> 		url: /echo</span><br><span class="line"> </span><br><span class="line">caller:</span><br><span class="line"> 		caller_path: /echo</span><br><span class="line">	callee: none</span><br><span class="line"> </span><br><span class="line"># 开始服务</span><br><span class="line">./http_demo &amp;</span><br><span class="line"># 触发请求</span><br><span class="line">curl http://0.0.0.0:9932/handle</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h1 id="一段golang代码示例"><a href="#一段golang代码示例" class="headerlink" title="一段golang代码示例"></a>一段golang代码示例</h1><p>下面是一段<code>golang</code>的<code>http</code>服务的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io/ioutil&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Resp struct &#123;</span><br><span class="line">	Errno  int    `json:&quot;errno&quot;`</span><br><span class="line">	Errmsg string `json:&quot;errmsg&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func echo(c *gin.Context) &#123;</span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">		Errno:  0,</span><br><span class="line">		Errmsg: &quot;ok&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func handle(c *gin.Context) &#123;</span><br><span class="line">	client := http.Client&#123;&#125;</span><br><span class="line">	req, _ := http.NewRequest(http.MethodGet, &quot;http://0.0.0.0:9932/echo&quot;, nil)</span><br><span class="line">	resp, err := client.Do(req)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;failed to request&quot;, err.Error())</span><br><span class="line">		c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">			Errno:  1,</span><br><span class="line">			Errmsg: &quot;failed to request&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	respB, err := ioutil.ReadAll(resp.Body)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;read resp failed&quot;)</span><br><span class="line">		c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">			Errno:  2,</span><br><span class="line">			Errmsg: &quot;failed to read request&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	defer resp.Body.Close()</span><br><span class="line">	fmt.Println(&quot;resp: &quot;, string(respB))</span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">		Errno:  0,</span><br><span class="line">		Errmsg: &quot;request okay&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	s := http.Server&#123;</span><br><span class="line">		Addr: &quot;0.0.0.0:9932&quot;,</span><br><span class="line">	&#125;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/echo&quot;, echo)</span><br><span class="line">	r.GET(&quot;/handle&quot;, handle)</span><br><span class="line">	s.Handler = r</span><br><span class="line">	if err := s.ListenAndServe(); err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;error, &quot;, err.Error())</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">这是一段比较简单的`golang`代码。需要注意的是，这里的四元组是：[local, /handle, local, /echo]。为了便于示例说明，这里的`handle`的逻辑和请求下游的逻辑是串行的，没有开新的`goroutine`。这一点很重要，后面会说明。</span><br><span class="line"></span><br><span class="line"># 采集的逻辑</span><br><span class="line">下面是采集的逻辑：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>/*<br>func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {<br>…<br>}<br>type Request struct {<br>    Method string<br>    URL *url.URL<br>}<br>type URL struct {<br>    Scheme      string<br>    Opaque      string    // encoded opaque data<br>    User        *Userinfo // username and password information<br>    Host        string    // host or host:port<br>    Path        string    // path (relative paths may omit leading slash)<br>    RawPath     string    // encoded path hint (see EscapedPath method)<br>    ForceQuery  bool      // append a query (‘?’) even if RawQuery is empty<br>    RawQuery    string    // encoded query values, without ‘?’<br>    Fragment    string    // fragment for references, without ‘#’<br>    RawFragment string    // encoded fragment hint (see EscapedFragment method)<br>}<br>*/<br>uprobe:./http_demo:net/http.serverHandler.ServeHTTP<br>{<br>    $req_addr = sarg3;</p>
+<pre><code>$url_addr = *(uint64*)($req_addr+16);
+
+$path_addr = *(uint64*)($url_addr+56);
+$path_len  = *(uint64*)($url_addr+64);
+
+// 在http请求触发处，依据pid将caller_func存储起来
+@caller_path_addr[pid] = $path_addr;
+@caller_path_len[pid]  = $path_len;
+@callee_set[pid] = 0;
+</code></pre>
+<p>}</p>
+<p>/*<br>type Request struct {<br>    Method string<br>    URL *url.URL<br>}</p>
+<p>func (c *Client) do(req *Request) (retres *Response, reterr error) {<br>…<br>}</p>
+<p>*/<br>uprobe:./http_demo:”net/http.(*Client).do”<br>{<br>    // 依据 pid 获取 caller 信息<br>    printf(“caller: \n  caller_path: %s\n”,<br>           str(@caller_path_addr[pid], @caller_path_len[pid]));</p>
+<pre><code>$req_addr = sarg1;
+
+// 获取 callee 信息
+$addr = *(uint64*)($req_addr);
+$len  = *(uint64*)($req_addr + 8);
+printf(&quot;callee: \n  method: %s\n&quot;, str($addr, $len));
+
+$url_addr = *(uint64*)($req_addr + 16);
+
+$addr = *(uint64*)($url_addr + 40);
+$len  = *(uint64*)($url_addr + 48);
+printf(&quot;  host: %s\n&quot;, str($addr, $len));
+
+$addr = *(uint64*)($url_addr + 56);
+$len  = *(uint64*)($url_addr + 64);
+printf(&quot;  url: %s\n\n&quot;, str($addr, $len));
+
+@callee_set[pid] = 1
+</code></pre>
+<p>}</p>
+<p>uprobe:./http_demo:”net/http.(*response).finishRequest”<br>{<br>    // 如果没有下游请求，单独输出<br>    if (@callee_set[pid] == 0){<br>        printf(“caller: \n  caller_path: %s\n”,<br>               str(@caller_path_addr[pid], @caller_path_len[pid]));<br>        printf(“callee: none\n\n”);<br>        @callee_set[pid] = 1;<br>    }<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">到这里就基本上把主要思路介绍清楚了。需要说明的是，示例里使用的是`pid`作为`caller_map`里的`key`，当存在并发时，`pid`肯定是不够的。对于`golang`语言，可以使用`goid`作为`caller_map`的`key`。目前对于使用`golang`常规的使用来说，就足够了。引入`goid`的另一个问题是，业务代码里可能使用新的`goroutine`来进行`callee`的请求、处理。这里就需要引入`goroutine`的派生关系维护，或者`session trace`。关于`session trace`，可以参见[基于ebpf实现的gls](https://liyan-ah.github.io/2022/11/25/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/#more)这部分的逻辑，思路都是一致的。  </span><br><span class="line">但是`session trace`能够覆盖所有的场景么？看一下下面的逻辑：</span><br></pre></td></tr></table></figure>
+<p>var(<br>    info = make(chan interface{}, 1000)<br>)</p>
+<p>func handle(info chan interface{}){<br>    for{<br>        select{<br>            case inf,ok &lt;- info:<br>            // do some request<br>            …<br>        }<br>    }<br>}</p>
+<p>type Resp struct{<br>    Code int     <code>json:&quot;code&quot;</code><br>    Msg string     <code>json:&quot;msg&quot;</code><br>}</p>
+<p>func Handler(ctx *gin.Context){<br>    info &lt;- ctx<br>    c.JSON(http.StatusOk, &amp;Resp{Code: 0, Msg: “okay”})<br>}</p>
+<p>func main(){<br>    go handle(info)<br>    // normal http register and start<br>    …<br>}</p>
+<p>```<br>以上是一种<code>http</code>请求的处理方式，大抵的意思是对于每个请求，<code>handleFunc</code>并没有立即有效响应，而是通过<code>channel</code>将一部分的请求信息传递到其他<code>goroutine</code>里处理。这样虽然<code>callerFunc</code>的响应客观上触发了<code>callee</code>的请求，但是<code>handle()</code>所在的<code>goroutine</code>并不是<code>handleFunc</code>派生的。这种场景下，<code>trace</code>也就断掉了。同理，如果是开了<code>goroutine pool</code>来处理，也会丢失。  </p>
+<h1 id="方案的优缺点"><a href="#方案的优缺点" class="headerlink" title="方案的优缺点"></a>方案的优缺点</h1><ol>
+<li>优点。一如笔者在示例及<code>demo</code>中介绍的，对于方案<code>trace</code>能够覆盖的通信类型，<code>callerFunc, callee, calleeFunc</code>等的获取可以直接通过解析函数的参数来获取。对比基于<code>kprobe</code>的报文解析方案，即通过<code>hook tcp_send tcp_rcv</code>等来获取传输层报文，不需要进行复杂的报文解析。这就使得整个解析的触发次数接近<code>O(1)</code>，即一次<code>http</code>交互，一次<code>probe</code>的触发。此外，<code>hook kprobe</code>显然会对机器上所有会调用这个<code>kprobe</code>的进程造成影响，因为其他进程也会等待着调用<code>kprobe</code>。但是本方案里涉及的还仅是目标程序启动后的进程受到影响，并不会从调用角度来影响其他进程（但是<code>CPU</code>的抢占等是会产生轻微影响的）。</li>
+<li>缺点。本方案的缺点同样很明显：它把语言及框架的依赖引入进来了。相对于<code>kprobe</code>可以直接面向协议进行解析，本方案需要考虑各种语言。同时，如果同一个语言中存在多种<code>http</code>的实现，也需要进行逐个适配。从这一角度而言，<code>golang</code>天然贴合方案：其拥有官方统一维护的<code>net/http</code>库，同时，下游的请求方式也一并维护了。  </li>
+</ol>
+<p>以上是本次介绍的全部内容。在<code>ebpf</code>落地上，笔者还有很多内容需要探索，期望将来能够落地更多有价值的场景。周末愉快～</p>
 ]]></content>
       <categories>
         <category>code</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>redisgo</tag>
-        <tag>debug</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>让emacs在保存文件时自动格式化代码</title>
-    <url>/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://liam.page/">liam</a>同学在<a href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/">让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a href="https://microsoft.github.io/language-server-protocol/"><code>lsp</code></a>配置也一并带上了，不同于<a href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 使用国内 elpa 源来加速插件安装</span><br><span class="line">(defun w-install(pkg)</span><br><span class="line">  ;; would be a wrapper for package-install</span><br><span class="line">  (require &#x27;package)</span><br><span class="line">  (setq package-archives</span><br><span class="line">	&#x27;((&quot;gnu&quot;   . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&quot;)</span><br><span class="line">	   (&quot;melpa&quot; . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&quot;)))</span><br><span class="line">  (package-initialize)</span><br><span class="line">  (package-refresh-contents)</span><br><span class="line">  (unless (package-installed-p pkg)</span><br><span class="line">    (package-install pkg)))</span><br><span class="line"></span><br><span class="line">;; 辅助判断插件安装通用函数</span><br><span class="line">(defun ensure-package-installed (&amp;rest packages)</span><br><span class="line">  &quot;Assure every package was installed, ask for installation if it&#x27;s not.</span><br><span class="line">a list of installed packages or nil for every skipped package.&quot;</span><br><span class="line">  (mapcar</span><br><span class="line">   (lambda (package)</span><br><span class="line">          (if (package-installed-p package)</span><br><span class="line">              nil</span><br><span class="line">            (if (y-or-n-p (format &quot;Package %s is missing. Install it?&quot; package))</span><br><span class="line">                (w-install package)</span><br><span class="line">              package)))</span><br><span class="line">   packages))</span><br><span class="line"></span><br><span class="line">;; clang-format 在文件保存时格式化代码</span><br><span class="line">(ensure-package-installed &#x27;clang-format)</span><br><span class="line">(defun clang-format-on-save-hook()</span><br><span class="line">  &quot;Create a buffer local save hook.&quot;</span><br><span class="line">  (add-hook &#x27;before-save-hook</span><br><span class="line">            (lambda ()</span><br><span class="line">              (when (locate-dominating-file &quot;.&quot; &quot;.clang-format&quot;)</span><br><span class="line">                (clang-format-buffer))</span><br><span class="line">              ;; Continue to save</span><br><span class="line">              nil)</span><br><span class="line">            nil</span><br><span class="line">            ;; Buffer local hook.</span><br><span class="line">            t))</span><br><span class="line"></span><br><span class="line">;; Run this hook for c-mode-hook and c++-mode-hook</span><br><span class="line">(add-hook &#x27;c-mode-hook   (lambda () (clang-format-on-save-hook)))</span><br><span class="line">(add-hook &#x27;c++-mode-hook (lambda () (clang-format-on-save-hook)))</span><br><span class="line">;; create default clang-format file</span><br><span class="line">;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html</span><br><span class="line">;; clang-format -style=llvm -dump-config &gt; .clang-format</span><br><span class="line"></span><br><span class="line">;; 另外，这里列出使用的 lsp-language-server 配置。</span><br><span class="line">;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行</span><br><span class="line">;; https://github.com/MaskRay/ccls/wiki/Build</span><br><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">(ensure-package-installed &#x27;ccls)</span><br><span class="line">(use-package ccls</span><br><span class="line">  :hook ((c-mode c++-mode objc-mode cuda-mode) .</span><br><span class="line">         (lambda() (require &#x27;ccls) (lsp))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a href="https://clang.llvm.org/docs/ClangFormat.html">ClangFormat</a>。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>emacs</tag>
-        <tag>lsp</tag>
-        <tag>c-mode</tag>
-        <tag>clang-format</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>黑魔法--用 ebpf 构建用户空间数据的桥梁</title>
-    <url>/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/</url>
-    <content><![CDATA[<p>在之前的示例中，仅涉及到<code>ebpf</code>对用户空间数据的读取。工程性较强的如：<a href="https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">ebpf采集mysql请求信息及ebpf对应用安全的思考</a>也仅是通过<code>urpobe</code>采集用户空间的数据。本文介绍点<code>ebpf</code>的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。</p>
-<span id="more"></span>
-
-<h1 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h1><p>在看运行效果之前，需要先看下目标示例的代码以便更好的理解本文介绍的功能：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// user/obj/obj.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var Len = 5</span><br><span class="line"></span><br><span class="line">// 预设的 uprobe</span><br><span class="line">//go:noinline</span><br><span class="line">func Set(info []byte) &#123;</span><br><span class="line">	fmt.Println(&quot;info: &quot;, string(info))</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 预设的 uprobe</span><br><span class="line">//go:noinline</span><br><span class="line">func Get(info []byte) []byte &#123;</span><br><span class="line">	fmt.Printf(&quot;info addr: %p\n&quot;, info)</span><br><span class="line">	fmt.Println(string(info))         // 请注意这里的输出操作</span><br><span class="line">	return info</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Third struct &#123;</span><br><span class="line">	Info string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) SetSomething(info string) &#123;</span><br><span class="line">	infoByt := []byte(info)</span><br><span class="line">	// 这里假设是个约束</span><br><span class="line">	infoByt = infoByt[:Len]</span><br><span class="line">	Set(infoByt)  // 在这里调用预设的处理函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) GetSomething() string &#123;</span><br><span class="line">	infoByt := make([]byte, Len, Len)</span><br><span class="line">	infoByt = Get(infoByt) // 在这里调用预设的处理函数</span><br><span class="line">	return string(infoByt)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	third1 := Third&#123;&#125;</span><br><span class="line">	info := &quot;12345&quot;</span><br><span class="line">	third1.SetSomething(info)  // 请注意，这里进行写入的对象</span><br><span class="line"></span><br><span class="line">	/* very long handle logic, many goroutines or proces happend here */</span><br><span class="line"></span><br><span class="line">	third2 := Third&#123;&#125;</span><br><span class="line">    // 请注意，这里读取的对象和上述执行写入的对象是完全没有关系的</span><br><span class="line">	infoGet := third2.GetSomething()</span><br><span class="line">	fmt.Printf(&quot;after getInfo, [%s]\n&quot;, infoGet)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码非常简单，下面进行了两次执行来说明<code>ebpf</code>达到的效果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ./obj  // 第一次，没有使用 ebpf 生效。代码的正常输出结果</span><br><span class="line">info:  12345</span><br><span class="line">info addr: 0xc0000180f0</span><br><span class="line">                         // 请注意这里</span><br><span class="line">after getInfo, []</span><br><span class="line"></span><br><span class="line">$ ./obj  // 第二次，开始执行前开启 ebpf 监听</span><br><span class="line">info:  12345</span><br><span class="line">info addr: 0xc0000180f0</span><br><span class="line">12345                    // 请注意这里</span><br><span class="line">after getInfo, [12345]</span><br></pre></td></tr></table></figure>
-
-<p>请关注上述示例里的注释。通过<code>ebpf</code>的<code>attach</code>，实现了数据从用户空间-&gt;<code>ebpf</code>空间-&gt;用户空间，这个过程并不关心用户代码里发生了什么，<code>ebpf</code>只关注预设的<code>uprobe</code>是怎么被调用的。</p>
-<h1 id="应用及思考"><a href="#应用及思考" class="headerlink" title="应用及思考"></a>应用及思考</h1><p><code>ebpf</code>的这个功能显然具有很广泛的应用，但是具体的应用就需要结合业务的应用来说明了（颇有一些拿着锤子找钉子的感觉），比如：结合调用了特定埋点<code>sdk</code>的使用，能够用来对<code>traceId</code>信息的补全。<br>事物自然都有两面性，<code>ebpf</code>提供了变更用户空间数据的潜力，自然就会带来风险：代码里的逻辑似乎不再靠谱了。而且，想象下将代码里的读操作，变更为删除操作，将会对用户空间的安全造成很大的破坏。</p>
-<h1 id="ebpf-逻辑"><a href="#ebpf-逻辑" class="headerlink" title="ebpf 逻辑"></a>ebpf 逻辑</h1><p>之前一直是使用<code>bpftrace</code>来进行示例演示的，但是本文涉及的功能需要使用<code>long bpf_probe_write_user(void *dst, const void *src, u32 len)</code>这个<code>bpf-helper</code>函数。笔者没有找到<code>bpftrace</code>里的调用方式，因此采用<code>cilium-ebpf</code>来进行示例演示。其中涉及的主要<code>bpf</code>代码附在下面，基本表述了相对原生的<code>bpf-helper</code>的调用方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct&#123;</span><br><span class="line">    __uint(type, BPF_MAP_TYPE_HASH);</span><br><span class="line">    __uint(key_size, sizeof(u32));</span><br><span class="line">    __uint(value_size, sizeof(u8)*5);</span><br><span class="line">    __uint(max_entries, 100);</span><br><span class="line">&#125; info_map SEC(&quot;.maps&quot;);</span><br><span class="line"></span><br><span class="line">struct event&#123;</span><br><span class="line">    u64 pid_tgid;</span><br><span class="line"></span><br><span class="line">    u8 info[5];  // 这里的成员长度，请结合 obj.go 来看</span><br><span class="line">    uintptr_t addr;</span><br><span class="line">    long res;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct event event_t;</span><br><span class="line">// Force emitting struct event into the ELF.</span><br><span class="line">const struct event *unused __attribute__((unused));</span><br><span class="line"></span><br><span class="line">struct &#123;</span><br><span class="line">  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);</span><br><span class="line">&#125; events SEC(&quot;.maps&quot;);</span><br><span class="line"></span><br><span class="line">SEC(&quot;uprobe/main_set&quot;)</span><br><span class="line">int uprobe__main_set(struct pt_regs *ctx)&#123;</span><br><span class="line">    uintptr_t info_p = 0;</span><br><span class="line">    u8 info[5];</span><br><span class="line">    u64 pid_tgid = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    SARG(ctx, 0, info_p);</span><br><span class="line"></span><br><span class="line">    bpf_probe_read(&amp;info, sizeof(info), (const void*)info_p);</span><br><span class="line">    u32 tgid = (u32)(pid_tgid &gt;&gt; 32);</span><br><span class="line">    bpf_map_update_elem(&amp;info_map, &amp;tgid, &amp;info, BPF_ANY);</span><br><span class="line"></span><br><span class="line">    event_t event = &#123;&#125;;</span><br><span class="line">    event.pid_tgid = pid_tgid;</span><br><span class="line">    memcpy(event.info, info, sizeof(info));</span><br><span class="line">    bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SEC(&quot;uprobe/main_get&quot;)</span><br><span class="line">int uprobe__main_get(struct pt_regs *ctx)&#123;</span><br><span class="line">    uintptr_t info_p = 0;</span><br><span class="line">    u64 pid_tgid = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    void* r_info_p = NULL;</span><br><span class="line">    u32 tgid = (u32)(pid_tgid &gt;&gt; 32);</span><br><span class="line">    r_info_p = bpf_map_lookup_elem(&amp;info_map, &amp;tgid);</span><br><span class="line">    if (r_info_p == NULL)&#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    event_t event = &#123;&#125;;</span><br><span class="line">    event.pid_tgid = pid_tgid;</span><br><span class="line"></span><br><span class="line">    SARG(ctx, 0, info_p);</span><br><span class="line"></span><br><span class="line">    u8 info[5];</span><br><span class="line">    memcpy(info, r_info_p, sizeof(info));</span><br><span class="line"></span><br><span class="line">    memcpy(event.info, info, sizeof(event.info));</span><br><span class="line"></span><br><span class="line">    event.res = bpf_probe_write_user((u8*)info_p, info, sizeof(info));</span><br><span class="line">    event.addr = info_p;</span><br><span class="line"></span><br><span class="line">    bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上，周末愉快。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-        <category>ebpf</category>
+        <category>可观测</category>
       </categories>
       <tags>
         <tag>ebpf</tag>
-        <tag>code</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>shell-访问字符串同名变量</title>
-    <url>/2019/06/04/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<p>考虑以下场景：<br>期望通过给定的变量名称<code>var_str</code>，打印出该名称对应的变量值<code>$&#123;var_str&#125;</code>。使用指令<code>eval</code>可以很方便的实现：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var_str=&quot;1213&quot;;</span><br><span class="line">ned_param_name=&quot;var_str&quot;;</span><br><span class="line">eval echo &#x27;$&#x27;&quot;$&#123;ned_param_name&#125;&quot;;</span><br></pre></td></tr></table></figure>
-<p>输出结果为<code>1213</code>;</p>
-<span id="more"></span>
-<p><code>eval</code>命令解释如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval [arg ...]</span><br><span class="line">    The  args  are read and concatenated together into a single command. </span><br><span class="line">    This command is then read and executed by the shell, and its exit status is returned as</span><br><span class="line">the value of eval.  If there are no args, or only null arguments, eval returns 0.</span><br><span class="line">eval [参数 ...]</span><br><span class="line">    参数将会被读取并作为一个指令被读入。然后这个指令将会被shell读取并执行，执行结果</span><br><span class="line">将会作为eval的结果。如果没有参数传入，或者只有空参数，eval指令将会返回0。</span><br></pre></td></tr></table></figure>
-<p>对于上述的例子，<code>echo $var_str</code>将会被读入，并被shell重新执行。输出结果为<code>1213</code>。该结果即作为<code>eval</code>的输出结果。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>shell</tag>
+        <tag>golang</tag>
+        <tag>可观测</tag>
       </tags>
   </entry>
   <entry>
@@ -1615,77 +1639,53 @@ int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
       </tags>
   </entry>
   <entry>
-    <title>无侵入观测服务四元组的一种实现</title>
-    <url>/2023/03/29/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%9B%9B%E5%85%83%E7%BB%84/</url>
+    <title>让emacs在保存文件时自动格式化代码</title>
+    <url>/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</url>
     <content><![CDATA[<blockquote>
-<p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入一些精力，这里做一下简单的回顾。</p>
+<p><a href="https://liam.page/">liam</a>同学在<a href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/">让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</p>
 </blockquote>
-<p>服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务<code>A</code>的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务<code>B</code>, <code>C</code>的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                  service call                  </span><br><span class="line">                                                </span><br><span class="line">,-------.          ,-.          ,-.          ,-.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`---+---&#x27;          `+&#x27;          `+&#x27;          `+&#x27;</span><br><span class="line">    |      /a       |            |            | </span><br><span class="line">    |--------------&gt;|            |            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |    /b      |            | </span><br><span class="line">    |               |-----------&gt;|            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |           /c            | </span><br><span class="line">    |               |------------------------&gt;| </span><br><span class="line">,---+---.          ,+.          ,+.          ,+.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`-------&#x27;          `-&#x27;          `-&#x27;          `-&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>在弄清楚四元组是什么之后，下面进入今天的话题：如何使用<code>BPF</code>来采集四元组。需要说明的是，笔者这里的语言使用的是<code>golang-1.16</code>。<code>golang</code>不同语言间的区别，见：<a href="https://liyan-ah.github.io/2023/03/03/golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/#more">golang-1.17+调用规约</a>。<br>值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。<br>按照惯例，先看下效果吧：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 启动采集</span><br><span class="line">bpftrace ./http.bt</span><br><span class="line">Attaching 2 probes...  # 未触发请求前，停止在这里</span><br><span class="line">caller:                # 触发请求后，输出</span><br><span class="line"> 		caller_path: /handle</span><br><span class="line">callee:</span><br><span class="line"> 		method: GET</span><br><span class="line"> 		host: 0.0.0.0:9932</span><br><span class="line"> 		url: /echo</span><br><span class="line"> </span><br><span class="line">caller:</span><br><span class="line"> 		caller_path: /echo</span><br><span class="line">	callee: none</span><br><span class="line"> </span><br><span class="line"># 开始服务</span><br><span class="line">./http_demo &amp;</span><br><span class="line"># 触发请求</span><br><span class="line">curl http://0.0.0.0:9932/handle</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
-<h1 id="一段golang代码示例"><a href="#一段golang代码示例" class="headerlink" title="一段golang代码示例"></a>一段golang代码示例</h1><p>下面是一段<code>golang</code>的<code>http</code>服务的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io/ioutil&quot;</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line"></span><br><span class="line">	&quot;github.com/gin-gonic/gin&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Resp struct &#123;</span><br><span class="line">	Errno  int    `json:&quot;errno&quot;`</span><br><span class="line">	Errmsg string `json:&quot;errmsg&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func echo(c *gin.Context) &#123;</span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">		Errno:  0,</span><br><span class="line">		Errmsg: &quot;ok&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func handle(c *gin.Context) &#123;</span><br><span class="line">	client := http.Client&#123;&#125;</span><br><span class="line">	req, _ := http.NewRequest(http.MethodGet, &quot;http://0.0.0.0:9932/echo&quot;, nil)</span><br><span class="line">	resp, err := client.Do(req)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;failed to request&quot;, err.Error())</span><br><span class="line">		c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">			Errno:  1,</span><br><span class="line">			Errmsg: &quot;failed to request&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	respB, err := ioutil.ReadAll(resp.Body)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;read resp failed&quot;)</span><br><span class="line">		c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">			Errno:  2,</span><br><span class="line">			Errmsg: &quot;failed to read request&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	defer resp.Body.Close()</span><br><span class="line">	fmt.Println(&quot;resp: &quot;, string(respB))</span><br><span class="line">	c.JSON(http.StatusOK, &amp;Resp&#123;</span><br><span class="line">		Errno:  0,</span><br><span class="line">		Errmsg: &quot;request okay&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	s := http.Server&#123;</span><br><span class="line">		Addr: &quot;0.0.0.0:9932&quot;,</span><br><span class="line">	&#125;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/echo&quot;, echo)</span><br><span class="line">	r.GET(&quot;/handle&quot;, handle)</span><br><span class="line">	s.Handler = r</span><br><span class="line">	if err := s.ListenAndServe(); err != nil &#123;</span><br><span class="line">		fmt.Println(&quot;error, &quot;, err.Error())</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">这是一段比较简单的`golang`代码。需要注意的是，这里的四元组是：[local, /handle, local, /echo]。为了便于示例说明，这里的`handle`的逻辑和请求下游的逻辑是串行的，没有开新的`goroutine`。这一点很重要，后面会说明。</span><br><span class="line"></span><br><span class="line"># 采集的逻辑</span><br><span class="line">下面是采集的逻辑：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>/*<br>func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {<br>…<br>}<br>type Request struct {<br>    Method string<br>    URL *url.URL<br>}<br>type URL struct {<br>    Scheme      string<br>    Opaque      string    // encoded opaque data<br>    User        *Userinfo // username and password information<br>    Host        string    // host or host:port<br>    Path        string    // path (relative paths may omit leading slash)<br>    RawPath     string    // encoded path hint (see EscapedPath method)<br>    ForceQuery  bool      // append a query (‘?’) even if RawQuery is empty<br>    RawQuery    string    // encoded query values, without ‘?’<br>    Fragment    string    // fragment for references, without ‘#’<br>    RawFragment string    // encoded fragment hint (see EscapedFragment method)<br>}<br>*/<br>uprobe:./http_demo:net/http.serverHandler.ServeHTTP<br>{<br>    $req_addr = sarg3;</p>
-<pre><code>$url_addr = *(uint64*)($req_addr+16);
-
-$path_addr = *(uint64*)($url_addr+56);
-$path_len  = *(uint64*)($url_addr+64);
-
-// 在http请求触发处，依据pid将caller_func存储起来
-@caller_path_addr[pid] = $path_addr;
-@caller_path_len[pid]  = $path_len;
-@callee_set[pid] = 0;
-</code></pre>
-<p>}</p>
-<p>/*<br>type Request struct {<br>    Method string<br>    URL *url.URL<br>}</p>
-<p>func (c *Client) do(req *Request) (retres *Response, reterr error) {<br>…<br>}</p>
-<p>*/<br>uprobe:./http_demo:”net/http.(*Client).do”<br>{<br>    // 依据 pid 获取 caller 信息<br>    printf(“caller: \n  caller_path: %s\n”,<br>           str(@caller_path_addr[pid], @caller_path_len[pid]));</p>
-<pre><code>$req_addr = sarg1;
-
-// 获取 callee 信息
-$addr = *(uint64*)($req_addr);
-$len  = *(uint64*)($req_addr + 8);
-printf(&quot;callee: \n  method: %s\n&quot;, str($addr, $len));
-
-$url_addr = *(uint64*)($req_addr + 16);
-
-$addr = *(uint64*)($url_addr + 40);
-$len  = *(uint64*)($url_addr + 48);
-printf(&quot;  host: %s\n&quot;, str($addr, $len));
-
-$addr = *(uint64*)($url_addr + 56);
-$len  = *(uint64*)($url_addr + 64);
-printf(&quot;  url: %s\n\n&quot;, str($addr, $len));
-
-@callee_set[pid] = 1
-</code></pre>
-<p>}</p>
-<p>uprobe:./http_demo:”net/http.(*response).finishRequest”<br>{<br>    // 如果没有下游请求，单独输出<br>    if (@callee_set[pid] == 0){<br>        printf(“caller: \n  caller_path: %s\n”,<br>               str(@caller_path_addr[pid], @caller_path_len[pid]));<br>        printf(“callee: none\n\n”);<br>        @callee_set[pid] = 1;<br>    }<br>}</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">到这里就基本上把主要思路介绍清楚了。需要说明的是，示例里使用的是`pid`作为`caller_map`里的`key`，当存在并发时，`pid`肯定是不够的。对于`golang`语言，可以使用`goid`作为`caller_map`的`key`。目前对于使用`golang`常规的使用来说，就足够了。引入`goid`的另一个问题是，业务代码里可能使用新的`goroutine`来进行`callee`的请求、处理。这里就需要引入`goroutine`的派生关系维护，或者`session trace`。关于`session trace`，可以参见[基于ebpf实现的gls](https://liyan-ah.github.io/2022/11/25/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/#more)这部分的逻辑，思路都是一致的。  </span><br><span class="line">但是`session trace`能够覆盖所有的场景么？看一下下面的逻辑：</span><br></pre></td></tr></table></figure>
-<p>var(<br>    info = make(chan interface{}, 1000)<br>)</p>
-<p>func handle(info chan interface{}){<br>    for{<br>        select{<br>            case inf,ok &lt;- info:<br>            // do some request<br>            …<br>        }<br>    }<br>}</p>
-<p>type Resp struct{<br>    Code int     <code>json:&quot;code&quot;</code><br>    Msg string     <code>json:&quot;msg&quot;</code><br>}</p>
-<p>func Handler(ctx *gin.Context){<br>    info &lt;- ctx<br>    c.JSON(http.StatusOk, &amp;Resp{Code: 0, Msg: “okay”})<br>}</p>
-<p>func main(){<br>    go handle(info)<br>    // normal http register and start<br>    …<br>}</p>
-<p>```<br>以上是一种<code>http</code>请求的处理方式，大抵的意思是对于每个请求，<code>handleFunc</code>并没有立即有效响应，而是通过<code>channel</code>将一部分的请求信息传递到其他<code>goroutine</code>里处理。这样虽然<code>callerFunc</code>的响应客观上触发了<code>callee</code>的请求，但是<code>handle()</code>所在的<code>goroutine</code>并不是<code>handleFunc</code>派生的。这种场景下，<code>trace</code>也就断掉了。同理，如果是开了<code>goroutine pool</code>来处理，也会丢失。  </p>
-<h1 id="方案的优缺点"><a href="#方案的优缺点" class="headerlink" title="方案的优缺点"></a>方案的优缺点</h1><ol>
-<li>优点。一如笔者在示例及<code>demo</code>中介绍的，对于方案<code>trace</code>能够覆盖的通信类型，<code>callerFunc, callee, calleeFunc</code>等的获取可以直接通过解析函数的参数来获取。对比基于<code>kprobe</code>的报文解析方案，即通过<code>hook tcp_send tcp_rcv</code>等来获取传输层报文，不需要进行复杂的报文解析。这就使得整个解析的触发次数接近<code>O(1)</code>，即一次<code>http</code>交互，一次<code>probe</code>的触发。此外，<code>hook kprobe</code>显然会对机器上所有会调用这个<code>kprobe</code>的进程造成影响，因为其他进程也会等待着调用<code>kprobe</code>。但是本方案里涉及的还仅是目标程序启动后的进程受到影响，并不会从调用角度来影响其他进程（但是<code>CPU</code>的抢占等是会产生轻微影响的）。</li>
-<li>缺点。本方案的缺点同样很明显：它把语言及框架的依赖引入进来了。相对于<code>kprobe</code>可以直接面向协议进行解析，本方案需要考虑各种语言。同时，如果同一个语言中存在多种<code>http</code>的实现，也需要进行逐个适配。从这一角度而言，<code>golang</code>天然贴合方案：其拥有官方统一维护的<code>net/http</code>库，同时，下游的请求方式也一并维护了。  </li>
-</ol>
-<p>以上是本次介绍的全部内容。在<code>ebpf</code>落地上，笔者还有很多内容需要探索，期望将来能够落地更多有价值的场景。周末愉快～</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a href="https://microsoft.github.io/language-server-protocol/"><code>lsp</code></a>配置也一并带上了，不同于<a href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 使用国内 elpa 源来加速插件安装</span><br><span class="line">(defun w-install(pkg)</span><br><span class="line">  ;; would be a wrapper for package-install</span><br><span class="line">  (require &#x27;package)</span><br><span class="line">  (setq package-archives</span><br><span class="line">	&#x27;((&quot;gnu&quot;   . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&quot;)</span><br><span class="line">	   (&quot;melpa&quot; . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&quot;)))</span><br><span class="line">  (package-initialize)</span><br><span class="line">  (package-refresh-contents)</span><br><span class="line">  (unless (package-installed-p pkg)</span><br><span class="line">    (package-install pkg)))</span><br><span class="line"></span><br><span class="line">;; 辅助判断插件安装通用函数</span><br><span class="line">(defun ensure-package-installed (&amp;rest packages)</span><br><span class="line">  &quot;Assure every package was installed, ask for installation if it&#x27;s not.</span><br><span class="line">a list of installed packages or nil for every skipped package.&quot;</span><br><span class="line">  (mapcar</span><br><span class="line">   (lambda (package)</span><br><span class="line">          (if (package-installed-p package)</span><br><span class="line">              nil</span><br><span class="line">            (if (y-or-n-p (format &quot;Package %s is missing. Install it?&quot; package))</span><br><span class="line">                (w-install package)</span><br><span class="line">              package)))</span><br><span class="line">   packages))</span><br><span class="line"></span><br><span class="line">;; clang-format 在文件保存时格式化代码</span><br><span class="line">(ensure-package-installed &#x27;clang-format)</span><br><span class="line">(defun clang-format-on-save-hook()</span><br><span class="line">  &quot;Create a buffer local save hook.&quot;</span><br><span class="line">  (add-hook &#x27;before-save-hook</span><br><span class="line">            (lambda ()</span><br><span class="line">              (when (locate-dominating-file &quot;.&quot; &quot;.clang-format&quot;)</span><br><span class="line">                (clang-format-buffer))</span><br><span class="line">              ;; Continue to save</span><br><span class="line">              nil)</span><br><span class="line">            nil</span><br><span class="line">            ;; Buffer local hook.</span><br><span class="line">            t))</span><br><span class="line"></span><br><span class="line">;; Run this hook for c-mode-hook and c++-mode-hook</span><br><span class="line">(add-hook &#x27;c-mode-hook   (lambda () (clang-format-on-save-hook)))</span><br><span class="line">(add-hook &#x27;c++-mode-hook (lambda () (clang-format-on-save-hook)))</span><br><span class="line">;; create default clang-format file</span><br><span class="line">;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html</span><br><span class="line">;; clang-format -style=llvm -dump-config &gt; .clang-format</span><br><span class="line"></span><br><span class="line">;; 另外，这里列出使用的 lsp-language-server 配置。</span><br><span class="line">;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行</span><br><span class="line">;; https://github.com/MaskRay/ccls/wiki/Build</span><br><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">(ensure-package-installed &#x27;ccls)</span><br><span class="line">(use-package ccls</span><br><span class="line">  :hook ((c-mode c++-mode objc-mode cuda-mode) .</span><br><span class="line">         (lambda() (require &#x27;ccls) (lsp))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a href="https://clang.llvm.org/docs/ClangFormat.html">ClangFormat</a>。</p>
 ]]></content>
       <categories>
-        <category>code</category>
-        <category>可观测</category>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>emacs</tag>
+        <tag>lsp</tag>
+        <tag>c-mode</tag>
+        <tag>clang-format</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>黑魔法--用 ebpf 构建用户空间数据的桥梁</title>
+    <url>/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/</url>
+    <content><![CDATA[<p>在之前的示例中，仅涉及到<code>ebpf</code>对用户空间数据的读取。工程性较强的如：<a href="https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">ebpf采集mysql请求信息及ebpf对应用安全的思考</a>也仅是通过<code>urpobe</code>采集用户空间的数据。本文介绍点<code>ebpf</code>的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。</p>
+<span id="more"></span>
+
+<h1 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h1><p>在看运行效果之前，需要先看下目标示例的代码以便更好的理解本文介绍的功能：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// user/obj/obj.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var Len = 5</span><br><span class="line"></span><br><span class="line">// 预设的 uprobe</span><br><span class="line">//go:noinline</span><br><span class="line">func Set(info []byte) &#123;</span><br><span class="line">	fmt.Println(&quot;info: &quot;, string(info))</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 预设的 uprobe</span><br><span class="line">//go:noinline</span><br><span class="line">func Get(info []byte) []byte &#123;</span><br><span class="line">	fmt.Printf(&quot;info addr: %p\n&quot;, info)</span><br><span class="line">	fmt.Println(string(info))         // 请注意这里的输出操作</span><br><span class="line">	return info</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Third struct &#123;</span><br><span class="line">	Info string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) SetSomething(info string) &#123;</span><br><span class="line">	infoByt := []byte(info)</span><br><span class="line">	// 这里假设是个约束</span><br><span class="line">	infoByt = infoByt[:Len]</span><br><span class="line">	Set(infoByt)  // 在这里调用预设的处理函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (t *Third) GetSomething() string &#123;</span><br><span class="line">	infoByt := make([]byte, Len, Len)</span><br><span class="line">	infoByt = Get(infoByt) // 在这里调用预设的处理函数</span><br><span class="line">	return string(infoByt)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	third1 := Third&#123;&#125;</span><br><span class="line">	info := &quot;12345&quot;</span><br><span class="line">	third1.SetSomething(info)  // 请注意，这里进行写入的对象</span><br><span class="line"></span><br><span class="line">	/* very long handle logic, many goroutines or proces happend here */</span><br><span class="line"></span><br><span class="line">	third2 := Third&#123;&#125;</span><br><span class="line">    // 请注意，这里读取的对象和上述执行写入的对象是完全没有关系的</span><br><span class="line">	infoGet := third2.GetSomething()</span><br><span class="line">	fmt.Printf(&quot;after getInfo, [%s]\n&quot;, infoGet)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码非常简单，下面进行了两次执行来说明<code>ebpf</code>达到的效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ./obj  // 第一次，没有使用 ebpf 生效。代码的正常输出结果</span><br><span class="line">info:  12345</span><br><span class="line">info addr: 0xc0000180f0</span><br><span class="line">                         // 请注意这里</span><br><span class="line">after getInfo, []</span><br><span class="line"></span><br><span class="line">$ ./obj  // 第二次，开始执行前开启 ebpf 监听</span><br><span class="line">info:  12345</span><br><span class="line">info addr: 0xc0000180f0</span><br><span class="line">12345                    // 请注意这里</span><br><span class="line">after getInfo, [12345]</span><br></pre></td></tr></table></figure>
+
+<p>请关注上述示例里的注释。通过<code>ebpf</code>的<code>attach</code>，实现了数据从用户空间-&gt;<code>ebpf</code>空间-&gt;用户空间，这个过程并不关心用户代码里发生了什么，<code>ebpf</code>只关注预设的<code>uprobe</code>是怎么被调用的。</p>
+<h1 id="应用及思考"><a href="#应用及思考" class="headerlink" title="应用及思考"></a>应用及思考</h1><p><code>ebpf</code>的这个功能显然具有很广泛的应用，但是具体的应用就需要结合业务的应用来说明了（颇有一些拿着锤子找钉子的感觉），比如：结合调用了特定埋点<code>sdk</code>的使用，能够用来对<code>traceId</code>信息的补全。<br>事物自然都有两面性，<code>ebpf</code>提供了变更用户空间数据的潜力，自然就会带来风险：代码里的逻辑似乎不再靠谱了。而且，想象下将代码里的读操作，变更为删除操作，将会对用户空间的安全造成很大的破坏。</p>
+<h1 id="ebpf-逻辑"><a href="#ebpf-逻辑" class="headerlink" title="ebpf 逻辑"></a>ebpf 逻辑</h1><p>之前一直是使用<code>bpftrace</code>来进行示例演示的，但是本文涉及的功能需要使用<code>long bpf_probe_write_user(void *dst, const void *src, u32 len)</code>这个<code>bpf-helper</code>函数。笔者没有找到<code>bpftrace</code>里的调用方式，因此采用<code>cilium-ebpf</code>来进行示例演示。其中涉及的主要<code>bpf</code>代码附在下面，基本表述了相对原生的<code>bpf-helper</code>的调用方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct&#123;</span><br><span class="line">    __uint(type, BPF_MAP_TYPE_HASH);</span><br><span class="line">    __uint(key_size, sizeof(u32));</span><br><span class="line">    __uint(value_size, sizeof(u8)*5);</span><br><span class="line">    __uint(max_entries, 100);</span><br><span class="line">&#125; info_map SEC(&quot;.maps&quot;);</span><br><span class="line"></span><br><span class="line">struct event&#123;</span><br><span class="line">    u64 pid_tgid;</span><br><span class="line"></span><br><span class="line">    u8 info[5];  // 这里的成员长度，请结合 obj.go 来看</span><br><span class="line">    uintptr_t addr;</span><br><span class="line">    long res;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct event event_t;</span><br><span class="line">// Force emitting struct event into the ELF.</span><br><span class="line">const struct event *unused __attribute__((unused));</span><br><span class="line"></span><br><span class="line">struct &#123;</span><br><span class="line">  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);</span><br><span class="line">&#125; events SEC(&quot;.maps&quot;);</span><br><span class="line"></span><br><span class="line">SEC(&quot;uprobe/main_set&quot;)</span><br><span class="line">int uprobe__main_set(struct pt_regs *ctx)&#123;</span><br><span class="line">    uintptr_t info_p = 0;</span><br><span class="line">    u8 info[5];</span><br><span class="line">    u64 pid_tgid = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    SARG(ctx, 0, info_p);</span><br><span class="line"></span><br><span class="line">    bpf_probe_read(&amp;info, sizeof(info), (const void*)info_p);</span><br><span class="line">    u32 tgid = (u32)(pid_tgid &gt;&gt; 32);</span><br><span class="line">    bpf_map_update_elem(&amp;info_map, &amp;tgid, &amp;info, BPF_ANY);</span><br><span class="line"></span><br><span class="line">    event_t event = &#123;&#125;;</span><br><span class="line">    event.pid_tgid = pid_tgid;</span><br><span class="line">    memcpy(event.info, info, sizeof(info));</span><br><span class="line">    bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SEC(&quot;uprobe/main_get&quot;)</span><br><span class="line">int uprobe__main_get(struct pt_regs *ctx)&#123;</span><br><span class="line">    uintptr_t info_p = 0;</span><br><span class="line">    u64 pid_tgid = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    void* r_info_p = NULL;</span><br><span class="line">    u32 tgid = (u32)(pid_tgid &gt;&gt; 32);</span><br><span class="line">    r_info_p = bpf_map_lookup_elem(&amp;info_map, &amp;tgid);</span><br><span class="line">    if (r_info_p == NULL)&#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    event_t event = &#123;&#125;;</span><br><span class="line">    event.pid_tgid = pid_tgid;</span><br><span class="line"></span><br><span class="line">    SARG(ctx, 0, info_p);</span><br><span class="line"></span><br><span class="line">    u8 info[5];</span><br><span class="line">    memcpy(info, r_info_p, sizeof(info));</span><br><span class="line"></span><br><span class="line">    memcpy(event.info, info, sizeof(event.info));</span><br><span class="line"></span><br><span class="line">    event.res = bpf_probe_write_user((u8*)info_p, info, sizeof(info));</span><br><span class="line">    event.addr = info_p;</span><br><span class="line"></span><br><span class="line">    bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;event, sizeof(event));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上，周末愉快。</p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+        <category>ebpf</category>
       </categories>
       <tags>
         <tag>ebpf</tag>
-        <tag>golang</tag>
-        <tag>可观测</tag>
+        <tag>code</tag>
       </tags>
   </entry>
 </search>
