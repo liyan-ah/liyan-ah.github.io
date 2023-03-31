@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入一些精力，这里做一下简单的回顾。  服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四元">
+<meta name="description" content="最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。  服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四">
 <meta property="og:type" content="article">
 <meta property="og:title" content="无侵入观测服务四元组的一种实现">
 <meta property="og:url" content="http://yoursite.com/2023/03/29/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%9B%9B%E5%85%83%E7%BB%84/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
-<meta property="og:description" content="最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入一些精力，这里做一下简单的回顾。  服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四元">
+<meta property="og:description" content="最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。  服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-03-29T11:42:00.000Z">
-<meta property="article:modified_time" content="2023-03-31T13:17:30.164Z">
+<meta property="article:modified_time" content="2023-03-31T13:39:56.225Z">
 <meta property="article:author" content="李岩">
 <meta property="article:tag" content="ebpf">
 <meta property="article:tag" content="golang">
@@ -426,7 +426,7 @@
 
       
         <blockquote>
-<p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入一些精力，这里做一下简单的回顾。</p>
+<p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。</p>
 </blockquote>
 <p>服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务<code>A</code>的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务<code>B</code>, <code>C</code>的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">                  service call                  </span><br><span class="line">                                                </span><br><span class="line">,-------.          ,-.          ,-.          ,-.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`---+---&#x27;          `+&#x27;          `+&#x27;          `+&#x27;</span><br><span class="line">    |      /a       |            |            | </span><br><span class="line">    |--------------&gt;|            |            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |    /b      |            | </span><br><span class="line">    |               |-----------&gt;|            | </span><br><span class="line">    |               |            |            | </span><br><span class="line">    |               |           /c            | </span><br><span class="line">    |               |------------------------&gt;| </span><br><span class="line">,---+---.          ,+.          ,+.          ,+.</span><br><span class="line">|outisde|          |A|          |B|          |C|</span><br><span class="line">`-------&#x27;          `-&#x27;          `-&#x27;          `-&#x27;</span><br></pre></td></tr></table></figure>
@@ -482,7 +482,7 @@ printf(&quot;  url: %s\n\n&quot;, str($addr, $len));
 <p>```<br>以上是一种<code>http</code>请求的处理方式，大抵的意思是对于每个请求，<code>handleFunc</code>并没有立即有效响应，而是通过<code>channel</code>将一部分的请求信息传递到其他<code>goroutine</code>里处理。这样虽然<code>callerFunc</code>的响应客观上触发了<code>callee</code>的请求，但是<code>handle()</code>所在的<code>goroutine</code>并不是<code>handleFunc</code>派生的。这种场景下，<code>trace</code>也就断掉了。同理，如果是开了<code>goroutine pool</code>来处理，也会丢失。  </p>
 <h1 id="方案的优缺点"><a href="#方案的优缺点" class="headerlink" title="方案的优缺点"></a>方案的优缺点</h1><ol>
 <li>优点。一如笔者在示例及<code>demo</code>中介绍的，对于方案<code>trace</code>能够覆盖的通信类型，<code>callerFunc, callee, calleeFunc</code>等的获取可以直接通过解析函数的参数来获取。对比基于<code>kprobe</code>的报文解析方案，即通过<code>hook tcp_send tcp_rcv</code>等来获取传输层报文，不需要进行复杂的报文解析。这就使得整个解析的触发次数接近<code>O(1)</code>，即一次<code>http</code>交互，一次<code>probe</code>的触发。此外，<code>hook kprobe</code>显然会对机器上所有会调用这个<code>kprobe</code>的进程造成影响，因为其他进程也会等待着调用<code>kprobe</code>。但是本方案里涉及的还仅是目标程序启动后的进程受到影响，并不会从调用角度来影响其他进程（但是<code>CPU</code>的抢占等是会产生轻微影响的）。</li>
-<li>缺点。本方案的缺点同样很明显：它把语言及框架的依赖引入进来了。相对于<code>kprobe</code>可以直接面向协议进行解析，本方案需要考虑各种语言。同时，如果同一个语言中存在多种<code>http</code>的实现，也需要进行逐个适配。从这一角度而言，<code>golang</code>天然贴合方案：其拥有官方统一维护的<code>net/http</code>库，同时，下游的请求方式也一并维护了。  </li>
+<li>缺点。本方案的缺点同样很明显：它把语言及框架的依赖引入进来了。相对于<code>kprobe</code>可以直接面向协议进行解析，本方案需要考虑各种语言。同时，如果同一个语言中存在多种<code>http</code>的实现，也需要进行逐个适配。从这一角度而言，<code>golang</code>天然贴合本方案：其拥有官方统一维护的<code>net/http</code>库，同时，下游的请求方式也一并维护了。  </li>
 </ol>
 <p>以上是本次介绍的全部内容。在<code>ebpf</code>落地上，笔者还有很多内容需要探索，期望将来能够落地更多有价值的场景。周末愉快～</p>
 
