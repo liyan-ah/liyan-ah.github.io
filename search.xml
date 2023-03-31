@@ -49,6 +49,20 @@
       </tags>
   </entry>
   <entry>
+    <title>Mac 绘图工具推荐</title>
+    <url>/2022/02/16/Mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<p>之前办公一直在<code>Windows</code>系统中，诸如流程图、部署图等图表使用的是<code>visio</code>。迁移到<code>Mac</code>上后，<code>visio</code>便不能使用了。转战到<a href="https://www.sketch.com/"><code>sketch</code></a> 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。<br>目前在使用<a href="https://draw.io/"><code>draw.io</code></a> 进行日常绘图，开源、跨平台、免费、使用流畅，可以在线使用或者客户端使用。基本满足日常需求。用着还是比较好的。</p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>绘图</tag>
+        <tag>mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mac使用备注</title>
     <url>/2020/12/10/Mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
     <content><![CDATA[<blockquote>
@@ -101,20 +115,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Mac 绘图工具推荐</title>
-    <url>/2022/02/16/Mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</url>
-    <content><![CDATA[<p>之前办公一直在<code>Windows</code>系统中，诸如流程图、部署图等图表使用的是<code>visio</code>。迁移到<code>Mac</code>上后，<code>visio</code>便不能使用了。转战到<a href="https://www.sketch.com/"><code>sketch</code></a> 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。<br>目前在使用<a href="https://draw.io/"><code>draw.io</code></a> 进行日常绘图，开源、跨平台、免费、使用流畅，可以在线使用或者客户端使用。基本满足日常需求。用着还是比较好的。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>mac</tag>
-        <tag>工具</tag>
-        <tag>绘图</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Quic协议</title>
     <url>/2021/11/09/Quic%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<blockquote>
@@ -140,6 +140,123 @@
       </categories>
       <tags>
         <tag>技术</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos 安装docker并构建golang镜像</title>
+    <url>/2022/03/04/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。  </p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo  </span><br><span class="line">    </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io  </span><br><span class="line">\# 这里报了一个错</span><br><span class="line">\# (try to add &#x27;--allowerasing&#x27; to command line to replace conflicting packages or &#x27;--skip-broken&#x27; to skip uninstallable packages or &#x27;--nobest&#x27; to use not only best candidate packages)  </span><br><span class="line">\# 重新执行  </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io --allowerasing</span><br><span class="line"></span><br><span class="line">\# 启动 docker  </span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">\# 测试   </span><br><span class="line">sudo docker run hello-world </span><br><span class="line">\# Hello from Docker!  </span><br><span class="line">\# This message shows that your installation appears to be working correctly.  </span><br></pre></td></tr></table></figure>
+
+
+<h1 id="构建golang服务镜像"><a href="#构建golang服务镜像" class="headerlink" title="构建golang服务镜像"></a>构建golang服务镜像</h1><p>先看下工作目录的结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── gin-srv</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
+<p>简单写一个<code>golang</code>的程序:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;github.com/gin-gonic/gin&quot;</span><br><span class="line"></span><br><span class="line">type Resp struct&#123;</span><br><span class="line">	Errno int `json:&quot;errno&quot;`</span><br><span class="line">	Data map[string]int64 `json:&quot;data&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/ping&quot;, func(c *gin.Context)&#123;</span><br><span class="line">		resp := &amp;Resp&#123;Errno:0, Data: map[string]int64&#123;</span><br><span class="line">			&quot;now&quot;: time.Now().Unix(),</span><br><span class="line">		&#125;&#125;</span><br><span class="line">		c.JSON(200, &amp;resp)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run(&quot;0.0.0.0:8080&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构建一个Dockerfile，以<code>centos</code>作为base以便能够正常登陆容器进行调试：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM centos:8</span><br><span class="line">ADD . ./</span><br><span class="line">EXPOSE 8080</span><br><span class="line">ENTRYPOINT [&quot;./gin-srv&quot;]</span><br></pre></td></tr></table></figure>
+<p>启动容器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建镜像</span><br><span class="line">sudo docker build -t gin_docker .</span><br><span class="line"># 启动镜像</span><br><span class="line">sudo docker run --name gin_docker -p 8080:8080 -d gin_docker</span><br></pre></td></tr></table></figure>
+<p>访问容器中的服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ curl localhost:8080/ping</span><br><span class="line">&#123;&quot;errno&quot;:0,&quot;data&quot;:&#123;&quot;now&quot;:1646381863&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>容器起来了。可以继续后面的性能评估及agent启动工作了。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a><br><a href="https://article.itxueyuan.com/7DreWj">Golang应用打包docker镜像并运行</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>eBPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c++插件管理--pluma&lt;实践&gt;</title>
+    <url>/2020/10/29/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86-pluma/</url>
+    <content><![CDATA[<p>最近研究了一下<a href="http://pluma-framework.sourceforge.net/">pluma</a>的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。<br>下面重新整理了一个例子，作为备注。  </p>
+<span id="more"></span>
+
+<p>其中，<code>device</code>为一个虚基类，作为接口类存在。<code>keyboard</code>及<code>screen</code>作为实现了device的子类存在，实现具体的操作。在pluma上注册后，在<code>main</code>中调用接口，实现<code>keyboard</code>及<code>screen</code>的调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.hpp</span><br><span class="line">#ifndef _DEVICE_HPP_</span><br><span class="line">#define _DEVICE_HPP_</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Device&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual std::string getDescription() const=0;</span><br><span class="line">&#125;;</span><br><span class="line">// create DevicedProvider class</span><br><span class="line">PLUMA_PROVIDER_HEADER(Device);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.cpp</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">PLUMA_PROVIDER_SOURCE(Device, 6, 3);</span><br></pre></td></tr></table></figure>
+<p>如上所示，是<code>device</code>的定义。其中<code>PLUMA_PROVIDER_HEADER</code>和<code>PLUMA_PROVIDER_SOURCE</code><code>pluma</code>提供的宏。功能暂且不论。我们继续往下看。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// screen.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Screen: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;screen&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Screen, Device);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// keyboard.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Keyboard: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;keyboard&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Keyboard, Device);</span><br></pre></td></tr></table></figure>
+<p>上面实现了<code>screen</code>及<code>keyboard</code>的逻辑。实现了之后，需要进行注册：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// connect.cpp</span><br><span class="line"> #include &lt;Pluma/Connector.hpp&gt;</span><br><span class="line"> #include &quot;keyboard.hpp&quot;</span><br><span class="line"> #include &quot;screen.hpp&quot;</span><br><span class="line"></span><br><span class="line"> PLUMA_CONNECTOR</span><br><span class="line"> bool connect(pluma::Host&amp; host)&#123;</span><br><span class="line">     // add a keyboard provider to host</span><br><span class="line">     host.add( new KeyboardProvider() );</span><br><span class="line">     host.add( new ScreenProvider() );</span><br><span class="line">     return true;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这里在<code>connect</code>中进行了两个子类的注册。之所以使用<code>connect</code>是因为后面的pluma使用的时候，官网给出的示例代码中，会从<code>connect</code>入口开始调用。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.cpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    pluma:: Pluma plugins;</span><br><span class="line">    plugins.acceptProviderType&lt;DeviceProvider&gt;();</span><br><span class="line">    plugins.load(&quot;./plugin/connect.so&quot;);</span><br><span class="line">    //plugins.load(&quot;./plugin/keyboard.so&quot;);</span><br><span class="line"></span><br><span class="line">    std::vector&lt;DeviceProvider*&gt; providers;</span><br><span class="line">    plugins.getProviders(providers);</span><br><span class="line"></span><br><span class="line">    std::cout&lt;&lt;&quot;size for providers are:&quot; &lt;&lt; providers.size()&lt;&lt; std:: endl;</span><br><span class="line">    if (!providers.empty())&#123;</span><br><span class="line">        for (std::vector&lt;DeviceProvider*&gt;::iterator device=providers.begin();</span><br><span class="line">            device != providers.end(); ++ device)&#123;</span><br><span class="line">            Device* myDevice = (*device)-&gt;create();</span><br><span class="line">            std::cout &lt;&lt; myDevice-&gt;getDescription() &lt;&lt; std::endl;</span><br><span class="line">            delete myDevice;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就是主要的调用逻辑了。官网中<code>myDevice</code>附近的拼写有主意，这是个坑了。<br>这里回顾下目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── connect.cpp</span><br><span class="line">├── device.hpp</span><br><span class="line">├── device.cpp</span><br><span class="line">├── keyboard.hpp</span><br><span class="line">├── main.cpp</span><br><span class="line">├── plugin                          # 用来存储插件结果的目录</span><br><span class="line">├── Pluma                           # 为了方便，这里将Pluma的include及src文件均拷贝到这里</span><br><span class="line">│   ├── Config.hpp</span><br><span class="line">│   ├── Connector.hpp</span><br><span class="line">│   ├── Dir.cpp</span><br><span class="line">│   ├── Dir.hpp</span><br><span class="line">│   ├── DLibrary.cpp</span><br><span class="line">│   ├── DLibrary.hpp</span><br><span class="line">│   ├── Host.cpp</span><br><span class="line">│   ├── Host.hpp</span><br><span class="line">│   ├── PluginManager.cpp</span><br><span class="line">│   ├── PluginManager.hpp</span><br><span class="line">│   ├── Pluma.hpp</span><br><span class="line">│   ├── Pluma.inl</span><br><span class="line">│   ├── Provider.cpp</span><br><span class="line">│   ├── Provider.hpp</span><br><span class="line">│   └── uce-dirent.h</span><br><span class="line">└── screen.hpp</span><br></pre></td></tr></table></figure>
+<p>看下编译过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 生成device.so</span><br><span class="line">g++ connect.cpp device.cpp Pluma/*.cpp -shared -fPIC -o plugin/connect.so -I./</span><br><span class="line"></span><br><span class="line"># 生成main</span><br><span class="line">g++ main.cpp device.hpp device.cpp Pluma/*.cpp -o main -I./ -ldl</span><br></pre></td></tr></table></figure>
+<p>执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./main</span><br><span class="line">size for providers are:2</span><br><span class="line">keyboard</span><br><span class="line">screen</span><br></pre></td></tr></table></figure>
+<p>以上就是实践的内容了。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+        <tag>pluma</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>challenges of bpf tracing go</title>
+    <url>/2022/04/19/challenges-of-bpf-tracing-go/</url>
+    <content><![CDATA[<blockquote>
+<p>goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。</p>
+</blockquote>
+<blockquote>
+<p>Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (“M:N scheduling”). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that’s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there’s not enough room, the runtime copies the entire goroutine’s stack to another place in memory where it has enough room to expand.  </p>
+</blockquote>
+<p><a href="https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/">Challenges of BPF Tracing Go</a></p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>code</tag>
+        <tag>ebpf</tag>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos 构建 local-k8s</title>
+    <url>/2022/02/24/centos-%E6%9E%84%E5%BB%BA-k8s-%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<blockquote>
+<p>工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。<br>环境：Linux test 4.18.0-193.el8.x86_64</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h1><p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">kubectl安装说明</a>，可以直接使用包管理器安装，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line">sudo yum install -y kubectl</span><br></pre></td></tr></table></figure>
+<h1 id="minicube"><a href="#minicube" class="headerlink" title="minicube"></a>minicube</h1><p><a href="https://minikube.sigs.k8s.io/docs/start/">minicube安装说明</a> 也比较方便，官网里有不同系统的安装方式。笔者使用<code>curl</code>的安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64</span><br><span class="line">sudo install minikube-linux-amd64 /usr/local/bin/minikube</span><br></pre></td></tr></table></figure>
+<h1 id="start-cluster"><a href="#start-cluster" class="headerlink" title="start cluster"></a>start cluster</h1><h2 id="安装-kvm"><a href="#安装-kvm" class="headerlink" title="安装 kvm"></a>安装 kvm</h2><p><a href="https://phoenixnap.com/kb/install-kvm-centos">How to Install KVM on CentOS 8</a> </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># check</span><br><span class="line">cat /proc/cpuinfo | egrep &quot;vmx|svm&quot;</span><br><span class="line"># install</span><br><span class="line">sudo yum install @virt</span><br><span class="line"># start</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>minikube start --driver=&lt;kvm2|hyperkit&gt; --cni=flannel --cpus=4 --memory=8000 -p=&lt;cluster-name&gt;</code>，其中，笔者使用的<code>centos</code>系统使用<code>--driver=kvm2</code>选项。执行时存在诸多问题：</p>
+<h2 id="kvm2-错误"><a href="#kvm2-错误" class="headerlink" title="kvm2 错误"></a>kvm2 错误</h2><p>参照错误提示来。需要安装<code>libvirt</code>，笔者直接<code>sudo yum install libvirt</code>进行的。</p>
+<h2 id="not-in-libvirt-group"><a href="#not-in-libvirt-group" class="headerlink" title="not in libvirt group"></a>not in libvirt group</h2><p>不确定为什么需要单独搞一个<code>libvirt group</code>，按照<a href="https://github.com/kubernetes/minikube/issues/5617">issue-5617</a> 的说明，需要将用户添加到<code>libvirt</code>用户组中。笔者直接进行<code>sudo usermod -a -G libvirt $&#123;USERNAME&#125;</code>。</p>
+<h2 id="virsh-报错"><a href="#virsh-报错" class="headerlink" title="virsh 报错"></a>virsh 报错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error: failed to connect to the hypervisor</span><br><span class="line">error: authentication failed: access denied by policy</span><br></pre></td></tr></table></figure>
+<p> 需要在将当前用户添加到<code>libvirt</code>之后，需要配置<code>polkit</code>规则，确保<code>libvirt</code>组中的用户能够访问<code>libvirt</code>。<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> # 方案参考 https://blog.csdn.net/cunjiu9486/article/details/109074019</span><br><span class="line"> # /etc/polkit-1/rules.d/80-libvirt.rules</span><br><span class="line"> polkit.addRule(function(action, subject)&#123;</span><br><span class="line">	if (action.id == &quot;org.libvirt.unix.manage&quot; &amp;&amp; subject.local &amp;&amp; subject.active &amp;&amp; subject.isInGroup(&quot;libvirt&quot;))&#123;</span><br><span class="line">		return polkit.Result.YES;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br> 添加规则后，还需要重启 <code>polkitd</code>。简单粗暴：<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup /usr/lib/polkit-1/polkitd -r &gt; /dev/null &amp;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Cannot-find-suitable-emulator-for-x86-64"><a href="#Cannot-find-suitable-emulator-for-x86-64" class="headerlink" title="Cannot find suitable emulator for x86_64"></a>Cannot find suitable emulator for x86_64</h2><p> 通过 <code>sudo systemctl status libvirtd</code> 查看，发现报错是：<code>cannot initialize crypt</code>，继续安装<code>yum install libgcrypt</code>。</p>
+<h2 id="dnsmasq-unknown-user-or-group-dnsmasq"><a href="#dnsmasq-unknown-user-or-group-dnsmasq" class="headerlink" title="dnsmasq: unknown user or group: dnsmasq"></a>dnsmasq: unknown user or group: dnsmasq</h2> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">groupadd dnsmasq</span><br><span class="line">useradd dnsmasq -g dnsmasq</span><br></pre></td></tr></table></figure>
+<h2 id="Failed-to-start-host"><a href="#Failed-to-start-host" class="headerlink" title="Failed to start host"></a>Failed to start host</h2><p> 提示建议删除刚才的<code>cluster</code>，不清楚为啥，提示了就搞起来：<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">minikube delete $cluster_name</span><br><span class="line"># 再次执行</span><br><span class="line">minikube start --driver=&lt;kvm2|hyperkit&gt; --cni=flannel --cpus=4 --memory=8000 -p=&lt;cluster-name&gt;</span><br></pre></td></tr></table></figure><br> 这次可以了！<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* Enabled addons: storage-provisioner, default-storageclass</span><br><span class="line">* Done! kubectl is now configured to use &quot;$&#123;cluster_name&#125;&quot; cluster and &quot;default&quot; namespace by default</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>ebpf</tag>
+        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -197,163 +314,6 @@ return;
         <tag>golang</tag>
         <tag>bpftrace</tag>
         <tag>uprobe</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos 构建 local-k8s</title>
-    <url>/2022/02/24/centos-%E6%9E%84%E5%BB%BA-k8s-%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<blockquote>
-<p>工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。<br>环境：Linux test 4.18.0-193.el8.x86_64</p>
-</blockquote>
-<span id="more"></span>
-<h1 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h1><p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">kubectl安装说明</a>，可以直接使用包管理器安装，如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line">sudo yum install -y kubectl</span><br></pre></td></tr></table></figure>
-<h1 id="minicube"><a href="#minicube" class="headerlink" title="minicube"></a>minicube</h1><p><a href="https://minikube.sigs.k8s.io/docs/start/">minicube安装说明</a> 也比较方便，官网里有不同系统的安装方式。笔者使用<code>curl</code>的安装：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64</span><br><span class="line">sudo install minikube-linux-amd64 /usr/local/bin/minikube</span><br></pre></td></tr></table></figure>
-<h1 id="start-cluster"><a href="#start-cluster" class="headerlink" title="start cluster"></a>start cluster</h1><h2 id="安装-kvm"><a href="#安装-kvm" class="headerlink" title="安装 kvm"></a>安装 kvm</h2><p><a href="https://phoenixnap.com/kb/install-kvm-centos">How to Install KVM on CentOS 8</a> </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># check</span><br><span class="line">cat /proc/cpuinfo | egrep &quot;vmx|svm&quot;</span><br><span class="line"># install</span><br><span class="line">sudo yum install @virt</span><br><span class="line"># start</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><code>minikube start --driver=&lt;kvm2|hyperkit&gt; --cni=flannel --cpus=4 --memory=8000 -p=&lt;cluster-name&gt;</code>，其中，笔者使用的<code>centos</code>系统使用<code>--driver=kvm2</code>选项。执行时存在诸多问题：</p>
-<h2 id="kvm2-错误"><a href="#kvm2-错误" class="headerlink" title="kvm2 错误"></a>kvm2 错误</h2><p>参照错误提示来。需要安装<code>libvirt</code>，笔者直接<code>sudo yum install libvirt</code>进行的。</p>
-<h2 id="not-in-libvirt-group"><a href="#not-in-libvirt-group" class="headerlink" title="not in libvirt group"></a>not in libvirt group</h2><p>不确定为什么需要单独搞一个<code>libvirt group</code>，按照<a href="https://github.com/kubernetes/minikube/issues/5617">issue-5617</a> 的说明，需要将用户添加到<code>libvirt</code>用户组中。笔者直接进行<code>sudo usermod -a -G libvirt $&#123;USERNAME&#125;</code>。</p>
-<h2 id="virsh-报错"><a href="#virsh-报错" class="headerlink" title="virsh 报错"></a>virsh 报错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error: failed to connect to the hypervisor</span><br><span class="line">error: authentication failed: access denied by policy</span><br></pre></td></tr></table></figure>
-<p> 需要在将当前用户添加到<code>libvirt</code>之后，需要配置<code>polkit</code>规则，确保<code>libvirt</code>组中的用户能够访问<code>libvirt</code>。<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> # 方案参考 https://blog.csdn.net/cunjiu9486/article/details/109074019</span><br><span class="line"> # /etc/polkit-1/rules.d/80-libvirt.rules</span><br><span class="line"> polkit.addRule(function(action, subject)&#123;</span><br><span class="line">	if (action.id == &quot;org.libvirt.unix.manage&quot; &amp;&amp; subject.local &amp;&amp; subject.active &amp;&amp; subject.isInGroup(&quot;libvirt&quot;))&#123;</span><br><span class="line">		return polkit.Result.YES;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br> 添加规则后，还需要重启 <code>polkitd</code>。简单粗暴：<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup /usr/lib/polkit-1/polkitd -r &gt; /dev/null &amp;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Cannot-find-suitable-emulator-for-x86-64"><a href="#Cannot-find-suitable-emulator-for-x86-64" class="headerlink" title="Cannot find suitable emulator for x86_64"></a>Cannot find suitable emulator for x86_64</h2><p> 通过 <code>sudo systemctl status libvirtd</code> 查看，发现报错是：<code>cannot initialize crypt</code>，继续安装<code>yum install libgcrypt</code>。</p>
-<h2 id="dnsmasq-unknown-user-or-group-dnsmasq"><a href="#dnsmasq-unknown-user-or-group-dnsmasq" class="headerlink" title="dnsmasq: unknown user or group: dnsmasq"></a>dnsmasq: unknown user or group: dnsmasq</h2> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">groupadd dnsmasq</span><br><span class="line">useradd dnsmasq -g dnsmasq</span><br></pre></td></tr></table></figure>
-<h2 id="Failed-to-start-host"><a href="#Failed-to-start-host" class="headerlink" title="Failed to start host"></a>Failed to start host</h2><p> 提示建议删除刚才的<code>cluster</code>，不清楚为啥，提示了就搞起来：<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">minikube delete $cluster_name</span><br><span class="line"># 再次执行</span><br><span class="line">minikube start --driver=&lt;kvm2|hyperkit&gt; --cni=flannel --cpus=4 --memory=8000 -p=&lt;cluster-name&gt;</span><br></pre></td></tr></table></figure><br> 这次可以了！<br> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* Enabled addons: storage-provisioner, default-storageclass</span><br><span class="line">* Done! kubectl is now configured to use &quot;$&#123;cluster_name&#125;&quot; cluster and &quot;default&quot; namespace by default</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>ebpf</tag>
-        <tag>k8s</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c++插件管理--pluma&lt;实践&gt;</title>
-    <url>/2020/10/29/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86-pluma/</url>
-    <content><![CDATA[<p>最近研究了一下<a href="http://pluma-framework.sourceforge.net/">pluma</a>的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。<br>下面重新整理了一个例子，作为备注。  </p>
-<span id="more"></span>
-
-<p>其中，<code>device</code>为一个虚基类，作为接口类存在。<code>keyboard</code>及<code>screen</code>作为实现了device的子类存在，实现具体的操作。在pluma上注册后，在<code>main</code>中调用接口，实现<code>keyboard</code>及<code>screen</code>的调用。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.hpp</span><br><span class="line">#ifndef _DEVICE_HPP_</span><br><span class="line">#define _DEVICE_HPP_</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Device&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual std::string getDescription() const=0;</span><br><span class="line">&#125;;</span><br><span class="line">// create DevicedProvider class</span><br><span class="line">PLUMA_PROVIDER_HEADER(Device);</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// device.cpp</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">PLUMA_PROVIDER_SOURCE(Device, 6, 3);</span><br></pre></td></tr></table></figure>
-<p>如上所示，是<code>device</code>的定义。其中<code>PLUMA_PROVIDER_HEADER</code>和<code>PLUMA_PROVIDER_SOURCE</code><code>pluma</code>提供的宏。功能暂且不论。我们继续往下看。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// screen.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Screen: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;screen&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Screen, Device);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// keyboard.hpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line"></span><br><span class="line">class Keyboard: public Device&#123;</span><br><span class="line">public:</span><br><span class="line">    std:: string getDescription() const&#123;</span><br><span class="line">        return &quot;keyboard&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">PLUMA_INHERIT_PROVIDER(Keyboard, Device);</span><br></pre></td></tr></table></figure>
-<p>上面实现了<code>screen</code>及<code>keyboard</code>的逻辑。实现了之后，需要进行注册：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// connect.cpp</span><br><span class="line"> #include &lt;Pluma/Connector.hpp&gt;</span><br><span class="line"> #include &quot;keyboard.hpp&quot;</span><br><span class="line"> #include &quot;screen.hpp&quot;</span><br><span class="line"></span><br><span class="line"> PLUMA_CONNECTOR</span><br><span class="line"> bool connect(pluma::Host&amp; host)&#123;</span><br><span class="line">     // add a keyboard provider to host</span><br><span class="line">     host.add( new KeyboardProvider() );</span><br><span class="line">     host.add( new ScreenProvider() );</span><br><span class="line">     return true;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>这里在<code>connect</code>中进行了两个子类的注册。之所以使用<code>connect</code>是因为后面的pluma使用的时候，官网给出的示例代码中，会从<code>connect</code>入口开始调用。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// main.cpp</span><br><span class="line">#include &quot;Pluma/Pluma.hpp&quot;</span><br><span class="line"></span><br><span class="line">#include &quot;device.hpp&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    pluma:: Pluma plugins;</span><br><span class="line">    plugins.acceptProviderType&lt;DeviceProvider&gt;();</span><br><span class="line">    plugins.load(&quot;./plugin/connect.so&quot;);</span><br><span class="line">    //plugins.load(&quot;./plugin/keyboard.so&quot;);</span><br><span class="line"></span><br><span class="line">    std::vector&lt;DeviceProvider*&gt; providers;</span><br><span class="line">    plugins.getProviders(providers);</span><br><span class="line"></span><br><span class="line">    std::cout&lt;&lt;&quot;size for providers are:&quot; &lt;&lt; providers.size()&lt;&lt; std:: endl;</span><br><span class="line">    if (!providers.empty())&#123;</span><br><span class="line">        for (std::vector&lt;DeviceProvider*&gt;::iterator device=providers.begin();</span><br><span class="line">            device != providers.end(); ++ device)&#123;</span><br><span class="line">            Device* myDevice = (*device)-&gt;create();</span><br><span class="line">            std::cout &lt;&lt; myDevice-&gt;getDescription() &lt;&lt; std::endl;</span><br><span class="line">            delete myDevice;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里就是主要的调用逻辑了。官网中<code>myDevice</code>附近的拼写有主意，这是个坑了。<br>这里回顾下目录结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── connect.cpp</span><br><span class="line">├── device.hpp</span><br><span class="line">├── device.cpp</span><br><span class="line">├── keyboard.hpp</span><br><span class="line">├── main.cpp</span><br><span class="line">├── plugin                          # 用来存储插件结果的目录</span><br><span class="line">├── Pluma                           # 为了方便，这里将Pluma的include及src文件均拷贝到这里</span><br><span class="line">│   ├── Config.hpp</span><br><span class="line">│   ├── Connector.hpp</span><br><span class="line">│   ├── Dir.cpp</span><br><span class="line">│   ├── Dir.hpp</span><br><span class="line">│   ├── DLibrary.cpp</span><br><span class="line">│   ├── DLibrary.hpp</span><br><span class="line">│   ├── Host.cpp</span><br><span class="line">│   ├── Host.hpp</span><br><span class="line">│   ├── PluginManager.cpp</span><br><span class="line">│   ├── PluginManager.hpp</span><br><span class="line">│   ├── Pluma.hpp</span><br><span class="line">│   ├── Pluma.inl</span><br><span class="line">│   ├── Provider.cpp</span><br><span class="line">│   ├── Provider.hpp</span><br><span class="line">│   └── uce-dirent.h</span><br><span class="line">└── screen.hpp</span><br></pre></td></tr></table></figure>
-<p>看下编译过程：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 生成device.so</span><br><span class="line">g++ connect.cpp device.cpp Pluma/*.cpp -shared -fPIC -o plugin/connect.so -I./</span><br><span class="line"></span><br><span class="line"># 生成main</span><br><span class="line">g++ main.cpp device.hpp device.cpp Pluma/*.cpp -o main -I./ -ldl</span><br></pre></td></tr></table></figure>
-<p>执行：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./main</span><br><span class="line">size for providers are:2</span><br><span class="line">keyboard</span><br><span class="line">screen</span><br></pre></td></tr></table></figure>
-<p>以上就是实践的内容了。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-        <tag>pluma</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos 安装docker并构建golang镜像</title>
-    <url>/2022/03/04/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。  </p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y yum-utils</span><br><span class="line"></span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo  </span><br><span class="line">    </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io  </span><br><span class="line">\# 这里报了一个错</span><br><span class="line">\# (try to add &#x27;--allowerasing&#x27; to command line to replace conflicting packages or &#x27;--skip-broken&#x27; to skip uninstallable packages or &#x27;--nobest&#x27; to use not only best candidate packages)  </span><br><span class="line">\# 重新执行  </span><br><span class="line">sudo yum install docker-ce docker-ce-cli containerd.io --allowerasing</span><br><span class="line"></span><br><span class="line">\# 启动 docker  </span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">\# 测试   </span><br><span class="line">sudo docker run hello-world </span><br><span class="line">\# Hello from Docker!  </span><br><span class="line">\# This message shows that your installation appears to be working correctly.  </span><br></pre></td></tr></table></figure>
-
-
-<h1 id="构建golang服务镜像"><a href="#构建golang服务镜像" class="headerlink" title="构建golang服务镜像"></a>构建golang服务镜像</h1><p>先看下工作目录的结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── gin-srv</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
-<p>简单写一个<code>golang</code>的程序:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;github.com/gin-gonic/gin&quot;</span><br><span class="line"></span><br><span class="line">type Resp struct&#123;</span><br><span class="line">	Errno int `json:&quot;errno&quot;`</span><br><span class="line">	Data map[string]int64 `json:&quot;data&quot;`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(&quot;/ping&quot;, func(c *gin.Context)&#123;</span><br><span class="line">		resp := &amp;Resp&#123;Errno:0, Data: map[string]int64&#123;</span><br><span class="line">			&quot;now&quot;: time.Now().Unix(),</span><br><span class="line">		&#125;&#125;</span><br><span class="line">		c.JSON(200, &amp;resp)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run(&quot;0.0.0.0:8080&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>构建一个Dockerfile，以<code>centos</code>作为base以便能够正常登陆容器进行调试：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM centos:8</span><br><span class="line">ADD . ./</span><br><span class="line">EXPOSE 8080</span><br><span class="line">ENTRYPOINT [&quot;./gin-srv&quot;]</span><br></pre></td></tr></table></figure>
-<p>启动容器：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建镜像</span><br><span class="line">sudo docker build -t gin_docker .</span><br><span class="line"># 启动镜像</span><br><span class="line">sudo docker run --name gin_docker -p 8080:8080 -d gin_docker</span><br></pre></td></tr></table></figure>
-<p>访问容器中的服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ curl localhost:8080/ping</span><br><span class="line">&#123;&quot;errno&quot;:0,&quot;data&quot;:&#123;&quot;now&quot;:1646381863&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>容器起来了。可以继续后面的性能评估及agent启动工作了。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a><br><a href="https://article.itxueyuan.com/7DreWj">Golang应用打包docker镜像并运行</a></p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>eBPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>eBPF及其对可观测的意义【译文】</title>
-    <url>/2022/03/02/eBPF%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E3%80%90%E8%AF%91%E6%96%87%E3%80%91/</url>
-    <content><![CDATA[<blockquote>
-<p>最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。<br>原文地址：<a href="https://newrelic.com/blog/best-practices/what-is-ebpf">What Is eBPF and Why Does It Matter for Observability?</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="eBPF-及其对可观测领域的影响"><a href="#eBPF-及其对可观测领域的影响" class="headerlink" title="eBPF 及其对可观测领域的影响"></a>eBPF 及其对可观测领域的影响</h1><p>当实现安全性、网络化以及可观测的特性时，在linux 内核中工作是非常理想化的。然而，它并非缺少挑战。无论是变更内核源码或者新增<br>内核模块，开发者通常会面对复杂的架构及难以调试的抽象层。<a href="https://www.kernel.org/doc/html/latest/bpf/index.html">扩展的 BPF(eBPF)</a> 能够解决这两个问题。<br>伯克利包过滤器扩展技术(Extended Berkeley Packet Filter, eBPF) 是一种内核技术(自 Linux 4.x 引入)允许程序在无需变更内核源码或添加<br>额外的内核模块。你可以认为它是一种内核内置的轻量级的、沙箱式的虚拟机，编程人员可以通过 BPF 字节码来最大化的利用内核的资源。<br>使用 eBPF 消除了变更内核源码并且简化了软件利用现有层级的能力。因此，它是一种强大的技术，有可能从根本上改变网络、可观测性及安全<br>服务的工作方式。<br>这是一篇 eBPF 是什么、怎么工作以及什么时候考虑利用这种技术的文章。</p>
-<h1 id="eBPF-是怎么工作的"><a href="#eBPF-是怎么工作的" class="headerlink" title="eBPF 是怎么工作的"></a>eBPF 是怎么工作的</h1><p>eBPF 是事件驱动的，并且绑定到特定的代码路径。代码路径包含特殊的触发点(triggers)，或者称为钩子(hooks)。触发时，会执行所有绑定<br>到上面的 eBPF 程序。一些钩子的示例包括网络事件、系统调用、函数执行以及内核跟踪点。<br>当被触发时，代码会首先被编译成 BPF 字节码。然后，字节码会在执行前被校验，以确保不包含任何循环。校验会确保程序不会有意或无意的<br>破坏内核。<br>当代码在一个钩子上执行后，会产生辅助调用(helper calls)。这些辅助调用是一些eBPF访问内存的函数。辅助调用需要内核提前定义，目前<br><a href="https://man7.org/linux/man-pages/man7/bpf-helpers.7.html">调用的函数列表</a>仍在持续增长中。<br>eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安全性的工具。然而，时至今日，它已经成为一种用来让用户态的程序更加安全、<br>便捷、表现更好的工具。</p>
-<h1 id="eBPF-的优势"><a href="#eBPF-的优势" class="headerlink" title="eBPF 的优势"></a>eBPF 的优势</h1><p>eBPF 通常被用来进行<a href="https://blog.px.dev/ebpf-function-tracing/">追踪</a>用户态的进程，这里列出一些它的优势：</p>
-<ul>
-<li>高速、高效。eBPF 可以将网络包从内核态移动至用户态。而且，eBPF支持一个运行时（just-in-time, JIT）的编译器。在字节码被编译出来<br>后即可被执行，毋需基于平台重新解释；</li>
-<li>低侵入性。当被用作调试器时，eBPF 无需停止服务便可以观测它的状态；</li>
-<li>安全性。程序会被高效地加载到沙盒中，意味着内核源码被保护起来不会发生变更。执行时的校验能够确保资源不会由于程序陷入死循环而<br>阻塞；</li>
-<li>便捷。相对于构建并维护内核的模块，编写内核的函数钩子要简单的多；</li>
-<li>一致追踪。eBPF能够带来一个单一、有效、可用性强的追踪程序的框架。这增加了可视化及安全性；</li>
-<li>可编程性。使用 eBPF 在不引入额外架构层的情况下，丰富了系统的特性。而且，由于代码是直接运行在内核里的，在不同的eBPF事件间存储<br>数据，而非像其他追踪程序一样转存出来，是可行的；</li>
-<li>表达丰富。eBPF极具表达能力，这通常只能在其他高级语言中能够看到；<h1 id="eBPF-最佳实践"><a href="#eBPF-最佳实践" class="headerlink" title="eBPF 最佳实践"></a>eBPF 最佳实践</h1>考虑到 eBPF 仍然是一项新的技术，很多使用仍待进一步开发。关于 eBPF 的最佳实践仍在随着这种技术的改进而不断增加。虽然没有已定义的<br>最佳实践存在，仍然有一些措施可以采纳以确保程序高效、便捷。<br>如果你在生态系统中使用了 eBPF，我们建议你：</li>
-<li>使用 <a href="https://clang.llvm.org/">LLVM Clang</a> 来将 C 代码编辑为 eBPF 字节码。当 eBPF 刚出现时，编码及汇编均需要手动操作。然后，<br>开发者使用内核的汇编器生成字节码。幸运的是，现在已经不再需要这样操作了。Clang 为 C 语言编写的 eBPF 提供了前端及工具；</li>
-<li>使用 BCC 工具集来编写 BPF 程序。<a href="https://github.com/iovisor/bcc">BPF 编译器集合（BPF Compiler Collection, BCC）</a> 是一个帮助<br>构建高效内核追踪及管理程序的工具集。针对性能分析及网络拥塞控制相关的任务尤其合适。<h1 id="eBPF-的不足"><a href="#eBPF-的不足" class="headerlink" title="eBPF 的不足"></a>eBPF 的不足</h1>尽管很强大，eBPF 并不是适合所有项目/生态系统的万金油。eBPF 有一些显而易见的不足，这些不足会让它在一些场景下不适用。一些开发者<br>可能会发现在如下场景下 eBPF 不适用：</li>
-<li>eBPF 限制在 Linux 系统及较新的内核版本。eBPF 是在 Linux 内核上发展并且完全聚焦在其上。这导致它相对于其他工具而言移植性不强。<br>此外，你需要一个相当新的内核。如果运行在任何早于 v4.13 的内核上，你将不能使用它。</li>
-<li>沙盒编程是存在限制的。eBPF 通过限制应用程序可以接触的资源来提升安全性。然而，由于限制了操作系统的访问，功能上也被限制了。<h1 id="eBPF-适用哪些领域"><a href="#eBPF-适用哪些领域" class="headerlink" title="eBPF 适用哪些领域"></a>eBPF 适用哪些领域</h1>eBPF <a href="https://newrelic.com/solutions/cloud-adoption">云原生应用</a> 领域正迅速的获得关注。目前，eBPF 在以下两个场景中获得普遍<br>使用：</li>
-<li>需要使用内核追踪实现可观测性。在这种场景下，eBPF 表现得更加快速、高效。这里不涉及到<a href="https://www.quora.com/What-is-context-switching-in-Linux">上下文切换</a>，并且 eBPF 程序是事件驱动的所以毋需一个特定的触发器–所以你不会存在精度上的问题。</li>
-<li>传统的安全监控不起作用。eBPF 在分布式及容器化的环境中有巨大的应用潜力，包括<a href="https://kubernetes.io/blog/2017/12/using-ebpf-in-kubernetes/">Kubernets</a>。<br>在这些环境中，eBPF 可以缩小可见性的差距，因为他可以提供<a href="https://blog.pixielabs.ai/ebpf-http-tracing/">HTTP 可见性追踪</a>。<br>在如下安全度量领域，你也可以发现 eBPF 被使用：</li>
-<li>防火墙；</li>
-<li>设备驱动；</li>
-<li>网络性能监控；<h1 id="New-Relic-and-eBPF"><a href="#New-Relic-and-eBPF" class="headerlink" title="New Relic and eBPF"></a>New Relic and eBPF</h1><a href="https://newrelic.com/platform/kubernetes-pixie">Pixie</a> (acquired by New Relic), is an open source, kubernetes-native-in-cluster observability platform that provides instant visibility into Kubernetes workloads with no manual instrumentation. eBPF provides most of the magic behind the Pixie platform. As described earlier, eBPF allows you to run restricted code when an event is triggered. This event could be a function call either in kernel space(kprobes) or userspace(uprobes). Pixie uses both uprobes and kprobes to enable observability across services and applications.</li>
-</ul>
-<p>Pixie automatically harvests telemetry data by leveraging eBPF, and its edge-machine intelligence connects this data with Kubernetes metadata to provide visibility while maintaining data locality. This visibility complements New Relic’s powerful Kubernetes observability solution. And starting in late May, you’ll be able to send Pixie-generated telemetry data to New Relic One, gaining scalable retention, powerful visualizations, advanced correlation, and intelligent alerting capabilities.</p>
-<h1 id="eBPF-正在可见的创造效率"><a href="#eBPF-正在可见的创造效率" class="headerlink" title="eBPF 正在可见的创造效率"></a>eBPF 正在可见的创造效率</h1><p>eBPF 是一个提升 Linux 内核可观测、网络及安全性的新技术。它毋需变更内核源码或者添加新的模块，所以你可以在不引入复杂性的前提下，<br>提升系统的基础建设。<br>我们简要的谈到 eBPF 是什么、如何工作以及为什么它在分布式环境中如此有用。通过监控内核层，很多云上的可观测问题被解决了。你可以<br>享受数据中更深层次的可见性、更丰富的上下文以及更准确的信息。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>eBPF</tag>
-        <tag>翻译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>challenges of bpf tracing go</title>
-    <url>/2022/04/19/challenges-of-bpf-tracing-go/</url>
-    <content><![CDATA[<blockquote>
-<p>goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。</p>
-</blockquote>
-<blockquote>
-<p>Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (“M:N scheduling”). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that’s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there’s not enough room, the runtime copies the entire goroutine’s stack to another place in memory where it has enough room to expand.  </p>
-</blockquote>
-<p><a href="https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/">Challenges of BPF Tracing Go</a></p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>ebpf</tag>
-        <tag>code</tag>
-        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -549,26 +509,28 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>elscreen标签背景颜色</title>
-    <url>/2020/12/23/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</url>
+    <title>go-simplejson 插入数组</title>
+    <url>/2021/07/22/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<blockquote>
-<p>使用<code>emacs</code>过程中，配合<code>evil</code>使用，按照<code>tab</code>的划分，将编辑、浏览、<code>leetcode</code>等任务划分到不同的<code>tab</code>便于切换及管理。美中不足的是，模拟标签的<code>elscreen</code>默认将其他标签的颜色设置成<code>:background blue  :foreground black</code>的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置<code>face-attribute</code>的方法，备注下。</p>
+<p><a href="https://github.com/bitly/go-simplejson">go-simplejson</a>是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。</p>
 </blockquote>
-<p>在初始文件的最后添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 选中标签设置为绿底黑字，其他标签为黄底黑字</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-other-screen-face nil</span><br><span class="line">                    :background &quot;yellow&quot; :foreground &quot;black&quot;)</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-current-screen-face nil</span><br><span class="line">                    :background &quot;green&quot; :foreground &quot;black&quot;)</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 创建了一个json对象J，需要从其他地方获取剩余json信息后，插入到J中的data字段中。初始版本如下：</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	simplejson &quot;github.com/bitly/go-simplejson&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	js, _ := simplejson.NewJson([]byte(`</span><br><span class="line">&#123;</span><br><span class="line">&quot;errno&quot;: 0,</span><br><span class="line">&quot;errmsg&quot;: &quot;test&quot;</span><br><span class="line">&#125;`))</span><br><span class="line"></span><br><span class="line">	var js_2 = new(simplejson.Json)</span><br><span class="line">	*js_2 = *js</span><br><span class="line">	jsArr := []*simplejson.Json&#123;&#125;</span><br><span class="line">	js1, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 1&#125;`))</span><br><span class="line">	js2, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 2&#125;`))</span><br><span class="line">	jsArr = append(jsArr, js1)</span><br><span class="line">	jsArr = append(jsArr, js2)</span><br><span class="line">	js.Set(&quot;data&quot;, jsArr)</span><br><span class="line">	js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</span><br><span class="line">	jsB, _ := js.MarshalJSON()</span><br><span class="line">	fmt.Println(string(jsB)) </span><br><span class="line">&#125;</span><br><span class="line">// % go run js_check.go</span><br><span class="line">// &#123;&quot;data&quot;:[&#123;&quot;num&quot;:1&#125;,&#123;&quot;num&quot;:2&#125;],&quot;errmsg&quot;:&quot;test&quot;,&quot;errno&quot;:0&#125;</span><br></pre></td></tr></table></figure>
 
-<p>备注下<a href="https://github.com/knu/elscreen"><code>elscreen</code></a>原始代码：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defface elscreen-tab-current-screen-face</span><br><span class="line">  &#x27;((((class color))</span><br><span class="line">     (:background &quot;white&quot; :foreground &quot;black&quot;))</span><br><span class="line">    (t (:underline t)))</span><br><span class="line">  &quot;Face for current screen tab.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br><span class="line"></span><br><span class="line">(defface elscreen-tab-other-screen-face</span><br><span class="line">  &#x27;((((type x w32 mac ns) (class color))</span><br><span class="line">     :background &quot;Gray85&quot; :foreground &quot;Gray50&quot;)</span><br><span class="line">    (((class color))</span><br><span class="line">     (:background &quot;blue&quot; :foreground &quot;black&quot; :underline t)))</span><br><span class="line">  &quot;Face for tabs other than current screen one.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Faces.html">emacs defface</a></p>
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p>经过<code>dlv</code>逐行调试，实际问题出在<code>js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</code>中。跳转至定义，该操作实际做如下转换:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">arr, ok := js.Get(&quot;data&quot;).data.([]interface&#123;&#125;)</span><br><span class="line">if ok &#123;</span><br><span class="line">    &amp;simplejson.Json(arr[index]).Set(&quot;test&quot;, 1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里由于<code>jsArr</code>是<code>[]*simplejson.Json</code>，类型断言为<code>[]interface&#123;&#125;</code>失败。所以无法正常设置值。查看<code>simplejson.go</code>，其中的<code>Json</code>对象结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Json struct &#123;</span><br><span class="line">    data interface&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实可以通过<code>js.Interface()</code>获取其中的真实数据。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>变更为如下代码即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	simplejson &quot;github.com/bitly/go-simplejson&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	js, _ := simplejson.NewJson([]byte(`</span><br><span class="line">&#123;</span><br><span class="line">&quot;errno&quot;: 0,</span><br><span class="line">&quot;errmsg&quot;: &quot;test&quot;</span><br><span class="line">&#125;`))</span><br><span class="line"></span><br><span class="line">	var js_2 = new(simplejson.Json)</span><br><span class="line">	*js_2 = *js</span><br><span class="line">	jsArr := []interface&#123;&#125;&#123;&#125;</span><br><span class="line">	js1, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 1&#125;`))</span><br><span class="line">	js2, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 2&#125;`))</span><br><span class="line">	jsArr = append(jsArr, js1.Interface())</span><br><span class="line">	jsArr = append(jsArr, js2.Interface())</span><br><span class="line">	js.Set(&quot;data&quot;, jsArr)</span><br><span class="line">	js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</span><br><span class="line">	jsB, _ := js.MarshalJSON()</span><br><span class="line">	fmt.Println(string(jsB))</span><br><span class="line">&#125;</span><br><span class="line">// % go run js_check.go</span><br><span class="line">// &#123;&quot;data&quot;:[&#123;&quot;num&quot;:1,&quot;test&quot;:1&#125;,&#123;&quot;num&quot;:2&#125;],&quot;errmsg&quot;:&quot;test&quot;,&quot;errno&quot;:0&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>code</category>
+        <category>debug</category>
       </categories>
       <tags>
-        <tag>emacs</tag>
-        <tag>vim</tag>
-        <tag>elscreen</tag>
+        <tag>golang</tag>
+        <tag>simplejson</tag>
       </tags>
   </entry>
   <entry>
@@ -596,6 +558,69 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
+    <title>elscreen标签背景颜色</title>
+    <url>/2020/12/23/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</url>
+    <content><![CDATA[<blockquote>
+<p>使用<code>emacs</code>过程中，配合<code>evil</code>使用，按照<code>tab</code>的划分，将编辑、浏览、<code>leetcode</code>等任务划分到不同的<code>tab</code>便于切换及管理。美中不足的是，模拟标签的<code>elscreen</code>默认将其他标签的颜色设置成<code>:background blue  :foreground black</code>的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置<code>face-attribute</code>的方法，备注下。</p>
+</blockquote>
+<p>在初始文件的最后添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 选中标签设置为绿底黑字，其他标签为黄底黑字</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-other-screen-face nil</span><br><span class="line">                    :background &quot;yellow&quot; :foreground &quot;black&quot;)</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-current-screen-face nil</span><br><span class="line">                    :background &quot;green&quot; :foreground &quot;black&quot;)</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>备注下<a href="https://github.com/knu/elscreen"><code>elscreen</code></a>原始代码：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defface elscreen-tab-current-screen-face</span><br><span class="line">  &#x27;((((class color))</span><br><span class="line">     (:background &quot;white&quot; :foreground &quot;black&quot;))</span><br><span class="line">    (t (:underline t)))</span><br><span class="line">  &quot;Face for current screen tab.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br><span class="line"></span><br><span class="line">(defface elscreen-tab-other-screen-face</span><br><span class="line">  &#x27;((((type x w32 mac ns) (class color))</span><br><span class="line">     :background &quot;Gray85&quot; :foreground &quot;Gray50&quot;)</span><br><span class="line">    (((class color))</span><br><span class="line">     (:background &quot;blue&quot; :foreground &quot;black&quot; :underline t)))</span><br><span class="line">  &quot;Face for tabs other than current screen one.&quot;</span><br><span class="line">  :group &#x27;elscreen)</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Faces.html">emacs defface</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>emacs</tag>
+        <tag>vim</tag>
+        <tag>elscreen</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>eBPF及其对可观测的意义【译文】</title>
+    <url>/2022/03/02/eBPF%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E3%80%90%E8%AF%91%E6%96%87%E3%80%91/</url>
+    <content><![CDATA[<blockquote>
+<p>最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。<br>原文地址：<a href="https://newrelic.com/blog/best-practices/what-is-ebpf">What Is eBPF and Why Does It Matter for Observability?</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="eBPF-及其对可观测领域的影响"><a href="#eBPF-及其对可观测领域的影响" class="headerlink" title="eBPF 及其对可观测领域的影响"></a>eBPF 及其对可观测领域的影响</h1><p>当实现安全性、网络化以及可观测的特性时，在linux 内核中工作是非常理想化的。然而，它并非缺少挑战。无论是变更内核源码或者新增<br>内核模块，开发者通常会面对复杂的架构及难以调试的抽象层。<a href="https://www.kernel.org/doc/html/latest/bpf/index.html">扩展的 BPF(eBPF)</a> 能够解决这两个问题。<br>伯克利包过滤器扩展技术(Extended Berkeley Packet Filter, eBPF) 是一种内核技术(自 Linux 4.x 引入)允许程序在无需变更内核源码或添加<br>额外的内核模块。你可以认为它是一种内核内置的轻量级的、沙箱式的虚拟机，编程人员可以通过 BPF 字节码来最大化的利用内核的资源。<br>使用 eBPF 消除了变更内核源码并且简化了软件利用现有层级的能力。因此，它是一种强大的技术，有可能从根本上改变网络、可观测性及安全<br>服务的工作方式。<br>这是一篇 eBPF 是什么、怎么工作以及什么时候考虑利用这种技术的文章。</p>
+<h1 id="eBPF-是怎么工作的"><a href="#eBPF-是怎么工作的" class="headerlink" title="eBPF 是怎么工作的"></a>eBPF 是怎么工作的</h1><p>eBPF 是事件驱动的，并且绑定到特定的代码路径。代码路径包含特殊的触发点(triggers)，或者称为钩子(hooks)。触发时，会执行所有绑定<br>到上面的 eBPF 程序。一些钩子的示例包括网络事件、系统调用、函数执行以及内核跟踪点。<br>当被触发时，代码会首先被编译成 BPF 字节码。然后，字节码会在执行前被校验，以确保不包含任何循环。校验会确保程序不会有意或无意的<br>破坏内核。<br>当代码在一个钩子上执行后，会产生辅助调用(helper calls)。这些辅助调用是一些eBPF访问内存的函数。辅助调用需要内核提前定义，目前<br><a href="https://man7.org/linux/man-pages/man7/bpf-helpers.7.html">调用的函数列表</a>仍在持续增长中。<br>eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安全性的工具。然而，时至今日，它已经成为一种用来让用户态的程序更加安全、<br>便捷、表现更好的工具。</p>
+<h1 id="eBPF-的优势"><a href="#eBPF-的优势" class="headerlink" title="eBPF 的优势"></a>eBPF 的优势</h1><p>eBPF 通常被用来进行<a href="https://blog.px.dev/ebpf-function-tracing/">追踪</a>用户态的进程，这里列出一些它的优势：</p>
+<ul>
+<li>高速、高效。eBPF 可以将网络包从内核态移动至用户态。而且，eBPF支持一个运行时（just-in-time, JIT）的编译器。在字节码被编译出来<br>后即可被执行，毋需基于平台重新解释；</li>
+<li>低侵入性。当被用作调试器时，eBPF 无需停止服务便可以观测它的状态；</li>
+<li>安全性。程序会被高效地加载到沙盒中，意味着内核源码被保护起来不会发生变更。执行时的校验能够确保资源不会由于程序陷入死循环而<br>阻塞；</li>
+<li>便捷。相对于构建并维护内核的模块，编写内核的函数钩子要简单的多；</li>
+<li>一致追踪。eBPF能够带来一个单一、有效、可用性强的追踪程序的框架。这增加了可视化及安全性；</li>
+<li>可编程性。使用 eBPF 在不引入额外架构层的情况下，丰富了系统的特性。而且，由于代码是直接运行在内核里的，在不同的eBPF事件间存储<br>数据，而非像其他追踪程序一样转存出来，是可行的；</li>
+<li>表达丰富。eBPF极具表达能力，这通常只能在其他高级语言中能够看到；<h1 id="eBPF-最佳实践"><a href="#eBPF-最佳实践" class="headerlink" title="eBPF 最佳实践"></a>eBPF 最佳实践</h1>考虑到 eBPF 仍然是一项新的技术，很多使用仍待进一步开发。关于 eBPF 的最佳实践仍在随着这种技术的改进而不断增加。虽然没有已定义的<br>最佳实践存在，仍然有一些措施可以采纳以确保程序高效、便捷。<br>如果你在生态系统中使用了 eBPF，我们建议你：</li>
+<li>使用 <a href="https://clang.llvm.org/">LLVM Clang</a> 来将 C 代码编辑为 eBPF 字节码。当 eBPF 刚出现时，编码及汇编均需要手动操作。然后，<br>开发者使用内核的汇编器生成字节码。幸运的是，现在已经不再需要这样操作了。Clang 为 C 语言编写的 eBPF 提供了前端及工具；</li>
+<li>使用 BCC 工具集来编写 BPF 程序。<a href="https://github.com/iovisor/bcc">BPF 编译器集合（BPF Compiler Collection, BCC）</a> 是一个帮助<br>构建高效内核追踪及管理程序的工具集。针对性能分析及网络拥塞控制相关的任务尤其合适。<h1 id="eBPF-的不足"><a href="#eBPF-的不足" class="headerlink" title="eBPF 的不足"></a>eBPF 的不足</h1>尽管很强大，eBPF 并不是适合所有项目/生态系统的万金油。eBPF 有一些显而易见的不足，这些不足会让它在一些场景下不适用。一些开发者<br>可能会发现在如下场景下 eBPF 不适用：</li>
+<li>eBPF 限制在 Linux 系统及较新的内核版本。eBPF 是在 Linux 内核上发展并且完全聚焦在其上。这导致它相对于其他工具而言移植性不强。<br>此外，你需要一个相当新的内核。如果运行在任何早于 v4.13 的内核上，你将不能使用它。</li>
+<li>沙盒编程是存在限制的。eBPF 通过限制应用程序可以接触的资源来提升安全性。然而，由于限制了操作系统的访问，功能上也被限制了。<h1 id="eBPF-适用哪些领域"><a href="#eBPF-适用哪些领域" class="headerlink" title="eBPF 适用哪些领域"></a>eBPF 适用哪些领域</h1>eBPF <a href="https://newrelic.com/solutions/cloud-adoption">云原生应用</a> 领域正迅速的获得关注。目前，eBPF 在以下两个场景中获得普遍<br>使用：</li>
+<li>需要使用内核追踪实现可观测性。在这种场景下，eBPF 表现得更加快速、高效。这里不涉及到<a href="https://www.quora.com/What-is-context-switching-in-Linux">上下文切换</a>，并且 eBPF 程序是事件驱动的所以毋需一个特定的触发器–所以你不会存在精度上的问题。</li>
+<li>传统的安全监控不起作用。eBPF 在分布式及容器化的环境中有巨大的应用潜力，包括<a href="https://kubernetes.io/blog/2017/12/using-ebpf-in-kubernetes/">Kubernets</a>。<br>在这些环境中，eBPF 可以缩小可见性的差距，因为他可以提供<a href="https://blog.pixielabs.ai/ebpf-http-tracing/">HTTP 可见性追踪</a>。<br>在如下安全度量领域，你也可以发现 eBPF 被使用：</li>
+<li>防火墙；</li>
+<li>设备驱动；</li>
+<li>网络性能监控；<h1 id="New-Relic-and-eBPF"><a href="#New-Relic-and-eBPF" class="headerlink" title="New Relic and eBPF"></a>New Relic and eBPF</h1><a href="https://newrelic.com/platform/kubernetes-pixie">Pixie</a> (acquired by New Relic), is an open source, kubernetes-native-in-cluster observability platform that provides instant visibility into Kubernetes workloads with no manual instrumentation. eBPF provides most of the magic behind the Pixie platform. As described earlier, eBPF allows you to run restricted code when an event is triggered. This event could be a function call either in kernel space(kprobes) or userspace(uprobes). Pixie uses both uprobes and kprobes to enable observability across services and applications.</li>
+</ul>
+<p>Pixie automatically harvests telemetry data by leveraging eBPF, and its edge-machine intelligence connects this data with Kubernetes metadata to provide visibility while maintaining data locality. This visibility complements New Relic’s powerful Kubernetes observability solution. And starting in late May, you’ll be able to send Pixie-generated telemetry data to New Relic One, gaining scalable retention, powerful visualizations, advanced correlation, and intelligent alerting capabilities.</p>
+<h1 id="eBPF-正在可见的创造效率"><a href="#eBPF-正在可见的创造效率" class="headerlink" title="eBPF 正在可见的创造效率"></a>eBPF 正在可见的创造效率</h1><p>eBPF 是一个提升 Linux 内核可观测、网络及安全性的新技术。它毋需变更内核源码或者添加新的模块，所以你可以在不引入复杂性的前提下，<br>提升系统的基础建设。<br>我们简要的谈到 eBPF 是什么、如何工作以及为什么它在分布式环境中如此有用。通过监控内核层，很多云上的可观测问题被解决了。你可以<br>享受数据中更深层次的可见性、更丰富的上下文以及更准确的信息。</p>
+]]></content>
+      <categories>
+        <category>程序人生</category>
+      </categories>
+      <tags>
+        <tag>eBPF</tag>
+        <tag>翻译</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>find匹配文件名</title>
     <url>/2020/11/12/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</url>
     <content><![CDATA[<p>目录内容：</p>
@@ -610,84 +635,6 @@ kprobe:tcp_connect
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find . -name *.bak</span><br><span class="line">./text.bak</span><br></pre></td></tr></table></figure>
 <p>关于正则中<code>.</code>会作为通配符，如需匹配<code>text.bak</code>需要对<code>.</code>进行转义的情况，也需要关注下。本例中就不涉及了。</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>emacs-若干语言 lsp 配置备注</title>
-    <url>/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</url>
-    <content><![CDATA[<blockquote>
-<p>微软推出的<a href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20">language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h1><p>这里使用 <code>rust-analyzer</code> 作为 <code>rust</code> 的语言服务器，在安装 <code>rust-mode</code>后，通过绑定语言服务器信息，即可在打开由 <code>cargo</code> 创建的工程时，顺利进入 <code>lsp-mode</code>。需要关注的是，在非<code>cargo</code>创建的项目中，笔者的<code>lsp-mode</code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是<code>rust-analyzer</code>主要是针对<code>cargo</code>项目进行的设置，也可能是笔者设置的问题。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; config for rust-lsp for emacs</span><br><span class="line">;; rls install address: https://github.com/rust-lang-nursery/rls</span><br><span class="line">(unless (package-installed-p &#x27;rust-mode)</span><br><span class="line">  (w-install &#x27;rust-mode))</span><br><span class="line">(add-to-list &#x27;auto-mode-alist &#x27;(&quot;\\.rs\\&#x27;&quot; . rust-mode))</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;lsp)</span><br><span class="line">(unless (package-installed-p &#x27;rustic)</span><br><span class="line">  (w-install &#x27;rustic))</span><br><span class="line">(unless (package-installed-p &#x27;cargo)</span><br><span class="line">  (w-install &#x27;cargo))</span><br><span class="line">(use-package rustic) ; lsp-compatible rust mode</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;rustic-mode)</span><br><span class="line">(add-hook &#x27;rustic-mode-hook</span><br><span class="line">  (lambda ()</span><br><span class="line">    (setq rustic-lsp-server &#x27;rust-analyzer) ; not rls</span><br><span class="line">    (setq lsp-rust-analyzer-server-command &#x27;(&quot;/opt/homebrew/bin/rust-analyzer&quot;))</span><br><span class="line">                                        ;(setq rustic-format-on-save t) ; has annoying bug move point to other buffer bug</span><br><span class="line">  (setq rustic-indent-offset 4)</span><br><span class="line">    (setq rustic-match-angle-brackets nil)</span><br><span class="line">    ;; thought this would be better, was wrong.</span><br><span class="line">    ;(setq rustic-compile-display-method &#x27;popwin:display-buffer-1) ; display if possible in popup-win</span><br><span class="line">    ))</span><br><span class="line">(use-package cargo)</span><br><span class="line">(setq lsp-rust-server &#x27;rust-analyzer)</span><br></pre></td></tr></table></figure>
-<h1 id="golang"><a href="#golang" class="headerlink" title="golang"></a>golang</h1><p><code>golang</code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且<code>gopls</code>的使用体验非常好，完全不逊色与目前用户较多的<code>goland</code>及<code>vscode</code>。配合<code>dlv-mode</code>使用，在调试上笔者认为能够更加的贴合<code>unix</code>风格，也更加方便。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; Go - lsp-mode</span><br><span class="line">;; Set up before-save hooks to format buffer and add/delete imports.</span><br><span class="line">;; go install github.com/golang/tools/cmd/gopls</span><br><span class="line">;;(require &#x27;lsp-mode)</span><br><span class="line">(setq lsp-ui-mode nil)</span><br><span class="line">(defun lsp-go-install-save-hooks ()</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-format-buffer t t)</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-organize-imports t t))</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-go-install-save-hooks)</span><br><span class="line"></span><br><span class="line">;; Start LSP Mode and YASnippet mode</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-deferred)</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;yas-minor-mode)</span><br></pre></td></tr></table></figure>
-<h1 id="python"><a href="#python" class="headerlink" title="python"></a>python</h1><p><code>python</code>的语言服务器，笔者目前使用的是<code>lsp-python-ms</code>进行配置的。这个插件解决了很多<code>python lsp</code>的问题（实际上，在碰到这个插件之前，笔者一度要放弃安装<code>python lsp</code>）。由于<code>python</code>是解释型语言，对象的成员都较为灵活，一般编码阶段很难确认对象的成员及其确切的类型。所以在<code>pylsp</code>使用过程中，往往会碰到无法有效提示的情况。满足一般提示需求吧。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;;; set env for python</span><br><span class="line">;; copied from</span><br><span class="line">;; https://gitee.com/nutora-emacs/lsp-python-ms</span><br><span class="line">;; python lsp-server use python-lsp-server</span><br><span class="line">;; install as: pip3 install python-lsp-server</span><br><span class="line">(ensure-package-installed &#x27;lsp-python-ms)</span><br><span class="line">(require &#x27;lsp-python-ms)</span><br><span class="line">(setq lsp-python-ms-auto-install-server t)</span><br><span class="line">(add-hook &#x27;python-mode-hook #&#x27;lsp)</span><br></pre></td></tr></table></figure>
-<h1 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h1><p>实际上，笔者很喜欢<code>c/c++</code>的语言服务器，简单、方便，安装时无比的顺畅。完全符合笔者对<code>c</code>语言简单、强大、靠谱的印象。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">;; brew install llvm</span><br><span class="line">;; https://clangd.llvm.org/installation</span><br><span class="line">(unless (package-installed-p &#x27;eglot)</span><br><span class="line">  (w-install &#x27;eglot))</span><br><span class="line">(require &#x27;eglot)</span><br><span class="line">(add-to-list &#x27;eglot-server-programs &#x27;((c++-mode c-mode) &quot;clangd&quot;))</span><br><span class="line">(add-hook &#x27;c-mode-hook &#x27;eglot-ensure)</span><br><span class="line">(add-hook &#x27;c++-mode-hook &#x27;eglot-ensure)</span><br></pre></td></tr></table></figure>
-<h1 id="使用的一点备注"><a href="#使用的一点备注" class="headerlink" title="使用的一点备注"></a>使用的一点备注</h1><p>这里唠叨一点</p>
-<h2 id="lsp-的管理单位是文件目录"><a href="#lsp-的管理单位是文件目录" class="headerlink" title="lsp 的管理单位是文件目录"></a>lsp 的管理单位是文件目录</h2><p>这里对于<code>golang</code>及<code>rust</code>尤为明显。在使用<code>emacs</code>打开一个关联了有效语言服务器的文件时，底部会提示为当前文件选择一个工作目录。尤其是，当路径<code>A</code>已经设为工作目录时，再将<code>A/B</code>设为工作目录，<code>A/B</code>的打开状态是会出现异常的。所以尽量保持每个工作目录的独特。<br>这里附上一些<code>emacs lsp-mode</code>中笔者常用的函数： </p>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>lsp-workspace-folders-remove</code></td>
-<td>将工作目录移除</td>
-</tr>
-<tr>
-<td><code>lsp-workspace-folders-add</code></td>
-<td>添加工作目录</td>
-</tr>
-<tr>
-<td><code>lsp-workspace-restart</code></td>
-<td>重启工作目录</td>
-</tr>
-</tbody></table>
-<h2 id="其他备注"><a href="#其他备注" class="headerlink" title="其他备注"></a>其他备注</h2><p>当安装了一个语言的<code>lsp</code>服务及对应的<code>emacs</code>客户端配置时，如果打开对应语言的文件发现<code>lsp</code>没有生效，且打开<code>toggle-debug-on-error</code>设置开启也没有发现任何报错，笔者建议重启<code>emacs</code>。似乎<code>emacs</code>热加载功能往往不会如人所愿。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://emacs-lsp.github.io/lsp-mode/">emacs lsp mode</a><br>及其他网络文献</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>golang</tag>
-        <tag>emacs</tag>
-        <tag>lsp</tag>
-        <tag>rust</tag>
-        <tag>python</tag>
-        <tag>c/c++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go-simplejson 插入数组</title>
-    <url>/2021/07/22/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://github.com/bitly/go-simplejson">go-simplejson</a>是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。</p>
-</blockquote>
-<span id="more"></span>
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 创建了一个json对象J，需要从其他地方获取剩余json信息后，插入到J中的data字段中。初始版本如下：</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	simplejson &quot;github.com/bitly/go-simplejson&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	js, _ := simplejson.NewJson([]byte(`</span><br><span class="line">&#123;</span><br><span class="line">&quot;errno&quot;: 0,</span><br><span class="line">&quot;errmsg&quot;: &quot;test&quot;</span><br><span class="line">&#125;`))</span><br><span class="line"></span><br><span class="line">	var js_2 = new(simplejson.Json)</span><br><span class="line">	*js_2 = *js</span><br><span class="line">	jsArr := []*simplejson.Json&#123;&#125;</span><br><span class="line">	js1, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 1&#125;`))</span><br><span class="line">	js2, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 2&#125;`))</span><br><span class="line">	jsArr = append(jsArr, js1)</span><br><span class="line">	jsArr = append(jsArr, js2)</span><br><span class="line">	js.Set(&quot;data&quot;, jsArr)</span><br><span class="line">	js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</span><br><span class="line">	jsB, _ := js.MarshalJSON()</span><br><span class="line">	fmt.Println(string(jsB)) </span><br><span class="line">&#125;</span><br><span class="line">// % go run js_check.go</span><br><span class="line">// &#123;&quot;data&quot;:[&#123;&quot;num&quot;:1&#125;,&#123;&quot;num&quot;:2&#125;],&quot;errmsg&quot;:&quot;test&quot;,&quot;errno&quot;:0&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p>经过<code>dlv</code>逐行调试，实际问题出在<code>js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</code>中。跳转至定义，该操作实际做如下转换:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">arr, ok := js.Get(&quot;data&quot;).data.([]interface&#123;&#125;)</span><br><span class="line">if ok &#123;</span><br><span class="line">    &amp;simplejson.Json(arr[index]).Set(&quot;test&quot;, 1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里由于<code>jsArr</code>是<code>[]*simplejson.Json</code>，类型断言为<code>[]interface&#123;&#125;</code>失败。所以无法正常设置值。查看<code>simplejson.go</code>，其中的<code>Json</code>对象结构如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Json struct &#123;</span><br><span class="line">    data interface&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实可以通过<code>js.Interface()</code>获取其中的真实数据。</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>变更为如下代码即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	simplejson &quot;github.com/bitly/go-simplejson&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	js, _ := simplejson.NewJson([]byte(`</span><br><span class="line">&#123;</span><br><span class="line">&quot;errno&quot;: 0,</span><br><span class="line">&quot;errmsg&quot;: &quot;test&quot;</span><br><span class="line">&#125;`))</span><br><span class="line"></span><br><span class="line">	var js_2 = new(simplejson.Json)</span><br><span class="line">	*js_2 = *js</span><br><span class="line">	jsArr := []interface&#123;&#125;&#123;&#125;</span><br><span class="line">	js1, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 1&#125;`))</span><br><span class="line">	js2, _ := simplejson.NewJson([]byte(`&#123;&quot;num&quot;: 2&#125;`))</span><br><span class="line">	jsArr = append(jsArr, js1.Interface())</span><br><span class="line">	jsArr = append(jsArr, js2.Interface())</span><br><span class="line">	js.Set(&quot;data&quot;, jsArr)</span><br><span class="line">	js.Get(&quot;data&quot;).GetIndex(0).Set(&quot;test&quot;, 1)</span><br><span class="line">	jsB, _ := js.MarshalJSON()</span><br><span class="line">	fmt.Println(string(jsB))</span><br><span class="line">&#125;</span><br><span class="line">// % go run js_check.go</span><br><span class="line">// &#123;&quot;data&quot;:[&#123;&quot;num&quot;:1,&quot;test&quot;:1&#125;,&#123;&quot;num&quot;:2&#125;],&quot;errmsg&quot;:&quot;test&quot;,&quot;errno&quot;:0&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>debug</category>
-      </categories>
-      <tags>
-        <tag>golang</tag>
-        <tag>simplejson</tag>
-      </tags>
   </entry>
   <entry>
     <title>go-1.17+ 调用规约</title>
@@ -865,6 +812,59 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
+    <title>emacs-若干语言 lsp 配置备注</title>
+    <url>/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</url>
+    <content><![CDATA[<blockquote>
+<p>微软推出的<a href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20">language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h1><p>这里使用 <code>rust-analyzer</code> 作为 <code>rust</code> 的语言服务器，在安装 <code>rust-mode</code>后，通过绑定语言服务器信息，即可在打开由 <code>cargo</code> 创建的工程时，顺利进入 <code>lsp-mode</code>。需要关注的是，在非<code>cargo</code>创建的项目中，笔者的<code>lsp-mode</code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是<code>rust-analyzer</code>主要是针对<code>cargo</code>项目进行的设置，也可能是笔者设置的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; config for rust-lsp for emacs</span><br><span class="line">;; rls install address: https://github.com/rust-lang-nursery/rls</span><br><span class="line">(unless (package-installed-p &#x27;rust-mode)</span><br><span class="line">  (w-install &#x27;rust-mode))</span><br><span class="line">(add-to-list &#x27;auto-mode-alist &#x27;(&quot;\\.rs\\&#x27;&quot; . rust-mode))</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;lsp)</span><br><span class="line">(unless (package-installed-p &#x27;rustic)</span><br><span class="line">  (w-install &#x27;rustic))</span><br><span class="line">(unless (package-installed-p &#x27;cargo)</span><br><span class="line">  (w-install &#x27;cargo))</span><br><span class="line">(use-package rustic) ; lsp-compatible rust mode</span><br><span class="line">(add-hook &#x27;rust-mode-hook &#x27;rustic-mode)</span><br><span class="line">(add-hook &#x27;rustic-mode-hook</span><br><span class="line">  (lambda ()</span><br><span class="line">    (setq rustic-lsp-server &#x27;rust-analyzer) ; not rls</span><br><span class="line">    (setq lsp-rust-analyzer-server-command &#x27;(&quot;/opt/homebrew/bin/rust-analyzer&quot;))</span><br><span class="line">                                        ;(setq rustic-format-on-save t) ; has annoying bug move point to other buffer bug</span><br><span class="line">  (setq rustic-indent-offset 4)</span><br><span class="line">    (setq rustic-match-angle-brackets nil)</span><br><span class="line">    ;; thought this would be better, was wrong.</span><br><span class="line">    ;(setq rustic-compile-display-method &#x27;popwin:display-buffer-1) ; display if possible in popup-win</span><br><span class="line">    ))</span><br><span class="line">(use-package cargo)</span><br><span class="line">(setq lsp-rust-server &#x27;rust-analyzer)</span><br></pre></td></tr></table></figure>
+<h1 id="golang"><a href="#golang" class="headerlink" title="golang"></a>golang</h1><p><code>golang</code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且<code>gopls</code>的使用体验非常好，完全不逊色与目前用户较多的<code>goland</code>及<code>vscode</code>。配合<code>dlv-mode</code>使用，在调试上笔者认为能够更加的贴合<code>unix</code>风格，也更加方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; Go - lsp-mode</span><br><span class="line">;; Set up before-save hooks to format buffer and add/delete imports.</span><br><span class="line">;; go install github.com/golang/tools/cmd/gopls</span><br><span class="line">;;(require &#x27;lsp-mode)</span><br><span class="line">(setq lsp-ui-mode nil)</span><br><span class="line">(defun lsp-go-install-save-hooks ()</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-format-buffer t t)</span><br><span class="line">  (add-hook &#x27;before-save-hook #&#x27;lsp-organize-imports t t))</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-go-install-save-hooks)</span><br><span class="line"></span><br><span class="line">;; Start LSP Mode and YASnippet mode</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;lsp-deferred)</span><br><span class="line">(add-hook &#x27;go-mode-hook #&#x27;yas-minor-mode)</span><br></pre></td></tr></table></figure>
+<h1 id="python"><a href="#python" class="headerlink" title="python"></a>python</h1><p><code>python</code>的语言服务器，笔者目前使用的是<code>lsp-python-ms</code>进行配置的。这个插件解决了很多<code>python lsp</code>的问题（实际上，在碰到这个插件之前，笔者一度要放弃安装<code>python lsp</code>）。由于<code>python</code>是解释型语言，对象的成员都较为灵活，一般编码阶段很难确认对象的成员及其确切的类型。所以在<code>pylsp</code>使用过程中，往往会碰到无法有效提示的情况。满足一般提示需求吧。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;;; set env for python</span><br><span class="line">;; copied from</span><br><span class="line">;; https://gitee.com/nutora-emacs/lsp-python-ms</span><br><span class="line">;; python lsp-server use python-lsp-server</span><br><span class="line">;; install as: pip3 install python-lsp-server</span><br><span class="line">(ensure-package-installed &#x27;lsp-python-ms)</span><br><span class="line">(require &#x27;lsp-python-ms)</span><br><span class="line">(setq lsp-python-ms-auto-install-server t)</span><br><span class="line">(add-hook &#x27;python-mode-hook #&#x27;lsp)</span><br></pre></td></tr></table></figure>
+<h1 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h1><p>实际上，笔者很喜欢<code>c/c++</code>的语言服务器，简单、方便，安装时无比的顺畅。完全符合笔者对<code>c</code>语言简单、强大、靠谱的印象。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">;; brew install llvm</span><br><span class="line">;; https://clangd.llvm.org/installation</span><br><span class="line">(unless (package-installed-p &#x27;eglot)</span><br><span class="line">  (w-install &#x27;eglot))</span><br><span class="line">(require &#x27;eglot)</span><br><span class="line">(add-to-list &#x27;eglot-server-programs &#x27;((c++-mode c-mode) &quot;clangd&quot;))</span><br><span class="line">(add-hook &#x27;c-mode-hook &#x27;eglot-ensure)</span><br><span class="line">(add-hook &#x27;c++-mode-hook &#x27;eglot-ensure)</span><br></pre></td></tr></table></figure>
+<h1 id="使用的一点备注"><a href="#使用的一点备注" class="headerlink" title="使用的一点备注"></a>使用的一点备注</h1><p>这里唠叨一点</p>
+<h2 id="lsp-的管理单位是文件目录"><a href="#lsp-的管理单位是文件目录" class="headerlink" title="lsp 的管理单位是文件目录"></a>lsp 的管理单位是文件目录</h2><p>这里对于<code>golang</code>及<code>rust</code>尤为明显。在使用<code>emacs</code>打开一个关联了有效语言服务器的文件时，底部会提示为当前文件选择一个工作目录。尤其是，当路径<code>A</code>已经设为工作目录时，再将<code>A/B</code>设为工作目录，<code>A/B</code>的打开状态是会出现异常的。所以尽量保持每个工作目录的独特。<br>这里附上一些<code>emacs lsp-mode</code>中笔者常用的函数： </p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>lsp-workspace-folders-remove</code></td>
+<td>将工作目录移除</td>
+</tr>
+<tr>
+<td><code>lsp-workspace-folders-add</code></td>
+<td>添加工作目录</td>
+</tr>
+<tr>
+<td><code>lsp-workspace-restart</code></td>
+<td>重启工作目录</td>
+</tr>
+</tbody></table>
+<h2 id="其他备注"><a href="#其他备注" class="headerlink" title="其他备注"></a>其他备注</h2><p>当安装了一个语言的<code>lsp</code>服务及对应的<code>emacs</code>客户端配置时，如果打开对应语言的文件发现<code>lsp</code>没有生效，且打开<code>toggle-debug-on-error</code>设置开启也没有发现任何报错，笔者建议重启<code>emacs</code>。似乎<code>emacs</code>热加载功能往往不会如人所愿。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://emacs-lsp.github.io/lsp-mode/">emacs lsp mode</a><br>及其他网络文献</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>golang</tag>
+        <tag>emacs</tag>
+        <tag>lsp</tag>
+        <tag>rust</tag>
+        <tag>python</tag>
+        <tag>c/c++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>golang proto3 使用</title>
     <url>/2022/05/19/golang-proto3-%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<blockquote>
@@ -1038,6 +1038,46 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
+    <title>lisp-let变量声明</title>
+    <url>/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</url>
+    <content><![CDATA[<p>lisp声明、使用变量的一种方法，是使用<code>let</code>语句。<br>形如：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;(let ((variable declare1) (variable declare2) (...))</span><br><span class="line">;  (varaible used here));</span><br><span class="line">(defun foo(x)</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x)</span><br><span class="line">  (let ((x 2))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x)</span><br><span class="line">    (let ((x 3))</span><br><span class="line">      (format t &quot;Inner LET: ~a~%&quot; x))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x))</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x));</span><br><span class="line"></span><br><span class="line">(foo 10);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>声明的作用域，和C语言很相似，存在覆盖的特点。输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Parameter: 10</span><br><span class="line">Outer LET: 2</span><br><span class="line">Inner LET: 3</span><br><span class="line">Outer LET: 2</span><br><span class="line">Parameter: 10</span><br></pre></td></tr></table></figure>
+<p>使用<code>let</code>声明时，变量声明域内，无法使用前一个在本声明域内声明的变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line"></span><br><span class="line">*** - LET: variable M has no value</span><br></pre></td></tr></table></figure>
+<p>使用<code>let*</code>可以进行如此操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let* ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line">Year:1</span><br><span class="line">Month:12</span><br><span class="line">Day:360</span><br></pre></td></tr></table></figure>
+<p>just like this.</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>lisp-do循环</title>
+    <url>/2019/06/03/lisp-do%E5%BE%AA%E7%8E%AF/</url>
+    <content><![CDATA[<p>lisp中，do循环形象如下:  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do (variable-definition*)</span><br><span class="line">    (end-test-form result-form*)</span><br><span class="line">    statement*);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>其中，<code>(variable-definition*)</code>是一些行日<code>(var init next)</code>的赋值结构。在<code>do</code>开始时，<code>var</code>会被赋值为<code>init</code>。并且在一次循环结束后，<code>var</code>会被赋值为<code>next</code>所表示的内容。<br>形如：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do ((n 0 (+ 1 n))</span><br><span class="line">     (cur 0 next)</span><br><span class="line">     (next 1 (+ cur next)))</span><br><span class="line">    ((= 10 n) (format t &quot;|end ~d&quot; cur))</span><br><span class="line">  (format t &quot;~d|&quot; cur));</span><br></pre></td></tr></table></figure>
+<p>输出：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0|1|1|2|3|5|8|13|21|34||end 55</span><br></pre></td></tr></table></figure>
+<p>类似于python中的：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cur = 0</span><br><span class="line">next = 1</span><br><span class="line">for i in range(10):</span><br><span class="line">    print(&quot;%d|&quot; % cur)</span><br><span class="line">    cur, next = next, cur + next</span><br><span class="line">print(&quot;|end %d&quot; % cur)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>http及websocket性能对比</title>
     <url>/2021/07/15/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</url>
     <content><![CDATA[<blockquote>
@@ -1063,24 +1103,52 @@ kprobe:tcp_connect
 ]]></content>
   </entry>
   <entry>
-    <title>lisp-let变量声明</title>
-    <url>/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</url>
-    <content><![CDATA[<p>lisp声明、使用变量的一种方法，是使用<code>let</code>语句。<br>形如：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;(let ((variable declare1) (variable declare2) (...))</span><br><span class="line">;  (varaible used here));</span><br><span class="line">(defun foo(x)</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x)</span><br><span class="line">  (let ((x 2))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x)</span><br><span class="line">    (let ((x 3))</span><br><span class="line">      (format t &quot;Inner LET: ~a~%&quot; x))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x))</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x));</span><br><span class="line"></span><br><span class="line">(foo 10);</span><br></pre></td></tr></table></figure>
+    <title>lisp-lambda函数</title>
+    <url>/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>lisp中的lambda表达式，显然和python中的很相似。<br>参照《实用common lisp编程》：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;按照 min max, 步长step为参数的fn计算的长度输出 *</span><br><span class="line">(defun plot (fn min max step)</span><br><span class="line">  (loop for i from min to max by step do</span><br><span class="line">        (loop repeat (funcall fn i) do (format t &quot;*&quot;))</span><br><span class="line">        (format t &quot;~%&quot;)))</span><br><span class="line"></span><br><span class="line">(plot #&#x27;exp 0 4 1/2);</span><br><span class="line">(plot #&#x27;(lambda (x) (* 2 x)) 0 10 1);</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
-<p>声明的作用域，和C语言很相似，存在覆盖的特点。输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Parameter: 10</span><br><span class="line">Outer LET: 2</span><br><span class="line">Inner LET: 3</span><br><span class="line">Outer LET: 2</span><br><span class="line">Parameter: 10</span><br></pre></td></tr></table></figure>
-<p>使用<code>let</code>声明时，变量声明域内，无法使用前一个在本声明域内声明的变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line"></span><br><span class="line">*** - LET: variable M has no value</span><br></pre></td></tr></table></figure>
-<p>使用<code>let*</code>可以进行如此操作：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(defun year-day(y)</span><br><span class="line">  (let* ((m (* y 12)) (d (* m 30)))</span><br><span class="line">    (format t &quot;Year:~d~%Month:~d~%Day:~d~%&quot; y m d)));</span><br><span class="line">(year-day 1);</span><br><span class="line">Year:1</span><br><span class="line">Month:12</span><br><span class="line">Day:360</span><br></pre></td></tr></table></figure>
-<p>just like this.</p>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*</span><br><span class="line">**</span><br><span class="line">***</span><br><span class="line">*****</span><br><span class="line">********</span><br><span class="line">*************</span><br><span class="line">*********************</span><br><span class="line">**********************************</span><br><span class="line">*******************************************************</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">****</span><br><span class="line">******</span><br><span class="line">********</span><br><span class="line">**********</span><br><span class="line">************</span><br><span class="line">**************</span><br><span class="line">****************</span><br><span class="line">******************</span><br><span class="line">********************</span><br></pre></td></tr></table></figure>
+<p><code>#'</code>为lisp语言的语法糖，展开表示为<code>function</code>。后者将会把一个函数生成为一个函数对象，后者可以通过<code>funcall</code>调用。<br>interesting。</p>
 ]]></content>
       <categories>
         <category>code</category>
       </categories>
       <tags>
         <tag>lisp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ratelimit服务流量限制</title>
+    <url>/2021/02/07/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</url>
+    <content><![CDATA[<blockquote>
+<p>在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以<a href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a> 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对<code>Jmeter</code>及<code>golang ratelimit</code>中的流量限制方法进行描述。</p>
+</blockquote>
+<ol>
+<li>起因</li>
+<li>漏桶法</li>
+<li>令牌桶法</li>
+<li>Jmeter中流量吞吐控制</li>
+<li>golang ratelimit<span id="more"></span></li>
+</ol>
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>流量限制手段在系统流量控制以及系统质量评估上都有广泛的应用。对于有多个子模块/下游的系统，如果已知其中一个模块/下游是整个系统处理能力的瓶颈，从系统的入口添加流量限制并添加超量告警，不失为是保护系统的有效手段。从质量保证的手段来说，在衡量一个系统的稳定性时，需要有一个有效的手段来控制给予系统的压力并进行控制。<br>固定并发数量的流量控制方式是相对容易实现的：对于系统而言，可以添加一个连接池；对于请求方而言，维护一个请求并发池即可。对于固定QPS的流量控制手段而言，则又复杂一些：由于基本指令的直接支持，所以固定QPS的流量控制手段多在基于并发的流量控制上进行二次的封装。封装的措施实际上又会影响控制的效果。笔者曾经在搜索系统上，尝试基于Jmeter，使用1000个线程来产生一个固定的100QPS的并发数。由于Jmeter固定吞吐量实现的特点，导致实际产生的效果中，100个请求多集中在1分钟的前几秒，甚至是最开始1s的前若干ms。使得服务承受的顺势并发非常大，服务出现异常也是可以预见的事情了。<br>了解一些流量控制的手段还是有必要的。本文主要梳理一下<a href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a>提到的漏桶及令牌桶两种方法，并且进行简单的实现。</p>
+<h1 id="漏桶法"><a href="#漏桶法" class="headerlink" title="漏桶法"></a>漏桶法</h1><p>基于<a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky_bucket</a>的描述，目前广泛流行的漏桶法存在两种模式：度量法（the leaky bucket as a meter）及队列法（the leaky bucket as a queue）。<br>度量法在处理时，单位时间内的请求如果超过了预设的数量，会将请求丢弃。比如，需要固定的流量为100QPS，我们以100ms作为一个衡量单元，即10 query/100ms。则，在单位的100ms内，如果请求数量超过了10，则将超过10的请求丢弃。对于队列法，则会将超过的请求均放在一个队列里，在下个时间单位内，按照先进先出的原则，处理队列内的请求。<br>在请求数量较多且分布均匀的场景下，度量法更加适用。系统已经处于处理的极限，额外的请求存储似乎不太现实。对于流量分布不均的场景下，队列法能够抹平流量的不均匀。在队列长度可控的场景下，队列法能够兼顾请求方（尽量不丢请求）及服务方（控制流量）。至于超出的部分，应该考虑引入告警等方式来把控风险。</p>
+<h1 id="令牌桶法"><a href="#令牌桶法" class="headerlink" title="令牌桶法"></a>令牌桶法</h1><p>对令牌桶法的详细介绍见<a href="https://en.wikipedia.org/wiki/Token_bucket">Token bucket</a>。令牌桶法可以认为是更加一般的漏桶法。严格意义上的漏桶法要求每次仅有一个单位的请求被允许，令牌桶法则将其扩展为固定时间段内，产出多个令牌，被请求申请。当令牌桶法每次仅允许一个令牌时，显然就成了漏桶法。</p>
+<h1 id="Jmeter中吞吐量的控制逻辑"><a href="#Jmeter中吞吐量的控制逻辑" class="headerlink" title="Jmeter中吞吐量的控制逻辑"></a>Jmeter中吞吐量的控制逻辑</h1><p>笔者找到的Jmeter最新版本为<a href="https://github.com/apache/jmeter/blob/master/src/components/src/main/java/org/apache/jmeter/timers/ConstantThroughputTimer.java">ConstantThroughputTimer</a>。在该实现中，主要分为单线程、多线程、共享线程等模式下的吞吐量（Jmeter中的吞吐量为Query Per Minutes)等模式。可以看出，Jmeter在不同的限流逻辑下，计算每个线程需要的delay时间实现jmeter的请求调度，体现了漏桶法的思路。<br>相关代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Calculate the delay based on the mode</span><br><span class="line">private long calculateDelay() &#123;</span><br><span class="line">    long delay;</span><br><span class="line">    // N.B. we fetch the throughput each time, as it may vary during a test</span><br><span class="line">    double msPerRequest = MILLISEC_PER_MIN / getThroughput();</span><br><span class="line">    switch (mode) &#123;</span><br><span class="line">    case AllActiveThreads: // Total number of threads</span><br><span class="line">        delay = Math.round(JMeterContextService.getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup: // Active threads in this group</span><br><span class="line">        delay = Math.round(JMeterContextService.getContext().getThreadGroup().getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreads_Shared: // All threads - alternate calculation</span><br><span class="line">        delay = calculateSharedDelay(allThreadsInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup_Shared: //All threads in this group - alternate calculation</span><br><span class="line">        final org.apache.jmeter.threads.AbstractThreadGroup group =</span><br><span class="line">            JMeterContextService.getContext().getThreadGroup();</span><br><span class="line">        ThroughputInfo groupInfo = threadGroupsInfoMap.get(group);</span><br><span class="line">        if (groupInfo == null) &#123;</span><br><span class="line">            groupInfo = new ThroughputInfo();</span><br><span class="line">            ThroughputInfo previous = threadGroupsInfoMap.putIfAbsent(group, groupInfo);</span><br><span class="line">            if (previous != null) &#123; // We did not replace the entry</span><br><span class="line">                groupInfo = previous; // so use the existing one</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        delay = calculateSharedDelay(groupInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case ThisThreadOnly:</span><br><span class="line">    default: // e.g. 0</span><br><span class="line">        delay = Math.round(msPerRequest); // i.e. * 1</span><br><span class="line">        break;</span><br><span class="line">    return delay;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="golang-ratelimit介绍"><a href="#golang-ratelimit介绍" class="headerlink" title="golang ratelimit介绍"></a>golang ratelimit介绍</h1><p>golang中也有很多请求控制的方法。工程中经常使用的 <code>chan(bool)</code>+<code>WaitGroup</code>池化了请求限制，可以认为是令牌桶法的思路的一种简化；golang自带的<code>Ticker</code>则会在固定的时间间隔内产生一个就绪的状态，可以看出漏桶法的思想。更加工程化的选择，可以看下<a href="https://github.com/uber-go/ratelimit">golang ratelimit</a>uber开源的这个golang版本的ratelimit实现。水平优先，就贴一个网上找来的源码分析文章<a href="https://www.cyhone.com/articles/analysis-of-uber-go-ratelimit/">uber-go 漏桶限流器使用与原理分析</a>。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文对常用的两个限流方法<code>漏桶法</code>及<code>令牌桶法</code>进行了简单的描述。同时简单涉及了下<code>Jmeter</code>中的流量限制及<code>golang</code>中不同请求限制措施的思路。  </p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>系统稳定性</tag>
+        <tag>压力测试</tag>
+        <tag>自我修养</tag>
+        <tag>读代码</tag>
       </tags>
   </entry>
   <entry>
@@ -1164,42 +1232,6 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>lisp-do循环</title>
-    <url>/2019/06/03/lisp-do%E5%BE%AA%E7%8E%AF/</url>
-    <content><![CDATA[<p>lisp中，do循环形象如下:  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do (variable-definition*)</span><br><span class="line">    (end-test-form result-form*)</span><br><span class="line">    statement*);</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>其中，<code>(variable-definition*)</code>是一些行日<code>(var init next)</code>的赋值结构。在<code>do</code>开始时，<code>var</code>会被赋值为<code>init</code>。并且在一次循环结束后，<code>var</code>会被赋值为<code>next</code>所表示的内容。<br>形如：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(do ((n 0 (+ 1 n))</span><br><span class="line">     (cur 0 next)</span><br><span class="line">     (next 1 (+ cur next)))</span><br><span class="line">    ((= 10 n) (format t &quot;|end ~d&quot; cur))</span><br><span class="line">  (format t &quot;~d|&quot; cur));</span><br></pre></td></tr></table></figure>
-<p>输出：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0|1|1|2|3|5|8|13|21|34||end 55</span><br></pre></td></tr></table></figure>
-<p>类似于python中的：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cur = 0</span><br><span class="line">next = 1</span><br><span class="line">for i in range(10):</span><br><span class="line">    print(&quot;%d|&quot; % cur)</span><br><span class="line">    cur, next = next, cur + next</span><br><span class="line">print(&quot;|end %d&quot; % cur)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lisp-lambda函数</title>
-    <url>/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>lisp中的lambda表达式，显然和python中的很相似。<br>参照《实用common lisp编程》：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;按照 min max, 步长step为参数的fn计算的长度输出 *</span><br><span class="line">(defun plot (fn min max step)</span><br><span class="line">  (loop for i from min to max by step do</span><br><span class="line">        (loop repeat (funcall fn i) do (format t &quot;*&quot;))</span><br><span class="line">        (format t &quot;~%&quot;)))</span><br><span class="line"></span><br><span class="line">(plot #&#x27;exp 0 4 1/2);</span><br><span class="line">(plot #&#x27;(lambda (x) (* 2 x)) 0 10 1);</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*</span><br><span class="line">**</span><br><span class="line">***</span><br><span class="line">*****</span><br><span class="line">********</span><br><span class="line">*************</span><br><span class="line">*********************</span><br><span class="line">**********************************</span><br><span class="line">*******************************************************</span><br><span class="line"></span><br><span class="line">**</span><br><span class="line">****</span><br><span class="line">******</span><br><span class="line">********</span><br><span class="line">**********</span><br><span class="line">************</span><br><span class="line">**************</span><br><span class="line">****************</span><br><span class="line">******************</span><br><span class="line">********************</span><br></pre></td></tr></table></figure>
-<p><code>#'</code>为lisp语言的语法糖，展开表示为<code>function</code>。后者将会把一个函数生成为一个函数对象，后者可以通过<code>funcall</code>调用。<br>interesting。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>lisp</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>redisgo 连接报错</title>
     <url>/2021/08/18/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</url>
     <content><![CDATA[<blockquote>
@@ -1215,6 +1247,38 @@ kprobe:tcp_connect
         <tag>go</tag>
         <tag>redisgo</tag>
         <tag>debug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sed使用备注</title>
+    <url>/2020/11/12/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
+    <content><![CDATA[<h2 id="sed功能介绍"><a href="#sed功能介绍" class="headerlink" title="sed功能介绍"></a>sed功能介绍</h2><p>先看下官方的介绍</p>
+<blockquote>
+<p>Sed  is a stream editor. A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline).<br>While in some ways similar to an editor which permits scripted edits (such as ed), sed works by making only one pass over the  input(s),  and<br>is consequently more efficient.  But it is sed’s ability to filter text in a pipeline which particularly distinguishes it from other types of<br>editors.</p>
+</blockquote>
+<p>大概的意思，是面向流的文本编辑工具。一般用来对文件中的文本进行替换等操作。<br>以下备注一些常用的操作方式了。  </p>
+<span id="more"></span>
+<h2 id="使用介绍"><a href="#使用介绍" class="headerlink" title="使用介绍"></a>使用介绍</h2><p>我们以上段文字为例，使用<code>sed</code>进行文本的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sed -i &quot;s#Sed#SED#g&quot; text</span><br><span class="line">使用 -i 才可以直接修改 text 里面的内容，否则无法修改（但是会将修改后的内容输出到标准输出）</span><br><span class="line">这里使用#作为sed的限位符而非/，是因为一般文本中，/符号出现的频率要较#高。直接使用#就不需要频繁转义了。</span><br><span class="line"></span><br><span class="line">sed -i &#x27;2,2 s#in#in_#g&#x27; text</span><br><span class="line">将 行号 [2,2] 中的 in 全部替换为 in_，注意，input也会被替换为in_put</span><br><span class="line"></span><br><span class="line">sed -i &#x27;/While.*/, /.*editors/ s#in#in_#g&#x27; text</span><br><span class="line">将 While.* .*editors 之间的 in 全部替换为 in_</span><br><span class="line"></span><br><span class="line">sed -i &#x27;2,+1 s#in#in_#g&#x27; text</span><br><span class="line">将 [2, 2+1=3] 行内的 in 全部替换为 in_</span><br></pre></td></tr></table></figure>
+<p>基本上常用的一些 <code>sed</code>替换方式就是这些了。<code>man</code>文档中还有一些基于倍数的替换范围决定方式，这里就不说明了。使用的时候，还是尽量使用通俗易懂的方式。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>shell-访问字符串同名变量</title>
+    <url>/2019/06/04/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<p>考虑以下场景：<br>期望通过给定的变量名称<code>var_str</code>，打印出该名称对应的变量值<code>$&#123;var_str&#125;</code>。使用指令<code>eval</code>可以很方便的实现：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var_str=&quot;1213&quot;;</span><br><span class="line">ned_param_name=&quot;var_str&quot;;</span><br><span class="line">eval echo &#x27;$&#x27;&quot;$&#123;ned_param_name&#125;&quot;;</span><br></pre></td></tr></table></figure>
+<p>输出结果为<code>1213</code>;</p>
+<span id="more"></span>
+<p><code>eval</code>命令解释如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval [arg ...]</span><br><span class="line">    The  args  are read and concatenated together into a single command. </span><br><span class="line">    This command is then read and executed by the shell, and its exit status is returned as</span><br><span class="line">the value of eval.  If there are no args, or only null arguments, eval returns 0.</span><br><span class="line">eval [参数 ...]</span><br><span class="line">    参数将会被读取并作为一个指令被读入。然后这个指令将会被shell读取并执行，执行结果</span><br><span class="line">将会作为eval的结果。如果没有参数传入，或者只有空参数，eval指令将会返回0。</span><br></pre></td></tr></table></figure>
+<p>对于上述的例子，<code>echo $var_str</code>将会被读入，并被shell重新执行。输出结果为<code>1213</code>。该结果即作为<code>eval</code>的输出结果。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -1295,109 +1359,25 @@ kprobe:tcp_connect
       </tags>
   </entry>
   <entry>
-    <title>python调试方法（其一）</title>
-    <url>/2019/07/17/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%B6%E4%B8%80%EF%BC%89/</url>
-    <content><![CDATA[<p>&lt;一&gt; 这里记录一些python调试的方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># coding=UTF-8</span><br><span class="line">&#x27;&#x27;&#x27; python debug method 1</span><br><span class="line">use print function to get output informatino</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">DEBUG = True</span><br><span class="line"></span><br><span class="line">def _debug_(*args, **kwds):</span><br><span class="line">	&#x27;&#x27;&#x27; depends on DEBUG value, print some function &#x27;&#x27;&#x27;</span><br><span class="line">    global DEBUG</span><br><span class="line">    if DEBUG:</span><br><span class="line">    	print(args, kwds)</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">	_debug_(&quot;this is a test&quot;)</span><br></pre></td></tr></table></figure>
-<p>最常见的调试方法了。<code>print</code>可以依据需求调整为其他的方式（<code>logging</code>输出日志或者直接输出到文件中均可）。  </p>
-<span id="more"></span>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 输出结果如下：</span><br><span class="line">((&#x27;this is a test&#x27;,), &#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p>&lt;二&gt;然后就是更直接一些的调试方法了</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># coding=UTF-8</span><br><span class="line">import pdb</span><br><span class="line">def test_function():</span><br><span class="line">	&#x27;&#x27;&#x27; regard it as a test funcion &#x27;&#x27;&#x27;</span><br><span class="line">    try:</span><br><span class="line">    	a = 1</span><br><span class="line">        b = 0</span><br><span class="line">    	c = a / b</span><br><span class="line">    except Exception, e:</span><br><span class="line">    	pdb.set_trace()</span><br><span class="line">    return</span><br><span class="line">    </span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">	test_function()</span><br></pre></td></tr></table></figure>
-<p>直接一点了，直接在代码中显式设置断点。这样，在异常发生时，就可以直接中断调试了。<br><code>python</code>中的<code>pdb</code>应该可以认为是一种阉割版的<code>gdb</code>了。仅对<code>list</code><code>print</code>及其他的<code>python</code>的内置函数有较好的支持。相互配合来看的话，也能发现很多问题。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 输出如下：</span><br><span class="line">&gt; test_debug.py(11)test_function()</span><br><span class="line">-&gt; return</span><br><span class="line">(Pdb) list</span><br><span class="line">  6             a = 1</span><br><span class="line">  7             b = 0</span><br><span class="line">  8             c = a / b</span><br><span class="line">  9         except Exception, e:</span><br><span class="line"> 10             pdb.set_trace()</span><br><span class="line"> 11  -&gt;     return</span><br><span class="line"> 12</span><br><span class="line"> 13     if __name__ == &quot;__main__&quot;:</span><br><span class="line"> 14         test_function()</span><br><span class="line">[EOF]</span><br><span class="line">(Pdb) print(e)</span><br><span class="line">integer division or modulo by zero</span><br><span class="line">(Pdb) print(a, b, c)</span><br><span class="line">*** NameError: name &#x27;c&#x27; is not defined</span><br><span class="line">(Pdb) print(a, b)</span><br><span class="line">(1, 0)</span><br><span class="line">(Pdb) quit()</span><br></pre></td></tr></table></figure>
-<p>唔，先这样吧。可以考虑收集一些<code>python</code>的内置解析包来配合调试了。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ratelimit服务流量限制</title>
-    <url>/2021/02/07/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</url>
+    <title>让emacs在保存文件时自动格式化代码</title>
+    <url>/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</url>
     <content><![CDATA[<blockquote>
-<p>在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以<a href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a> 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对<code>Jmeter</code>及<code>golang ratelimit</code>中的流量限制方法进行描述。</p>
+<p><a href="https://liam.page/">liam</a>同学在<a href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/">让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</p>
 </blockquote>
-<ol>
-<li>起因</li>
-<li>漏桶法</li>
-<li>令牌桶法</li>
-<li>Jmeter中流量吞吐控制</li>
-<li>golang ratelimit<span id="more"></span></li>
-</ol>
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>流量限制手段在系统流量控制以及系统质量评估上都有广泛的应用。对于有多个子模块/下游的系统，如果已知其中一个模块/下游是整个系统处理能力的瓶颈，从系统的入口添加流量限制并添加超量告警，不失为是保护系统的有效手段。从质量保证的手段来说，在衡量一个系统的稳定性时，需要有一个有效的手段来控制给予系统的压力并进行控制。<br>固定并发数量的流量控制方式是相对容易实现的：对于系统而言，可以添加一个连接池；对于请求方而言，维护一个请求并发池即可。对于固定QPS的流量控制手段而言，则又复杂一些：由于基本指令的直接支持，所以固定QPS的流量控制手段多在基于并发的流量控制上进行二次的封装。封装的措施实际上又会影响控制的效果。笔者曾经在搜索系统上，尝试基于Jmeter，使用1000个线程来产生一个固定的100QPS的并发数。由于Jmeter固定吞吐量实现的特点，导致实际产生的效果中，100个请求多集中在1分钟的前几秒，甚至是最开始1s的前若干ms。使得服务承受的顺势并发非常大，服务出现异常也是可以预见的事情了。<br>了解一些流量控制的手段还是有必要的。本文主要梳理一下<a href="https://chai2010.cn/advanced-go-programming-book/">Go语言高级编程</a>提到的漏桶及令牌桶两种方法，并且进行简单的实现。</p>
-<h1 id="漏桶法"><a href="#漏桶法" class="headerlink" title="漏桶法"></a>漏桶法</h1><p>基于<a href="https://en.wikipedia.org/wiki/Leaky_bucket">Leaky_bucket</a>的描述，目前广泛流行的漏桶法存在两种模式：度量法（the leaky bucket as a meter）及队列法（the leaky bucket as a queue）。<br>度量法在处理时，单位时间内的请求如果超过了预设的数量，会将请求丢弃。比如，需要固定的流量为100QPS，我们以100ms作为一个衡量单元，即10 query/100ms。则，在单位的100ms内，如果请求数量超过了10，则将超过10的请求丢弃。对于队列法，则会将超过的请求均放在一个队列里，在下个时间单位内，按照先进先出的原则，处理队列内的请求。<br>在请求数量较多且分布均匀的场景下，度量法更加适用。系统已经处于处理的极限，额外的请求存储似乎不太现实。对于流量分布不均的场景下，队列法能够抹平流量的不均匀。在队列长度可控的场景下，队列法能够兼顾请求方（尽量不丢请求）及服务方（控制流量）。至于超出的部分，应该考虑引入告警等方式来把控风险。</p>
-<h1 id="令牌桶法"><a href="#令牌桶法" class="headerlink" title="令牌桶法"></a>令牌桶法</h1><p>对令牌桶法的详细介绍见<a href="https://en.wikipedia.org/wiki/Token_bucket">Token bucket</a>。令牌桶法可以认为是更加一般的漏桶法。严格意义上的漏桶法要求每次仅有一个单位的请求被允许，令牌桶法则将其扩展为固定时间段内，产出多个令牌，被请求申请。当令牌桶法每次仅允许一个令牌时，显然就成了漏桶法。</p>
-<h1 id="Jmeter中吞吐量的控制逻辑"><a href="#Jmeter中吞吐量的控制逻辑" class="headerlink" title="Jmeter中吞吐量的控制逻辑"></a>Jmeter中吞吐量的控制逻辑</h1><p>笔者找到的Jmeter最新版本为<a href="https://github.com/apache/jmeter/blob/master/src/components/src/main/java/org/apache/jmeter/timers/ConstantThroughputTimer.java">ConstantThroughputTimer</a>。在该实现中，主要分为单线程、多线程、共享线程等模式下的吞吐量（Jmeter中的吞吐量为Query Per Minutes)等模式。可以看出，Jmeter在不同的限流逻辑下，计算每个线程需要的delay时间实现jmeter的请求调度，体现了漏桶法的思路。<br>相关代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Calculate the delay based on the mode</span><br><span class="line">private long calculateDelay() &#123;</span><br><span class="line">    long delay;</span><br><span class="line">    // N.B. we fetch the throughput each time, as it may vary during a test</span><br><span class="line">    double msPerRequest = MILLISEC_PER_MIN / getThroughput();</span><br><span class="line">    switch (mode) &#123;</span><br><span class="line">    case AllActiveThreads: // Total number of threads</span><br><span class="line">        delay = Math.round(JMeterContextService.getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup: // Active threads in this group</span><br><span class="line">        delay = Math.round(JMeterContextService.getContext().getThreadGroup().getNumberOfThreads() * msPerRequest);</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreads_Shared: // All threads - alternate calculation</span><br><span class="line">        delay = calculateSharedDelay(allThreadsInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case AllActiveThreadsInCurrentThreadGroup_Shared: //All threads in this group - alternate calculation</span><br><span class="line">        final org.apache.jmeter.threads.AbstractThreadGroup group =</span><br><span class="line">            JMeterContextService.getContext().getThreadGroup();</span><br><span class="line">        ThroughputInfo groupInfo = threadGroupsInfoMap.get(group);</span><br><span class="line">        if (groupInfo == null) &#123;</span><br><span class="line">            groupInfo = new ThroughputInfo();</span><br><span class="line">            ThroughputInfo previous = threadGroupsInfoMap.putIfAbsent(group, groupInfo);</span><br><span class="line">            if (previous != null) &#123; // We did not replace the entry</span><br><span class="line">                groupInfo = previous; // so use the existing one</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        delay = calculateSharedDelay(groupInfo,Math.round(msPerRequest));</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    case ThisThreadOnly:</span><br><span class="line">    default: // e.g. 0</span><br><span class="line">        delay = Math.round(msPerRequest); // i.e. * 1</span><br><span class="line">        break;</span><br><span class="line">    return delay;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="golang-ratelimit介绍"><a href="#golang-ratelimit介绍" class="headerlink" title="golang ratelimit介绍"></a>golang ratelimit介绍</h1><p>golang中也有很多请求控制的方法。工程中经常使用的 <code>chan(bool)</code>+<code>WaitGroup</code>池化了请求限制，可以认为是令牌桶法的思路的一种简化；golang自带的<code>Ticker</code>则会在固定的时间间隔内产生一个就绪的状态，可以看出漏桶法的思想。更加工程化的选择，可以看下<a href="https://github.com/uber-go/ratelimit">golang ratelimit</a>uber开源的这个golang版本的ratelimit实现。水平优先，就贴一个网上找来的源码分析文章<a href="https://www.cyhone.com/articles/analysis-of-uber-go-ratelimit/">uber-go 漏桶限流器使用与原理分析</a>。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文对常用的两个限流方法<code>漏桶法</code>及<code>令牌桶法</code>进行了简单的描述。同时简单涉及了下<code>Jmeter</code>中的流量限制及<code>golang</code>中不同请求限制措施的思路。  </p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>系统稳定性</tag>
-        <tag>压力测试</tag>
-        <tag>自我修养</tag>
-        <tag>读代码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sed使用备注</title>
-    <url>/2020/11/12/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</url>
-    <content><![CDATA[<h2 id="sed功能介绍"><a href="#sed功能介绍" class="headerlink" title="sed功能介绍"></a>sed功能介绍</h2><p>先看下官方的介绍</p>
-<blockquote>
-<p>Sed  is a stream editor. A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline).<br>While in some ways similar to an editor which permits scripted edits (such as ed), sed works by making only one pass over the  input(s),  and<br>is consequently more efficient.  But it is sed’s ability to filter text in a pipeline which particularly distinguishes it from other types of<br>editors.</p>
-</blockquote>
-<p>大概的意思，是面向流的文本编辑工具。一般用来对文件中的文本进行替换等操作。<br>以下备注一些常用的操作方式了。  </p>
 <span id="more"></span>
-<h2 id="使用介绍"><a href="#使用介绍" class="headerlink" title="使用介绍"></a>使用介绍</h2><p>我们以上段文字为例，使用<code>sed</code>进行文本的操作。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sed -i &quot;s#Sed#SED#g&quot; text</span><br><span class="line">使用 -i 才可以直接修改 text 里面的内容，否则无法修改（但是会将修改后的内容输出到标准输出）</span><br><span class="line">这里使用#作为sed的限位符而非/，是因为一般文本中，/符号出现的频率要较#高。直接使用#就不需要频繁转义了。</span><br><span class="line"></span><br><span class="line">sed -i &#x27;2,2 s#in#in_#g&#x27; text</span><br><span class="line">将 行号 [2,2] 中的 in 全部替换为 in_，注意，input也会被替换为in_put</span><br><span class="line"></span><br><span class="line">sed -i &#x27;/While.*/, /.*editors/ s#in#in_#g&#x27; text</span><br><span class="line">将 While.* .*editors 之间的 in 全部替换为 in_</span><br><span class="line"></span><br><span class="line">sed -i &#x27;2,+1 s#in#in_#g&#x27; text</span><br><span class="line">将 [2, 2+1=3] 行内的 in 全部替换为 in_</span><br></pre></td></tr></table></figure>
-<p>基本上常用的一些 <code>sed</code>替换方式就是这些了。<code>man</code>文档中还有一些基于倍数的替换范围决定方式，这里就不说明了。使用的时候，还是尽量使用通俗易懂的方式。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>shell-访问字符串同名变量</title>
-    <url>/2019/06/04/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<p>考虑以下场景：<br>期望通过给定的变量名称<code>var_str</code>，打印出该名称对应的变量值<code>$&#123;var_str&#125;</code>。使用指令<code>eval</code>可以很方便的实现：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var_str=&quot;1213&quot;;</span><br><span class="line">ned_param_name=&quot;var_str&quot;;</span><br><span class="line">eval echo &#x27;$&#x27;&quot;$&#123;ned_param_name&#125;&quot;;</span><br></pre></td></tr></table></figure>
-<p>输出结果为<code>1213</code>;</p>
-<span id="more"></span>
-<p><code>eval</code>命令解释如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval [arg ...]</span><br><span class="line">    The  args  are read and concatenated together into a single command. </span><br><span class="line">    This command is then read and executed by the shell, and its exit status is returned as</span><br><span class="line">the value of eval.  If there are no args, or only null arguments, eval returns 0.</span><br><span class="line">eval [参数 ...]</span><br><span class="line">    参数将会被读取并作为一个指令被读入。然后这个指令将会被shell读取并执行，执行结果</span><br><span class="line">将会作为eval的结果。如果没有参数传入，或者只有空参数，eval指令将会返回0。</span><br></pre></td></tr></table></figure>
-<p>对于上述的例子，<code>echo $var_str</code>将会被读入，并被shell重新执行。输出结果为<code>1213</code>。该结果即作为<code>eval</code>的输出结果。</p>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a href="https://microsoft.github.io/language-server-protocol/"><code>lsp</code></a>配置也一并带上了，不同于<a href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 使用国内 elpa 源来加速插件安装</span><br><span class="line">(defun w-install(pkg)</span><br><span class="line">  ;; would be a wrapper for package-install</span><br><span class="line">  (require &#x27;package)</span><br><span class="line">  (setq package-archives</span><br><span class="line">	&#x27;((&quot;gnu&quot;   . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&quot;)</span><br><span class="line">	   (&quot;melpa&quot; . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&quot;)))</span><br><span class="line">  (package-initialize)</span><br><span class="line">  (package-refresh-contents)</span><br><span class="line">  (unless (package-installed-p pkg)</span><br><span class="line">    (package-install pkg)))</span><br><span class="line"></span><br><span class="line">;; 辅助判断插件安装通用函数</span><br><span class="line">(defun ensure-package-installed (&amp;rest packages)</span><br><span class="line">  &quot;Assure every package was installed, ask for installation if it&#x27;s not.</span><br><span class="line">a list of installed packages or nil for every skipped package.&quot;</span><br><span class="line">  (mapcar</span><br><span class="line">   (lambda (package)</span><br><span class="line">          (if (package-installed-p package)</span><br><span class="line">              nil</span><br><span class="line">            (if (y-or-n-p (format &quot;Package %s is missing. Install it?&quot; package))</span><br><span class="line">                (w-install package)</span><br><span class="line">              package)))</span><br><span class="line">   packages))</span><br><span class="line"></span><br><span class="line">;; clang-format 在文件保存时格式化代码</span><br><span class="line">(ensure-package-installed &#x27;clang-format)</span><br><span class="line">(defun clang-format-on-save-hook()</span><br><span class="line">  &quot;Create a buffer local save hook.&quot;</span><br><span class="line">  (add-hook &#x27;before-save-hook</span><br><span class="line">            (lambda ()</span><br><span class="line">              (when (locate-dominating-file &quot;.&quot; &quot;.clang-format&quot;)</span><br><span class="line">                (clang-format-buffer))</span><br><span class="line">              ;; Continue to save</span><br><span class="line">              nil)</span><br><span class="line">            nil</span><br><span class="line">            ;; Buffer local hook.</span><br><span class="line">            t))</span><br><span class="line"></span><br><span class="line">;; Run this hook for c-mode-hook and c++-mode-hook</span><br><span class="line">(add-hook &#x27;c-mode-hook   (lambda () (clang-format-on-save-hook)))</span><br><span class="line">(add-hook &#x27;c++-mode-hook (lambda () (clang-format-on-save-hook)))</span><br><span class="line">;; create default clang-format file</span><br><span class="line">;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html</span><br><span class="line">;; clang-format -style=llvm -dump-config &gt; .clang-format</span><br><span class="line"></span><br><span class="line">;; 另外，这里列出使用的 lsp-language-server 配置。</span><br><span class="line">;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行</span><br><span class="line">;; https://github.com/MaskRay/ccls/wiki/Build</span><br><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">(ensure-package-installed &#x27;ccls)</span><br><span class="line">(use-package ccls</span><br><span class="line">  :hook ((c-mode c++-mode objc-mode cuda-mode) .</span><br><span class="line">         (lambda() (require &#x27;ccls) (lsp))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a href="https://clang.llvm.org/docs/ClangFormat.html">ClangFormat</a>。</p>
 ]]></content>
       <categories>
-        <category>code</category>
+        <category>程序人生</category>
       </categories>
       <tags>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>x86_64 寄存器传参方式</title>
-    <url>/2022/08/31/x86-64-%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<blockquote>
-<p>x86_64 架构下，寄存器传参时，仅 arg1-arg6 会通过寄存器进行，arg7+ 的参数，将会放到栈上进行。</p>
-</blockquote>
-<h1 id="验证代码"><a href="#验证代码" class="headerlink" title="验证代码"></a>验证代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 环境</span><br><span class="line">├── arg.bt</span><br><span class="line">├── arg_test</span><br><span class="line">└── hello.c</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// hello.c, gcc -o arg_test hello.c</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">void print_arg(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6,</span><br><span class="line">               int arg7, int arg8)&#123;</span><br><span class="line">    printf(&quot;%d, %d, %d, %d, %d, %d, %d, %d\n&quot;, arg1, arg2, arg3, arg4, arg5,</span><br><span class="line">           arg6, arg7, arg8);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    print_arg(1,2,3,4,5,6,7,8);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// arg.bt</span><br><span class="line">#!/bin/bpftrace</span><br><span class="line"></span><br><span class="line">uprobe:./arg_test:print_arg</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;== enter print_arg\n&quot;);</span><br><span class="line">    printf(&quot;arg1: %d\n&quot;, arg0);</span><br><span class="line">    printf(&quot;arg2: %d\n&quot;, arg1);</span><br><span class="line">    printf(&quot;arg3: %d\n&quot;, arg2);</span><br><span class="line">    printf(&quot;arg4: %d\n&quot;, arg3);</span><br><span class="line">    printf(&quot;arg5: %d\n&quot;, arg4);</span><br><span class="line">    printf(&quot;arg6: %d\n&quot;, arg5);</span><br><span class="line">    printf(&quot;arg7: %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;arg8: %d\n&quot;, sarg1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo bpftrace arg.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">== enter print_arg</span><br><span class="line">arg1: 1</span><br><span class="line">arg2: 2</span><br><span class="line">arg3: 3</span><br><span class="line">arg4: 4</span><br><span class="line">arg5: 5</span><br><span class="line">arg6: 6</span><br><span class="line">arg7: 7</span><br><span class="line">arg8: 8</span><br><span class="line"></span><br><span class="line">./arg_test</span><br></pre></td></tr></table></figure>
-
-<h1 id="参照"><a href="#参照" class="headerlink" title="参照"></a>参照</h1><p><a href="https://wiki.cdot.senecacollege.ca/wiki/X86_64_Register_and_Instruction_Quick_Start">X86 64 Register and Instruction Quick Start</a></p>
-]]></content>
-      <categories>
-        <category>code</category>
-      </categories>
-      <tags>
-        <tag>ebpf</tag>
+        <tag>emacs</tag>
+        <tag>lsp</tag>
+        <tag>c-mode</tag>
+        <tag>clang-format</tag>
       </tags>
   </entry>
   <entry>
@@ -1472,6 +1452,48 @@ printf(&quot;  url: %s\n\n&quot;, str($addr, $len));
         <tag>ebpf</tag>
         <tag>golang</tag>
         <tag>可观测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>x86_64 寄存器传参方式</title>
+    <url>/2022/08/31/x86-64-%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<blockquote>
+<p>x86_64 架构下，寄存器传参时，仅 arg1-arg6 会通过寄存器进行，arg7+ 的参数，将会放到栈上进行。</p>
+</blockquote>
+<h1 id="验证代码"><a href="#验证代码" class="headerlink" title="验证代码"></a>验证代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 环境</span><br><span class="line">├── arg.bt</span><br><span class="line">├── arg_test</span><br><span class="line">└── hello.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// hello.c, gcc -o arg_test hello.c</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">void print_arg(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6,</span><br><span class="line">               int arg7, int arg8)&#123;</span><br><span class="line">    printf(&quot;%d, %d, %d, %d, %d, %d, %d, %d\n&quot;, arg1, arg2, arg3, arg4, arg5,</span><br><span class="line">           arg6, arg7, arg8);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    print_arg(1,2,3,4,5,6,7,8);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// arg.bt</span><br><span class="line">#!/bin/bpftrace</span><br><span class="line"></span><br><span class="line">uprobe:./arg_test:print_arg</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;== enter print_arg\n&quot;);</span><br><span class="line">    printf(&quot;arg1: %d\n&quot;, arg0);</span><br><span class="line">    printf(&quot;arg2: %d\n&quot;, arg1);</span><br><span class="line">    printf(&quot;arg3: %d\n&quot;, arg2);</span><br><span class="line">    printf(&quot;arg4: %d\n&quot;, arg3);</span><br><span class="line">    printf(&quot;arg5: %d\n&quot;, arg4);</span><br><span class="line">    printf(&quot;arg6: %d\n&quot;, arg5);</span><br><span class="line">    printf(&quot;arg7: %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;arg8: %d\n&quot;, sarg1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo bpftrace arg.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">== enter print_arg</span><br><span class="line">arg1: 1</span><br><span class="line">arg2: 2</span><br><span class="line">arg3: 3</span><br><span class="line">arg4: 4</span><br><span class="line">arg5: 5</span><br><span class="line">arg6: 6</span><br><span class="line">arg7: 7</span><br><span class="line">arg8: 8</span><br><span class="line"></span><br><span class="line">./arg_test</span><br></pre></td></tr></table></figure>
+
+<h1 id="参照"><a href="#参照" class="headerlink" title="参照"></a>参照</h1><p><a href="https://wiki.cdot.senecacollege.ca/wiki/X86_64_Register_and_Instruction_Quick_Start">X86 64 Register and Instruction Quick Start</a></p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>ebpf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python调试方法（其一）</title>
+    <url>/2019/07/17/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%B6%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<p>&lt;一&gt; 这里记录一些python调试的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># coding=UTF-8</span><br><span class="line">&#x27;&#x27;&#x27; python debug method 1</span><br><span class="line">use print function to get output informatino</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">DEBUG = True</span><br><span class="line"></span><br><span class="line">def _debug_(*args, **kwds):</span><br><span class="line">	&#x27;&#x27;&#x27; depends on DEBUG value, print some function &#x27;&#x27;&#x27;</span><br><span class="line">    global DEBUG</span><br><span class="line">    if DEBUG:</span><br><span class="line">    	print(args, kwds)</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">	_debug_(&quot;this is a test&quot;)</span><br></pre></td></tr></table></figure>
+<p>最常见的调试方法了。<code>print</code>可以依据需求调整为其他的方式（<code>logging</code>输出日志或者直接输出到文件中均可）。  </p>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 输出结果如下：</span><br><span class="line">((&#x27;this is a test&#x27;,), &#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>&lt;二&gt;然后就是更直接一些的调试方法了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># coding=UTF-8</span><br><span class="line">import pdb</span><br><span class="line">def test_function():</span><br><span class="line">	&#x27;&#x27;&#x27; regard it as a test funcion &#x27;&#x27;&#x27;</span><br><span class="line">    try:</span><br><span class="line">    	a = 1</span><br><span class="line">        b = 0</span><br><span class="line">    	c = a / b</span><br><span class="line">    except Exception, e:</span><br><span class="line">    	pdb.set_trace()</span><br><span class="line">    return</span><br><span class="line">    </span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">	test_function()</span><br></pre></td></tr></table></figure>
+<p>直接一点了，直接在代码中显式设置断点。这样，在异常发生时，就可以直接中断调试了。<br><code>python</code>中的<code>pdb</code>应该可以认为是一种阉割版的<code>gdb</code>了。仅对<code>list</code><code>print</code>及其他的<code>python</code>的内置函数有较好的支持。相互配合来看的话，也能发现很多问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 输出如下：</span><br><span class="line">&gt; test_debug.py(11)test_function()</span><br><span class="line">-&gt; return</span><br><span class="line">(Pdb) list</span><br><span class="line">  6             a = 1</span><br><span class="line">  7             b = 0</span><br><span class="line">  8             c = a / b</span><br><span class="line">  9         except Exception, e:</span><br><span class="line"> 10             pdb.set_trace()</span><br><span class="line"> 11  -&gt;     return</span><br><span class="line"> 12</span><br><span class="line"> 13     if __name__ == &quot;__main__&quot;:</span><br><span class="line"> 14         test_function()</span><br><span class="line">[EOF]</span><br><span class="line">(Pdb) print(e)</span><br><span class="line">integer division or modulo by zero</span><br><span class="line">(Pdb) print(a, b, c)</span><br><span class="line">*** NameError: name &#x27;c&#x27; is not defined</span><br><span class="line">(Pdb) print(a, b)</span><br><span class="line">(1, 0)</span><br><span class="line">(Pdb) quit()</span><br></pre></td></tr></table></figure>
+<p>唔，先这样吧。可以考虑收集一些<code>python</code>的内置解析包来配合调试了。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -1632,32 +1654,10 @@ int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
         <category>code life</category>
       </categories>
       <tags>
+        <tag>code</tag>
         <tag>ebpf</tag>
         <tag>golang</tag>
-        <tag>code</tag>
         <tag>gls</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>让emacs在保存文件时自动格式化代码</title>
-    <url>/2022/07/15/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://liam.page/">liam</a>同学在<a href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/">让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</p>
-</blockquote>
-<span id="more"></span>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a href="https://microsoft.github.io/language-server-protocol/"><code>lsp</code></a>配置也一并带上了，不同于<a href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">;; 使用国内 elpa 源来加速插件安装</span><br><span class="line">(defun w-install(pkg)</span><br><span class="line">  ;; would be a wrapper for package-install</span><br><span class="line">  (require &#x27;package)</span><br><span class="line">  (setq package-archives</span><br><span class="line">	&#x27;((&quot;gnu&quot;   . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&quot;)</span><br><span class="line">	   (&quot;melpa&quot; . &quot;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&quot;)))</span><br><span class="line">  (package-initialize)</span><br><span class="line">  (package-refresh-contents)</span><br><span class="line">  (unless (package-installed-p pkg)</span><br><span class="line">    (package-install pkg)))</span><br><span class="line"></span><br><span class="line">;; 辅助判断插件安装通用函数</span><br><span class="line">(defun ensure-package-installed (&amp;rest packages)</span><br><span class="line">  &quot;Assure every package was installed, ask for installation if it&#x27;s not.</span><br><span class="line">a list of installed packages or nil for every skipped package.&quot;</span><br><span class="line">  (mapcar</span><br><span class="line">   (lambda (package)</span><br><span class="line">          (if (package-installed-p package)</span><br><span class="line">              nil</span><br><span class="line">            (if (y-or-n-p (format &quot;Package %s is missing. Install it?&quot; package))</span><br><span class="line">                (w-install package)</span><br><span class="line">              package)))</span><br><span class="line">   packages))</span><br><span class="line"></span><br><span class="line">;; clang-format 在文件保存时格式化代码</span><br><span class="line">(ensure-package-installed &#x27;clang-format)</span><br><span class="line">(defun clang-format-on-save-hook()</span><br><span class="line">  &quot;Create a buffer local save hook.&quot;</span><br><span class="line">  (add-hook &#x27;before-save-hook</span><br><span class="line">            (lambda ()</span><br><span class="line">              (when (locate-dominating-file &quot;.&quot; &quot;.clang-format&quot;)</span><br><span class="line">                (clang-format-buffer))</span><br><span class="line">              ;; Continue to save</span><br><span class="line">              nil)</span><br><span class="line">            nil</span><br><span class="line">            ;; Buffer local hook.</span><br><span class="line">            t))</span><br><span class="line"></span><br><span class="line">;; Run this hook for c-mode-hook and c++-mode-hook</span><br><span class="line">(add-hook &#x27;c-mode-hook   (lambda () (clang-format-on-save-hook)))</span><br><span class="line">(add-hook &#x27;c++-mode-hook (lambda () (clang-format-on-save-hook)))</span><br><span class="line">;; create default clang-format file</span><br><span class="line">;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html</span><br><span class="line">;; clang-format -style=llvm -dump-config &gt; .clang-format</span><br><span class="line"></span><br><span class="line">;; 另外，这里列出使用的 lsp-language-server 配置。</span><br><span class="line">;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行</span><br><span class="line">;; https://github.com/MaskRay/ccls/wiki/Build</span><br><span class="line">;; set up lsp-mode for c/c++</span><br><span class="line">(ensure-package-installed &#x27;ccls)</span><br><span class="line">(use-package ccls</span><br><span class="line">  :hook ((c-mode c++-mode objc-mode cuda-mode) .</span><br><span class="line">         (lambda() (require &#x27;ccls) (lsp))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a href="https://clang.llvm.org/docs/ClangFormat.html">ClangFormat</a>。</p>
-]]></content>
-      <categories>
-        <category>程序人生</category>
-      </categories>
-      <tags>
-        <tag>emacs</tag>
-        <tag>lsp</tag>
-        <tag>c-mode</tag>
-        <tag>clang-format</tag>
       </tags>
   </entry>
   <entry>
@@ -1684,8 +1684,8 @@ int uprobe__golang_runtime_runqput(struct pt_regs *ctx) &#123;
         <category>ebpf</category>
       </categories>
       <tags>
-        <tag>ebpf</tag>
         <tag>code</tag>
+        <tag>ebpf</tag>
       </tags>
   </entry>
 </search>
