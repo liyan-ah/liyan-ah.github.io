@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/30/cljb83dmd002nkcs6al8834ao/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/" itemprop="url">lisp-let变量声明</a></h2>
+                <a class="post-title-link" href="/2019/05/30/cljb83dmd002nkcs6al8834ao/" itemprop="url">lisp-let变量声明</a></h2>
         
 
         <div class="post-meta">
@@ -412,7 +412,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;(let ((variable declare1) (variable declare2) (...))</span><br><span class="line">;  (varaible used here));</span><br><span class="line">(defun foo(x)</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x)</span><br><span class="line">  (let ((x 2))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x)</span><br><span class="line">    (let ((x 3))</span><br><span class="line">      (format t &quot;Inner LET: ~a~%&quot; x))</span><br><span class="line">    (format t &quot;Outer LET: ~a~%&quot; x))</span><br><span class="line">  (format t &quot;Parameter: ~a~%&quot; x));</span><br><span class="line"></span><br><span class="line">(foo 10);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/30/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/#more" rel="contents">
+            <a class="btn" href="/2019/05/30/cljb83dmd002nkcs6al8834ao/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -463,7 +463,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/cljb83dma002hkcs6d79ga13s/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -482,7 +482,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/" itemprop="url">lisp-lambda函数</a></h2>
+                <a class="post-title-link" href="/2019/05/29/cljb83dma002hkcs6d79ga13s/" itemprop="url">lisp-lambda函数</a></h2>
         
 
         <div class="post-meta">
@@ -590,7 +590,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;按照 min max, 步长step为参数的fn计算的长度输出 *</span><br><span class="line">(defun plot (fn min max step)</span><br><span class="line">  (loop for i from min to max by step do</span><br><span class="line">        (loop repeat (funcall fn i) do (format t &quot;*&quot;))</span><br><span class="line">        (format t &quot;~%&quot;)))</span><br><span class="line"></span><br><span class="line">(plot #&#x27;exp 0 4 1/2);</span><br><span class="line">(plot #&#x27;(lambda (x) (* 2 x)) 0 10 1);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/29/lisp-lambda%E5%87%BD%E6%95%B0/#more" rel="contents">
+            <a class="btn" href="/2019/05/29/cljb83dma002hkcs6d79ga13s/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -641,7 +641,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/28/clisp%E7%BC%96%E8%AF%91/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/28/cljb83dlt0013kcs6hboe4fto/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -660,7 +660,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/28/clisp%E7%BC%96%E8%AF%91/" itemprop="url">clisp编译</a></h2>
+                <a class="post-title-link" href="/2019/05/28/cljb83dlt0013kcs6hboe4fto/" itemprop="url">clisp编译</a></h2>
         
 
         <div class="post-meta">
@@ -767,7 +767,7 @@
           <p>目前，lisp的开发环境基本上被<a target="_blank" rel="noopener" href="https://common-lisp.net/project/lispbox/">lispbox</a>所垄断。所以本文来说一<a target="_blank" rel="noopener" href="https://clisp.sourceforge.io/">CLISP</a>，C语言实现的LISP解释器的安装。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/28/clisp%E7%BC%96%E8%AF%91/#more" rel="contents">
+            <a class="btn" href="/2019/05/28/cljb83dlt0013kcs6hboe4fto/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -818,7 +818,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/28/lisp-hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/28/cljb83dmd002pkcs6hwvq3oec/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -837,7 +837,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/28/lisp-hello-world/" itemprop="url">lisp-hello world</a></h2>
+                <a class="post-title-link" href="/2019/05/28/cljb83dmd002pkcs6hwvq3oec/" itemprop="url">lisp-hello world</a></h2>
         
 
         <div class="post-meta">
