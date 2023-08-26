@@ -411,7 +411,7 @@
           <blockquote>
 <p>最近在整理一些技术文章。本来希望把涉及ELF的内容整理出来，结果发现太难了。ELF涉及的内容要多很多，如果要把希望整理的内容表述清楚，还需要做一些准备的工作。刚好最近完成了tail-calls 的调研，先把关于eBPF的tail-calls的功能整理下吧。</p>
 </blockquote>
-<p><code>eBPF</code>程序是事件驱动的，这就意味着当目标事件触发后，程序才能执行。考虑这样一个场景：有几个不同的<code>BPF</code>程序均挂载在相同的<code>hook</code>点上，而执行需要保持一定的顺序。这时就需要借助<code>Tail Calls</code>的功能来实现。</p>
+<p><code>eBPF</code>程序是事件驱动的，这就意味着当目标事件触发后，程序才能执行。考虑这样一个场景：有几个不同的<code>BPF</code>程序均挂载在相同的<code>hook</code>点上，而执行需要保持一定的顺序。这时就需要借助<code>tail calls</code>的功能来实现。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2023/08/26/cllrixflf0001qrfy74pjh88x/#more" rel="contents">
