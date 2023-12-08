@@ -285,6 +285,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/11/25/cljb83dmi003jkcs6cvug6nsb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/11/25/cljb83dmi003jkcs6cvug6nsb/" itemprop="url">基于ebpf实现的gls</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-11-25T01:14:00+08:00">
+                2022-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code-life/" itemprop="url" rel="index">
+                    <span itemprop="name">code life</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.2k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>虽然<code>golang</code>并不推荐使用<code>goid</code>来构建<code>gls</code>(<code>goroutine local storage</code>)，仍然有着很多的实现<code>gls</code>并使用的尝试。<a target="_blank" rel="noopener" href="https://github.com/jtolio/gls">github-gls</a>这里是一个常见的实现，基本表述了<code>golang</code>里<code>gls</code>的实现思路：获取<code>goid</code>，基于<code>goid</code>构建一个存储。本文中笔者尝试基于<code>ebpf</code>来构建一个<code>golang</code>的<code>gls</code>。</p>
+</blockquote>
+<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><p>本文中基于<code>ebpf</code>实现的<code>gls</code>具有如下功能：  </p>
+<ul>
+<li>基于<code>goid</code>的存储。即<code>map[goid]=value</code>；</li>
+<li>基于<code>goroutine</code>派生关系设置的<code>value</code>缺省值。即<code>map[goid=1]=121</code>，且<code>goid=1</code>派生<code>goid=2</code>，则<code>map[goid=2]=map[goid=1]=121</code>；<br>本文建议参照<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/#more">黑魔法-ebpf-对用户空间数据的写入</a>进行理解。</li></ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2022/11/25/cljb83dmi003jkcs6cvug6nsb/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/11/04/cljb83dmi003gkcs6bdo5h6fq/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1947,185 +2130,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/02/cljb83dlt000zkcs68x7u0q2j/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李岩's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/02/cljb83dlt000zkcs68x7u0q2j/" itemprop="url">eBPF及其对可观测的意义【译文】</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-02T16:34:00+08:00">
-                2022-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">程序人生</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2.1k字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  7分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。<br>原文地址：<a target="_blank" rel="noopener" href="https://newrelic.com/blog/best-practices/what-is-ebpf">What Is eBPF and Why Does It Matter for Observability?</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2022/03/02/cljb83dlt000zkcs68x7u0q2j/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2176,7 +2180,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2198,7 +2202,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
