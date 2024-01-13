@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blacker-32x32-next.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blacker-16x16-next.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="golang,go-1.17," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C&#x2F;C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go-1.17+ 调用规约">
+<meta property="og:url" content="http://yoursite.com/2023/03/03/clrbwq0ku002kmtfyb66o5d66/index.html">
+<meta property="og:site_name" content="李岩&#39;s Blog">
+<meta property="og:description" content="go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C&#x2F;C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-03-03T12:59:00.000Z">
+<meta property="article:modified_time" content="2023-08-18T12:39:27.347Z">
+<meta property="article:author" content="李岩">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="go-1.17">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2023/03/03/clrbwq0ku002kmtfyb66o5d66/"/>
+
+
+
+
+
+  <title>go-1.17+ 调用规约 | 李岩's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李岩's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">努力做个程序员</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/03/clrbwq0ku002kmtfyb66o5d66/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">go-1.17+ 调用规约</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-03-03T20:59:00+08:00">
+                2023-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ebpf/" itemprop="url" rel="index">
+                    <span itemprop="name">ebpf</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><code>go-1.17</code>是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到<code>go-1.17</code>之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和<code>C/C++</code>的是完全不一致的。这个问题使得笔者在处理<code>ebpf</code>方案时，始终无法覆盖<code>go-1.17+</code>的版本。虽然短期不会造成影响，线上服务使用的大多还在<code>go-1.16</code>以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下<code>go-1.17+</code>的调用规约。</p>
+</blockquote>
+<p><code>go</code>在<code>1.17</code>之前使用的是内存栈来传递参数，这种传参的方式使得<code>golang</code>的语言设计很灵活：<code>golang</code>函数的多返回值能够很容易的实现。同样的，由于<code>golang</code>需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在<a target="_blank" rel="noopener" href="https://go.googlesource.com/proposal/+/refs/changes/78/248178/1/design/40724-register-calling.md">Proposal: Register-based Go calling convention</a>文章里对这个问题进行了详细的讨论，总结起来是<code>golang</code>的特性使得使用系统默认规约并不能带来多语言交互上的收益，且<code>golang</code>希望保持独特。<br>本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是<code>x86_64</code>的<code>centos8</code>系统。其他架构下，寄存器名称可能不同。</p>
+<span id="more"></span>
+
+<h1 id="调用规约"><a href="#调用规约" class="headerlink" title="调用规约"></a>调用规约</h1><p>入参：  </p>
+<table>
+<thead>
+<tr>
+<th>参数序号</th>
+<th>标准规约</th>
+<th>golang规约</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>rdi</td>
+<td>rax</td>
+</tr>
+<tr>
+<td>2</td>
+<td>rsi</td>
+<td>rbx</td>
+</tr>
+<tr>
+<td>3</td>
+<td>rdx</td>
+<td>rcx</td>
+</tr>
+<tr>
+<td>4</td>
+<td>rcx</td>
+<td>rdi</td>
+</tr>
+<tr>
+<td>5</td>
+<td>r8</td>
+<td>rsi</td>
+</tr>
+<tr>
+<td>6</td>
+<td>r9</td>
+<td>r8</td>
+</tr>
+<tr>
+<td>7</td>
+<td>栈传值</td>
+<td>r9</td>
+</tr>
+<tr>
+<td>8</td>
+<td>栈传值</td>
+<td>r10</td>
+</tr>
+<tr>
+<td>9</td>
+<td>栈传值</td>
+<td>r11</td>
+</tr>
+<tr>
+<td>10</td>
+<td>栈传值</td>
+<td>栈传值</td>
+</tr>
+</tbody></table>
+<p>返回值：</p>
+<table>
+<thead>
+<tr>
+<th>参数序号</th>
+<th>标准规约</th>
+<th>golang规约</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>rax</td>
+<td>rax</td>
+</tr>
+<tr>
+<td>2</td>
+<td>-</td>
+<td>rbx</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-</td>
+<td>rcx</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-</td>
+<td>rdi</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-</td>
+<td>rsi</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-</td>
+<td>r8</td>
+</tr>
+<tr>
+<td>7</td>
+<td>-</td>
+<td>r9</td>
+</tr>
+<tr>
+<td>8</td>
+<td>-</td>
+<td>r10</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-</td>
+<td>r11</td>
+</tr>
+<tr>
+<td>10</td>
+<td>-</td>
+<td>栈传值</td>
+</tr>
+</tbody></table>
+<h1 id="验证规约"><a href="#验证规约" class="headerlink" title="验证规约"></a>验证规约</h1><p>这个条件是比较好验证的，看下验证代码:</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// go version 1.18</span></span><br><span class="line"><span class="comment">// ./go_18/arg/main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//go:noinline</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">longArgs</span><span class="params">(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11 <span class="keyword">uint64</span>)</span> <span class="params">(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11 <span class="keyword">uint64</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> a1 + <span class="number">1</span>, a2 + <span class="number">2</span>, a3 + <span class="number">3</span>, a4 + <span class="number">4</span>, a5 + <span class="number">5</span>, a6 + <span class="number">6</span>, a7 + <span class="number">7</span>, a8 + <span class="number">8</span>, a9 + <span class="number">9</span>, a10 + <span class="number">10</span>, a11 + <span class="number">11</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11 := longArgs(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>)</span><br><span class="line">	fmt.Println(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先生成<code>plan9</code>代码以说明参数传入和参数返回均是使用的寄存器，并且寄存器顺序是一致的（内存传参时也是）。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> build -gcflags <span class="string">&quot;-N -S -l&quot;</span> &gt;&gt; arg.info</span><br><span class="line"># 然后截取部分生成 plan9 汇编</span><br><span class="line"># go_18/arg</span><br><span class="line"><span class="string">&quot;&quot;</span>.longArgs STEXT nosplit size=<span class="number">411</span> args=<span class="number">0x68</span> locals=<span class="number">0x50</span> funcid=<span class="number">0x0</span> align=<span class="number">0x0</span></span><br><span class="line">	<span class="number">0x0000</span> <span class="number">00000</span> 	TEXT	<span class="string">&quot;&quot;</span>.longArgs(SB), NOSPLIT|ABIInternal, $<span class="number">80</span><span class="number">-104</span></span><br><span class="line">	<span class="number">0x0000</span> <span class="number">00000</span> 	SUBQ	$<span class="number">80</span>, SP</span><br><span class="line">	<span class="number">0x0004</span> <span class="number">00004</span> 	MOVQ	BP, <span class="number">72</span>(SP)</span><br><span class="line">	<span class="number">0x0009</span> <span class="number">00009</span> 	LEAQ	<span class="number">72</span>(SP), BP</span><br><span class="line">	<span class="number">0x000e</span> <span class="number">00014</span> 	FUNCDATA	$<span class="number">0</span>, gclocals·<span class="number">33</span>cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	<span class="number">0x000e</span> <span class="number">00014</span> 	FUNCDATA	$<span class="number">1</span>, gclocals·<span class="number">33</span>cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	<span class="number">0x000e</span> <span class="number">00014</span> 	FUNCDATA	$<span class="number">5</span>, <span class="string">&quot;&quot;</span>.longArgs.arginfo1(SB)</span><br><span class="line">	<span class="number">0x000e</span> <span class="number">00014</span> 	MOVQ	AX, <span class="string">&quot;&quot;</span>.a1+<span class="number">120</span>(SP)  # 注意这里的读取参数寄存器</span><br><span class="line">	<span class="number">0x0013</span> <span class="number">00019</span> 	MOVQ	BX, <span class="string">&quot;&quot;</span>.a2+<span class="number">128</span>(SP)</span><br><span class="line">	<span class="number">0x001b</span> <span class="number">00027</span> 	MOVQ	CX, <span class="string">&quot;&quot;</span>.a3+<span class="number">136</span>(SP)</span><br><span class="line">	<span class="number">0x0023</span> <span class="number">00035</span> 	MOVQ	DI, <span class="string">&quot;&quot;</span>.a4+<span class="number">144</span>(SP)</span><br><span class="line">	<span class="number">0x002b</span> <span class="number">00043</span> 	MOVQ	SI, <span class="string">&quot;&quot;</span>.a5+<span class="number">152</span>(SP)</span><br><span class="line">	<span class="number">0x0033</span> <span class="number">00051</span> 	MOVQ	R8, <span class="string">&quot;&quot;</span>.a6+<span class="number">160</span>(SP)</span><br><span class="line">	<span class="number">0x003b</span> <span class="number">00059</span> 	MOVQ	R9, <span class="string">&quot;&quot;</span>.a7+<span class="number">168</span>(SP)</span><br><span class="line">	<span class="number">0x0043</span> <span class="number">00067</span> 	MOVQ	R10, <span class="string">&quot;&quot;</span>.a8+<span class="number">176</span>(SP)</span><br><span class="line">	<span class="number">0x004b</span> <span class="number">00075</span> 	MOVQ	R11, <span class="string">&quot;&quot;</span>.a9+<span class="number">184</span>(SP)</span><br><span class="line">	<span class="number">0x0053</span> <span class="number">00083</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r1+<span class="number">64</span>(SP)</span><br><span class="line">	<span class="number">0x005c</span> <span class="number">00092</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r2+<span class="number">56</span>(SP)</span><br><span class="line">	<span class="number">0x0065</span> <span class="number">00101</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r3+<span class="number">48</span>(SP)</span><br><span class="line">	<span class="number">0x006e</span> <span class="number">00110</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r4+<span class="number">40</span>(SP)</span><br><span class="line">	<span class="number">0x0077</span> <span class="number">00119</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r5+<span class="number">32</span>(SP)</span><br><span class="line">	<span class="number">0x0080</span> <span class="number">00128</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r6+<span class="number">24</span>(SP)</span><br><span class="line">	<span class="number">0x0089</span> <span class="number">00137</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r7+<span class="number">16</span>(SP)</span><br><span class="line">	<span class="number">0x0092</span> <span class="number">00146</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r8+<span class="number">8</span>(SP)</span><br><span class="line">	<span class="number">0x009b</span> <span class="number">00155</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r9(SP)</span><br><span class="line">	<span class="number">0x00a3</span> <span class="number">00163</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r10+<span class="number">104</span>(SP)</span><br><span class="line">	<span class="number">0x00ac</span> <span class="number">00172</span> 	MOVQ	$<span class="number">0</span>, <span class="string">&quot;&quot;</span>.r11+<span class="number">112</span>(SP)</span><br><span class="line">	<span class="number">0x00b5</span> <span class="number">00181</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a1+<span class="number">120</span>(SP), DX</span><br><span class="line">	<span class="number">0x00ba</span> <span class="number">00186</span> 	INCQ	DX</span><br><span class="line">	<span class="number">0x00bd</span> <span class="number">00189</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r1+<span class="number">64</span>(SP)</span><br><span class="line">	<span class="number">0x00c2</span> <span class="number">00194</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a2+<span class="number">128</span>(SP), DX</span><br><span class="line">	<span class="number">0x00ca</span> <span class="number">00202</span> 	ADDQ	$<span class="number">2</span>, DX</span><br><span class="line">	<span class="number">0x00ce</span> <span class="number">00206</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r2+<span class="number">56</span>(SP)</span><br><span class="line">	<span class="number">0x00d3</span> <span class="number">00211</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a3+<span class="number">136</span>(SP), DX</span><br><span class="line">	<span class="number">0x00db</span> <span class="number">00219</span> 	ADDQ	$<span class="number">3</span>, DX</span><br><span class="line">	<span class="number">0x00df</span> <span class="number">00223</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r3+<span class="number">48</span>(SP)</span><br><span class="line">	<span class="number">0x00e4</span> <span class="number">00228</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a4+<span class="number">144</span>(SP), DX</span><br><span class="line">	<span class="number">0x00ec</span> <span class="number">00236</span> 	ADDQ	$<span class="number">4</span>, DX</span><br><span class="line">	<span class="number">0x00f0</span> <span class="number">00240</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r4+<span class="number">40</span>(SP)</span><br><span class="line">	<span class="number">0x00f5</span> <span class="number">00245</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a5+<span class="number">152</span>(SP), DX</span><br><span class="line">	<span class="number">0x00fd</span> <span class="number">00253</span> 	ADDQ	$<span class="number">5</span>, DX</span><br><span class="line">	<span class="number">0x0101</span> <span class="number">00257</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r5+<span class="number">32</span>(SP)</span><br><span class="line">	<span class="number">0x0106</span> <span class="number">00262</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a6+<span class="number">160</span>(SP), DX</span><br><span class="line">	<span class="number">0x010e</span> <span class="number">00270</span> 	ADDQ	$<span class="number">6</span>, DX</span><br><span class="line">	<span class="number">0x0112</span> <span class="number">00274</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r6+<span class="number">24</span>(SP)</span><br><span class="line">	<span class="number">0x0117</span> <span class="number">00279</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a7+<span class="number">168</span>(SP), DX</span><br><span class="line">	<span class="number">0x011f</span> <span class="number">00287</span> 	ADDQ	$<span class="number">7</span>, DX</span><br><span class="line">	<span class="number">0x0123</span> <span class="number">00291</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r7+<span class="number">16</span>(SP)</span><br><span class="line">	<span class="number">0x0128</span> <span class="number">00296</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a8+<span class="number">176</span>(SP), DX</span><br><span class="line">	<span class="number">0x0130</span> <span class="number">00304</span> 	ADDQ	$<span class="number">8</span>, DX</span><br><span class="line">	<span class="number">0x0134</span> <span class="number">00308</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r8+<span class="number">8</span>(SP)</span><br><span class="line">	<span class="number">0x0139</span> <span class="number">00313</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a9+<span class="number">184</span>(SP), DX</span><br><span class="line">	<span class="number">0x0141</span> <span class="number">00321</span> 	ADDQ	$<span class="number">9</span>, DX</span><br><span class="line">	<span class="number">0x0145</span> <span class="number">00325</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r9(SP)</span><br><span class="line">	<span class="number">0x0149</span> <span class="number">00329</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a10+<span class="number">88</span>(SP), DX   # 这里使用栈传递a10</span><br><span class="line">	<span class="number">0x014e</span> <span class="number">00334</span> 	ADDQ	$<span class="number">10</span>, DX</span><br><span class="line">	<span class="number">0x0152</span> <span class="number">00338</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r10+<span class="number">104</span>(SP)</span><br><span class="line">	<span class="number">0x0157</span> <span class="number">00343</span> 	MOVQ	<span class="string">&quot;&quot;</span>.a11+<span class="number">96</span>(SP), DX</span><br><span class="line">	<span class="number">0x015c</span> <span class="number">00348</span> 	ADDQ	$<span class="number">11</span>, DX</span><br><span class="line">	<span class="number">0x0160</span> <span class="number">00352</span> 	MOVQ	DX, <span class="string">&quot;&quot;</span>.r11+<span class="number">112</span>(SP)  # 这里使用栈传递 a11</span><br><span class="line">	<span class="number">0x0165</span> <span class="number">00357</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r1+<span class="number">64</span>(SP), AX    # 注意这里返回参数的寄存器</span><br><span class="line">	<span class="number">0x016a</span> <span class="number">00362</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r2+<span class="number">56</span>(SP), BX</span><br><span class="line">	<span class="number">0x016f</span> <span class="number">00367</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r3+<span class="number">48</span>(SP), CX</span><br><span class="line">	<span class="number">0x0174</span> <span class="number">00372</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r4+<span class="number">40</span>(SP), DI</span><br><span class="line">	<span class="number">0x0179</span> <span class="number">00377</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r5+<span class="number">32</span>(SP), SI</span><br><span class="line">	<span class="number">0x017e</span> <span class="number">00382</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r6+<span class="number">24</span>(SP), R8</span><br><span class="line">	<span class="number">0x0183</span> <span class="number">00387</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r7+<span class="number">16</span>(SP), R9</span><br><span class="line">	<span class="number">0x0188</span> <span class="number">00392</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r8+<span class="number">8</span>(SP), R10</span><br><span class="line">	<span class="number">0x018d</span> <span class="number">00397</span> 	MOVQ	<span class="string">&quot;&quot;</span>.r9(SP), R11</span><br><span class="line">	<span class="number">0x0191</span> <span class="number">00401</span> 	MOVQ	<span class="number">72</span>(SP), BP</span><br><span class="line">	<span class="number">0x0196</span> <span class="number">00406</span> 	ADDQ	$<span class="number">80</span>, SP</span><br><span class="line">	<span class="number">0x019a</span> <span class="number">00410</span> 	RET</span><br></pre></td></tr></table></figure>
+
+<p>从上面的<code>plan9</code>可以看出来，函数入参和返回值确实是使用寄存器传递的，且寄存器信息是一致的。实际上到这里就足够了。但是笔者还需要确定下使用的寄存器名称并进行验证，因为这些参数是在做<code>ebpf</code>逻辑处理的时候使用的。</p>
+<h1 id="使用ebpf获取入参并输出"><a href="#使用ebpf获取入参并输出" class="headerlink" title="使用ebpf获取入参并输出"></a>使用ebpf获取入参并输出</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">// 这里表述下依据plan9寄存器符号推测的实际寄存器名称：</span><br><span class="line">#define GO_PARAM1(x) ((x)-&gt;rax)</span><br><span class="line">#define GO_PARAM2(x) ((x)-&gt;rbx)</span><br><span class="line">#define GO_PARAM3(x) ((x)-&gt;rcx)</span><br><span class="line">#define GO_PARAM4(x) ((x)-&gt;rdi)</span><br><span class="line">#define GO_PARAM5(x) ((x)-&gt;rsi)</span><br><span class="line">#define GO_PARAM6(x) ((x)-&gt;r8)</span><br><span class="line">#define GO_PARAM7(x) ((x)-&gt;r9)</span><br><span class="line">#define GO_PARAM8(x) ((x)-&gt;r10)</span><br><span class="line">#define GO_PARAM9(x) ((x)-&gt;r11)</span><br><span class="line"></span><br><span class="line">struct event &#123;</span><br><span class="line">    u32 pid;</span><br><span class="line">    u8 comm[64];</span><br><span class="line"></span><br><span class="line">    // args</span><br><span class="line">    u64 arg0;</span><br><span class="line">    u64 arg1;</span><br><span class="line">    u64 arg2;</span><br><span class="line">    u64 arg3;</span><br><span class="line">    u64 arg4;</span><br><span class="line">    u64 arg5;</span><br><span class="line">    u64 arg6;</span><br><span class="line">    u64 arg7;</span><br><span class="line">    u64 arg8;</span><br><span class="line">    u64 arg9;</span><br><span class="line">    u64 arg10;</span><br><span class="line">&#125;;</span><br><span class="line">SEC(&quot;uprobe/main.longArgs&quot;)</span><br><span class="line">int uprobe__main_long_args(struct pt_regs *ctx) &#123;</span><br><span class="line">    struct event args=&#123;&#125;;</span><br><span class="line">    args.pid = bpf_get_current_pid_tgid();</span><br><span class="line">    bpf_get_current_comm(&amp;args.comm, sizeof(args.comm));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // read args 0-8，从寄存器中获取</span><br><span class="line">    args.arg0 = GO_PARAM1(ctx);</span><br><span class="line">    args.arg1 = GO_PARAM2(ctx);</span><br><span class="line">    args.arg2 = GO_PARAM3(ctx);</span><br><span class="line">    args.arg3 = GO_PARAM4(ctx);</span><br><span class="line">    args.arg4 = GO_PARAM5(ctx);</span><br><span class="line">    args.arg5 = GO_PARAM6(ctx);</span><br><span class="line">    args.arg6 = GO_PARAM7(ctx);</span><br><span class="line">    args.arg7 = GO_PARAM8(ctx);</span><br><span class="line">    args.arg8 = GO_PARAM9(ctx);</span><br><span class="line">    </span><br><span class="line">    // read args 9-10，从栈上获取</span><br><span class="line">    bpf_probe_read(&amp;args.arg9, sizeof(args.arg9), (void*)(PT_REGS_SP(ctx))+8);</span><br><span class="line">    bpf_probe_read(&amp;args.arg10, sizeof(args.arg10), (void*)(PT_REGS_SP(ctx))+16);</span><br><span class="line"></span><br><span class="line">    bpf_perf_event_output(ctx, &amp;events, BPF_F_CURRENT_CPU, &amp;args, sizeof(args));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译完成后，启动这部分<code>ebpf</code>监听任务：</p>
+<pre><code># 启动监听
+./go_18 -bin_path ./arg/arg -uprobe main.longArgs
+2023/03/03 22:07:32 Listening for events..
+# 触发 ./arg/arg 执行
+2023/03/03 22:07:46 pid: 756309, comm: arg
+2023/03/03 22:07:46 /home/odin/pdliyan/blog/go_18/arg/arg: main.longArgs  value: &#123;Pid:756309 Comm:[97 114 103 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] _:[0 0 0 0] Arg0:1 Arg1:2 Arg2:3 Arg3:4 Arg4:5 Arg5:6 Arg6:7 Arg7:8 Arg8:9 Arg9:10 Arg10:11&#125;
+# 请注意这里的参数是和我们的代码一致的。
+2023/03/03 22:07:46 event info: &#123;Pid:756309 Comm:[97 114 103 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] _:[0 0 0 0] Arg0:1 Arg1:2 Arg2:3 Arg3:4 Arg4:5 Arg5:6 Arg6:7 Arg7:8 Arg8:9 Arg9:10 Arg10:11&#125;
+# 退出
+2023/03/03 22:08:38 Received signal, exiting program...
+</code></pre>
+<p>从上面的输出可以确定<code>plan9</code>的寄存器符号和实际寄存器的对应关系是正确的。  </p>
+<p>以上就验证了困扰笔者的<code>go-17+</code>参数调用规约的问题。可以看到，依旧十分的奇葩。<br>周末愉快。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"># golang</a>
+          
+            <a href="/tags/go-1-17/" rel="tag"># go-1.17</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/02/24/clrbwq0kp001pmtfyf5nfgku4/" rel="next" title="ebpf 采集ebpf 采集tag+tcp五元组">
+                <i class="fa fa-chevron-left"></i> ebpf 采集ebpf 采集tag+tcp五元组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/03/29/clrbwq0l9003umtfyggp2ctzo/" rel="prev" title="无侵入观测服务拓扑四元组的一种实现">
+                无侵入观测服务拓扑四元组的一种实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+   <div id="gitalk-container">
+   </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6"><span class="nav-number">1.</span> <span class="nav-text">调用规约</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E8%A7%84%E7%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">验证规约</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ebpf%E8%8E%B7%E5%8F%96%E5%85%A5%E5%8F%82%E5%B9%B6%E8%BE%93%E5%87%BA"><span class="nav-number">3.</span> <span class="nav-text">使用ebpf获取入参并输出</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李岩</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'ff1adfce430d1b277ae1',
+          clientSecret: 'fd0cebaa403e005ec6b5937b2a5aab75c47df0b3',
+          repo: 'liyan-ah.github.io',
+          owner: 'liyan-ah',
+          admin: ['liyan-ah'],
+          id: 'liyan_blog_20230303085900',
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
