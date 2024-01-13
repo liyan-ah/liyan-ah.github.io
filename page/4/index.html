@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/15/cljb83dm60024kcs6dsycci8n/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/15/clrbwk7m1002l96fy2f8w5lsp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,164 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/04/15/cljb83dm60024kcs6dsycci8n/" itemprop="url">golang GMP</a></h2>
+                <a class="post-title-link" href="/2021/07/15/clrbwk7m1002l96fy2f8w5lsp/" itemprop="url">http及websocket性能对比</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-15T19:29:10+08:00">
+                2021-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  904字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/07/15/clrbwk7m1002l96fy2f8w5lsp/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/15/clrbwk7ly002496fy5ew965rc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/04/15/clrbwk7ly002496fy5ew965rc/" itemprop="url">golang GMP</a></h2>
         
 
         <div class="post-meta">
@@ -392,7 +549,7 @@
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>Golang</code>作为语言层面支持并发的语言，使用<code>go</code>可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及<code>Golang</code>的所谓<em>纤程</em>是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如<code>Python</code>的协程以及<code>Golang</code>的纤程，总是能够对应到操作系统认可的执行单元上。对于<code>Python</code>的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于<code>CPU</code>密集型的操作，仅使用协程是无法达到优化效果的：这种场景下<code>Python</code>会推荐多进程。相比起来，<code>Golang</code>的<code>go</code>野心更大一些：期望给用户以<code>go</code>作为接口，在语言内实现与操作系统调度单元的交互。<code>Golang</code>里实际的调度模型是<code>GMP</code>。  </p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/04/15/cljb83dm60024kcs6dsycci8n/#more" rel="contents">
+            <a class="btn" href="/2021/04/15/clrbwk7ly002496fy5ew965rc/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -443,7 +600,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/08/cljb83dm4001ukcs6fs72fq91/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/08/clrbwk7m0002f96fy88240ojx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -462,7 +619,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/04/08/cljb83dm4001ukcs6fs72fq91/" itemprop="url">golang 封装</a></h2>
+                <a class="post-title-link" href="/2021/04/08/clrbwk7m0002f96fy88240ojx/" itemprop="url">golang 封装</a></h2>
         
 
         <div class="post-meta">
@@ -549,7 +706,7 @@
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/04/08/cljb83dm4001ukcs6fs72fq91/#more" rel="contents">
+            <a class="btn" href="/2021/04/08/clrbwk7m0002f96fy88240ojx/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -600,7 +757,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/07/cljb83dme002vkcs65rngepnq/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/07/clrbwk7m9003e96fyeag0blkx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -619,7 +776,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/02/07/cljb83dme002vkcs65rngepnq/" itemprop="url">ratelimit服务流量限制</a></h2>
+                <a class="post-title-link" href="/2021/02/07/clrbwk7m9003e96fyeag0blkx/" itemprop="url">ratelimit服务流量限制</a></h2>
         
 
         <div class="post-meta">
@@ -734,7 +891,7 @@
 <li>golang ratelimit</li></ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/02/07/cljb83dme002vkcs65rngepnq/#more" rel="contents">
+            <a class="btn" href="/2021/02/07/clrbwk7m9003e96fyeag0blkx/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -785,7 +942,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/11/cljb83dmc002kkcs61b303w2w/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/11/clrbwk7m4003196fyddgqb7ce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -804,7 +961,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/11/cljb83dmc002kkcs61b303w2w/" itemprop="url">org-mode使用备注</a></h2>
+                <a class="post-title-link" href="/2021/01/11/clrbwk7m4003196fyddgqb7ce/" itemprop="url">org-mode使用备注</a></h2>
         
 
         <div class="post-meta">
@@ -1016,7 +1173,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/10/cljb83dme002skcs65rgf3gmt/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/10/clrbwk7m5003396fyajdm03ie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1035,7 +1192,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/10/cljb83dme002skcs65rgf3gmt/" itemprop="url">emacs! start org-mode! --org-mod使用备注</a></h2>
+                <a class="post-title-link" href="/2021/01/10/clrbwk7m5003396fyajdm03ie/" itemprop="url">emacs! start org-mode! --org-mod使用备注</a></h2>
         
 
         <div class="post-meta">
@@ -1156,7 +1313,7 @@
 <h1 id="org-mode介绍"><a href="#org-mode介绍" class="headerlink" title="org-mode介绍"></a>org-mode介绍</h1><p>在<code>神的编辑器emacs</code>的传说中，往往有<code>org-mode</code>的身影。虽然按照(org官网)<a target="_blank" rel="noopener" href="https://orgmode.org/">orgmode</a>官网的描述，<code>org-mode</code>并不仅限于在<code>emacs</code>中使用，如<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57800574">开始使用 Org 模式吧，在没有 Emacs 的情况下</a>这篇文章就详细讲解了在<code>vscode</code>中使用<code>org-mode</code>的方式，但是配合<code>emacs</code>的万物皆系于<code>kbd</code>之上的使用习惯，<code>org-mode</code>确实能够发挥最大的功能。<br><code>org-mode</code>的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/01/10/cljb83dme002skcs65rgf3gmt/#more" rel="contents">
+            <a class="btn" href="/2021/01/10/clrbwk7m5003396fyajdm03ie/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1207,7 +1364,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/cljb83dly0019kcs6gk5jhhic/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/23/clrbwk7lv001p96fy4792fbtr/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1226,7 +1383,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/12/23/cljb83dly0019kcs6gk5jhhic/" itemprop="url">elscreen标签背景颜色</a></h2>
+                <a class="post-title-link" href="/2020/12/23/clrbwk7lv001p96fy4792fbtr/" itemprop="url">elscreen标签背景颜色</a></h2>
         
 
         <div class="post-meta">
@@ -1337,7 +1494,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;; 选中标签设置为绿底黑字，其他标签为黄底黑字</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-other-screen-face nil</span><br><span class="line">                    :background &quot;yellow&quot; :foreground &quot;black&quot;)</span><br><span class="line">(set-face-attribute &#x27;elscreen-tab-current-screen-face nil</span><br><span class="line">                    :background &quot;green&quot; :foreground &quot;black&quot;)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/12/23/cljb83dly0019kcs6gk5jhhic/#more" rel="contents">
+            <a class="btn" href="/2020/12/23/clrbwk7lv001p96fy4792fbtr/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1388,7 +1545,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/10/cljb83dli0006kcs6azdrhztx/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/10/clrbwk7l9000c96fyc327eskp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1407,7 +1564,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/12/10/cljb83dli0006kcs6azdrhztx/" itemprop="url">Mac使用备注</a></h2>
+                <a class="post-title-link" href="/2020/12/10/clrbwk7l9000c96fyc327eskp/" itemprop="url">Mac使用备注</a></h2>
         
 
         <div class="post-meta">
@@ -1520,7 +1677,7 @@
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/12/10/cljb83dli0006kcs6azdrhztx/#more" rel="contents">
+            <a class="btn" href="/2020/12/10/clrbwk7l9000c96fyc327eskp/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1571,7 +1728,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/12/cljb83dm1001hkcs6hynvgc2z/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/12/clrbwk7lw001s96fye5ah1a1m/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1590,7 +1747,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/11/12/cljb83dm1001hkcs6hynvgc2z/" itemprop="url">find匹配文件名</a></h2>
+                <a class="post-title-link" href="/2020/11/12/clrbwk7lw001s96fye5ah1a1m/" itemprop="url">find匹配文件名</a></h2>
         
 
         <div class="post-meta">
@@ -1677,7 +1834,7 @@
 <p>希望从中找到<code>text.bak</code>。使用<code>find</code>实现。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/11/12/cljb83dm1001hkcs6hynvgc2z/#more" rel="contents">
+            <a class="btn" href="/2020/11/12/clrbwk7lw001s96fye5ah1a1m/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1728,7 +1885,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/12/cljb83dmg0033kcs630pzhrue/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/12/clrbwk7ma003j96fy12md3maf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1747,7 +1904,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/11/12/cljb83dmg0033kcs630pzhrue/" itemprop="url">sed使用备注</a></h2>
+                <a class="post-title-link" href="/2020/11/12/clrbwk7ma003j96fy12md3maf/" itemprop="url">sed使用备注</a></h2>
         
 
         <div class="post-meta">
@@ -1836,184 +1993,7 @@
 <p>大概的意思，是面向流的文本编辑工具。一般用来对文件中的文本进行替换等操作。<br>以下备注一些常用的操作方式了。  </p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/11/12/cljb83dmg0033kcs630pzhrue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/29/cljb83dlp000mkcs6hkraapq5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李岩's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/29/cljb83dlp000mkcs6hkraapq5/" itemprop="url">c++插件管理--pluma<实践></a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-29T21:19:00+08:00">
-                2020-10-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/" itemprop="url" rel="index">
-                    <span itemprop="name">code</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  655字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  3分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近研究了一下<a target="_blank" rel="noopener" href="http://pluma-framework.sourceforge.net/">pluma</a>的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。<br>下面重新整理了一个例子，作为备注。  </p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/29/cljb83dlp000mkcs6hkraapq5/#more" rel="contents">
+            <a class="btn" href="/2020/11/12/clrbwk7ma003j96fy12md3maf/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2101,7 +2081,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2123,7 +2103,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2160,7 +2140,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
