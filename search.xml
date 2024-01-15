@@ -211,7 +211,9 @@
 
 <h1 id="一、效果"><a href="#一、效果" class="headerlink" title="一、效果"></a>一、效果</h1><p>先看下采集效果：</p>
 <p><img src="/images/tcp-accept.png" alt="upload successful"></p>
-<h1 id="二、LVS-FullNat"><a href="#二、LVS-FullNat" class="headerlink" title="二、LVS FullNat"></a>二、LVS FullNat</h1><p>关于<code>LVS</code>的<code>Nat</code>,<code>DR</code>,<code>Tun</code>以及<code>FullNat</code>模式的介绍已经有了很多的资料，比如<a href="https://fafucoder.github.io/2021/12/19/linux-lvs/">这篇文章</a>就介绍的很详细。这里笔者附上<code>FullNat</code>模式下的示意图：<br><img src="/images/full-nat.png" alt="overwrote existing file"><br>如图所示，如果需要在<code>RS</code>上获取<code>CIP</code>，就涉及到<code>TOA</code>信息的解析。<code>TOA (tcp optional address)</code>是利用<code>tcp</code>协议<code>option</code>字段来传递信息的一种工作方式。关于<code>TOA</code>的约定笔者并没有找到官方的<code>RFC</code>文档。只有一些结构的定义。</p>
+<h1 id="二、LVS-FullNat"><a href="#二、LVS-FullNat" class="headerlink" title="二、LVS FullNat"></a>二、LVS FullNat</h1><p>关于<code>LVS</code>的<code>Nat</code>,<code>DR</code>,<code>Tun</code>以及<code>FullNat</code>模式的介绍已经有了很多的资料，比如<a href="https://fafucoder.github.io/2021/12/19/linux-lvs/">这篇文章</a>就介绍的很详细。这里笔者附上<code>FullNat</code>模式下的示意图：</p>
+<p><img src="/images/full-nat.png" alt="upload successful"></p>
+<p>如图所示，如果需要在<code>RS</code>上获取<code>CIP</code>，就涉及到<code>TOA</code>信息的解析。<code>TOA (tcp optional address)</code>是利用<code>tcp</code>协议<code>option</code>字段来传递信息的一种工作方式。关于<code>TOA</code>的约定笔者并没有找到官方的<code>RFC</code>文档。只有一些结构的定义。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* MUST be 4 bytes alignment */</span><br><span class="line">struct toa_data &#123;</span><br><span class="line">	__u8 opcode;</span><br><span class="line">	__u8 opsize;</span><br><span class="line">	__u16 port;</span><br><span class="line">	__u32 ip;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>同时，<a href="https://www.rfc-editor.org/rfc/rfc793.txt">rfc793</a>里对<code>TCP header</code>的约定如下，理论上<code>toa_data</code>应该写在<code>Options</code>字段中。</p>
