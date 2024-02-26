@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blacker-32x32-next.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blacker-16x16-next.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇golang 常见类型字节数 ，开启了eBPF+golang的总结性工作。此后陆续整理了一些关于ebpf的使用文章，同时项目也在逐步的推进。eBPF的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。    eB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang常见类型作为参数的eBPF解析">
+<meta property="og:url" content="http://yoursite.com/2022/12/30/clt2aygm7002lf4te2wjvgakg/index.html">
+<meta property="og:site_name" content="李岩&#39;s Blog">
+<meta property="og:description" content="即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇golang 常见类型字节数 ，开启了eBPF+golang的总结性工作。此后陆续整理了一些关于ebpf的使用文章，同时项目也在逐步的推进。eBPF的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。    eB">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-12-30T11:24:18.000Z">
+<meta property="article:modified_time" content="2022-12-30T14:33:42.812Z">
+<meta property="article:author" content="李岩">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/12/30/clt2aygm7002lf4te2wjvgakg/"/>
+
+
+
+
+
+  <title>golang常见类型作为参数的eBPF解析 | 李岩's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李岩's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">努力做个程序员</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/12/30/clt2aygm7002lf4te2wjvgakg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李岩's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">golang常见类型作为参数的eBPF解析</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-12-30T19:24:18+08:00">
+                2022-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.3k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/">golang 常见类型字节数
+</a>，开启了<code>eBPF+golang</code>的总结性工作。此后陆续整理了一些关于<code>ebpf</code>的使用文章，同时项目也在逐步的推进。<code>eBPF</code>的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。  </p>
+</blockquote>
+<p><code>eBPF</code>能够提供一种切入服务细节的独特视角。本文即通过实例，对<code>golang</code>常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于<code>golang-1.16</code>来整理的。</p>
+<span id="more"></span>
+
+<h1 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h1><p>目前<code>golang</code>支持的数值类型大概有<code>int</code>, <code>int8</code>, <code>int16</code>, <code>int32</code>, <code>int64</code>及相对应的无符号类型。无符号类型在传递时和对应的有符号类型是一致的，这里不再赘述。<code>int</code>在不同平台上大小会不同，<code>64</code>位操作系统时，<code>sizeof(int)=sizeof(int64)</code>。作为参数传递时，数值类型会直接传递值。<br>一般来说，<code>int8</code>, <code>int16</code>, <code>int32</code>在作为参数传递时，基于内存对齐的原则，会使用<code>8B</code>的空间来传递。但是并不绝对，笔者在准备本篇文章时，就找到了这样的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">// 如果严格按照&quot;内存对齐&quot;来推算，int_p 的参数大小应为 8B*5</span><br><span class="line">//go:noinline</span><br><span class="line">func int_p(a int8, b int16, c int32, d int64, e int) &#123;</span><br><span class="line">	fmt.Println(a, b, c, d, e)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	int_p(1, 2, 3, 4, 5)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* </span><br><span class="line">从输出结果来看，int_p 参数列表带大小为 3*8B，其中第一个 8B 的分布为：</span><br><span class="line"> |int8|--|int16|int32|</span><br><span class="line"> | 1B |1B| 2B  | 4B  |</span><br><span class="line"> type/type.bt</span><br><span class="line">*/</span><br><span class="line">uprobe:./type:&quot;main.int_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;int8:  %d\n&quot;, (int8)(sarg0));</span><br><span class="line">    printf(&quot;int16: %d\n&quot;, (int16)(sarg0&gt;&gt;16));</span><br><span class="line">    printf(&quot;int32: %d\n&quot;, (int32)(sarg0&gt;&gt;32));</span><br><span class="line">    printf(&quot;int64: %d\n&quot;, sarg1);</span><br><span class="line">    printf(&quot;int:   %d\n&quot;, sarg2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 运行结果</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">int8:  1</span><br><span class="line">int16: 2</span><br><span class="line">int32: 3</span><br><span class="line">int64: 4</span><br><span class="line">int:   5</span><br></pre></td></tr></table></figure>
+
+<p>由此可知，当数值类型作为函数参数时，需要结合前后参数来判断是否触发了内存对齐，进而判断数值类型参数的具体位置。</p>
+<h1 id="string"><a href="#string" class="headerlink" title="string"></a>string</h1><p><code>string</code>是由<code>8B addr + 8B length</code>来描述的。作为函数参数传递时，亦通过这样的方式来解析：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func string_p(name string) &#123;</span><br><span class="line">	fmt.Println(name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	name := string(&quot;didi&quot;)</span><br><span class="line">	string_p(name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.string_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;addr:   %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;length: %d\n&quot;, sarg1);</span><br><span class="line">    printf(&quot;name:   %s\n&quot;, str(sarg0, sarg1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">addr:   4958864        // 所谓的地址，就是这么个东西 @V@</span><br><span class="line">length: 4</span><br><span class="line">name:   didi</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>string</code>的地址和长度都是<code>8B</code>，所以不会触发内存对齐。</p>
+<h1 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h1><p><code>slice</code>是由<code>8B addr + 8B length + 8B cap</code>来描述的。作为函数值来传递时，需要关注地址及长度，以防止出现过解析的情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func slice_p(slices []int64) &#123;</span><br><span class="line">	fmt.Println(slices)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	slices := []int64&#123;1, 2, 3&#125;</span><br><span class="line">	slice_p(slices)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.slice_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;addr:   %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;length: %d\n&quot;, sarg1);</span><br><span class="line">    printf(&quot;cap:    %d\n&quot;, sarg2);</span><br><span class="line"></span><br><span class="line">    $pos = 0;</span><br><span class="line">    $offset = 0;</span><br><span class="line">    unroll(10)&#123;</span><br><span class="line">        if ($pos &gt;= sarg1)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        $value = *(int64*)(sarg0+$offset);</span><br><span class="line">        printf(&quot;%d: %d\n&quot;, $pos, $value);</span><br><span class="line"></span><br><span class="line">        $offset = $offset+8;</span><br><span class="line">        $pos = $pos + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">addr:   1310720</span><br><span class="line">length: 3</span><br><span class="line">cap:    3</span><br><span class="line">0: 1</span><br><span class="line">1: 2</span><br><span class="line">2: 3</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>eBPF</code>对循环的长度是有限制的，所以通过循环来读取数据会麻烦。一般可以直接将所有的数据都读出来，记录长度并将其传递到用户空间处理。</p>
+<h1 id="定长数组"><a href="#定长数组" class="headerlink" title="定长数组"></a>定长数组</h1><p><code>golang</code>的定长数组在传递时，会直接将数据拷贝上去。所以一般是不建议使用定长数组作为函数参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func array_p(slices [4]int64) &#123;</span><br><span class="line">	fmt.Println(slices)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	arrays := [4]int64&#123;1, 2, 3, 4&#125;</span><br><span class="line">	array_p(arrays)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.array_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;arr[0]: %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;arr[1]: %d\n&quot;, sarg1);</span><br><span class="line">    printf(&quot;arr[2]: %d\n&quot;, sarg2);</span><br><span class="line">    printf(&quot;arr[3]: %d\n&quot;, sarg3);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">arr[0]: 1</span><br><span class="line">arr[1]: 2</span><br><span class="line">arr[2]: 3</span><br><span class="line">arr[3]: 4</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，定长数组作为结构体参数时，也是直接将参数堆积的，而不是类似<code>slice</code>的由指针及长度组成。</p>
+<h1 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h1><p><code>golang</code>结构体作为函数参数传递时，会直接将结构体内的成员逐个传递。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type S struct &#123;</span><br><span class="line">	X int64</span><br><span class="line">	Y int64</span><br><span class="line">	Z [3]int64</span><br><span class="line">	A int64</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 请注意 other 参数，虽然其作为函数的第二个参数，但其在函数列表中的偏移量是 48B</span><br><span class="line">//go:noinline</span><br><span class="line">func struct_p(s S, other int64) &#123;</span><br><span class="line">	fmt.Println(s, other)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	s := S&#123;</span><br><span class="line">		X: 1,</span><br><span class="line">		Y: 2,</span><br><span class="line">		Z: [3]int64&#123;3, 4, 5&#125;,</span><br><span class="line">		A: 6,</span><br><span class="line">	&#125;</span><br><span class="line">	struct_p(s, 7)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.struct_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;X: %d\n&quot;, sarg0);</span><br><span class="line">    printf(&quot;Y: %d\n&quot;, sarg1);</span><br><span class="line">    printf(&quot;A: %d\n&quot;, sarg5);</span><br><span class="line">    printf(&quot;other: %d\n&quot;, sarg6);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">X: 1</span><br><span class="line">Y: 2</span><br><span class="line">A: 6</span><br><span class="line">other: 7</span><br></pre></td></tr></table></figure>
+
+<p>结构体作为函数参数，往往会涉及到内存对齐的问题。需要逐个分析了。</p>
+<h1 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h1><p><code>golang</code>指针作为函数参数时，会直接传递指针数值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type P struct &#123;</span><br><span class="line">	X int64</span><br><span class="line">	Y int64</span><br><span class="line">	Z [3]int64</span><br><span class="line">	A int64</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func pointer_p(p *P) &#123;</span><br><span class="line">	fmt.Println(*p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	p := &amp;P&#123;</span><br><span class="line">		X: 1,</span><br><span class="line">		Y: 2,</span><br><span class="line">		Z: [3]int64&#123;3, 4, 5&#125;,</span><br><span class="line">		A: 6,</span><br><span class="line">	&#125;</span><br><span class="line">	pointer_p(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.pointer_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    $p = sarg0;</span><br><span class="line">    printf(&quot;X: %d\n&quot;, *(int64*)($p+0));</span><br><span class="line">    printf(&quot;Y: %d\n&quot;, *(int64*)($p+8));</span><br><span class="line">    printf(&quot;A: %d\n&quot;, *(int64*)($p+40));</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">X: 1</span><br><span class="line">Y: 2</span><br><span class="line">A: 6</span><br></pre></td></tr></table></figure>
+
+<p>解析<code>golang</code>指针成员的时候，需要提前知晓指针结构体的内容。</p>
+<h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><p><code>golang</code>的<code>map</code>实现比较复杂，详细的介绍可以看下这篇文章：<a target="_blank" rel="noopener" href="https://golang.design/go-questions/map/principal/">golang map</a>。<code>map</code>作为参数传递时，实际上传递的是<code>hmap</code>的指针。<br>由于<code>golang</code>的<code>map</code>实际的结构及具体结构体的大小会受到<code>map key, map value</code>的影响，这对使用<code>eBPF</code>来解析<code>golang map</code>带来了额外的挑战。所幸本文并不期望提供一个<code>golang map</code>解析的通用方法，我们可以提前定义所需要解析的<code>map</code>为<code>map[int64]int64</code>，在这个条件下，<code>bmap</code>的结构就为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// sizeof(bmap) = 144B</span><br><span class="line">type bmap struct &#123;</span><br><span class="line">    topbits  [8]uint8 // 8B</span><br><span class="line">    keys     [8]int64 // 64B</span><br><span class="line">    values   [8]int64 // 64B</span><br><span class="line">    //pad      uintptr //不需要添加内存对齐参数</span><br><span class="line">    overflow uintptr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>确定了<code>bmap</code>的信息后，可以看到，<code>keys</code>及<code>values</code>的偏移信息就确定了，可以直接读取。但是由于<code>key</code>实际映射时是通过<code>hash</code>来决定其位置的，完整的读取<code>map</code>显然是很困难的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func map_p(m map[int64]int64) &#123;</span><br><span class="line">	fmt.Println(m)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	m := map[int64]int64&#123;&#125;</span><br><span class="line">	for i := int64(1); i &lt;= int64(10); i++ &#123;</span><br><span class="line">		m[i] = i</span><br><span class="line">	&#125;</span><br><span class="line">	map_p(m)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.map_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    $hmap_addr = sarg0;</span><br><span class="line">    $bucket_addr = *(uint64*)($hmap_addr+16);</span><br><span class="line">    $bucket_offset = 0;</span><br><span class="line">    unroll(2)&#123; // 尝试读取两个 bmap</span><br><span class="line">        $bmap_addr = $bucket_addr + $bucket_offset;</span><br><span class="line">        $key_addr = $bmap_addr + 8;</span><br><span class="line">        $value_addr = $bmap_addr + 72;</span><br><span class="line"></span><br><span class="line">        $offset = 0;</span><br><span class="line">        unroll(8)&#123; // 读取每个 bmap 的所有 key-value</span><br><span class="line">            $key = *(int64*)($key_addr+$offset);</span><br><span class="line">            $value = *(int64*)($value_addr+$offset);</span><br><span class="line">            printf(&quot;key: %d, value: %d\n&quot;, $key, $value);</span><br><span class="line">            $offset = $offset + 8;</span><br><span class="line">        &#125;</span><br><span class="line">        $bucket_offset = $bucket_offset + 144;</span><br><span class="line">    &#125;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 笔者的这次运行，把[1,10]所有的key都输出了</span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">key: 2, value: 2</span><br><span class="line">key: 3, value: 3</span><br><span class="line">key: 5, value: 5</span><br><span class="line">key: 6, value: 6</span><br><span class="line">key: 7, value: 7</span><br><span class="line">key: 8, value: 8</span><br><span class="line">key: 9, value: 9</span><br><span class="line">key: 10, value: 10</span><br><span class="line">key: 1, value: 1</span><br><span class="line">key: 4, value: 4</span><br><span class="line">key: 0, value: 0</span><br><span class="line">key: 0, value: 0</span><br><span class="line">key: 0, value: 0</span><br><span class="line">key: 0, value: 0</span><br><span class="line">key: 0, value: 0</span><br><span class="line">key: 0, value: 0</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>eBPF</code>来读取<code>map</code>，不得不预设一个确定的大小。至于是否能够读取所有的<code>map</code>值，就不好说了。</p>
+<h1 id="interface"><a href="#interface" class="headerlink" title="interface"></a>interface</h1><p><code>golang</code>的<code>interface</code>是由<code>8B type pointer</code>+<code>8B struct pointer</code>组成的。当解析<code>interface</code>的时候，需要的往往是<code>struct pointer</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// type/main.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Inter interface&#123;&#125;</span><br><span class="line"></span><br><span class="line">type S struct &#123;</span><br><span class="line">	X int64</span><br><span class="line">	Y int64</span><br><span class="line">	Z [3]int64</span><br><span class="line">	A int64</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func struct_p(i Inter, other int64) &#123;</span><br><span class="line">	s, _ := i.(S)</span><br><span class="line">	fmt.Println(s, other)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	s := S&#123;</span><br><span class="line">		X: 1,</span><br><span class="line">		Y: 2,</span><br><span class="line">		Z: [3]int64&#123;3, 4, 5&#125;,</span><br><span class="line">		A: 6,</span><br><span class="line">	&#125;</span><br><span class="line">	struct_p(s, 7)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// type/type.bt</span><br><span class="line">uprobe:./type:&quot;main.struct_p&quot;</span><br><span class="line">&#123;</span><br><span class="line">    $addr = sarg1;</span><br><span class="line">    printf(&quot;X: %d\n&quot;, *(int64*)($addr+0));</span><br><span class="line">    printf(&quot;Y: %d\n&quot;, *(int64*)($addr+8));</span><br><span class="line">    printf(&quot;A: %d\n&quot;, *(int64*)($addr+40));</span><br><span class="line">    printf(&quot;other: %d\n&quot;, sarg2);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bpftrace ./type.bt</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">X: 1</span><br><span class="line">Y: 2</span><br><span class="line">A: 6</span><br><span class="line">other: 7</span><br></pre></td></tr></table></figure>
+
+<p>从示例中可以看出，当解析<code>interface</code>时，<code>interface</code>具体的结构体成员对我们而言更加重要。在实际的工程里，往往会出现多个结构体实现同一个<code>interface</code>，并且均可以作为该<code>interface</code>来传递值的情况。这时就需要依据所实际期望解析的结构体来进行实际采集的过滤或者适配了。</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>本文编写的文章超过了笔者的估计时间 :)。<code>anyway</code>，这篇文章最终整理完成了。期望有读者能够籍此对<code>eBPF</code>有直观的认识，同时体会到其观察<code>golang</code>的独特视角。<br>周末愉快，新年快乐！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/11/25/clt2aygmo003tf4te0jet9h6e/" rel="next" title="基于ebpf实现的gls">
+                <i class="fa fa-chevron-left"></i> 基于ebpf实现的gls
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/02/10/clt2ayglz001wf4te7yhb53io/" rel="prev" title="emacs org-mode 绘制思维导图">
+                emacs org-mode 绘制思维导图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">数值类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#string"><span class="nav-number">2.</span> <span class="nav-text">string</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#slice"><span class="nav-number">3.</span> <span class="nav-text">slice</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84"><span class="nav-number">4.</span> <span class="nav-text">定长数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">5.</span> <span class="nav-text">结构体</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-number">6.</span> <span class="nav-text">指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#map"><span class="nav-number">7.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#interface"><span class="nav-number">8.</span> <span class="nav-text">interface</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">9.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李岩</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

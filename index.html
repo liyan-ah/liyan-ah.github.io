@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/02/24/clszse5m400004otehru83k2c/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/02/24/clt2aygll000lf4te4g8d1buh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2024/02/24/clszse5m400004otehru83k2c/" itemprop="url">TCP close 过程分析</a></h2>
+                <a class="post-title-link" href="/2024/02/24/clt2aygll000lf4te4g8d1buh/" itemprop="url">TCP close 过程分析</a></h2>
         
 
         <div class="post-meta">
@@ -414,7 +414,7 @@
 <p>在一些场景下，对服务的调用观测是很有价值的。笔者最近实践了使用<code>tcp_close</code>对服务主被调信息的观测，在这里作一下记录。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2024/02/24/clszse5m400004otehru83k2c/#more" rel="contents">
+            <a class="btn" href="/2024/02/24/clt2aygll000lf4te4g8d1buh/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -465,7 +465,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/01/03/clrbwq0ka000omtfyfzwg9c9s/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/01/03/clt2ayglm000mf4tefj836d5t/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -484,7 +484,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2024/01/03/clrbwq0ka000omtfyfzwg9c9s/" itemprop="url">BPF 获取 LVS FullNat 模式下的 Client IP</a></h2>
+                <a class="post-title-link" href="/2024/01/03/clt2ayglm000mf4tefj836d5t/" itemprop="url">BPF 获取 LVS FullNat 模式下的 Client IP</a></h2>
         
 
         <div class="post-meta">
@@ -594,7 +594,7 @@
 <p>  观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在<code>LVS</code>下面的。这就势必涉及到<code>LVS</code>预设的工作模式下，一般都是<code>FULLNET</code>，需要的<code>real client ip</code>的信息获取方式。<br>  笔者通过调研，实现了一种通过<code>BPF</code>来观测挂载在<code>LVS</code>下的<code>RS</code>被调用<code>TCP</code>连接信息的方式。本文中关于<code>toa</code>的操作及代码定义均引用自<a target="_blank" rel="noopener" href="https://github.com/Huawei/TCP_option_address/tree/master">Huawei/TCP_option_address</a>。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2024/01/03/clrbwq0ka000omtfyfzwg9c9s/#more" rel="contents">
+            <a class="btn" href="/2024/01/03/clt2ayglm000mf4tefj836d5t/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -645,7 +645,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/12/08/clrbwq0l5003qmtfy7qb452c1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/12/08/clt2aygmn003pf4te8c0jhsw7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -664,7 +664,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/12/08/clrbwq0l5003qmtfy7qb452c1/" itemprop="url">如何追踪golang channel?</a></h2>
+                <a class="post-title-link" href="/2023/12/08/clt2aygmn003pf4te8c0jhsw7/" itemprop="url">如何追踪golang channel?</a></h2>
         
 
         <div class="post-meta">
@@ -774,7 +774,7 @@
 <p>在<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2023/03/29/cljb83dmh003dkcs61joe1kfh/#more">无侵入观测服务拓扑四元组的一种实现</a>中，笔者有提到追踪<code>golang</code>处理过程的两个无法解决的问题是<code>golang</code>里的<code>channel</code>处理以及<code>goroutine pool</code>。再深究下，这两个问题实际上都可以归纳到对<code>channel</code>的处理，因为很多<code>goroutine pool</code>都离不了<code>channel</code>的使用，比如<a target="_blank" rel="noopener" href="https://github.com/Jeffail/tunny">Jeffail/tunny</a>这个库。<br>本文将会构建一个<code>channel</code>的追踪的方案。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/12/08/clrbwq0l5003qmtfy7qb452c1/#more" rel="contents">
+            <a class="btn" href="/2023/12/08/clt2aygmn003pf4te8c0jhsw7/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -825,7 +825,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/11/18/clrbwq0ke0010mtfy6kfe80li/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/11/18/clt2ayglq000yf4tedtfp6duc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -844,7 +844,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/11/18/clrbwq0ke0010mtfy6kfe80li/" itemprop="url">bpftrace 遍历 golang 链表（go17+）</a></h2>
+                <a class="post-title-link" href="/2023/11/18/clt2ayglq000yf4tedtfp6duc/" itemprop="url">bpftrace 遍历 golang 链表（go17+）</a></h2>
         
 
         <div class="post-meta">
@@ -954,7 +954,7 @@
 <p>在<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/07/22/cljb83dlm000ckcs6bp7thrf9/#more">bpftrace 无侵入遍历golang链表</a>里，笔者展示了使用<code>bpftrace</code>来遍历<code>golang</code>链表的方法。由于<code>go-17</code>和<code>go-16</code>的函数调用规约存在不同，因此<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2022/07/22/cljb83dlm000ckcs6bp7thrf9/#more">bpftrace 无侵入遍历golang链表</a>并不适用于<code>go-17</code>。其实这个问题在<a target="_blank" rel="noopener" href="https://liyan-ah.github.io/2023/03/03/cljb83dm2001mkcs68hgf9o2s/#more">go-1.17+ 调用规约</a>已经提到了解决方案。本文给一个实例，算是更进一步的延伸这个话题，希望能够起到一些效果。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/11/18/clrbwq0ke0010mtfy6kfe80li/#more" rel="contents">
+            <a class="btn" href="/2023/11/18/clt2ayglq000yf4tedtfp6duc/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1005,7 +1005,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/26/clrbwq0kk001emtfy0fc7527n/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/26/clt2ayglv001ef4te268n1kp8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1024,7 +1024,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/08/26/clrbwq0kk001emtfy0fc7527n/" itemprop="url">eBPF tail-calls示例</a></h2>
+                <a class="post-title-link" href="/2023/08/26/clt2ayglv001ef4te268n1kp8/" itemprop="url">eBPF tail-calls示例</a></h2>
         
 
         <div class="post-meta">
@@ -1134,7 +1134,7 @@
 <p><code>eBPF</code>程序是事件驱动的，这就意味着当目标事件触发后，程序才能执行。考虑这样一个场景：有几个不同的<code>BPF</code>程序均挂载在相同的<code>hook</code>点上，而执行需要保持一定的顺序。这时就需要借助<code>tail calls</code>的功能来实现。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/08/26/clrbwq0kk001emtfy0fc7527n/#more" rel="contents">
+            <a class="btn" href="/2023/08/26/clt2ayglv001ef4te268n1kp8/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1185,7 +1185,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/06/25/clrbwq0ma007umtfy47flht53/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/06/25/clt2aygo30085f4te43qm42vk/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1204,7 +1204,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/06/25/clrbwq0ma007umtfy47flht53/" itemprop="url">BPF追踪Go程序的挑战</a></h2>
+                <a class="post-title-link" href="/2023/06/25/clt2aygo30085f4te43qm42vk/" itemprop="url">BPF追踪Go程序的挑战</a></h2>
         
 
         <div class="post-meta">
@@ -1314,7 +1314,7 @@
 <h1 id="BPF追踪Go程序的挑战"><a href="#BPF追踪Go程序的挑战" class="headerlink" title="BPF追踪Go程序的挑战"></a>BPF追踪Go程序的挑战</h1><p>当大家对<code>Go 1.17</code>语言调用规约(<code>function calling convention</code>)调整带来的性能优化感到兴奋时，我却遗憾的看到<code>Go 1.17</code>并没有让<code>BPF uretprobe</code>变得可行。事实证明，我还没有完全意识到<code>Go</code>的可调整的栈空间会让事情变得多复杂。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/06/25/clrbwq0ma007umtfy47flht53/#more" rel="contents">
+            <a class="btn" href="/2023/06/25/clt2aygo30085f4te43qm42vk/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1365,7 +1365,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/04/21/clrbwq0k6000fmtfyf4n6boaf/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/04/21/clt2aygli000hf4te4gsoejwp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1384,7 +1384,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/04/21/clrbwq0k6000fmtfyf4n6boaf/" itemprop="url">PlantUML-文本化绘制UML多类图表</a></h2>
+                <a class="post-title-link" href="/2023/04/21/clt2aygli000hf4te4gsoejwp/" itemprop="url">PlantUML-文本化绘制UML多类图表</a></h2>
         
 
         <div class="post-meta">
@@ -1500,7 +1500,7 @@
 <p>而且，<code>PlantUML</code>支持在线使用，意味着能够很方便的获取、使用。这里做下介绍。  </p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/04/21/clrbwq0k6000fmtfyf4n6boaf/#more" rel="contents">
+            <a class="btn" href="/2023/04/21/clt2aygli000hf4te4gsoejwp/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1551,7 +1551,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/29/clrbwq0l9003umtfyggp2ctzo/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/29/clt2aygmp003wf4te98a8ax00/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1570,7 +1570,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/03/29/clrbwq0l9003umtfyggp2ctzo/" itemprop="url">无侵入观测服务拓扑四元组的一种实现</a></h2>
+                <a class="post-title-link" href="/2023/03/29/clt2aygmp003wf4te98a8ax00/" itemprop="url">无侵入观测服务拓扑四元组的一种实现</a></h2>
         
 
         <div class="post-meta">
@@ -1695,7 +1695,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 启动采集</span><br><span class="line">bpftrace ./http.bt</span><br><span class="line">Attaching 2 probes...  # 未触发请求前，停止在这里</span><br><span class="line">caller:                # 触发请求后，输出</span><br><span class="line">  	caller_path: /handle</span><br><span class="line">callee:</span><br><span class="line">  	method: GET</span><br><span class="line">  	host: 0.0.0.0:9932</span><br><span class="line">  	url: /echo</span><br><span class="line">  </span><br><span class="line">caller:</span><br><span class="line">  	caller_path: /echo</span><br><span class="line">callee: none</span><br><span class="line">  </span><br><span class="line"># 开始服务</span><br><span class="line">./http_demo &amp;</span><br><span class="line"># 触发请求</span><br><span class="line">curl http://0.0.0.0:9932/handle</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/03/29/clrbwq0l9003umtfyggp2ctzo/#more" rel="contents">
+            <a class="btn" href="/2023/03/29/clt2aygmp003wf4te98a8ax00/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1746,7 +1746,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/03/clrbwq0ku002kmtfyb66o5d66/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/03/clt2aygm30027f4tea15657y3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1765,7 +1765,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/03/03/clrbwq0ku002kmtfyb66o5d66/" itemprop="url">go-1.17+ 调用规约</a></h2>
+                <a class="post-title-link" href="/2023/03/03/clt2aygm30027f4tea15657y3/" itemprop="url">go-1.17+ 调用规约</a></h2>
         
 
         <div class="post-meta">
@@ -1875,7 +1875,7 @@
 <p><code>go</code>在<code>1.17</code>之前使用的是内存栈来传递参数，这种传参的方式使得<code>golang</code>的语言设计很灵活：<code>golang</code>函数的多返回值能够很容易的实现。同样的，由于<code>golang</code>需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在<a target="_blank" rel="noopener" href="https://go.googlesource.com/proposal/+/refs/changes/78/248178/1/design/40724-register-calling.md">Proposal: Register-based Go calling convention</a>文章里对这个问题进行了详细的讨论，总结起来是<code>golang</code>的特性使得使用系统默认规约并不能带来多语言交互上的收益，且<code>golang</code>希望保持独特。<br>本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是<code>x86_64</code>的<code>centos8</code>系统。其他架构下，寄存器名称可能不同。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/03/03/clrbwq0ku002kmtfyb66o5d66/#more" rel="contents">
+            <a class="btn" href="/2023/03/03/clt2aygm30027f4tea15657y3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1926,7 +1926,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/24/clrbwq0kp001pmtfyf5nfgku4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/24/clt2ayglx001pf4tedue57yf9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1945,7 +1945,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/02/24/clrbwq0kp001pmtfyf5nfgku4/" itemprop="url">ebpf 采集ebpf 采集tag+tcp五元组</a></h2>
+                <a class="post-title-link" href="/2023/02/24/clt2ayglx001pf4tedue57yf9/" itemprop="url">ebpf 采集ebpf 采集tag+tcp五元组</a></h2>
         
 
         <div class="post-meta">
@@ -2036,7 +2036,7 @@
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2023/02/24/clrbwq0kp001pmtfyf5nfgku4/#more" rel="contents">
+            <a class="btn" href="/2023/02/24/clt2ayglx001pf4tedue57yf9/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
