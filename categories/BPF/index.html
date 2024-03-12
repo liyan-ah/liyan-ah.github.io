@@ -82,7 +82,7 @@
 <meta name="description" content="look, listen and say">
 <meta property="og:type" content="website">
 <meta property="og:title" content="李岩&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/categories/bpf/index.html">
+<meta property="og:url" content="http://yoursite.com/categories/BPF/index.html">
 <meta property="og:site_name" content="李岩&#39;s Blog">
 <meta property="og:description" content="look, listen and say">
 <meta property="og:locale">
@@ -117,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/bpf/"/>
+  <link rel="canonical" href="http://yoursite.com/categories/BPF/"/>
 
 
 
 
 
-  <title>分类: bpf | 李岩's Blog</title>
+  <title>分类: BPF | 李岩's Blog</title>
   
 
 
@@ -277,7 +277,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h2>bpf<small>分类</small>
+        <h2>BPF<small>分类</small>
         </h2>
       </div>
 
@@ -289,9 +289,9 @@
 
       <h3 class="post-title">
         
-            <a class="post-title-link" href="/2024/01/03/clt2ayglm000mf4tefj836d5t/" itemprop="url">
+            <a class="post-title-link" href="/2024/03/12/cltnsefrw0000ncfyhghx3krz/" itemprop="url">
               
-                <span itemprop="name">BPF 获取 LVS FullNat 模式下的 Client IP</span>
+                <span itemprop="name">BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</span>
               
             </a>
         
@@ -299,9 +299,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2024-01-03T16:15:00+08:00"
-              content="2024-01-03" >
-          01-03
+              datetime="2024-03-12T11:02:00+08:00"
+              content="2024-03-12" >
+          03-12
         </time>
       </div>
 
@@ -317,9 +317,9 @@
 
       <h3 class="post-title">
         
-            <a class="post-title-link" href="/2023/08/26/clt2ayglv001ef4te268n1kp8/" itemprop="url">
+            <a class="post-title-link" href="/2024/02/24/clt2aygll000lf4te4g8d1buh/" itemprop="url">
               
-                <span itemprop="name">eBPF tail-calls示例</span>
+                <span itemprop="name">TCP close 过程分析</span>
               
             </a>
         
@@ -327,9 +327,65 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2023-08-26T12:30:00+08:00"
-              content="2023-08-26" >
-          08-26
+              datetime="2024-02-24T15:55:00+08:00"
+              content="2024-02-24" >
+          02-24
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h3 class="post-title">
+        
+            <a class="post-title-link" href="/2023/12/08/clt2aygmn003pf4te8c0jhsw7/" itemprop="url">
+              
+                <span itemprop="name">如何追踪golang channel?</span>
+              
+            </a>
+        
+      </h3>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2023-12-08T19:43:00+08:00"
+              content="2023-12-08" >
+          12-08
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h3 class="post-title">
+        
+            <a class="post-title-link" href="/2023/06/25/clt2aygo30085f4te43qm42vk/" itemprop="url">
+              
+                <span itemprop="name">BPF追踪Go程序的挑战</span>
+              
+            </a>
+        
+      </h3>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2023-06-25T17:08:00+08:00"
+              content="2023-06-25" >
+          06-25
         </time>
       </div>
 
@@ -390,7 +446,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -412,7 +468,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -722,34 +778,7 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                var contentInLowerCa  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
                     isMatch = true;
                     hitCount = indexOfTitle.length + indexOfContent.length;
                   }
@@ -993,7 +1022,35 @@
 
 </body>
 </html>
-SearchPopup = event.which === 27 &&
+            }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
         $('.search-popup').is(':visible');
       if (shouldDismissSearchPopup) {
         onPopupClose();
