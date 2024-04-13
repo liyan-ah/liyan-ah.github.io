@@ -19,7 +19,7 @@ subtitle = "后之视今，亦犹今之视昔。"
 [sidebar.avatar]
 enabled = true
 local = true
-src = "img/walk.png"
+src = "img/avatar.png"
 
 [article]
 math = false
@@ -57,9 +57,6 @@ type = "toc"
 #[opengraph.twitter]
 #site = ""
 #card = "summary_large_image"
-[opengraph.github]
-site = "https://github.com/liyan-ah"
-card = "summary_large_image"
 
 [defaultImage.opengraph]
 enabled = false

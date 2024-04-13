@@ -1,8 +1,8 @@
 # Change baseurl before deploy
 baseurl = "https://liyan-ah.github.io"
-languageCode = "zh-cn"
-paginate = 5
-title = "Hugo Theme Stack Starter"
+languageCode = "zh-Hans"
+paginate = 13
+title = "工程师的自我修养"
 
 # Theme i18n support
 # Available values: en, fr, id, ja, ko, pt-br, zh-cn, zh-tw, es, de, nl, it, th, el, uk, ar
@@ -13,5 +13,4 @@ defaultContentLanguage = "zh-cn"
 hasCJKLanguage = false
 
 # Change it to your Disqus shortname before using
-disqusShortname = "hugo-theme-stack"
-
+disqusShortname = "liyan-ah"
