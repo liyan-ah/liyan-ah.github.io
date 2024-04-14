@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="go-1.17+ 调用规约">
 <meta property='og:description' content=" go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C/C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下go-1.17+的调用规约。\ngo在1.17之前使用的是内存栈来传递参数，这种传参的方式使得golang的语言设计很灵活：golang函数的多返回值能够很容易的实现。同样的，由于golang需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在Proposal: Register-based Go calling convention文章里对这个问题进行了详细的讨论，总结起来是golang的特性使得使用系统默认规约并不能带来多语言交互上的收益，且golang希望保持独特。\n本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是x86_64的centos8系统。其他架构下，寄存器名称可能不同。\n">
 <meta property='og:url' content='http://localhost:1313/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/'>
-<meta property='og:site_name' content='工程师的自我修养'>
+<meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='go-1.17' /><meta property='article:published_time' content='2023-03-03T20:59:00&#43;00:00'/><meta property='article:modified_time' content='2023-03-03T20:59:00&#43;00:00'/>
 <meta name="twitter:title" content="go-1.17+ 调用规约">
 <meta name="twitter:description" content=" go-1.17是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到go-1.17之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和C/C++的是完全不一致的。这个问题使得笔者在处理ebpf方案时，始终无法覆盖go-1.17+的版本。虽然短期不会造成影响，线上服务使用的大多还在go-1.16以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下go-1.17+的调用规约。\ngo在1.17之前使用的是内存栈来传递参数，这种传参的方式使得golang的语言设计很灵活：golang函数的多返回值能够很容易的实现。同样的，由于golang需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在Proposal: Register-based Go calling convention文章里对这个问题进行了详细的讨论，总结起来是golang的特性使得使用系统默认规约并不能带来多语言交互上的收益，且golang希望保持独特。\n本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是x86_64的centos8系统。其他架构下，寄存器名称可能不同。\n">
@@ -69,7 +69,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">工程师的自我修养</a></h1>
+            <h1 class="site-name"><a href="/">李岩</a></h1>
             <h2 class="site-description">后之视今，亦犹今之视昔。</h2>
         </div>
     </header><ol class="menu-social">
@@ -847,7 +847,7 @@
         
             2019 - 
         
-        2024 工程师的自我修养
+        2024 李岩
     </section>
     
     <section class="powerby">

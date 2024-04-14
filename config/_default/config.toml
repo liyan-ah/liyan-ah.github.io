@@ -2,7 +2,7 @@
 baseurl = "https://liyan-ah.github.io"
 languageCode = "zh-Hans"
 paginate = 13
-title = "工程师的自我修养"
+title = "李岩"
 
 # Theme i18n support
 # Available values: en, fr, id, ja, ko, pt-br, zh-cn, zh-tw, es, de, nl, it, th, el, uk, ar

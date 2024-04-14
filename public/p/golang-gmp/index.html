@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="golang GMP">
 <meta property='og:description' content=" 写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的GMP模型看看。最近在准备一篇Golang的GC实践。慢慢搞吧。\n# 前言 Golang作为语言层面支持并发的语言，使用go可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及Golang的所谓纤程是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如Python的协程以及Golang的纤程，总是能够对应到操作系统认可的执行单元上。对于Python的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于CPU密集型的操作，仅使用协程是无法达到优化效果的：这种场景下Python会推荐多进程。相比起来，Golang的go野心更大一些：期望给用户以go作为接口，在语言内实现与操作系统调度单元的交互。Golang里实际的调度模型是GMP。\n">
 <meta property='og:url' content='http://localhost:1313/p/golang-gmp/'>
-<meta property='og:site_name' content='工程师的自我修养'>
+<meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2021-04-15T21:39:29&#43;00:00'/><meta property='article:modified_time' content='2021-04-15T21:39:29&#43;00:00'/>
 <meta name="twitter:title" content="golang GMP">
 <meta name="twitter:description" content=" 写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的GMP模型看看。最近在准备一篇Golang的GC实践。慢慢搞吧。\n# 前言 Golang作为语言层面支持并发的语言，使用go可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及Golang的所谓纤程是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如Python的协程以及Golang的纤程，总是能够对应到操作系统认可的执行单元上。对于Python的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于CPU密集型的操作，仅使用协程是无法达到优化效果的：这种场景下Python会推荐多进程。相比起来，Golang的go野心更大一些：期望给用户以go作为接口，在语言内实现与操作系统调度单元的交互。Golang里实际的调度模型是GMP。\n">
@@ -69,7 +69,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">工程师的自我修养</a></h1>
+            <h1 class="site-name"><a href="/">李岩</a></h1>
             <h2 class="site-description">后之视今，亦犹今之视昔。</h2>
         </div>
     </header><ol class="menu-social">
@@ -353,7 +353,7 @@
         
             2019 - 
         
-        2024 工程师的自我修养
+        2024 李岩
     </section>
     
     <section class="powerby">
