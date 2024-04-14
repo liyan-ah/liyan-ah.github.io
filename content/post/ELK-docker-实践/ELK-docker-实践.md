@@ -1,11 +1,15 @@
-+++
-title = 'ELK docker 实践'
-date = 2024-01-14T07:07:07+01:00
-description = "本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行"
-+++
-
+---
+title: ELK-docker 实践
+author: 李岩
+tags:
+  - elk
+categories:
+  - 程序人生
+  - ''
+date: 2022-01-04 00:06:00
+---
 # ELK docker 部署实践
-本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。
+> 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。
 
 <!-- more -->
 

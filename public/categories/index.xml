@@ -5,12 +5,85 @@
         <link>http://localhost:1313/categories/</link>
         <description>Recent content in Categories on 工程师的自我修养</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>zh-Hans</language><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Code</title>
-        <link>http://localhost:1313/categories/example-category/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        <language>zh-Hans</language>
+        <lastBuildDate>Tue, 12 Mar 2024 11:02:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>BPF</title>
+        <link>http://localhost:1313/categories/bpf/</link>
+        <pubDate>Tue, 12 Mar 2024 11:02:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/example-category/</guid>
+        <guid>http://localhost:1313/categories/bpf/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>程序人生</title>
+        <link>http://localhost:1313/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/</link>
+        <pubDate>Sat, 18 Nov 2023 15:36:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Code</title>
+        <link>http://localhost:1313/categories/code/</link>
+        <pubDate>Wed, 29 Mar 2023 19:42:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/code/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>可观测</title>
+        <link>http://localhost:1313/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B/</link>
+        <pubDate>Wed, 29 Mar 2023 19:42:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ebpf</title>
+        <link>http://localhost:1313/categories/ebpf/</link>
+        <pubDate>Fri, 03 Mar 2023 20:59:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/ebpf/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Code Life</title>
+        <link>http://localhost:1313/categories/code-life/</link>
+        <pubDate>Fri, 25 Nov 2022 01:14:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/code-life/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>理论内容</title>
+        <link>http://localhost:1313/categories/%E7%90%86%E8%AE%BA%E5%86%85%E5%AE%B9/</link>
+        <pubDate>Tue, 09 Nov 2021 21:11:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E7%90%86%E8%AE%BA%E5%86%85%E5%AE%B9/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>通信协议</title>
+        <link>http://localhost:1313/categories/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</link>
+        <pubDate>Tue, 09 Nov 2021 21:11:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Debug</title>
+        <link>http://localhost:1313/categories/debug/</link>
+        <pubDate>Thu, 22 Jul 2021 17:58:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/debug/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Life</title>
+        <link>http://localhost:1313/categories/life/</link>
+        <pubDate>Mon, 11 Jan 2021 21:49:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/life/</guid>
         <description></description>
         </item>
         

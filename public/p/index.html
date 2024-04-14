@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="zh-Hans" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="title: centos 构建 local-k8s author: 李岩 tags:\nk8s ebpf categories: 程序人生 code date: 2022-02-24 17:27:00 工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。 环境：Linux test 4.18.0-193.el8.x86_64\n">
 <title></title>
 
 <link rel='canonical' href='http://localhost:1313/p/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="">
-<meta property='og:description' content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
+<meta property='og:description' content="title: centos 构建 local-k8s author: 李岩 tags:\nk8s ebpf categories: 程序人生 code date: 2022-02-24 17:27:00 工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。 环境：Linux test 4.18.0-193.el8.x86_64\n">
 <meta property='og:url' content='http://localhost:1313/p/'>
-<meta property='og:site_name' content='Hugo Theme Stack Starter'>
+<meta property='og:site_name' content='工程师的自我修养'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="">
-<meta name="twitter:description" content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
+<meta name="twitter:description" content="title: centos 构建 local-k8s author: 李岩 tags:\nk8s ebpf categories: 程序人生 code date: 2022-02-24 17:27:00 工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。 环境：Linux test 4.18.0-193.el8.x86_64\n">
     <link rel="shortcut icon" href="/favicon.png" />
 
     </head>
@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu190e528798e90195d3cefef01f0a2d44_410_300x0_resize_box_3.png" width="300"
+                        <img src="/img/avatar_hu0471f2ec24d8a22b49f451267931b82a_48407_300x0_resize_box_3.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -71,14 +71,14 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Hugo Theme Stack Starter</a></h1>
-            <h2 class="site-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+            <h1 class="site-name"><a href="/">工程师的自我修养</a></h1>
+            <h2 class="site-description">后之视今，亦犹今之视昔。</h2>
         </div>
     </header><ol class="menu-social">
             
                 <li>
                     <a 
-                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        href='https://github.com/liyan-ah'
                         target="_blank"
                         title="GitHub"
                         rel="me"
@@ -88,26 +88,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
   <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
 </svg>
 
 
@@ -261,7 +241,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 1 分钟
                 </time>
             </div>
         
@@ -276,17 +256,129 @@
     <section class="article-content">
     
     
-    <h1 id="elk-docker-部署实践">
-    <a href="#elk-docker-%e9%83%a8%e7%bd%b2%e5%ae%9e%e8%b7%b5">#</a>
-    ELK docker 部署实践
-</h1><blockquote>
-<p>本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。</p>
+    <p>title: 如何追踪golang channel?
+author: 李岩
+tags:</p>
+<ul>
+<li>golang</li>
+<li>channel</li>
+<li>bpf</li>
+<li>observe
+categories:</li>
+<li>BPF
+date: 2023-12-08 19:43:00</li>
+</ul>
+<hr>
+<blockquote>
+<p>2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。</p>
 </blockquote>
-<!-- more -->
-<h1 id="elasticsearch-安装">
-    <a href="#elasticsearch-%e5%ae%89%e8%a3%85">#</a>
-    Elasticsearch 安装
-</h1><p>这里参照官网给出的<code>docker-compose.yml</code>文件设置<code>elasticsearch</code>集群。<code>elastisearch</code>支持<code>single-node</code>及<code>multi node cluster</code>两种部署模式。在本文中，实际上两种方式都能达到效果。使用<code>single-node</code>启动的环境，查看集群状态时会出现<code>status:yellow</code>。将<code>docker-compose.yml</code>文件放置在一个单独的目录下，然后创建<code>data01, data02, data03</code>目录。依据实际需要，还可创建<code>plugins</code>目录映射。</p>
+<p>在<a class="link" href="https://liyan-ah.github.io/2023/03/29/cljb83dmh003dkcs61joe1kfh/#more"  target="_blank" rel="noopener"
+    >无侵入观测服务拓扑四元组的一种实现</a>中，笔者有提到追踪<code>golang</code>处理过程的两个无法解决的问题是<code>golang</code>里的<code>channel</code>处理以及<code>goroutine pool</code>。再深究下，这两个问题实际上都可以归纳到对<code>channel</code>的处理，因为很多<code>goroutine pool</code>都离不了<code>channel</code>的使用，比如<a class="link" href="https://github.com/Jeffail/tunny"  target="_blank" rel="noopener"
+    >Jeffail/tunny</a>这个库。<br>
+本文将会构建一个<code>channel</code>的追踪的方案。</p>
+<h1 id="一追踪效果">
+    <a href="#%e4%b8%80%e8%bf%bd%e8%b8%aa%e6%95%88%e6%9e%9c">#</a>
+    一、追踪效果
+</h1><p>按照惯例，我们还是来看下效果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// terminal 1，启动服务
+</span></span><span class="line"><span class="cl">$ ./drink-srv
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// terminal 2，启动追踪脚本
+</span></span><span class="line"><span class="cl">$ sudo bpftrace ./drink.bt
+</span></span><span class="line"><span class="cl">Attaching 7 probes...  // 启动后停止在这里
+</span></span><span class="line"><span class="cl">serve HTTP: /alcohol   // 触发接口后输出
+</span></span><span class="line"><span class="cl">caller: /alcohol, callee: :/unknown/prepare/hotel
+</span></span><span class="line"><span class="cl">serve HTTP: /tea
+</span></span><span class="line"><span class="cl">caller: /tea, callee: :/unknown/prepare/club
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// terminal 3，触发服务接口
+</span></span><span class="line"><span class="cl">$ curl &#34;localhost:1423/alcohol?age=22&#34;
+</span></span><span class="line"><span class="cl">$ curl &#34;localhost:1423/tea?age=12&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="二方案设计">
+    <a href="#%e4%ba%8c%e6%96%b9%e6%a1%88%e8%ae%be%e8%ae%a1">#</a>
+    二、方案设计
+</h1><p>关于<code>golang channel</code>的实现及设计，可以参见<a class="link" href="https://i6448038.github.io/2019/04/11/go-channel/"  target="_blank" rel="noopener"
+    >图解Go的channel底层实现</a>，里面有非常生动的动图实现；搭配源码食用更好<a class="link" href="https://github.com/golang/go/blob/master/src/runtime/chan.go"  target="_blank" rel="noopener"
+    >runtime/chan.go</a>。<br>
+笔者在这里再简单的总结下，对<code>send</code>及<code>recv</code>两种操作设计的状态做一个简单的概述：
+<code>chan-send</code>的状态：
+<img src="/images/chan-send.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="overwrote existing file"
+	
+	
+>
+<code>chan-recv</code>的状态：
+<img src="/images/chan-recv.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="overwrote existing file"
+	
+	
+></p>
+<p>比如，对于下面的代码，派生出的<code>g1</code>在开启<code>select</code>后，由于<code>ticketChan</code>是空的，会触发<code>g1</code>让出<code>m</code>里的执行权限，进入<code>gopark</code>状态。同时，<code>ticketChan</code>会将<code>g1</code>封装成<code>sudog</code>，放到<code>recvq</code>队列中。当一段时间之后，其他的<code>g</code>将数据写入<code>channel</code>里时，会在<code>chansend</code>时，检查到<code>recvq</code>不为空，会直接将数据拷贝到空闲的<code>sudog</code>中。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">var</span> <span class="n">ticketChan</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">TicketInfo</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">HandleDrink</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="n">info</span><span class="p">,</span> <span class="n">ok</span> <span class="p">:</span><span class="o">=</span> <span class="o">&lt;-</span><span class="n">ticketChan</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="o">...</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">go</span> <span class="n">HandleDrink</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>chanrecv</code>进入<code>recvq</code>对应的<code>golang</code>处理逻辑在这里：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -310,145 +402,32 @@
 </span><span class="lnt">19
 </span><span class="lnt">20
 </span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">version: &#39;2&#39;
-</span></span><span class="line"><span class="cl">services:
-</span></span><span class="line"><span class="cl">  es01:
-</span></span><span class="line"><span class="cl">    container_name: es01
-</span></span><span class="line"><span class="cl">    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-</span></span><span class="line"><span class="cl">    ports:
-</span></span><span class="line"><span class="cl">      - 9200:9200
-</span></span><span class="line"><span class="cl">      - 9300:9300
-</span></span><span class="line"><span class="cl">    volumes:
-</span></span><span class="line"><span class="cl">      - ./data01:/usr/share/elasticsearch/data
-</span></span><span class="line"><span class="cl">    environment:
-</span></span><span class="line"><span class="cl">      - node.name=es01
-</span></span><span class="line"><span class="cl">      - cluster.name=es-docker-cluster
-</span></span><span class="line"><span class="cl">      - discovery.seed_hosts=es02
-</span></span><span class="line"><span class="cl">      - cluster.initial_master_nodes=es01,es02
-</span></span><span class="line"><span class="cl">      - bootstrap.memory_lock=true
-</span></span><span class="line"><span class="cl">      - &#34;ES_JAVA_OPTS=-Xms128m -Xmx128m&#34;
-</span></span><span class="line"><span class="cl">    ulimits:
-</span></span><span class="line"><span class="cl">      memlock:
-</span></span><span class="line"><span class="cl">        soft: -1
-</span></span><span class="line"><span class="cl">        hard: -1
-</span></span><span class="line"><span class="cl">    networks:
-</span></span><span class="line"><span class="cl">      - elastic
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  es02:
-</span></span><span class="line"><span class="cl">    container_name: es02
-</span></span><span class="line"><span class="cl">    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-</span></span><span class="line"><span class="cl">    environment:
-</span></span><span class="line"><span class="cl">      - node.name=es02
-</span></span><span class="line"><span class="cl">      - cluster.name=es-docker-cluster
-</span></span><span class="line"><span class="cl">      - discovery.seed_hosts=es01
-</span></span><span class="line"><span class="cl">      - cluster.initial_master_nodes=es01,es02
-</span></span><span class="line"><span class="cl">      - bootstrap.memory_lock=true
-</span></span><span class="line"><span class="cl">      - &#34;ES_JAVA_OPTS=-Xms128m -Xmx128m&#34;
-</span></span><span class="line"><span class="cl">    volumes:
-</span></span><span class="line"><span class="cl">      - ./data02:/usr/share/elasticsearch/data
-</span></span><span class="line"><span class="cl">    ulimits:
-</span></span><span class="line"><span class="cl">      memlock:
-</span></span><span class="line"><span class="cl">        soft: -1
-</span></span><span class="line"><span class="cl">        hard: -1
-</span></span><span class="line"><span class="cl">    networks:
-</span></span><span class="line"><span class="cl">      - elastic
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  es03:
-</span></span><span class="line"><span class="cl">    container_name: es03
-</span></span><span class="line"><span class="cl">    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-</span></span><span class="line"><span class="cl">    environment:
-</span></span><span class="line"><span class="cl">      - node.name=es03
-</span></span><span class="line"><span class="cl">      - cluster.name=es-docker-cluster
-</span></span><span class="line"><span class="cl">      - discovery.seed_hosts=es01,es02
-</span></span><span class="line"><span class="cl">      - cluster.initial_master_nodes=es01,es02,es03
-</span></span><span class="line"><span class="cl">      - bootstrap.memory_lock=true
-</span></span><span class="line"><span class="cl">      - &#34;ES_JAVA_OPTS=-Xms128m -Xmx128m&#34;
-</span></span><span class="line"><span class="cl">    volumes:
-</span></span><span class="line"><span class="cl">      - data03:/usr/share/elasticsearch/data
-</span></span><span class="line"><span class="cl">    ulimits:
-</span></span><span class="line"><span class="cl">      memlock:
-</span></span><span class="line"><span class="cl">        soft: -1
-</span></span><span class="line"><span class="cl">        hard: -1
-</span></span><span class="line"><span class="cl">    networks:
-</span></span><span class="line"><span class="cl">      - elastic
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">volumes:
-</span></span><span class="line"><span class="cl">  data01:
-</span></span><span class="line"><span class="cl">    driver: local
-</span></span><span class="line"><span class="cl">  data02:
-</span></span><span class="line"><span class="cl">    driver: local
-</span></span><span class="line"><span class="cl">  data03:
-</span></span><span class="line"><span class="cl">    driver: local
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">networks:
-</span></span><span class="line"><span class="cl">  elastic:
-</span></span><span class="line"><span class="cl">    driver: bridge
-</span></span><span class="line"><span class="cl">    external: true
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// runtime/chan.go
+</span></span><span class="line"><span class="cl">	...
+</span></span><span class="line"><span class="cl">	// no sender available: block on this channel.
+</span></span><span class="line"><span class="cl">	gp := getg()
+</span></span><span class="line"><span class="cl">	mysg := acquireSudog()
+</span></span><span class="line"><span class="cl">	mysg.releasetime = 0
+</span></span><span class="line"><span class="cl">	if t0 != 0 {
+</span></span><span class="line"><span class="cl">		mysg.releasetime = -1
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	// No stack splits between assigning elem and enqueuing mysg
+</span></span><span class="line"><span class="cl">	// on gp.waiting where copystack can find it.
+</span></span><span class="line"><span class="cl">	mysg.elem = ep
+</span></span><span class="line"><span class="cl">	mysg.waitlink = nil
+</span></span><span class="line"><span class="cl">	gp.waiting = mysg
+</span></span><span class="line"><span class="cl">	mysg.g = gp
+</span></span><span class="line"><span class="cl">	mysg.isSelect = false
+</span></span><span class="line"><span class="cl">	mysg.c = c
+</span></span><span class="line"><span class="cl">	gp.param = nil
+</span></span><span class="line"><span class="cl">	c.recvq.enqueue(mysg)
+</span></span><span class="line"><span class="cl">    ...
+</span></span><span class="line"><span class="cl">    
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>注意这里将集群的网络设置为<code>external</code>，这样后续的<code>logstash</code>才能找到服务节点。此外，由于笔者的机器可用存储较小，因此设置<code>es</code>的存储占用设置为<code>128m</code>。实际使用时，可以按照需求进行调整。
-运行<code>docker-compose up -d</code>即可后台启动。启动后，<code>curl -X GET &quot;localhost:9200/_cat/nodes?v=true&amp;pretty&quot;</code> 判断集群状态。</p>
-<h1 id="logstash-安装">
-    <a href="#logstash-%e5%ae%89%e8%a3%85">#</a>
-    Logstash 安装
-</h1><blockquote>
-<p>collect, parse transform logs</p>
-</blockquote>
+</div><p><code>chansend</code>直接将数据拷贝到<code>recvq</code>对应的<code>golang</code>处理逻辑在这里：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -461,165 +440,601 @@
 </span><span class="lnt"> 8
 </span><span class="lnt"> 9
 </span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">version: &#39;2&#39;
-</span></span><span class="line"><span class="cl">services:
-</span></span><span class="line"><span class="cl">  logstash:
-</span></span><span class="line"><span class="cl">    image: docker.elastic.co/logstash/logstash:7.15.0
-</span></span><span class="line"><span class="cl">    container_name: logstash
-</span></span><span class="line"><span class="cl">    user: root
-</span></span><span class="line"><span class="cl">    ports:
-</span></span><span class="line"><span class="cl">      - 5004:5004
-</span></span><span class="line"><span class="cl">    volumes:
-</span></span><span class="line"><span class="cl">      - ./config:/usr/share/logstash/config/
-</span></span><span class="line"><span class="cl">      - /etc/localtime:/etc/localtime
-</span></span><span class="line"><span class="cl">    command: bash -c &#34;cd /usr/share/logstash &amp;&amp; logstash -f config/online.conf&#34;
-</span></span><span class="line"><span class="cl">    networks:
-</span></span><span class="line"><span class="cl">      - elastic
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">networks:
-</span></span><span class="line"><span class="cl">  elastic:
-</span></span><span class="line"><span class="cl">    driver: bridge
-</span></span><span class="line"><span class="cl">    external: true
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// runtime/chan.go
+</span></span><span class="line"><span class="cl">	...
+</span></span><span class="line"><span class="cl">	if sg := c.recvq.dequeue(); sg != nil {
+</span></span><span class="line"><span class="cl">		// Found a waiting receiver. We pass the value we want to send
+</span></span><span class="line"><span class="cl">		// directly to the receiver, bypassing the channel buffer (if any).
+</span></span><span class="line"><span class="cl">		send(c, sg, ep, func() { unlock(&amp;c.lock) }, 3)
+</span></span><span class="line"><span class="cl">		return true
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">    ...
+</span></span><span class="line"><span class="cl">    
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
+</div><h1 id="三方案实现">
+    <a href="#%e4%b8%89%e6%96%b9%e6%a1%88%e5%ae%9e%e7%8e%b0">#</a>
+    三、方案实现
+</h1><p>了解了<code>channel</code>的处理流程，追踪的方案就比较明确了，直接在关键的函数处设置<code>hook</code>点即可。先来看下目标服务：</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># ./config/online.conf
-</span></span><span class="line"><span class="cl">input {
-</span></span><span class="line"><span class="cl">  # 这里支持多种 input
-</span></span><span class="line"><span class="cl">  beats {
-</span></span><span class="line"><span class="cl">    port =&gt; 5004
-</span></span><span class="line"><span class="cl">    codec =&gt; &#34;json&#34;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">main</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">filter {
-</span></span><span class="line"><span class="cl">  # 这里基于 ruby 脚本进行过滤
-</span></span><span class="line"><span class="cl">  ruby {
-</span></span><span class="line"><span class="cl">    path =&gt; &#34;./config/filter.rb&#34;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;log&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;net/http&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;strconv&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">output {
-</span></span><span class="line"><span class="cl">  # 这里将过滤后的结果输出到标准输出及 es 中
-</span></span><span class="line"><span class="cl">  stdout {
-</span></span><span class="line"><span class="cl">    codec =&gt; json
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  elasticsearch {
-</span></span><span class="line"><span class="cl">    hosts =&gt; [&#34;es01:9200&#34;]
-</span></span><span class="line"><span class="cl">    index =&gt; &#34;logstash&#34;
-</span></span><span class="line"><span class="cl">    #user =&gt; &#34;&#34;
-</span></span><span class="line"><span class="cl">    #password =&gt; &#34;&#34;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">	<span class="s2">&#34;github.com/gin-gonic/gin&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ALCOHOL</span> <span class="o">=</span> <span class="n">iota</span> <span class="o">+</span> <span class="mi">1001</span>
+</span></span><span class="line"><span class="cl">	<span class="n">COCO</span>
+</span></span><span class="line"><span class="cl">	<span class="n">COFFEE</span>
+</span></span><span class="line"><span class="cl">	<span class="n">TEA</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">type</span> <span class="n">TicketInfo</span> <span class="n">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Age</span>  <span class="ne">int</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Name</span> <span class="n">string</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Type</span> <span class="ne">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">ticketChan</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">TicketInfo</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">AlcoholH</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span><span class="n">gin</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">ticket</span> <span class="o">=</span> <span class="n">TicketInfo</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">err</span> <span class="n">error</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Age</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">Atoi</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s2">&#34;age&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="n">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">c</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">StatusOK</span><span class="p">,</span> <span class="s2">&#34;handle failed&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Type</span> <span class="o">=</span> <span class="n">ALCOHOL</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticketChan</span> <span class="o">&lt;-</span> <span class="n">ticket</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">TeaH</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span><span class="n">gin</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">ticket</span> <span class="o">=</span> <span class="n">TicketInfo</span><span class="p">{}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">err</span> <span class="n">error</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Age</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">Atoi</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s2">&#34;age&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="n">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">&#34;handle failed, &#34;</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">		<span class="n">c</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">StatusOK</span><span class="p">,</span> <span class="s2">&#34;handle failed&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticket</span><span class="o">.</span><span class="n">Type</span> <span class="o">=</span> <span class="n">TEA</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ticketChan</span> <span class="o">&lt;-</span> <span class="n">ticket</span>
+</span></span><span class="line"><span class="cl">	<span class="n">c</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">StatusOK</span><span class="p">,</span> <span class="s2">&#34;okay&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">HandleDrink</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="n">info</span><span class="p">,</span> <span class="n">ok</span> <span class="p">:</span><span class="o">=</span> <span class="o">&lt;-</span><span class="n">ticketChan</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">!</span><span class="n">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">&#34;chan closed.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">				<span class="k">return</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">&#34;get ticket&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">switch</span> <span class="n">info</span><span class="o">.</span><span class="n">Type</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="n">ALCOHOL</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="n">Alcohol</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="n">COCO</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="n">SoftDrink</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="n">COFFEE</span><span class="p">,</span> <span class="n">TEA</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="n">Tea</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="n">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">&#34;unknown drink type&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Alcohol</span><span class="p">(</span><span class="n">ticket</span> <span class="n">TicketInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://localhost/unknown/prepare/hotel&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">SoftDrink</span><span class="p">(</span><span class="n">ticket</span> <span class="n">TicketInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">log</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">&#34;[</span><span class="si">%s</span><span class="s2">, </span><span class="si">%d</span><span class="s2">] drink </span><span class="si">%d</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">ticket</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">ticket</span><span class="o">.</span><span class="n">Age</span><span class="p">,</span> <span class="n">ticket</span><span class="o">.</span><span class="n">Type</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Tea</span><span class="p">(</span><span class="n">ticket</span> <span class="n">TicketInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://localhost/unknown/prepare/club&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">defer</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">close</span><span class="p">(</span><span class="n">ticketChan</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">go</span> <span class="n">HandleDrink</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">r</span> <span class="o">=</span> <span class="n">gin</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">r</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="s2">&#34;/alcohol&#34;</span><span class="p">,</span> <span class="n">AlcoholH</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">r</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="s2">&#34;/tea&#34;</span><span class="p">,</span> <span class="n">TeaH</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">srv</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">http</span><span class="o">.</span><span class="n">Server</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Addr</span><span class="p">:</span>    <span class="s2">&#34;127.0.0.1:1423&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Handler</span><span class="p">:</span> <span class="n">r</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">srv</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">()</span> <span class="o">!=</span> <span class="n">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">&#34;failed to handle service listen&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
+</div><p>对于这样的一个服务，希望达到示例中的追踪效果，对应的方案为：</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># config/filter.rb
-</span></span><span class="line"><span class="cl"># 按照 online.conf 中的配置，logstash 启动后，会读取 filter.rb，并使用 filter 函数作为过滤函数。
-</span></span><span class="line"><span class="cl">require &#34;json&#34;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#define OFF_TASK_THRD 4992</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#define OFF_THRD_FSBASE 40</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#define GOID_OFFSET 152</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">BEGIN{
-</span></span><span class="line"><span class="cl">  puts &#34;start event filter&#34;
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;runtime.runqput&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;runqput&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">END{
-</span></span><span class="line"><span class="cl">  puts &#34;end event filter&#34;
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="err">@</span><span class="n">new_go</span><span class="p">[</span><span class="n">tid</span><span class="p">,</span> <span class="n">pid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">p_goid</span> <span class="o">=</span> <span class="err">@</span><span class="n">new_go</span><span class="p">[</span><span class="n">tid</span><span class="p">,</span> <span class="n">pid</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">def filter(event)
-</span></span><span class="line"><span class="cl">  puts event
-</span></span><span class="line"><span class="cl">  if event.get(&#34;[errno]&#34;) != 0
-</span></span><span class="line"><span class="cl">    return []
-</span></span><span class="line"><span class="cl">  end
-</span></span><span class="line"><span class="cl">  valid_age = 0
-</span></span><span class="line"><span class="cl">  event.get(&#34;[data]&#34;).each{ | info |
-</span></span><span class="line"><span class="cl">    if info[&#34;age&#34;] &lt; 10
-</span></span><span class="line"><span class="cl">      valid_age += info[&#34;age&#34;]
-</span></span><span class="line"><span class="cl">    end
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  event.set(&#34;[data]&#34;, valid_age)
-</span></span><span class="line"><span class="cl">  return [event]
-</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)(</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;bx&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">p_goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span>  <span class="o">=</span> <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">p_goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;runtime.newproc1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;newproc1&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)(</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;bx&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">new_go</span><span class="p">[</span><span class="n">tid</span><span class="p">,</span> <span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">goid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">//</span> <span class="err">这里，将</span> <span class="n">caller</span> <span class="err">信息和写入</span> <span class="n">channel</span> <span class="err">信息的</span> <span class="n">key</span> <span class="err">关联起来</span>
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;runtime.chansend&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;chansend&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">curtask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">fsbase</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">cur</span><span class="o">+</span><span class="n">OFF_TASK_THRD</span><span class="o">+</span><span class="n">OFF_THRD_FSBASE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">fsbase</span><span class="o">-</span><span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="err">如果当前执行</span><span class="n">goroutine中没有caller</span><span class="err">，跳过</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">chan</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;ax&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">qcount</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint32</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">chan</span> <span class="o">+</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">buf</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">chan</span><span class="o">+</span><span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">send_addr</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">send_len</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">]</span>  <span class="o">=</span> <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;runtime.chanrecv&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;chanrecv&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">curtask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">fsbase</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">cur</span><span class="o">+</span><span class="n">OFF_TASK_THRD</span><span class="o">+</span><span class="n">OFF_THRD_FSBASE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">fsbase</span><span class="o">-</span><span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">chan</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;ax&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">qcount</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint32</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">chan</span> <span class="o">+</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">buf</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">chan</span><span class="o">+</span><span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="err">@</span><span class="n">send_addr</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">send_addr</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span>  <span class="o">=</span> <span class="err">@</span><span class="n">send_len</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;runtime.send&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;send&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">chan</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;ax&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">sg</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">reg</span><span class="p">(</span><span class="s2">&#34;bx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">sg</span><span class="o">+</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">qcount</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint32</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">chan</span><span class="o">+</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">send_addr</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span>  <span class="o">=</span> <span class="err">@</span><span class="n">send_len</span><span class="p">[</span><span class="o">$</span><span class="n">chan</span><span class="p">,</span> <span class="o">$</span><span class="n">qcount</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">/*</span>
+</span></span><span class="line"><span class="cl"><span class="n">type</span> <span class="n">serverHandler</span> <span class="n">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">srv</span> <span class="o">*</span><span class="n">Server</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="p">(</span><span class="n">sh</span> <span class="n">serverHandler</span><span class="p">)</span> <span class="n">ServeHTTP</span><span class="p">(</span><span class="n">rw</span> <span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">req</span> <span class="o">*</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="o">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;net/http.serverHandler.ServeHTTP&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;ServeHTTP&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">curtask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">fsbase</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">cur</span><span class="o">+</span><span class="n">OFF_TASK_THRD</span><span class="o">+</span><span class="n">OFF_THRD_FSBASE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">fsbase</span><span class="o">-</span><span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">req_addr</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="s2">&#34;di&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="n">offset</span><span class="p">(</span><span class="n">Request</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">url_addr</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">req_addr</span><span class="o">+</span><span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="n">offset</span><span class="p">(</span><span class="n">URL</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">=</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">path_addr</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">url_addr</span><span class="o">+</span><span class="mi">56</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">path_len</span>  <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">url_addr</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">path_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span>  <span class="o">=</span> <span class="o">$</span><span class="n">path_len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s2">&#34;serve HTTP: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="o">$</span><span class="n">path_addr</span><span class="p">,</span> <span class="o">$</span><span class="n">path_len</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">/*</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span><span class="n">Client</span><span class="p">)</span> <span class="k">do</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="n">retres</span> <span class="o">*</span><span class="n">Response</span><span class="p">,</span> <span class="n">reterr</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="o">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">uprobe</span><span class="p">:</span><span class="o">./</span><span class="n">drink</span><span class="o">-</span><span class="n">srv</span><span class="p">:</span><span class="s2">&#34;net/http.(*Client).do&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">prob_mark</span> <span class="o">=</span> <span class="s2">&#34;do&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">=</span> <span class="err">@</span><span class="n">prob</span><span class="p">[</span><span class="o">$</span><span class="n">prob_mark</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">curtask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">fsbase</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">cur</span><span class="o">+</span><span class="n">OFF_TASK_THRD</span><span class="o">+</span><span class="n">OFF_THRD_FSBASE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">g</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">fsbase</span><span class="o">-</span><span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">goid</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">g</span><span class="o">+</span><span class="n">GOID_OFFSET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">%d</span><span class="s2">: has no caller.</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="o">$</span><span class="n">goid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">req_addr</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="s2">&#34;bx&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="n">offset</span><span class="p">(</span><span class="n">Request</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">url_addr</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">req_addr</span><span class="o">+</span><span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="n">offset</span><span class="p">(</span><span class="n">URL</span><span class="o">.</span><span class="n">Host</span><span class="p">)</span> <span class="o">=</span> <span class="mi">40</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">host_addr</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">req_addr</span><span class="o">+</span><span class="mi">40</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">host_len</span>  <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">req_addr</span><span class="o">+</span><span class="mi">48</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">//</span> <span class="n">offset</span><span class="p">(</span><span class="n">URL</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">=</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">path_addr</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">url_addr</span><span class="o">+</span><span class="mi">56</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">path_len</span>  <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="o">$</span><span class="n">url_addr</span><span class="o">+</span><span class="mi">64</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">c_addr</span> <span class="o">=</span> <span class="err">@</span><span class="n">caller_addr</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="o">$</span><span class="n">c_len</span>  <span class="o">=</span> <span class="err">@</span><span class="n">caller_len</span><span class="p">[</span><span class="o">$</span><span class="n">goid</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s2">&#34;caller: </span><span class="si">%s</span><span class="s2">, callee: </span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="o">$</span><span class="n">c_addr</span><span class="p">,</span> <span class="o">$</span><span class="n">c_len</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">str</span><span class="p">(</span><span class="o">$</span><span class="n">host_addr</span><span class="p">,</span> <span class="o">$</span><span class="n">host_len</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="o">$</span><span class="n">path_addr</span><span class="p">,</span> <span class="o">$</span><span class="n">path_len</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>logstash 启动后，会监听容器内的 <code>5004</code> 接口（配置于<code>online.conf</code>中），如果有信息传入，则会经过<code>filter.rb</code>中的 <code>filter()</code> 函数对数据进行处理。而后输出到标准输出及 <code>es01</code>容器<code>5004</code>端口的<code>elasticsearch</code>服务。由于<code>elasticsearch</code>及<code>logstash</code>容器使用了相同的网络，因此可以互相感知。</p>
-<h1 id="filebeat-安装">
-    <a href="#filebeat-%e5%ae%89%e8%a3%85">#</a>
-    filebeat 安装
-</h1><blockquote>
-<p>filebeat 作为轻量级的日志收集器，仅占用很少的资源，即可完成日志的采集，并且转发至配置的<code>logstash</code>进行后续的处理、归档等操作。</p>
-</blockquote>
+</div><h1 id="四追踪的风险">
+    <a href="#%e5%9b%9b%e8%bf%bd%e8%b8%aa%e7%9a%84%e9%a3%8e%e9%99%a9">#</a>
+    四、追踪的风险
+</h1><p>至此，看起来<code>golang channel</code>是可以追踪的。但是实际上并非如此。比如如下这个示例：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -632,108 +1047,37 @@
 </span><span class="lnt"> 8
 </span><span class="lnt"> 9
 </span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">version: &#39;2&#39;
-</span></span><span class="line"><span class="cl">services:
-</span></span><span class="line"><span class="cl">  filebeat:
-</span></span><span class="line"><span class="cl">    image: docker.elastic.co/beats/filebeat:7.16.0
-</span></span><span class="line"><span class="cl">    container_name: filebeat
-</span></span><span class="line"><span class="cl">    user: root
-</span></span><span class="line"><span class="cl">    environment:
-</span></span><span class="line"><span class="cl">      - strict.perms=false
-</span></span><span class="line"><span class="cl">    volumes:
-</span></span><span class="line"><span class="cl">      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-</span></span><span class="line"><span class="cl">      - ./data:/usr/share/filebat/data
-</span></span><span class="line"><span class="cl">    networks:
-</span></span><span class="line"><span class="cl">      - elastic
-</span></span><span class="line"><span class="cl">    command: bash -c &#34;cd /usr/share/filebeat &amp;&amp; filebeat -e -c ./filebeat.yml&#34;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">networks:
-</span></span><span class="line"><span class="cl">  elastic:
-</span></span><span class="line"><span class="cl">    driver: bridge
-</span></span><span class="line"><span class="cl">    external: true
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">func</span> <span class="n">HandleDrink</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="n">info</span><span class="p">,</span> <span class="n">ok</span> <span class="p">:</span><span class="o">=</span> <span class="o">&lt;-</span><span class="n">ticketChan</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="o">...</span>
+</span></span><span class="line"><span class="cl">        <span class="n">default</span><span class="p">:</span> <span class="o">//</span> <span class="err">注意这个</span> <span class="n">stop</span>
+</span></span><span class="line"><span class="cl">        	<span class="o">//</span> <span class="n">no</span> <span class="n">stop</span> <span class="n">here</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># filebeat.yml</span>
-</span></span><span class="line"><span class="cl"><span class="n">filebeat</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">  <span class="o">-</span> <span class="n">type</span><span class="p">:</span> <span class="nb">log</span>
-</span></span><span class="line"><span class="cl">    <span class="n">enabled</span><span class="p">:</span> <span class="bp">true</span>
-</span></span><span class="line"><span class="cl">    <span class="n">paths</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">      <span class="o">-</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">filebeat</span><span class="o">/</span><span class="n">input</span><span class="o">.</span><span class="n">log</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">filebeat</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">  <span class="n">modules</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">path</span><span class="p">:</span> <span class="o">$</span><span class="p">{</span><span class="n">path</span><span class="o">.</span><span class="n">config</span><span class="p">}</span><span class="o">/</span><span class="n">modules</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">yml</span>
-</span></span><span class="line"><span class="cl">    <span class="n">reload</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span> <span class="bp">false</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">filbeat</span><span class="o">.</span><span class="n">autodiscover</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">  <span class="n">providers</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="o">-</span> <span class="n">type</span><span class="p">:</span> <span class="n">docker</span>
-</span></span><span class="line"><span class="cl">      <span class="n">hints</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span> <span class="bp">true</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">output</span><span class="o">.</span><span class="n">logstash</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">  <span class="n">hosts</span><span class="p">:</span> <span class="s2">&#34;logstash:5004&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>容器启动后，会监听<code>/usr/share/filebeat/input.log</code>文件。当该文件发生变更时，<code>filebeat</code>会读取增量的内容并进行转发。</p>
-<h1 id="let-it-run">
-    <a href="#let-it-run">#</a>
-    let it run
-</h1><p>经过上述步骤，一个简单的日志监听、采集、处理、存档的流程就构建了。为了测试，可以在<code>filebeat</code>容器的<code>/usr/share/filebeat/input.log</code>中写入：</p>
+</div><p>这段逻辑在代码编写、编译阶段均无问题，是一段完全合理的逻辑。当我们试图追踪这段代码时：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{&#34;errno&#34;: 0,&#34;data&#34;: [{&#34;age&#34;: 9,&#34;name&#34;: &#34;tt&#34;},{&#34;age&#34;: 8,&#34;name&#34;: &#34;gg&#34;}]}
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ sudo bpftrace ./drink.bt
+</span></span><span class="line"><span class="cl">Attaching 7 probes...
+</span></span><span class="line"><span class="cl">^C  // 直接停止，没有请求
+</span></span><span class="line"><span class="cl">@prob[chanrecv]: 908571
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>按照<code>logstash:online.conf</code>的逻辑，会向<code>elasticsearch</code>的<code>logstash</code>写入信息。</p>
-<h1 id="参考文献">
-    <a href="#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae">#</a>
-    参考文献
-</h1><ol>
-<li><a class="link" href="https://www.cnblogs.com/zhangfushuai/p/14975307.html"  target="_blank" rel="noopener"
-    >Linux-ELK日志收集</a></li>
-<li><a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker"  target="_blank" rel="noopener"
-    >Install Elasticsearch with Docker</a></li>
-<li><a class="link" href="https://www.cnblogs.com/cjsblog/p/9459781.html"  target="_blank" rel="noopener"
-    >Logstash介绍</a></li>
-</ol>
-
+</div><p>注意，此时并没有做任何的操作，但是这个<code>chanrecv</code>这个<code>hook</code>点已经触发了数十万次。而我们知道，<code>BPF hook</code>点的触发并非没有开销的。因此，目标的代码在完全合理的情况下，我们的追踪程序会给系统带来很大的负载。这显然是我们需要避免的。</p>
+<p>以上，周末愉快～</p>
 </section>
 
 
@@ -779,7 +1123,7 @@
             return;
         }
         var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.src = '//' + "liyan-ah" + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
@@ -815,10 +1159,12 @@
         
             2020 - 
         
-        2024 Hugo Theme Stack Starter
+        2024 工程师的自我修养
     </section>
     
     <section class="powerby">
+        
+            Hello, World! <br/>
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
         主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>

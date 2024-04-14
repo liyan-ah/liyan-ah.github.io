@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>通信协议 on 工程师的自我修养</title>
+        <link>http://localhost:1313/categories/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</link>
+        <description>Recent content in 通信协议 on 工程师的自我修养</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-Hans</language>
+        <lastBuildDate>Tue, 09 Nov 2021 21:11:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Quic协议</title>
+        <link>http://localhost:1313/p/quic%E5%8D%8F%E8%AE%AE/</link>
+        <pubDate>Tue, 09 Nov 2021 21:11:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/quic%E5%8D%8F%E8%AE%AE/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;quic-协议&#34;&gt;
+    &lt;a href=&#34;#quic-%e5%8d%8f%e8%ae%ae&#34;&gt;#&lt;/a&gt;
+    Quic 协议
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Quic&lt;/code&gt;协议是应用层（5层网络模型下，由于基于传输层协议，笔者倾向于认为其是&lt;code&gt;应用层协议&lt;/code&gt;，但是博文中多次标注其是&lt;code&gt;传输层协议&lt;/code&gt;），对标 &lt;code&gt;HTTP&lt;/code&gt; 协议，基于 &lt;code&gt;UDP&lt;/code&gt; 协议构建。&lt;/p&gt;
+&lt;h1 id=&#34;quic-协议优点&#34;&gt;
+    &lt;a href=&#34;#quic-%e5%8d%8f%e8%ae%ae%e4%bc%98%e7%82%b9&#34;&gt;#&lt;/a&gt;
+    Quic 协议优点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;建立连接延时低。相对于 HTTP 协议的至少 3RTT 的建联，Quic 协议可以实现 0RTT 建联；&lt;/li&gt;
+&lt;li&gt;改进了拥塞控制。将拥塞控制算法的选择交由应用程序控制；同时抛弃了基于 TCP 的 &lt;code&gt;seq&lt;/code&gt; 标记，改由严格递增的 &lt;code&gt;package number&lt;/code&gt; + &lt;code&gt;offset&lt;/code&gt;，优化了拥塞时的重传；
+&lt;ul&gt;
+&lt;li&gt;举例，需要传递 &lt;code&gt;N,N+1,N+2&lt;/code&gt; 三个包，传递过程中，&lt;code&gt;N&lt;/code&gt; 丢失了；&lt;code&gt;TCP&lt;/code&gt;的重传会将&lt;code&gt;N,N+1,N+2&lt;/code&gt;三个包都重传；&lt;code&gt;Quic&lt;/code&gt; 会重传一个 &lt;code&gt;N+3&lt;/code&gt;（即&lt;code&gt;package_num&lt;/code&gt;+1），但是 &lt;code&gt;offset&lt;/code&gt; 记为 &lt;code&gt;0&lt;/code&gt;（即&lt;code&gt;stream_offset&lt;/code&gt;不变）。这样在另一端将三个包按照 &lt;code&gt;offset&lt;/code&gt; 重新进行组织；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基于 &lt;code&gt;Connection&lt;/code&gt; 及 &lt;code&gt;Stream&lt;/code&gt; 进行多路复用；&lt;/li&gt;
+&lt;li&gt;消除队头阻塞，更好的支持多路复用，处理多个会话时，不会因为其中一个会话的丢失，导致其他会话结果也重传(TCP消息重传逻辑)；&lt;/li&gt;
+&lt;li&gt;默认支持加密认证；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;总结&#34;&gt;
+    &lt;a href=&#34;#%e6%80%bb%e7%bb%93&#34;&gt;#&lt;/a&gt;
+    总结
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Quic&lt;/code&gt; 协议相当于在 &lt;code&gt;UDP&lt;/code&gt; 的基础上，在更高层次协议上实现了 &lt;code&gt;TCP&lt;/code&gt; 的大部分功能：可靠传输，拥塞控制等，同时对 &lt;code&gt;TCP&lt;/code&gt; 的这些功能进行了优化；&lt;/p&gt;
+&lt;h1 id=&#34;参考文献&#34;&gt;
+    &lt;a href=&#34;#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae&#34;&gt;#&lt;/a&gt;
+    参考文献
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.52im.net/thread-1309-1-1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;技术扫盲：新一代基于UDP的低延时网络传输层协议——QUIC详解&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

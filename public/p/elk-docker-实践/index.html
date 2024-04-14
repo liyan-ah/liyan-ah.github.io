@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行">
-<title>ELK docker 实践</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
+<title>ELK-docker 实践</title>
 
 <link rel='canonical' href='http://localhost:1313/p/elk-docker-%E5%AE%9E%E8%B7%B5/'>
 
-<link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="ELK docker 实践">
-<meta property='og:description' content="本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行">
+<link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="ELK-docker 实践">
+<meta property='og:description' content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
 <meta property='og:url' content='http://localhost:1313/p/elk-docker-%E5%AE%9E%E8%B7%B5/'>
 <meta property='og:site_name' content='工程师的自我修养'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-01-14T07:07:07&#43;01:00'/><meta property='article:modified_time' content='2024-01-14T07:07:07&#43;01:00'/>
-<meta name="twitter:title" content="ELK docker 实践">
-<meta name="twitter:description" content="本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='elk' /><meta property='article:published_time' content='2022-01-04T00:06:00&#43;00:00'/><meta property='article:modified_time' content='2022-01-04T00:06:00&#43;00:00'/>
+<meta name="twitter:title" content="ELK-docker 实践">
+<meta name="twitter:description" content="# ELK docker 部署实践 本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。 # Elasticsearch 安装 这里参照官网给出的docker-compose.yml文件设置elasticsearch集群。elastisearch支持single-node及multi node cluster两种部署模式。在本文中，实际上两种方式都能达到效果。使用single-node启动的环境，查看集群状态时会出现status:yellow。将docker-compose.yml文件放置在一个单独的目录下，然后创建data01, data02, data03目录。依据实际需要，还可创建plugins目录映射。 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 version: &#39;2&#39; services: es01: container_name: es01 image: docker.">
     <link rel="shortcut icon" href="/favicon.png" />
 
     </head>
@@ -63,8 +63,6 @@
                     
                 
                 </a>
-                
-                    <span class="emoji">🍥</span>
                 
             </figure>
             
@@ -158,25 +156,6 @@
             </a>
         </li>
         
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
         <li class="menu-bottom-section">
             <ol class="menu">
 
@@ -214,16 +193,20 @@
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" >
+                程序人生
+            </a>
+        
+    </header>
+    
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/elk-docker-%E5%AE%9E%E8%B7%B5/">ELK docker 实践</a>
+            <a href="/p/elk-docker-%E5%AE%9E%E8%B7%B5/">ELK-docker 实践</a>
         </h2>
     
-        
-        <h3 class="article-subtitle">
-            本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行
-        </h3>
         
     </div>
 
@@ -243,7 +226,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jan 14, 2024</time>
+                <time class="article-time--published">Jan 04, 2022</time>
             </div>
         
 
@@ -276,7 +259,9 @@
     <h1 id="elk-docker-部署实践">
     <a href="#elk-docker-%e9%83%a8%e7%bd%b2%e5%ae%9e%e8%b7%b5">#</a>
     ELK docker 部署实践
-</h1><p>本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。</p>
+</h1><blockquote>
+<p>本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。</p>
+</blockquote>
 <!-- more -->
 <h1 id="elasticsearch-安装">
     <a href="#elasticsearch-%e5%ae%89%e8%a3%85">#</a>
@@ -734,6 +719,12 @@
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/elk/">Elk</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -756,6 +747,80 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">黑魔法--用 ebpf 构建用户空间数据的桥梁</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">bpftrace 遍历 golang 链表（go17&#43;）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PlantUML-文本化绘制UML多类图表</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">bpftrace 无侵入遍历golang链表</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">让emacs在保存文件时自动格式化代码</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     
@@ -808,7 +873,7 @@
     <section class="copyright">
         &copy; 
         
-            2020 - 
+            2019 - 
         
         2024 工程师的自我修养
     </section>
