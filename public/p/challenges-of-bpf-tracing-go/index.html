@@ -13,7 +13,7 @@
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='code' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2022-04-19T14:33:00&#43;00:00'/><meta property='article:modified_time' content='2022-04-19T14:33:00&#43;00:00'/>
 <meta name="twitter:title" content="challenges of bpf tracing go">
 <meta name="twitter:description" content="goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。 Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (&ldquo;M:N scheduling&rdquo;). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that&rsquo;s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there&rsquo;s not enough room, the runtime copies the entire goroutine&rsquo;s stack to another place in memory where it has enough room to expand.">
-    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="shortcut icon" href="/icon.jpg" />
 
     </head>
     <body class="

@@ -13,7 +13,7 @@
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2022-06-06T14:36:00&#43;00:00'/><meta property='article:modified_time' content='2022-06-06T14:36:00&#43;00:00'/>
 <meta name="twitter:title" content="golang 常见类型字节数">
 <meta name="twitter:description" content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
-    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="shortcut icon" href="/icon.jpg" />
 
     </head>
     <body class="
