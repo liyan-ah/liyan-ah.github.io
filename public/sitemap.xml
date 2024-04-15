@@ -92,9 +92,6 @@
     <loc>http://localhost:1313/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</loc>
     <lastmod>2023-03-29T19:42:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/ebpf/</loc>
-    <lastmod>2023-03-03T20:59:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/go-1.17/</loc>
     <lastmod>2023-03-03T20:59:00+00:00</lastmod>
   </url><url>
@@ -111,9 +108,6 @@
     <lastmod>2022-12-30T19:24:18+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/code/</loc>
-    <lastmod>2022-11-25T01:14:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/code-life/</loc>
     <lastmod>2022-11-25T01:14:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/gls/</loc>
