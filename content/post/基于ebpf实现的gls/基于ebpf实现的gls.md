@@ -7,7 +7,7 @@ tags:
   - golang
   - gls
 categories:
-  - code life
+  - BPF
 date: 2022-11-25 01:14:00
 ---
 > 虽然`golang`并不推荐使用`goid`来构建`gls`(`goroutine local storage`)，仍然有着很多的实现`gls`并使用的尝试。[github-gls](https://github.com/jtolio/gls)这里是一个常见的实现，基本表述了`golang`里`gls`的实现思路：获取`goid`，基于`goid`构建一个存储。本文中笔者尝试基于`ebpf`来构建一个`golang`的`gls`。
