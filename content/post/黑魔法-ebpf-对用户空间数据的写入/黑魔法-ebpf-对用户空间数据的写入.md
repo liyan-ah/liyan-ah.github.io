@@ -5,9 +5,7 @@ tags:
   - ebpf
   - code
 categories:
-  - 程序人生
-  - ebpf
-  - ''
+  - BPF
 date: 2022-11-04 18:00:00
 ---
 在之前的示例中，仅涉及到`ebpf`对用户空间数据的读取。工程性较强的如：[ebpf采集mysql请求信息及ebpf对应用安全的思考](https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/)也仅是通过`urpobe`采集用户空间的数据。本文介绍点`ebpf`的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。
