@@ -82,7 +82,7 @@ impl Solution {
 }
 ```
 ### 桶处理
-采用匹配的思路，借助桶来记录数组的各个区间。这个思路还需要在体会下。
+采用匹配的思路，借助桶来记录数组的各个区间。这个思路还需要再体会下。
 ```rust
 impl Solution {
     pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
