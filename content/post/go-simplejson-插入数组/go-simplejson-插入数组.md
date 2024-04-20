@@ -5,7 +5,7 @@ tags:
   - golang
   - simplejson
 categories:
-  - debug
+  - code
 date: 2021-07-22 17:58:00
 ---
 > [go-simplejson](https://github.com/bitly/go-simplejson)是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。

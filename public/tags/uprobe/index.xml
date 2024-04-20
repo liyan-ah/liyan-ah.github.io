@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Uprobe on 李岩</title>
-        <link>http://localhost:1313/tags/uprobe/</link>
+        <link>http://localhost:61543/tags/uprobe/</link>
         <description>Recent content in Uprobe on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 22 Jul 2022 21:48:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/uprobe/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 22 Jul 2022 21:48:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/uprobe/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>bpftrace 无侵入遍历golang链表</title>
-        <link>http://localhost:1313/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
+        <link>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
         <pubDate>Fri, 22 Jul 2022 21:48:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
+        <guid>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;bpftrace&lt;/code&gt; 基于 &lt;code&gt;bcc&lt;/code&gt; 进行开发的工具，语法简洁、功能强大。用其分析&lt;code&gt;Linux&lt;/code&gt; 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用&lt;code&gt;bpftrace&lt;/code&gt;无侵入遍历链表成员的方式，介绍&lt;code&gt;bpftrace&lt;/code&gt; &lt;code&gt;attach uprobe&lt;/code&gt; 的使用。更多使用说明见:&lt;a class=&#34;link&#34; href=&#34;https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;bpftrace官网使用文档&lt;/a&gt;&lt;/p&gt;

@@ -4,8 +4,7 @@ author: 李岩
 tags:
   - elk
 categories:
-  - 程序人生
-  - ''
+  - code
 date: 2022-01-04 00:06:00
 ---
 # ELK docker 部署实践

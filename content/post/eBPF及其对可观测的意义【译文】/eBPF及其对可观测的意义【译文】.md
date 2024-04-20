@@ -2,7 +2,7 @@
 title: eBPF及其对可观测的意义【译文】
 author: 李岩
 tags:
-  - eBPF
+  - bpf
   - 翻译
 categories:
   - 程序人生

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>GMP on 李岩</title>
+        <link>http://localhost:61543/tags/gmp/</link>
+        <description>Recent content in GMP on 李岩</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-Hans</language>
+        <lastBuildDate>Thu, 15 Apr 2021 21:39:29 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/gmp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>golang GMP</title>
+        <link>http://localhost:61543/p/golang-gmp/</link>
+        <pubDate>Thu, 15 Apr 2021 21:39:29 +0000</pubDate>
+        
+        <guid>http://localhost:61543/p/golang-gmp/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;/code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;/code&gt;的&lt;code&gt;GC&lt;/code&gt;实践。慢慢搞吧。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;前言&#34;&gt;
+    &lt;a href=&#34;#%e5%89%8d%e8%a8%80&#34;&gt;#&lt;/a&gt;
+    前言
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Golang&lt;/code&gt;作为语言层面支持并发的语言，使用&lt;code&gt;go&lt;/code&gt;可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及&lt;code&gt;Golang&lt;/code&gt;的所谓&lt;em&gt;纤程&lt;/em&gt;是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如&lt;code&gt;Python&lt;/code&gt;的协程以及&lt;code&gt;Golang&lt;/code&gt;的纤程，总是能够对应到操作系统认可的执行单元上。对于&lt;code&gt;Python&lt;/code&gt;的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于&lt;code&gt;CPU&lt;/code&gt;密集型的操作，仅使用协程是无法达到优化效果的：这种场景下&lt;code&gt;Python&lt;/code&gt;会推荐多进程。相比起来，&lt;code&gt;Golang&lt;/code&gt;的&lt;code&gt;go&lt;/code&gt;野心更大一些：期望给用户以&lt;code&gt;go&lt;/code&gt;作为接口，在语言内实现与操作系统调度单元的交互。&lt;code&gt;Golang&lt;/code&gt;里实际的调度模型是&lt;code&gt;GMP&lt;/code&gt;。&lt;/p&gt;
+&lt;h1 id=&#34;搬运&#34;&gt;
+    &lt;a href=&#34;#%e6%90%ac%e8%bf%90&#34;&gt;#&lt;/a&gt;
+    搬运
+&lt;/h1&gt;&lt;p&gt;这里搬运一些文章，介绍&lt;code&gt;GMP&lt;/code&gt;。&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://learnku.com/articles/41728&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;[典藏版] Golang 调度器 GMP 原理与调度全分析&lt;/a&gt; 从单进程开始介绍，后面的调试部分能学到一些东西&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://juejin.cn/post/6844904034449489933&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Go语言学习 - GMP模型&lt;/a&gt; &lt;code&gt;G&lt;/code&gt;调度这块说的比较详细，可以看看&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;6.5 调度器 #&lt;/a&gt; 日常膜拜&lt;/p&gt;
+&lt;h1 id=&#34;思考&#34;&gt;
+    &lt;a href=&#34;#%e6%80%9d%e8%80%83&#34;&gt;#&lt;/a&gt;
+    思考
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;goroutine&lt;/code&gt;还是运行在一个进程里的。多线程想对比多进程，稳定性上会差一些：如果线程内出现了coredump等异常，整个进程可能就退出了。所以&lt;code&gt;goroutine&lt;/code&gt;运行在一个进程内，会不会一个&lt;code&gt;g&lt;/code&gt;出现了crash，整个程序崩溃？&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Python&lt;/code&gt;的进程及线程，解释器层面分别使用了&lt;code&gt;C&lt;/code&gt;的&lt;code&gt;fork&lt;/code&gt;以及&lt;code&gt;pthread&lt;/code&gt;(Linux)进行实现。&lt;code&gt;g&lt;/code&gt;的实现是怎么样的。&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

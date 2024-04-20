@@ -3,6 +3,9 @@ title: http及websocket性能对比
 author: 李岩
 date: 2021-07-15 19:29:10
 tags:
+  - websocket
+categories:
+  - code
 ---
 > 从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。
 

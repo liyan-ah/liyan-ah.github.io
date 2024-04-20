@@ -3,7 +3,7 @@ title: challenges of bpf tracing go
 author: 李岩
 tags:
   - code
-  - ebpf
+  - bpf
   - go
 categories:
   - 程序人生

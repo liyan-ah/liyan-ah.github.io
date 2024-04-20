@@ -3,6 +3,9 @@ title: sed使用备注
 author: 李岩
 date: 2020-11-12 16:36:51
 tags:
+  - shell
+categories:
+  - code
 ---
 ## sed功能介绍
 先看下官方的介绍

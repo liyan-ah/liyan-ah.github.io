@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。\n服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务B, C的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 service call ,-------. ,-. ,-. ,-. |outisde| |A| |B| |C| `---+---&#39; `+&#39; `+&#39; `+&#39; | /a | | | |--------------&gt;| | | | | | | | | /b | | | |-----------&gt;| | | | | | | | /c | | |------------------------&gt;| ,---+---. ,+. ,+. ,+. |outisde| |A| |B| |C| `-------&#39; `-&#39; `-&#39; `-&#39; 在弄清楚四元组是什么之后，下面进入今天的话题：如何使用BPF来采集四元组。需要说明的是，笔者这里的语言使用的是golang-1.16。golang不同语言版本间的区别，见：golang-1.17+调用规约。\n值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。\n按照惯例，先看下效果吧：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 # 启动采集 bpftrace ./http.bt Attaching 2 probes... # 未触发请求前，停止在这里 caller: # 触发请求后，输出 caller_path: /handle callee: method: GET host: 0.0.0.0:9932 url: /echo caller: caller_path: /echo callee: none # 开始服务 ./http_demo &amp; # 触发请求 curl http://0.0.0.0:9932/handle ">
 <title>无侵入观测服务拓扑四元组的一种实现</title>
 
-<link rel='canonical' href='http://localhost:1313/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/'>
+<link rel='canonical' href='http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="无侵入观测服务拓扑四元组的一种实现">
 <meta property='og:description' content=" 最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。\n服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务B, C的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 service call ,-------. ,-. ,-. ,-. |outisde| |A| |B| |C| `---+---&#39; `+&#39; `+&#39; `+&#39; | /a | | | |--------------&gt;| | | | | | | | | /b | | | |-----------&gt;| | | | | | | | /c | | |------------------------&gt;| ,---+---. ,+. ,+. ,+. |outisde| |A| |B| |C| `-------&#39; `-&#39; `-&#39; `-&#39; 在弄清楚四元组是什么之后，下面进入今天的话题：如何使用BPF来采集四元组。需要说明的是，笔者这里的语言使用的是golang-1.16。golang不同语言版本间的区别，见：golang-1.17+调用规约。\n值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。\n按照惯例，先看下效果吧：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 # 启动采集 bpftrace ./http.bt Attaching 2 probes... # 未触发请求前，停止在这里 caller: # 触发请求后，输出 caller_path: /handle callee: method: GET host: 0.0.0.0:9932 url: /echo caller: caller_path: /echo callee: none # 开始服务 ./http_demo &amp; # 触发请求 curl http://0.0.0.0:9932/handle ">
-<meta property='og:url' content='http://localhost:1313/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/'>
+<meta property='og:url' content='http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/'>
 <meta property='og:site_name' content='李岩'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='可观测' /><meta property='article:published_time' content='2023-03-29T19:42:00&#43;00:00'/><meta property='article:modified_time' content='2023-03-29T19:42:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='可观测' /><meta property='article:published_time' content='2023-03-29T19:42:00&#43;00:00'/><meta property='article:modified_time' content='2023-03-29T19:42:00&#43;00:00'/>
 <meta name="twitter:title" content="无侵入观测服务拓扑四元组的一种实现">
 <meta name="twitter:description" content=" 最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。\n服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务A的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务B, C的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 service call ,-------. ,-. ,-. ,-. |outisde| |A| |B| |C| `---+---&#39; `+&#39; `+&#39; `+&#39; | /a | | | |--------------&gt;| | | | | | | | | /b | | | |-----------&gt;| | | | | | | | /c | | |------------------------&gt;| ,---+---. ,+. ,+. ,+. |outisde| |A| |B| |C| `-------&#39; `-&#39; `-&#39; `-&#39; 在弄清楚四元组是什么之后，下面进入今天的话题：如何使用BPF来采集四元组。需要说明的是，笔者这里的语言使用的是golang-1.16。golang不同语言版本间的区别，见：golang-1.17+调用规约。\n值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。\n按照惯例，先看下效果吧：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 # 启动采集 bpftrace ./http.bt Attaching 2 probes... # 未触发请求前，停止在这里 caller: # 触发请求后，输出 caller_path: /handle callee: method: GET host: 0.0.0.0:9932 url: /echo caller: caller_path: /echo callee: none # 开始服务 ./http_demo &amp; # 触发请求 curl http://0.0.0.0:9932/handle ">
     <link rel="shortcut icon" href="/icon.jpg" />
@@ -195,11 +195,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/code/" style="background-color: #2a9d8f; color: #fff;">
-                Code
-            </a>
-        
-            <a href="/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B/" >
+            <a href="/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B/" style="background-color: #2a9d8f; color: #fff;">
                 可观测
             </a>
         
@@ -776,7 +772,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/ebpf/">Ebpf</a>
+            <a href="/tags/bpf/">Bpf</a>
         
             <a href="/tags/golang/">Golang</a>
         
@@ -814,12 +810,12 @@
             
                 
 <article class="">
-    <a href="/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">
+    <a href="/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">ebpf采集mysql请求信息及ebpf对应用安全的思考</h2>
+            <h2 class="article-title">如何追踪golang channel?</h2>
         </div>
     </a>
 </article>
@@ -827,12 +823,12 @@
             
                 
 <article class="">
-    <a href="/p/x86_64-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/">
+    <a href="/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">x86_64 寄存器传参方式</h2>
+            <h2 class="article-title">eBPF tail-calls示例</h2>
         </div>
     </a>
 </article>
@@ -840,12 +836,12 @@
             
                 
 <article class="">
-    <a href="/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/">
+    <a href="/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">centos 构建 local-k8s</h2>
+            <h2 class="article-title">BPF追踪Go程序的挑战</h2>
         </div>
     </a>
 </article>
@@ -853,12 +849,12 @@
             
                 
 <article class="">
-    <a href="/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/">
+    <a href="/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">emacs-若干语言 lsp 配置备注</h2>
+            <h2 class="article-title">golang常见类型作为参数的eBPF解析</h2>
         </div>
     </a>
 </article>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 原文地址Challenges of BPF Tracing Go。翻译不尽如人意，继续努力。\n# BPF追踪Go程序的挑战 当大家对Go 1.17语言调用规约(function calling convention)调整带来的性能优化感到兴奋时，我却遗憾的看到Go 1.17并没有让BPF uretprobe变得可行。事实证明，我还没有完全意识到Go的可调整的栈空间会让事情变得多复杂。\n">
 <title>BPF追踪Go程序的挑战</title>
 
-<link rel='canonical' href='http://localhost:1313/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/'>
+<link rel='canonical' href='http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="BPF追踪Go程序的挑战">
 <meta property='og:description' content=" 原文地址Challenges of BPF Tracing Go。翻译不尽如人意，继续努力。\n# BPF追踪Go程序的挑战 当大家对Go 1.17语言调用规约(function calling convention)调整带来的性能优化感到兴奋时，我却遗憾的看到Go 1.17并没有让BPF uretprobe变得可行。事实证明，我还没有完全意识到Go的可调整的栈空间会让事情变得多复杂。\n">
-<meta property='og:url' content='http://localhost:1313/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/'>
+<meta property='og:url' content='http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/'>
 <meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2023-06-25T17:08:00&#43;00:00'/><meta property='article:modified_time' content='2023-06-25T17:08:00&#43;00:00'/>
 <meta name="twitter:title" content="BPF追踪Go程序的挑战">
@@ -195,7 +195,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/bpf/" >
+            <a href="/categories/bpf/" style="background-color: #2a9d8f; color: #fff;">
                 BPF
             </a>
         
@@ -1807,25 +1807,12 @@
             
                 
 <article class="">
-    <a href="/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/">
+    <a href="/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">go-1.17&#43; 调用规约</h2>
+            <h2 class="article-title">golang常见类型作为参数的eBPF解析</h2>
         </div>
     </a>
 </article>
@@ -1846,12 +1833,25 @@
             
                 
 <article class="">
-    <a href="/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">
+    <a href="/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">TCP close 过程分析</h2>
+            <h2 class="article-title">BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">go-1.17&#43; 调用规约</h2>
         </div>
     </a>
 </article>

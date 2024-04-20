@@ -3,7 +3,7 @@ title: eBPF tail-calls示例
 author: 李岩
 tags:
   - bpf
-  - ebpf
+  - bpf
   - tail call
 categories:
   - bpf

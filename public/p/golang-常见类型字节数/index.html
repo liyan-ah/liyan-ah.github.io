@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
 <title>golang 常见类型字节数</title>
 
-<link rel='canonical' href='http://localhost:1313/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
+<link rel='canonical' href='http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="golang 常见类型字节数">
 <meta property='og:description' content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
-<meta property='og:url' content='http://localhost:1313/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
+<meta property='og:url' content='http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
 <meta property='og:site_name' content='李岩'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2022-06-06T14:36:00&#43;00:00'/><meta property='article:modified_time' content='2022-06-06T14:36:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2022-06-06T14:36:00&#43;00:00'/><meta property='article:modified_time' content='2022-06-06T14:36:00&#43;00:00'/>
 <meta name="twitter:title" content="golang 常见类型字节数">
 <meta name="twitter:description" content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
     <link rel="shortcut icon" href="/icon.jpg" />
@@ -195,8 +195,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" >
-                程序人生
+            <a href="/categories/bpf/" style="background-color: #2a9d8f; color: #fff;">
+                BPF
             </a>
         
     </header>
@@ -505,7 +505,7 @@
     
     <section class="article-tags">
         
-            <a href="/tags/ebpf/">Ebpf</a>
+            <a href="/tags/bpf/">Bpf</a>
         
             <a href="/tags/golang/">Golang</a>
         
@@ -541,6 +541,19 @@
             
                 
 <article class="">
+    <a href="/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">eBPF tail-calls示例</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
     <a href="/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/">
         
         
@@ -554,12 +567,12 @@
             
                 
 <article class="">
-    <a href="/p/challenges-of-bpf-tracing-go/">
+    <a href="/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">challenges of bpf tracing go</h2>
+            <h2 class="article-title">BPF 获取 LVS FullNat 模式下的 Client IP</h2>
         </div>
     </a>
 </article>
@@ -567,12 +580,12 @@
             
                 
 <article class="">
-    <a href="/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/">
+    <a href="/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">centos 构建 local-k8s</h2>
+            <h2 class="article-title">ebpf 采集ebpf 采集tag&#43;tcp五元组</h2>
         </div>
     </a>
 </article>
@@ -580,25 +593,12 @@
             
                 
 <article class="">
-    <a href="/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/">
+    <a href="/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">bpftrace 遍历 golang 链表（go17&#43;）</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">PlantUML-文本化绘制UML多类图表</h2>
+            <h2 class="article-title">ebpf采集mysql请求信息及ebpf对应用安全的思考</h2>
         </div>
     </a>
 </article>

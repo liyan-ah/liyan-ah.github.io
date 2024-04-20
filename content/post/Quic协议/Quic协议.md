@@ -2,10 +2,8 @@
 title: Quic协议
 author: 李岩
 tags:
-  - 技术
-  - ''
+  - quic
 categories:
-  - 通信协议
   - 理论内容
 date: 2021-11-09 21:11:00
 ---

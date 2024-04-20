@@ -2,12 +2,11 @@
 title: ebpf采集mysql请求信息及ebpf对应用安全的思考
 author: 李岩
 tags:
-  - ebpf
+  - bpf
   - mysql
-  - 采集
-  - 信息安全
+  - safety
 categories:
-  - code
+  - bpf
 date: 2022-10-21 19:48:00
 ---
 > 本文笔者继续介绍`ebpf` 的应用：使用`bpftrace`采集`mysql`连接信息，包括数据库地址、`db_name`、`user_name`。在展示采集操作的同时，附上对`ebpf`对云时代应用安全的一些思考。

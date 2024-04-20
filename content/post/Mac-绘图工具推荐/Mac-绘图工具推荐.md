@@ -2,8 +2,7 @@
 title: Mac 绘图工具推荐
 author: 李岩
 tags:
-  - 工具
-  - 绘图
+  - tools
   - mac
 categories:
   - 程序人生

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 搞项目。\n观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在LVS下面的。这就势必涉及到LVS预设的工作模式下，一般都是FULLNET，需要的real client ip的信息获取方式。\n笔者通过调研，实现了一种通过BPF来观测挂载在LVS下的RS被调用TCP连接信息的方式。本文中关于toa的操作及代码定义均引用自Huawei/TCP_option_address。\n">
 <title>BPF 获取 LVS FullNat 模式下的 Client IP</title>
 
-<link rel='canonical' href='http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/'>
+<link rel='canonical' href='http://localhost:61543/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="BPF 获取 LVS FullNat 模式下的 Client IP">
 <meta property='og:description' content=" 搞项目。\n观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在LVS下面的。这就势必涉及到LVS预设的工作模式下，一般都是FULLNET，需要的real client ip的信息获取方式。\n笔者通过调研，实现了一种通过BPF来观测挂载在LVS下的RS被调用TCP连接信息的方式。本文中关于toa的操作及代码定义均引用自Huawei/TCP_option_address。\n">
-<meta property='og:url' content='http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/'>
+<meta property='og:url' content='http://localhost:61543/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/'>
 <meta property='og:site_name' content='李岩'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='lvs' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='tcp' /><meta property='article:published_time' content='2024-01-03T16:15:00&#43;00:00'/><meta property='article:modified_time' content='2024-01-03T16:15:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='lvs' /><meta property='article:tag' content='tcp' /><meta property='article:tag' content='bpf' /><meta property='article:published_time' content='2024-01-03T16:15:00&#43;00:00'/><meta property='article:modified_time' content='2024-01-03T16:15:00&#43;00:00'/>
 <meta name="twitter:title" content="BPF 获取 LVS FullNat 模式下的 Client IP">
 <meta name="twitter:description" content=" 搞项目。\n观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在LVS下面的。这就势必涉及到LVS预设的工作模式下，一般都是FULLNET，需要的real client ip的信息获取方式。\n笔者通过调研，实现了一种通过BPF来观测挂载在LVS下的RS被调用TCP连接信息的方式。本文中关于toa的操作及代码定义均引用自Huawei/TCP_option_address。\n">
     <link rel="shortcut icon" href="/icon.jpg" />
@@ -195,7 +195,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/bpf/" >
+            <a href="/categories/bpf/" style="background-color: #2a9d8f; color: #fff;">
                 BPF
             </a>
         
@@ -823,9 +823,9 @@
         
             <a href="/tags/lvs/">Lvs</a>
         
-            <a href="/tags/ebpf/">Ebpf</a>
-        
             <a href="/tags/tcp/">Tcp</a>
+        
+            <a href="/tags/bpf/">Bpf</a>
         
     </section>
 
@@ -865,6 +865,58 @@
 
         <div class="article-details">
             <h2 class="article-title">eBPF tail-calls示例</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ebpf 采集ebpf 采集tag&#43;tcp五元组</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ebpf采集mysql请求信息及ebpf对应用安全的思考</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">bpftrace 无侵入遍历golang链表</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">golang 常见类型字节数</h2>
         </div>
     </a>
 </article>

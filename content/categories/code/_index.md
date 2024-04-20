@@ -1,6 +1,6 @@
 ---
 title: Code
-description: Something about code.
+description: 记录一些工程实践的内容。
 image:
 
 # Badge style

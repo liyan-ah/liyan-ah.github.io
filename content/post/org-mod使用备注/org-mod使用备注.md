@@ -1,14 +1,11 @@
 ---
-title: emacs! start org-mode! --org-mod使用备注
+title: emacs! start org-mode! --org-mode使用备注
 author: 李岩
 tags:
   - emacs
   - org-mode
-  - 日程管理
-  - 入门
 categories:
   - code
-  - life
 date: 2021-01-10 20:30:00
 ---
 > 为了更好的`live in emacs`，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把`org-mode`这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。

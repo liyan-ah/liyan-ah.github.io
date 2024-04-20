@@ -4,7 +4,7 @@ author: 李岩
 tags:
   - mac
 categories:
-  - code
+  - 程序人生
 date: 2020-12-10 19:40:00
 ---
 > 最近开始使用Mac了。在使用过程中，发现了一些<code>Mac OS</code>和<code>Centos</code>体验上不同的地方。在这里做一下备注。

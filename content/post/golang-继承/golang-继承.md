@@ -3,7 +3,8 @@ title: golang 封装
 author: 李岩
 tags:
   - golang
-categories: []
+categories:
+  - code
 date: 2021-04-08 21:16:00
 ---
 > golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。

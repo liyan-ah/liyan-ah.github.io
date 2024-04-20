@@ -1,6 +1,6 @@
 ---
 title: lisp-do循环
-author: Blacker
+author: liyan
 tags:
   - lisp
 categories:

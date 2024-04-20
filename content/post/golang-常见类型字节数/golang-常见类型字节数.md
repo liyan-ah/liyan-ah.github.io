@@ -2,10 +2,10 @@
 title: golang 常见类型字节数
 author: 李岩
 tags:
-  - ebpf
+  - bpf
   - golang
 categories:
-  - 程序人生
+  - bpf
 date: 2022-06-06 14:36:00
 ---
 > `ebpf` 分析`golang`程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。

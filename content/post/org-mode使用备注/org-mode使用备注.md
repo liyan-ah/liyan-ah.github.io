@@ -4,10 +4,8 @@ author: 李岩
 tags:
   - emacs
   - org-mode
-  - 效率工具
 categories:
   - code
-  - life
 date: 2021-01-11 21:49:00
 ---
 > org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录

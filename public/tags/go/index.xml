@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Go on 李岩</title>
-        <link>http://localhost:1313/tags/go/</link>
+        <link>http://localhost:61543/tags/go/</link>
         <description>Recent content in Go on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Tue, 19 Apr 2022 14:33:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/go/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 19 Apr 2022 14:33:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/go/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>challenges of bpf tracing go</title>
-        <link>http://localhost:1313/p/challenges-of-bpf-tracing-go/</link>
+        <link>http://localhost:61543/p/challenges-of-bpf-tracing-go/</link>
         <pubDate>Tue, 19 Apr 2022 14:33:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/challenges-of-bpf-tracing-go/</guid>
+        <guid>http://localhost:61543/p/challenges-of-bpf-tracing-go/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -24,10 +24,10 @@
         </item>
         <item>
         <title>redisgo 连接报错</title>
-        <link>http://localhost:1313/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</link>
+        <link>http://localhost:61543/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</link>
         <pubDate>Wed, 18 Aug 2021 17:26:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</guid>
+        <guid>http://localhost:61543/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;记一次&lt;code&gt;redisgo&lt;/code&gt;库使用时，连接远程&lt;code&gt;redis&lt;/code&gt;服务写数据报错的问题。&lt;/p&gt;
 &lt;/blockquote&gt;

@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Elscreen on 李岩</title>
-        <link>http://localhost:1313/tags/elscreen/</link>
+        <link>http://localhost:61543/tags/elscreen/</link>
         <description>Recent content in Elscreen on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Wed, 23 Dec 2020 19:23:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/elscreen/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 23 Dec 2020 19:23:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/elscreen/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>elscreen标签背景颜色</title>
-        <link>http://localhost:1313/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</link>
+        <link>http://localhost:61543/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</link>
         <pubDate>Wed, 23 Dec 2020 19:23:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</guid>
+        <guid>http://localhost:61543/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;使用&lt;code&gt;emacs&lt;/code&gt;过程中，配合&lt;code&gt;evil&lt;/code&gt;使用，按照&lt;code&gt;tab&lt;/code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;/code&gt;等任务划分到不同的&lt;code&gt;tab&lt;/code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;/code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;/code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;/code&gt;的方法，备注下。&lt;/p&gt;
 &lt;/blockquote&gt;

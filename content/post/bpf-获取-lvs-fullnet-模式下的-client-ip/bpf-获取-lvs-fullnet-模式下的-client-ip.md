@@ -3,8 +3,8 @@ title: BPF 获取 LVS FullNat 模式下的 Client IP
 author: 李岩
 tags:
   - lvs
-  - ebpf
   - tcp
+  - bpf
 categories:
   - bpf
 date: 2024-01-03 16:15:00

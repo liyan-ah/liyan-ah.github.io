@@ -3,6 +3,10 @@ title: golang GMP
 author: 李岩
 date: 2021-04-15 21:39:29
 tags:
+  - golang
+  - GMP
+categories:
+  - code
 ---
 > 写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的`GMP`模型看看。最近在准备一篇`Golang`的`GC`实践。慢慢搞吧。
 

@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Mac on 李岩</title>
-        <link>http://localhost:1313/tags/mac/</link>
+        <link>http://localhost:61543/tags/mac/</link>
         <description>Recent content in Mac on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Wed, 16 Feb 2022 10:51:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/mac/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 16 Feb 2022 10:51:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/mac/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Mac 绘图工具推荐</title>
-        <link>http://localhost:1313/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</link>
+        <link>http://localhost:61543/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</link>
         <pubDate>Wed, 16 Feb 2022 10:51:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</guid>
+        <guid>http://localhost:61543/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</guid>
         <description>&lt;p&gt;之前办公一直在&lt;code&gt;Windows&lt;/code&gt;系统中，诸如流程图、部署图等图表使用的是&lt;code&gt;visio&lt;/code&gt;。迁移到&lt;code&gt;Mac&lt;/code&gt;上后，&lt;code&gt;visio&lt;/code&gt;便不能使用了。转战到&lt;a class=&#34;link&#34; href=&#34;https://www.sketch.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;sketch&lt;/code&gt;&lt;/a&gt; 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。&lt;br&gt;
 目前在使用&lt;a class=&#34;link&#34; href=&#34;https://draw.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -20,10 +20,10 @@
         </item>
         <item>
         <title>Mac使用备注</title>
-        <link>http://localhost:1313/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:61543/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Thu, 10 Dec 2020 19:40:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:61543/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近开始使用Mac了。在使用过程中，发现了一些&lt;code&gt;Mac OS&lt;/code&gt;和&lt;code&gt;Centos&lt;/code&gt;体验上不同的地方。在这里做一下备注。&lt;/p&gt;
 &lt;/blockquote&gt;

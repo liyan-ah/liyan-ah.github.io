@@ -3,9 +3,8 @@ title: centos 构建 local-k8s
 author: 李岩
 tags:
   - k8s
-  - ebpf
+  - bpf
 categories:
-  - 程序人生
   - code
 date: 2022-02-24 17:27:00
 ---

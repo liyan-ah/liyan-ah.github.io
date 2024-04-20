@@ -3,7 +3,7 @@ title: centos 安装docker并构建golang镜像
 author: 李岩
 tags:
   - docker
-  - eBPF
+  - bpf
 categories:
   - code
 date: 2022-03-04 15:00:00

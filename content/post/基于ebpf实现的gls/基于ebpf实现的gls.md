@@ -3,7 +3,7 @@ title: 基于ebpf实现的gls
 author: 李岩
 tags:
   - code
-  - ebpf
+  - bpf
   - golang
   - gls
 categories:

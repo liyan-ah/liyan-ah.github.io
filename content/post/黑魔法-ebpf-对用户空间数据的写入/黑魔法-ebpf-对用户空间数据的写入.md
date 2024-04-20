@@ -2,7 +2,7 @@
 title: 黑魔法--用 ebpf 构建用户空间数据的桥梁
 author: 李岩
 tags:
-  - ebpf
+  - bpf
   - code
 categories:
   - BPF

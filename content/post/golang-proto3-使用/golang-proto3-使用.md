@@ -5,7 +5,7 @@ tags:
   - code
   - protobuf
 categories:
-  - 程序人生
+  - code
 date: 2022-05-19 17:53:00
 ---
 > 一直都比较赞赏[`protocol buffer`](https://developers.google.com/protocol-buffers/docs/proto3)。由于其表现性强、压缩比高，可以把很多结构都写到`proto`文件中，同时添加很多的注释。当需要进行进行数据存储时，使用`proto`序列化结果替代`json`，可以省去很多的冗余字段。本篇找了一些`golang`中`protocol buffer`的使用示例，以及`protocol`对象与`json`对象互相转换的示例。  

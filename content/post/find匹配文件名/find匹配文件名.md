@@ -3,6 +3,9 @@ title: find匹配文件名
 author: 李岩
 date: 2020-11-12 21:44:28
 tags:
+  - shell
+categories:
+  - code
 ---
 目录内容：
 ```

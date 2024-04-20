@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。\n# 基本功能 本文中基于ebpf实现的gls具有如下功能：\n基于goid的存储。即map[goid]=value； 基于goroutine派生关系设置的value缺省值。即map[goid=1]=121，且goid=1派生goid=2，则map[goid=2]=map[goid=1]=121；\n本文建议参照黑魔法-ebpf-对用户空间数据的写入进行理解。 ">
 <title>基于ebpf实现的gls</title>
 
-<link rel='canonical' href='http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
+<link rel='canonical' href='http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="基于ebpf实现的gls">
 <meta property='og:description' content=" 虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。\n# 基本功能 本文中基于ebpf实现的gls具有如下功能：\n基于goid的存储。即map[goid]=value； 基于goroutine派生关系设置的value缺省值。即map[goid=1]=121，且goid=1派生goid=2，则map[goid=2]=map[goid=1]=121；\n本文建议参照黑魔法-ebpf-对用户空间数据的写入进行理解。 ">
-<meta property='og:url' content='http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
+<meta property='og:url' content='http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
 <meta property='og:site_name' content='李岩'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='code' /><meta property='article:tag' content='ebpf' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='gls' /><meta property='article:published_time' content='2022-11-25T01:14:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-25T01:14:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='code' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='gls' /><meta property='article:published_time' content='2022-11-25T01:14:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-25T01:14:00&#43;00:00'/>
 <meta name="twitter:title" content="基于ebpf实现的gls">
 <meta name="twitter:description" content=" 虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。\n# 基本功能 本文中基于ebpf实现的gls具有如下功能：\n基于goid的存储。即map[goid]=value； 基于goroutine派生关系设置的value缺省值。即map[goid=1]=121，且goid=1派生goid=2，则map[goid=2]=map[goid=1]=121；\n本文建议参照黑魔法-ebpf-对用户空间数据的写入进行理解。 ">
     <link rel="shortcut icon" href="/icon.jpg" />
@@ -195,7 +195,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/bpf/" >
+            <a href="/categories/bpf/" style="background-color: #2a9d8f; color: #fff;">
                 BPF
             </a>
         
@@ -811,7 +811,7 @@
         
             <a href="/tags/code/">Code</a>
         
-            <a href="/tags/ebpf/">Ebpf</a>
+            <a href="/tags/bpf/">Bpf</a>
         
             <a href="/tags/golang/">Golang</a>
         
@@ -849,19 +849,6 @@
             
                 
 <article class="">
-    <a href="/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">黑魔法--用 ebpf 构建用户空间数据的桥梁</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
     <a href="/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/">
         
         
@@ -888,12 +875,25 @@
             
                 
 <article class="">
-    <a href="/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/">
+    <a href="/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">go-1.17&#43; 调用规约</h2>
+            <h2 class="article-title">golang常见类型作为参数的eBPF解析</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">黑魔法--用 ebpf 构建用户空间数据的桥梁</h2>
         </div>
     </a>
 </article>

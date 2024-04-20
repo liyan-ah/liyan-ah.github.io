@@ -6,6 +6,7 @@ tags:
   - lsp
   - c-mode
   - clang-format
+  - lsp
 categories:
   - 程序人生
 date: 2022-07-15 20:34:00

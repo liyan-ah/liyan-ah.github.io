@@ -2,12 +2,11 @@
 title: bpftrace 无侵入遍历golang链表
 author: 李岩
 tags:
-  - ebpf
   - golang
-  - bpftrace
   - uprobe
+  - bpf
 categories:
-  - 程序人生
+  - bpf
 date: 2022-07-22 21:48:00
 ---
 > `bpftrace` 基于 `bcc` 进行开发的工具，语法简洁、功能强大。用其分析`Linux` 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用`bpftrace`无侵入遍历链表成员的方式，介绍`bpftrace` `attach uprobe` 的使用。更多使用说明见:[bpftrace官网使用文档](https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md)

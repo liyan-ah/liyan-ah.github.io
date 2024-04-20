@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Go-1.17 on 李岩</title>
-        <link>http://localhost:1313/tags/go-1.17/</link>
+        <link>http://localhost:61543/tags/go-1.17/</link>
         <description>Recent content in Go-1.17 on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 03 Mar 2023 20:59:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/go-1.17/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 03 Mar 2023 20:59:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/go-1.17/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>go-1.17&#43; 调用规约</title>
-        <link>http://localhost:1313/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
+        <link>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
         <pubDate>Fri, 03 Mar 2023 20:59:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
+        <guid>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;go-1.17&lt;/code&gt;是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到&lt;code&gt;go-1.17&lt;/code&gt;之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和&lt;code&gt;C/C++&lt;/code&gt;的是完全不一致的。这个问题使得笔者在处理&lt;code&gt;ebpf&lt;/code&gt;方案时，始终无法覆盖&lt;code&gt;go-1.17+&lt;/code&gt;的版本。虽然短期不会造成影响，线上服务使用的大多还在&lt;code&gt;go-1.16&lt;/code&gt;以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下&lt;code&gt;go-1.17+&lt;/code&gt;的调用规约。&lt;/p&gt;
 &lt;/blockquote&gt;
