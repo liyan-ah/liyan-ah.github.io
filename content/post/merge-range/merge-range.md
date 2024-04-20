@@ -23,7 +23,7 @@ categories:
 解决，就不再需要进行排序了。算法复杂度也从时间复杂度`o(nlgn)`降到了`o(n)`。这里记录下。
 
 <!--more-->
-# 题目描述
+## 题目描述
 ```
 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
 
@@ -43,8 +43,8 @@ intervals[i].length == 2
 0 <= starti <= endi <= 10000
 ```
 
-# 两种解法
-## 排序
+## 两种解法
+### 排序
 先排序，然后遍历、比较。关键点在于需要处理好比较时的边界条件。
 ```rust
 impl Solution {
@@ -81,7 +81,7 @@ impl Solution {
     }
 }
 ```
-## 桶处理
+### 桶处理
 采用匹配的思路，借助桶来记录数组的各个区间。这个思路还需要在体会下。
 ```rust
 impl Solution {
@@ -141,6 +141,6 @@ impl Solution {
 }
 ```
 
-# 后记
+## 后记
 这个问题是`leetcode`上的[56. 合并区间](https://leetcode.cn/problems/merge-intervals/description/)。一般刷题
 的人都会刷到。惭愧的是笔者已经没有印象了。得赶紧把插件修一修，有时间刷点题。
