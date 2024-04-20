@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Protobuf on 李岩</title>
-        <link>http://localhost:61543/tags/protobuf/</link>
+        <link>http://localhost:62264/tags/protobuf/</link>
         <description>Recent content in Protobuf on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Thu, 19 May 2022 17:53:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/protobuf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 19 May 2022 17:53:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/protobuf/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>golang proto3 使用</title>
-        <link>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
+        <link>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
         <pubDate>Thu, 19 May 2022 17:53:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
+        <guid>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;一直都比较赞赏&lt;a class=&#34;link&#34; href=&#34;https://developers.google.com/protocol-buffers/docs/proto3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;protocol buffer&lt;/code&gt;&lt;/a&gt;。由于其表现性强、压缩比高，可以把很多结构都写到&lt;code&gt;proto&lt;/code&gt;文件中，同时添加很多的注释。当需要进行进行数据存储时，使用&lt;code&gt;proto&lt;/code&gt;序列化结果替代&lt;code&gt;json&lt;/code&gt;，可以省去很多的冗余字段。本篇找了一些&lt;code&gt;golang&lt;/code&gt;中&lt;code&gt;protocol buffer&lt;/code&gt;的使用示例，以及&lt;code&gt;protocol&lt;/code&gt;对象与&lt;code&gt;json&lt;/code&gt;对象互相转换的示例。&lt;/p&gt;

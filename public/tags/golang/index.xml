@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Golang on 李岩</title>
-        <link>http://localhost:61543/tags/golang/</link>
+        <link>http://localhost:62264/tags/golang/</link>
         <description>Recent content in Golang on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 08 Dec 2023 19:43:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/golang/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 08 Dec 2023 19:43:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/golang/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>如何追踪golang channel?</title>
-        <link>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
+        <link>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
         <pubDate>Fri, 08 Dec 2023 19:43:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
+        <guid>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -65,7 +65,7 @@
     &gt;runtime/chan.go&lt;/a&gt;。&lt;br&gt;
 笔者在这里再简单的总结下，对&lt;code&gt;send&lt;/code&gt;及&lt;code&gt;recv&lt;/code&gt;两种操作设计的状态做一个简单的概述：
 &lt;code&gt;chan-send&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-send.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-send.png&#34;
 	
 	
 	
@@ -76,7 +76,7 @@
 	
 &gt;
 &lt;code&gt;chan-recv&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-recv.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-recv.png&#34;
 	
 	
 	
@@ -830,10 +830,10 @@
         </item>
         <item>
         <title>BPF追踪Go程序的挑战</title>
-        <link>http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</link>
+        <link>http://localhost:62264/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</link>
         <pubDate>Sun, 25 Jun 2023 17:08:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</guid>
+        <guid>http://localhost:62264/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;原文地址&lt;a class=&#34;link&#34; href=&#34;https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Challenges of BPF Tracing Go&lt;/a&gt;。翻译不尽如人意，继续努力。&lt;/p&gt;
@@ -1144,7 +1144,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此时，我们可以看到我们已经将返回值移动到距离栈顶一定偏移量的指针上，而指针指向字符串。因为是在栈上，所以是“后进先出”的。这里可能会有些困惑因为函数的主要功能是交换这两个字符串。&lt;/p&gt;
 &lt;p&gt;如果你跟上了我的思路，自然的就能画出这样的分布：
-&lt;img src=&#34;http://localhost:61543/stack.png&#34;
+&lt;img src=&#34;http://localhost:62264/stack.png&#34;
 	
 	
 	
@@ -2332,10 +2332,10 @@
         </item>
         <item>
         <title>无侵入观测服务拓扑四元组的一种实现</title>
-        <link>http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</link>
+        <link>http://localhost:62264/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</link>
         <pubDate>Wed, 29 Mar 2023 19:42:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</guid>
+        <guid>http://localhost:62264/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2848,10 +2848,10 @@
         </item>
         <item>
         <title>go-1.17&#43; 调用规约</title>
-        <link>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
+        <link>http://localhost:62264/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
         <pubDate>Fri, 03 Mar 2023 20:59:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
+        <guid>http://localhost:62264/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;go-1.17&lt;/code&gt;是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到&lt;code&gt;go-1.17&lt;/code&gt;之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和&lt;code&gt;C/C++&lt;/code&gt;的是完全不一致的。这个问题使得笔者在处理&lt;code&gt;ebpf&lt;/code&gt;方案时，始终无法覆盖&lt;code&gt;go-1.17+&lt;/code&gt;的版本。虽然短期不会造成影响，线上服务使用的大多还在&lt;code&gt;go-1.16&lt;/code&gt;以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下&lt;code&gt;go-1.17+&lt;/code&gt;的调用规约。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -3335,10 +3335,10 @@
         </item>
         <item>
         <title>golang常见类型作为参数的eBPF解析</title>
-        <link>http://localhost:61543/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</link>
+        <link>http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</link>
         <pubDate>Fri, 30 Dec 2022 19:24:18 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</guid>
+        <guid>http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇&lt;a class=&#34;link&#34; href=&#34;https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;golang 常见类型字节数
@@ -4203,10 +4203,10 @@
         </item>
         <item>
         <title>基于ebpf实现的gls</title>
-        <link>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
+        <link>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
         <pubDate>Fri, 25 Nov 2022 01:14:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
+        <guid>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;虽然&lt;code&gt;golang&lt;/code&gt;并不推荐使用&lt;code&gt;goid&lt;/code&gt;来构建&lt;code&gt;gls&lt;/code&gt;(&lt;code&gt;goroutine local storage&lt;/code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;/code&gt;并使用的尝试。&lt;a class=&#34;link&#34; href=&#34;https://github.com/jtolio/gls&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;github-gls&lt;/a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;/code&gt;里&lt;code&gt;gls&lt;/code&gt;的实现思路：获取&lt;code&gt;goid&lt;/code&gt;，基于&lt;code&gt;goid&lt;/code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;/code&gt;来构建一个&lt;code&gt;golang&lt;/code&gt;的&lt;code&gt;gls&lt;/code&gt;。&lt;/p&gt;
@@ -4756,10 +4756,10 @@
         </item>
         <item>
         <title>bpftrace 无侵入遍历golang链表</title>
-        <link>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
+        <link>http://localhost:62264/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
         <pubDate>Fri, 22 Jul 2022 21:48:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
+        <guid>http://localhost:62264/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;bpftrace&lt;/code&gt; 基于 &lt;code&gt;bcc&lt;/code&gt; 进行开发的工具，语法简洁、功能强大。用其分析&lt;code&gt;Linux&lt;/code&gt; 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用&lt;code&gt;bpftrace&lt;/code&gt;无侵入遍历链表成员的方式，介绍&lt;code&gt;bpftrace&lt;/code&gt; &lt;code&gt;attach uprobe&lt;/code&gt; 的使用。更多使用说明见:&lt;a class=&#34;link&#34; href=&#34;https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;bpftrace官网使用文档&lt;/a&gt;&lt;/p&gt;
@@ -5016,10 +5016,10 @@
         </item>
         <item>
         <title>golang 常见类型字节数</title>
-        <link>http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</link>
+        <link>http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</link>
         <pubDate>Mon, 06 Jun 2022 14:36:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</guid>
+        <guid>http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;ebpf&lt;/code&gt; 分析&lt;code&gt;golang&lt;/code&gt;程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -5265,10 +5265,10 @@
         </item>
         <item>
         <title>emacs-若干语言 lsp 配置备注</title>
-        <link>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Tue, 12 Oct 2021 20:26:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;微软推出的&lt;a class=&#34;link&#34; href=&#34;https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;language server protol&lt;/a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;/code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;/code&gt; 中的 rust, golang, python, c/c++ lsp 配置&lt;/p&gt;
@@ -5467,10 +5467,10 @@
         </item>
         <item>
         <title>go-simplejson 插入数组</title>
-        <link>http://localhost:61543/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</link>
+        <link>http://localhost:62264/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</link>
         <pubDate>Thu, 22 Jul 2021 17:58:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</guid>
+        <guid>http://localhost:62264/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bitly/go-simplejson&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;go-simplejson&lt;/a&gt;是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。&lt;/p&gt;
@@ -5644,10 +5644,10 @@
         </item>
         <item>
         <title>golang GMP</title>
-        <link>http://localhost:61543/p/golang-gmp/</link>
+        <link>http://localhost:62264/p/golang-gmp/</link>
         <pubDate>Thu, 15 Apr 2021 21:39:29 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-gmp/</guid>
+        <guid>http://localhost:62264/p/golang-gmp/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;/code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;/code&gt;的&lt;code&gt;GC&lt;/code&gt;实践。慢慢搞吧。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -5675,10 +5675,10 @@
         </item>
         <item>
         <title>golang 封装</title>
-        <link>http://localhost:61543/p/golang-%E5%B0%81%E8%A3%85/</link>
+        <link>http://localhost:62264/p/golang-%E5%B0%81%E8%A3%85/</link>
         <pubDate>Thu, 08 Apr 2021 21:16:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-%E5%B0%81%E8%A3%85/</guid>
+        <guid>http://localhost:62264/p/golang-%E5%B0%81%E8%A3%85/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。&lt;/p&gt;
 &lt;/blockquote&gt;

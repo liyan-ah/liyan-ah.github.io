@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=62264&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。\nLRU_HASH_MAP 在实现的时候，出现了不符合预期的数据驱逐问题：设定一个 512 大小的LRU_HASH_MAP，很可能出现在40-50个key的时候，之前的key就被覆盖。在一段时间未更新时，重新更新也可能会出现异常。总结就是，执行了写入操作，很可能没有写入。这个问题在Elements incorrectly evicted from eBPF LRU hash map有较为详细的描述。\n">
 <title>BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</title>
 
-<link rel='canonical' href='http://localhost:61543/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/'>
+<link rel='canonical' href='http://localhost:62264/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常">
 <meta property='og:description' content=" BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。\nLRU_HASH_MAP 在实现的时候，出现了不符合预期的数据驱逐问题：设定一个 512 大小的LRU_HASH_MAP，很可能出现在40-50个key的时候，之前的key就被覆盖。在一段时间未更新时，重新更新也可能会出现异常。总结就是，执行了写入操作，很可能没有写入。这个问题在Elements incorrectly evicted from eBPF LRU hash map有较为详细的描述。\n">
-<meta property='og:url' content='http://localhost:61543/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/'>
+<meta property='og:url' content='http://localhost:62264/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/'>
 <meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='bugs' /><meta property='article:published_time' content='2024-03-12T11:02:00&#43;00:00'/><meta property='article:modified_time' content='2024-03-12T11:02:00&#43;00:00'/>
 <meta name="twitter:title" content="BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常">

@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Code on 李岩</title>
-        <link>http://localhost:61543/tags/code/</link>
+        <link>http://localhost:62264/tags/code/</link>
         <description>Recent content in Code on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 25 Nov 2022 01:14:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/code/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 25 Nov 2022 01:14:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/code/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>基于ebpf实现的gls</title>
-        <link>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
+        <link>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
         <pubDate>Fri, 25 Nov 2022 01:14:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
+        <guid>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;虽然&lt;code&gt;golang&lt;/code&gt;并不推荐使用&lt;code&gt;goid&lt;/code&gt;来构建&lt;code&gt;gls&lt;/code&gt;(&lt;code&gt;goroutine local storage&lt;/code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;/code&gt;并使用的尝试。&lt;a class=&#34;link&#34; href=&#34;https://github.com/jtolio/gls&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;github-gls&lt;/a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;/code&gt;里&lt;code&gt;gls&lt;/code&gt;的实现思路：获取&lt;code&gt;goid&lt;/code&gt;，基于&lt;code&gt;goid&lt;/code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;/code&gt;来构建一个&lt;code&gt;golang&lt;/code&gt;的&lt;code&gt;gls&lt;/code&gt;。&lt;/p&gt;
@@ -561,10 +561,10 @@
         </item>
         <item>
         <title>黑魔法--用 ebpf 构建用户空间数据的桥梁</title>
-        <link>http://localhost:61543/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</link>
+        <link>http://localhost:62264/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</link>
         <pubDate>Fri, 04 Nov 2022 18:00:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</guid>
+        <guid>http://localhost:62264/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</guid>
         <description>&lt;p&gt;在之前的示例中，仅涉及到&lt;code&gt;ebpf&lt;/code&gt;对用户空间数据的读取。工程性较强的如：&lt;a class=&#34;link&#34; href=&#34;https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ebpf采集mysql请求信息及ebpf对应用安全的思考&lt;/a&gt;也仅是通过&lt;code&gt;urpobe&lt;/code&gt;采集用户空间的数据。本文介绍点&lt;code&gt;ebpf&lt;/code&gt;的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。&lt;/p&gt;
 &lt;h1 id=&#34;运行效果&#34;&gt;
@@ -874,10 +874,10 @@
         </item>
         <item>
         <title>golang proto3 使用</title>
-        <link>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
+        <link>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
         <pubDate>Thu, 19 May 2022 17:53:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
+        <guid>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;一直都比较赞赏&lt;a class=&#34;link&#34; href=&#34;https://developers.google.com/protocol-buffers/docs/proto3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;protocol buffer&lt;/code&gt;&lt;/a&gt;。由于其表现性强、压缩比高，可以把很多结构都写到&lt;code&gt;proto&lt;/code&gt;文件中，同时添加很多的注释。当需要进行进行数据存储时，使用&lt;code&gt;proto&lt;/code&gt;序列化结果替代&lt;code&gt;json&lt;/code&gt;，可以省去很多的冗余字段。本篇找了一些&lt;code&gt;golang&lt;/code&gt;中&lt;code&gt;protocol buffer&lt;/code&gt;的使用示例，以及&lt;code&gt;protocol&lt;/code&gt;对象与&lt;code&gt;json&lt;/code&gt;对象互相转换的示例。&lt;/p&gt;
@@ -1147,10 +1147,10 @@
         </item>
         <item>
         <title>challenges of bpf tracing go</title>
-        <link>http://localhost:61543/p/challenges-of-bpf-tracing-go/</link>
+        <link>http://localhost:62264/p/challenges-of-bpf-tracing-go/</link>
         <pubDate>Tue, 19 Apr 2022 14:33:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/challenges-of-bpf-tracing-go/</guid>
+        <guid>http://localhost:62264/p/challenges-of-bpf-tracing-go/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。&lt;/p&gt;
 &lt;/blockquote&gt;

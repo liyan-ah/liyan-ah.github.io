@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>GMP on 李岩</title>
-        <link>http://localhost:61543/tags/gmp/</link>
+        <link>http://localhost:62264/tags/gmp/</link>
         <description>Recent content in GMP on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Thu, 15 Apr 2021 21:39:29 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/gmp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 15 Apr 2021 21:39:29 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/gmp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>golang GMP</title>
-        <link>http://localhost:61543/p/golang-gmp/</link>
+        <link>http://localhost:62264/p/golang-gmp/</link>
         <pubDate>Thu, 15 Apr 2021 21:39:29 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-gmp/</guid>
+        <guid>http://localhost:62264/p/golang-gmp/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;/code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;/code&gt;的&lt;code&gt;GC&lt;/code&gt;实践。慢慢搞吧。&lt;/p&gt;
 &lt;/blockquote&gt;

@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Websocket on 李岩</title>
-        <link>http://localhost:61543/tags/websocket/</link>
+        <link>http://localhost:62264/tags/websocket/</link>
         <description>Recent content in Websocket on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Thu, 15 Jul 2021 19:29:10 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/websocket/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 15 Jul 2021 19:29:10 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/websocket/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>http及websocket性能对比</title>
-        <link>http://localhost:61543/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</link>
+        <link>http://localhost:62264/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</link>
         <pubDate>Thu, 15 Jul 2021 19:29:10 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</guid>
+        <guid>http://localhost:62264/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。&lt;/p&gt;
 &lt;/blockquote&gt;

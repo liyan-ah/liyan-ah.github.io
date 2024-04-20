@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>翻译 on 李岩</title>
-        <link>http://localhost:61543/tags/%E7%BF%BB%E8%AF%91/</link>
+        <link>http://localhost:62264/tags/%E7%BF%BB%E8%AF%91/</link>
         <description>Recent content in 翻译 on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Wed, 02 Mar 2022 16:34:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 02 Mar 2022 16:34:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>eBPF及其对可观测的意义【译文】</title>
-        <link>http://localhost:61543/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</link>
+        <link>http://localhost:62264/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</link>
         <pubDate>Wed, 02 Mar 2022 16:34:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</guid>
+        <guid>http://localhost:62264/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。&lt;br&gt;
 原文地址：&lt;a class=&#34;link&#34; href=&#34;https://newrelic.com/blog/best-practices/what-is-ebpf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

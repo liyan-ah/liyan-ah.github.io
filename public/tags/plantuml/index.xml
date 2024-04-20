@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Plantuml on 李岩</title>
-        <link>http://localhost:61543/tags/plantuml/</link>
+        <link>http://localhost:62264/tags/plantuml/</link>
         <description>Recent content in Plantuml on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 21 Apr 2023 20:51:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/plantuml/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 21 Apr 2023 20:51:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/plantuml/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>PlantUML-文本化绘制UML多类图表</title>
-        <link>http://localhost:61543/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</link>
+        <link>http://localhost:62264/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</link>
         <pubDate>Fri, 21 Apr 2023 20:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</guid>
+        <guid>http://localhost:62264/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;笔者一直都是文本编辑器教派的忠实拥趸：期望将所有的任务都通过文本编辑，而非鼠标/触摸板等，进行实现。从早年的&lt;code&gt;Vim&lt;/code&gt;，到现而今的&lt;code&gt;Emacs&lt;/code&gt;，对文本化完成需求是越来越习惯，也越来越依赖了。最近刚好有了些时间，把最近的一些实践整理下。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -177,7 +177,7 @@
     3.2 编译输出
 &lt;/h3&gt;&lt;p&gt;输出结果：
 mindmap.png
-&lt;img src=&#34;http://localhost:61543/mindmap.png&#34;
+&lt;img src=&#34;http://localhost:62264/mindmap.png&#34;
 	
 	
 	
@@ -285,7 +285,7 @@ mindmap.png
     4.2 编译输出
 &lt;/h3&gt;&lt;p&gt;输出结果如下：
 ngx_request.png
-&lt;img src=&#34;http://localhost:61543/ngx_request.png&#34;
+&lt;img src=&#34;http://localhost:62264/ngx_request.png&#34;
 	
 	
 	

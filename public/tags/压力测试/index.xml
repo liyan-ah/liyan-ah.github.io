@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>压力测试 on 李岩</title>
-        <link>http://localhost:61543/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/</link>
+        <link>http://localhost:62264/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/</link>
         <description>Recent content in 压力测试 on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Sun, 07 Feb 2021 17:30:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 07 Feb 2021 17:30:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>ratelimit服务流量限制</title>
-        <link>http://localhost:61543/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</link>
+        <link>http://localhost:62264/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</link>
         <pubDate>Sun, 07 Feb 2021 17:30:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</guid>
+        <guid>http://localhost:62264/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以&lt;a class=&#34;link&#34; href=&#34;https://chai2010.cn/advanced-go-programming-book/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Go语言高级编程&lt;/a&gt; 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对&lt;code&gt;Jmeter&lt;/code&gt;及&lt;code&gt;golang ratelimit&lt;/code&gt;中的流量限制方法进行描述。&lt;/p&gt;

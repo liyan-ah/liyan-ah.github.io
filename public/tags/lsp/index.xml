@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Lsp on 李岩</title>
-        <link>http://localhost:61543/tags/lsp/</link>
+        <link>http://localhost:62264/tags/lsp/</link>
         <description>Recent content in Lsp on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 15 Jul 2022 20:34:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/lsp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 15 Jul 2022 20:34:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/lsp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>让emacs在保存文件时自动格式化代码</title>
-        <link>http://localhost:61543/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
+        <link>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
         <pubDate>Fri, 15 Jul 2022 20:34:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
+        <guid>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liam.page/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;liam&lt;/a&gt;同学在&lt;a class=&#34;link&#34; href=&#34;https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -142,10 +142,10 @@
         </item>
         <item>
         <title>emacs-若干语言 lsp 配置备注</title>
-        <link>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Tue, 12 Oct 2021 20:26:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;微软推出的&lt;a class=&#34;link&#34; href=&#34;https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;language server protol&lt;/a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;/code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;/code&gt; 中的 rust, golang, python, c/c++ lsp 配置&lt;/p&gt;

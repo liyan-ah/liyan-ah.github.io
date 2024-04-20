@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Mysql on 李岩</title>
-        <link>http://localhost:61543/tags/mysql/</link>
+        <link>http://localhost:62264/tags/mysql/</link>
         <description>Recent content in Mysql on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 21 Oct 2022 19:48:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 21 Oct 2022 19:48:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>ebpf采集mysql请求信息及ebpf对应用安全的思考</title>
-        <link>http://localhost:61543/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</link>
+        <link>http://localhost:62264/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</link>
         <pubDate>Fri, 21 Oct 2022 19:48:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</guid>
+        <guid>http://localhost:62264/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;本文笔者继续介绍&lt;code&gt;ebpf&lt;/code&gt; 的应用：使用&lt;code&gt;bpftrace&lt;/code&gt;采集&lt;code&gt;mysql&lt;/code&gt;连接信息，包括数据库地址、&lt;code&gt;db_name&lt;/code&gt;、&lt;code&gt;user_name&lt;/code&gt;。在展示采集操作的同时，附上对&lt;code&gt;ebpf&lt;/code&gt;对云时代应用安全的一些思考。&lt;/p&gt;
 &lt;/blockquote&gt;

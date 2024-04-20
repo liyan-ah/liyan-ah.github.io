@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Php on 李岩</title>
-        <link>http://localhost:61543/tags/php/</link>
+        <link>http://localhost:62264/tags/php/</link>
         <description>Recent content in Php on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Mon, 02 Aug 2021 20:34:48 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/php/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 02 Aug 2021 20:34:48 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/php/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>PHP-7.1升级至7.4兼容性</title>
-        <link>http://localhost:61543/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</link>
+        <link>http://localhost:62264/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</link>
         <pubDate>Mon, 02 Aug 2021 20:34:48 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</guid>
+        <guid>http://localhost:62264/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;php作为&lt;del&gt;动不动搞个大事情&lt;/del&gt;世界上最好的语言,&lt;del&gt;经常&lt;/del&gt;偶尔会出现由于版本升级导致的不兼容问题。笔者在工作中遇到了&lt;code&gt;php7.1&lt;/code&gt;升级到&lt;code&gt;php7.4&lt;/code&gt;导致的&lt;code&gt;each&lt;/code&gt;弃用、&lt;code&gt;mcrypt&lt;/code&gt;库启动导致的不兼容。在这里备注下兼容方式。&lt;/p&gt;
 &lt;/blockquote&gt;

@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Observe on 李岩</title>
-        <link>http://localhost:61543/tags/observe/</link>
+        <link>http://localhost:62264/tags/observe/</link>
         <description>Recent content in Observe on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 08 Dec 2023 19:43:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/observe/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 08 Dec 2023 19:43:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/observe/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>如何追踪golang channel?</title>
-        <link>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
+        <link>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
         <pubDate>Fri, 08 Dec 2023 19:43:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
+        <guid>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -65,7 +65,7 @@
     &gt;runtime/chan.go&lt;/a&gt;。&lt;br&gt;
 笔者在这里再简单的总结下，对&lt;code&gt;send&lt;/code&gt;及&lt;code&gt;recv&lt;/code&gt;两种操作设计的状态做一个简单的概述：
 &lt;code&gt;chan-send&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-send.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-send.png&#34;
 	
 	
 	
@@ -76,7 +76,7 @@
 	
 &gt;
 &lt;code&gt;chan-recv&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-recv.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-recv.png&#34;
 	
 	
 	

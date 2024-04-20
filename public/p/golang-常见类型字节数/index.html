@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=61543&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=62264&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
 <title>golang 常见类型字节数</title>
 
-<link rel='canonical' href='http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
+<link rel='canonical' href='http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="golang 常见类型字节数">
 <meta property='og:description' content=" ebpf 分析golang程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。\n# 信息 这里列出基本类型及其作为参数传递时，占用的空间大小如下表。\n类型 长度 说明 指针 8B 64位机为 8Byte, 32位机位4Byte context 16B interface 类型。其中，前8B是类型信息，后8B是对象的指针信息 interface 16B 2 个指针，详见draveness-go-interface，或者 runtime/runtime2.go iface/eface 定义 int64 8B - int 8B 64位机为 8Byte, 32位机位4Byte string 16B 8B 地址 + 8B string长度 slice 24B 8B地址 + 8B slice 成员数量 + 8B slice capability func 8B func 作为函数参数时，传递的是 func 的地址 需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。\n">
-<meta property='og:url' content='http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
+<meta property='og:url' content='http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/'>
 <meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2022-06-06T14:36:00&#43;00:00'/><meta property='article:modified_time' content='2022-06-06T14:36:00&#43;00:00'/>
 <meta name="twitter:title" content="golang 常见类型字节数">

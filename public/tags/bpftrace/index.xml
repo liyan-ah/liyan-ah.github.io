@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Bpftrace on 李岩</title>
-        <link>http://localhost:61543/tags/bpftrace/</link>
+        <link>http://localhost:62264/tags/bpftrace/</link>
         <description>Recent content in Bpftrace on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Sat, 18 Nov 2023 15:36:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/bpftrace/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 18 Nov 2023 15:36:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/bpftrace/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>bpftrace 遍历 golang 链表（go17&#43;）</title>
-        <link>http://localhost:61543/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</link>
+        <link>http://localhost:62264/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</link>
         <pubDate>Sat, 18 Nov 2023 15:36:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</guid>
+        <guid>http://localhost:62264/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;不出意外的，之前提到的 ELF 文件解析内容又拖延了。目前还不知道什么时候有时间能够把希望完成的几篇文章给搞完。翻一翻目前的博客，已经有很久没有更新了。那就水一篇文章吧。目前算是项目里的低谷期，希望能够重拾程序员的意义。&lt;/p&gt;
 &lt;/blockquote&gt;

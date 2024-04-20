@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Org-Mode on 李岩</title>
-        <link>http://localhost:61543/tags/org-mode/</link>
+        <link>http://localhost:62264/tags/org-mode/</link>
         <description>Recent content in Org-Mode on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Mon, 11 Jan 2021 21:49:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/tags/org-mode/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 11 Jan 2021 21:49:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/org-mode/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>org-mode使用备注</title>
-        <link>http://localhost:61543/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Mon, 11 Jan 2021 21:49:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -66,10 +66,10 @@
         </item>
         <item>
         <title>emacs! start org-mode! --org-mode使用备注</title>
-        <link>http://localhost:61543/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Sun, 10 Jan 2021 20:30:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;/code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;/code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;/p&gt;
 &lt;/blockquote&gt;

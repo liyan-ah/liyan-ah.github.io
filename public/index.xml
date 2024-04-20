@@ -2,16 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>李岩</title>
-        <link>http://localhost:61543/</link>
+        <link>http://localhost:62264/</link>
         <description>Recent content on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Tue, 12 Mar 2024 11:02:00 +0000</lastBuildDate><atom:link href="http://localhost:61543/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 20 Apr 2024 17:11:31 +0800</lastBuildDate><atom:link href="http://localhost:62264/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>合并区间</title>
+        <link>http://localhost:62264/p/%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4/</link>
+        <pubDate>Sat, 20 Apr 2024 17:11:31 +0800</pubDate>
+        
+        <guid>http://localhost:62264/p/%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4/</guid>
+        <description>&lt;blockquote&gt;
+&lt;p&gt;很久没有找工作的经历了，反而由于种种原因，最近接触了一些候选人。总体的感觉是最近是越来越卷了。
+候选人的的水平明显比笔者毕业的时候高的多，也可能是笔者太菜了。其中一个合并区间的问题，笔者看到了
+一个很有意思的解法。在这里记录下。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;《合并区间》问题的思路很明显：排序、合并。笔者最近见到了一种很有意思的解法：使用桶的思想来解决，就不再需要
+进行排序了。算法复杂度也从时间复杂度&lt;code&gt;o(nlgn)&lt;/code&gt;降到了&lt;code&gt;o(n)&lt;/code&gt;。这里记录下。&lt;/p&gt;</description>
+        </item>
+        <item>
         <title>BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</title>
-        <link>http://localhost:61543/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/</link>
+        <link>http://localhost:62264/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/</link>
         <pubDate>Tue, 12 Mar 2024 11:02:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/</guid>
+        <guid>http://localhost:62264/p/bpf-lru_hash_map-%E5%8F%8A-hash_map-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -23,10 +37,10 @@
         </item>
         <item>
         <title>TCP close 过程分析</title>
-        <link>http://localhost:61543/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</link>
+        <link>http://localhost:62264/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</link>
         <pubDate>Sat, 24 Feb 2024 15:55:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</guid>
+        <guid>http://localhost:62264/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近做了一些 TCP 连接观测相关的项目，又到了一个节奏点上了。这里趁着这个机会，做一些总结，同时描述一下 tcp close 过程中的一些疑惑。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -37,7 +51,7 @@
 &lt;/h1&gt;&lt;p&gt;首先来看一下&lt;code&gt;tcp close&lt;/code&gt;的过程。&lt;br&gt;
 对&lt;code&gt;tcp&lt;/code&gt;涉及操作的分析最权威的自然是RFC文档。依据&lt;a class=&#34;link&#34; href=&#34;https://www.rfc-editor.org/rfc/pdfrfc/rfc793.txt.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RFC-793&lt;/a&gt;文档中的描述，&lt;code&gt;tcp close&lt;/code&gt;时的状态转移信息为如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:61543/tcp-state.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:62264/tcp-state.png&#34;
 	
 	
 	
@@ -504,10 +518,10 @@
         </item>
         <item>
         <title>BPF 获取 LVS FullNat 模式下的 Client IP</title>
-        <link>http://localhost:61543/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
+        <link>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
         <pubDate>Wed, 03 Jan 2024 16:15:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
+        <guid>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;搞项目。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -518,7 +532,7 @@
     &lt;a href=&#34;#%e4%b8%80%e6%95%88%e6%9e%9c&#34;&gt;#&lt;/a&gt;
     一、效果
 &lt;/h1&gt;&lt;p&gt;先看下采集效果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:61543/tcp-accept.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:62264/tcp-accept.png&#34;
 	
 	
 	
@@ -533,7 +547,7 @@
     二、LVS FullNat
 &lt;/h1&gt;&lt;p&gt;关于&lt;code&gt;LVS&lt;/code&gt;的&lt;code&gt;Nat&lt;/code&gt;,&lt;code&gt;DR&lt;/code&gt;,&lt;code&gt;Tun&lt;/code&gt;以及&lt;code&gt;FullNat&lt;/code&gt;模式的介绍已经有了很多的资料，比如&lt;a class=&#34;link&#34; href=&#34;https://fafucoder.github.io/2021/12/19/linux-lvs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;这篇文章&lt;/a&gt;就介绍的很详细。这里笔者附上&lt;code&gt;FullNat&lt;/code&gt;模式下的示意图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:61543/full-nat.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:62264/full-nat.png&#34;
 	
 	
 	
@@ -1069,10 +1083,10 @@
         </item>
         <item>
         <title>如何追踪golang channel?</title>
-        <link>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
+        <link>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</link>
         <pubDate>Fri, 08 Dec 2023 19:43:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
+        <guid>http://localhost:62264/p/%E5%A6%82%E4%BD%95%E8%BF%BD%E8%B8%AAgolang-channel/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1126,7 +1140,7 @@
     &gt;runtime/chan.go&lt;/a&gt;。&lt;br&gt;
 笔者在这里再简单的总结下，对&lt;code&gt;send&lt;/code&gt;及&lt;code&gt;recv&lt;/code&gt;两种操作设计的状态做一个简单的概述：
 &lt;code&gt;chan-send&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-send.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-send.png&#34;
 	
 	
 	
@@ -1137,7 +1151,7 @@
 	
 &gt;
 &lt;code&gt;chan-recv&lt;/code&gt;的状态：
-&lt;img src=&#34;http://localhost:61543/chan-recv.png&#34;
+&lt;img src=&#34;http://localhost:62264/chan-recv.png&#34;
 	
 	
 	
@@ -1891,10 +1905,10 @@
         </item>
         <item>
         <title>bpftrace 遍历 golang 链表（go17&#43;）</title>
-        <link>http://localhost:61543/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</link>
+        <link>http://localhost:62264/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</link>
         <pubDate>Sat, 18 Nov 2023 15:36:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</guid>
+        <guid>http://localhost:62264/p/bpftrace-%E9%81%8D%E5%8E%86-golang-%E9%93%BE%E8%A1%A8go17-/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;不出意外的，之前提到的 ELF 文件解析内容又拖延了。目前还不知道什么时候有时间能够把希望完成的几篇文章给搞完。翻一翻目前的博客，已经有很久没有更新了。那就水一篇文章吧。目前算是项目里的低谷期，希望能够重拾程序员的意义。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2096,10 +2110,10 @@
         </item>
         <item>
         <title>eBPF tail-calls示例</title>
-        <link>http://localhost:61543/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/</link>
+        <link>http://localhost:62264/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/</link>
         <pubDate>Sat, 26 Aug 2023 12:30:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/</guid>
+        <guid>http://localhost:62264/p/ebpf-tail-calls%E7%A4%BA%E4%BE%8B/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近在整理一些技术文章。本来希望把涉及ELF的内容整理出来，结果发现太难了。ELF涉及的内容要多很多，如果要把希望整理的内容表述清楚，还需要做一些准备的工作。刚好最近完成了tail-calls 的调研，先把关于eBPF的tail-calls的功能整理下吧。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2390,10 +2404,10 @@
         </item>
         <item>
         <title>BPF追踪Go程序的挑战</title>
-        <link>http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</link>
+        <link>http://localhost:62264/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</link>
         <pubDate>Sun, 25 Jun 2023 17:08:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</guid>
+        <guid>http://localhost:62264/p/bpf%E8%BF%BD%E8%B8%AAgo%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%8C%91%E6%88%98/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;原文地址&lt;a class=&#34;link&#34; href=&#34;https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Challenges of BPF Tracing Go&lt;/a&gt;。翻译不尽如人意，继续努力。&lt;/p&gt;
@@ -2704,7 +2718,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此时，我们可以看到我们已经将返回值移动到距离栈顶一定偏移量的指针上，而指针指向字符串。因为是在栈上，所以是“后进先出”的。这里可能会有些困惑因为函数的主要功能是交换这两个字符串。&lt;/p&gt;
 &lt;p&gt;如果你跟上了我的思路，自然的就能画出这样的分布：
-&lt;img src=&#34;http://localhost:61543/stack.png&#34;
+&lt;img src=&#34;http://localhost:62264/stack.png&#34;
 	
 	
 	
@@ -3892,10 +3906,10 @@
         </item>
         <item>
         <title>PlantUML-文本化绘制UML多类图表</title>
-        <link>http://localhost:61543/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</link>
+        <link>http://localhost:62264/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</link>
         <pubDate>Fri, 21 Apr 2023 20:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</guid>
+        <guid>http://localhost:62264/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;笔者一直都是文本编辑器教派的忠实拥趸：期望将所有的任务都通过文本编辑，而非鼠标/触摸板等，进行实现。从早年的&lt;code&gt;Vim&lt;/code&gt;，到现而今的&lt;code&gt;Emacs&lt;/code&gt;，对文本化完成需求是越来越习惯，也越来越依赖了。最近刚好有了些时间，把最近的一些实践整理下。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4061,7 +4075,7 @@
     3.2 编译输出
 &lt;/h3&gt;&lt;p&gt;输出结果：
 mindmap.png
-&lt;img src=&#34;http://localhost:61543/mindmap.png&#34;
+&lt;img src=&#34;http://localhost:62264/mindmap.png&#34;
 	
 	
 	
@@ -4169,7 +4183,7 @@ mindmap.png
     4.2 编译输出
 &lt;/h3&gt;&lt;p&gt;输出结果如下：
 ngx_request.png
-&lt;img src=&#34;http://localhost:61543/ngx_request.png&#34;
+&lt;img src=&#34;http://localhost:62264/ngx_request.png&#34;
 	
 	
 	
@@ -4184,10 +4198,10 @@ ngx_request.png
         </item>
         <item>
         <title>无侵入观测服务拓扑四元组的一种实现</title>
-        <link>http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</link>
+        <link>http://localhost:62264/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</link>
         <pubDate>Wed, 29 Mar 2023 19:42:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</guid>
+        <guid>http://localhost:62264/p/%E6%97%A0%E4%BE%B5%E5%85%A5%E8%A7%82%E6%B5%8B%E6%9C%8D%E5%8A%A1%E6%8B%93%E6%89%91%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4700,10 +4714,10 @@ ngx_request.png
         </item>
         <item>
         <title>go-1.17&#43; 调用规约</title>
-        <link>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
+        <link>http://localhost:62264/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</link>
         <pubDate>Fri, 03 Mar 2023 20:59:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
+        <guid>http://localhost:62264/p/go-1.17-%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;go-1.17&lt;/code&gt;是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到&lt;code&gt;go-1.17&lt;/code&gt;之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和&lt;code&gt;C/C++&lt;/code&gt;的是完全不一致的。这个问题使得笔者在处理&lt;code&gt;ebpf&lt;/code&gt;方案时，始终无法覆盖&lt;code&gt;go-1.17+&lt;/code&gt;的版本。虽然短期不会造成影响，线上服务使用的大多还在&lt;code&gt;go-1.16&lt;/code&gt;以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下&lt;code&gt;go-1.17+&lt;/code&gt;的调用规约。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -5187,10 +5201,10 @@ ngx_request.png
         </item>
         <item>
         <title>ebpf 采集ebpf 采集tag&#43;tcp五元组</title>
-        <link>http://localhost:61543/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</link>
+        <link>http://localhost:62264/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</link>
         <pubDate>Fri, 24 Feb 2023 21:44:49 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</guid>
+        <guid>http://localhost:62264/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用&lt;code&gt;ebpf&lt;/code&gt;来进行服务观测是有在进行的，比如获取目前&lt;code&gt;l1s&lt;/code&gt;上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如&lt;code&gt;trace&lt;/code&gt;及其他&lt;code&gt;header&lt;/code&gt;等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -5507,10 +5521,10 @@ ngx_request.png
         </item>
         <item>
         <title>emacs org-mode 绘制思维导图</title>
-        <link>http://localhost:61543/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</link>
+        <link>http://localhost:62264/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</link>
         <pubDate>Fri, 10 Feb 2023 19:46:21 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</guid>
+        <guid>http://localhost:62264/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -5594,7 +5608,7 @@ ngx_request.png
 &lt;/h1&gt;&lt;p&gt;&lt;code&gt;mac&lt;/code&gt;可以直接&lt;code&gt;brew install --cask freemind&lt;/code&gt;。或者到其他下载源下载，如&lt;a class=&#34;link&#34; href=&#34;https://freemind.sourceforge.net/wiki/index.php/Download&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;freemind sourceforge 下载&lt;/a&gt;。&lt;br&gt;
 最后使用&lt;code&gt;freemind&lt;/code&gt;打开&lt;code&gt;freemind.org&lt;/code&gt;同级目录生成的&lt;code&gt;freemind.mm&lt;/code&gt;。展示效果如下：
-&lt;img src=&#34;http://localhost:61543/freemind.png&#34;
+&lt;img src=&#34;http://localhost:62264/freemind.png&#34;
 	
 	
 	
@@ -5608,10 +5622,10 @@ ngx_request.png
         </item>
         <item>
         <title>golang常见类型作为参数的eBPF解析</title>
-        <link>http://localhost:61543/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</link>
+        <link>http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</link>
         <pubDate>Fri, 30 Dec 2022 19:24:18 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</guid>
+        <guid>http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇&lt;a class=&#34;link&#34; href=&#34;https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;golang 常见类型字节数
@@ -6476,10 +6490,10 @@ ngx_request.png
         </item>
         <item>
         <title>基于ebpf实现的gls</title>
-        <link>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
+        <link>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
         <pubDate>Fri, 25 Nov 2022 01:14:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
+        <guid>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;虽然&lt;code&gt;golang&lt;/code&gt;并不推荐使用&lt;code&gt;goid&lt;/code&gt;来构建&lt;code&gt;gls&lt;/code&gt;(&lt;code&gt;goroutine local storage&lt;/code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;/code&gt;并使用的尝试。&lt;a class=&#34;link&#34; href=&#34;https://github.com/jtolio/gls&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;github-gls&lt;/a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;/code&gt;里&lt;code&gt;gls&lt;/code&gt;的实现思路：获取&lt;code&gt;goid&lt;/code&gt;，基于&lt;code&gt;goid&lt;/code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;/code&gt;来构建一个&lt;code&gt;golang&lt;/code&gt;的&lt;code&gt;gls&lt;/code&gt;。&lt;/p&gt;
@@ -7029,10 +7043,10 @@ ngx_request.png
         </item>
         <item>
         <title>黑魔法--用 ebpf 构建用户空间数据的桥梁</title>
-        <link>http://localhost:61543/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</link>
+        <link>http://localhost:62264/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</link>
         <pubDate>Fri, 04 Nov 2022 18:00:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</guid>
+        <guid>http://localhost:62264/p/%E9%BB%91%E9%AD%94%E6%B3%95--%E7%94%A8-ebpf-%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A1%A5%E6%A2%81/</guid>
         <description>&lt;p&gt;在之前的示例中，仅涉及到&lt;code&gt;ebpf&lt;/code&gt;对用户空间数据的读取。工程性较强的如：&lt;a class=&#34;link&#34; href=&#34;https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ebpf采集mysql请求信息及ebpf对应用安全的思考&lt;/a&gt;也仅是通过&lt;code&gt;urpobe&lt;/code&gt;采集用户空间的数据。本文介绍点&lt;code&gt;ebpf&lt;/code&gt;的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。&lt;/p&gt;
 &lt;h1 id=&#34;运行效果&#34;&gt;
@@ -7342,10 +7356,10 @@ ngx_request.png
         </item>
         <item>
         <title>ebpf采集mysql请求信息及ebpf对应用安全的思考</title>
-        <link>http://localhost:61543/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</link>
+        <link>http://localhost:62264/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</link>
         <pubDate>Fri, 21 Oct 2022 19:48:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</guid>
+        <guid>http://localhost:62264/p/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;本文笔者继续介绍&lt;code&gt;ebpf&lt;/code&gt; 的应用：使用&lt;code&gt;bpftrace&lt;/code&gt;采集&lt;code&gt;mysql&lt;/code&gt;连接信息，包括数据库地址、&lt;code&gt;db_name&lt;/code&gt;、&lt;code&gt;user_name&lt;/code&gt;。在展示采集操作的同时，附上对&lt;code&gt;ebpf&lt;/code&gt;对云时代应用安全的一些思考。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -7657,10 +7671,10 @@ ngx_request.png
         </item>
         <item>
         <title>x86_64 寄存器传参方式</title>
-        <link>http://localhost:61543/p/x86_64-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</link>
+        <link>http://localhost:62264/p/x86_64-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</link>
         <pubDate>Wed, 31 Aug 2022 19:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/x86_64-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</guid>
+        <guid>http://localhost:62264/p/x86_64-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E5%8F%82%E6%96%B9%E5%BC%8F/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;x86_64 架构下，寄存器传参时，仅 arg1-arg6 会通过寄存器进行，arg7+ 的参数，将会放到栈上进行。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -7815,10 +7829,10 @@ ngx_request.png
         </item>
         <item>
         <title>bpftrace 无侵入遍历golang链表</title>
-        <link>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
+        <link>http://localhost:62264/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</link>
         <pubDate>Fri, 22 Jul 2022 21:48:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
+        <guid>http://localhost:62264/p/bpftrace-%E6%97%A0%E4%BE%B5%E5%85%A5%E9%81%8D%E5%8E%86golang%E9%93%BE%E8%A1%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;bpftrace&lt;/code&gt; 基于 &lt;code&gt;bcc&lt;/code&gt; 进行开发的工具，语法简洁、功能强大。用其分析&lt;code&gt;Linux&lt;/code&gt; 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用&lt;code&gt;bpftrace&lt;/code&gt;无侵入遍历链表成员的方式，介绍&lt;code&gt;bpftrace&lt;/code&gt; &lt;code&gt;attach uprobe&lt;/code&gt; 的使用。更多使用说明见:&lt;a class=&#34;link&#34; href=&#34;https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;bpftrace官网使用文档&lt;/a&gt;&lt;/p&gt;
@@ -8075,10 +8089,10 @@ ngx_request.png
         </item>
         <item>
         <title>让emacs在保存文件时自动格式化代码</title>
-        <link>http://localhost:61543/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
+        <link>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
         <pubDate>Fri, 15 Jul 2022 20:34:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
+        <guid>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liam.page/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;liam&lt;/a&gt;同学在&lt;a class=&#34;link&#34; href=&#34;https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -8209,10 +8223,10 @@ ngx_request.png
         </item>
         <item>
         <title>golang 常见类型字节数</title>
-        <link>http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</link>
+        <link>http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</link>
         <pubDate>Mon, 06 Jun 2022 14:36:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</guid>
+        <guid>http://localhost:62264/p/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;ebpf&lt;/code&gt; 分析&lt;code&gt;golang&lt;/code&gt;程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -8458,10 +8472,10 @@ ngx_request.png
         </item>
         <item>
         <title>golang proto3 使用</title>
-        <link>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
+        <link>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</link>
         <pubDate>Thu, 19 May 2022 17:53:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
+        <guid>http://localhost:62264/p/golang-proto3-%E4%BD%BF%E7%94%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;一直都比较赞赏&lt;a class=&#34;link&#34; href=&#34;https://developers.google.com/protocol-buffers/docs/proto3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;protocol buffer&lt;/code&gt;&lt;/a&gt;。由于其表现性强、压缩比高，可以把很多结构都写到&lt;code&gt;proto&lt;/code&gt;文件中，同时添加很多的注释。当需要进行进行数据存储时，使用&lt;code&gt;proto&lt;/code&gt;序列化结果替代&lt;code&gt;json&lt;/code&gt;，可以省去很多的冗余字段。本篇找了一些&lt;code&gt;golang&lt;/code&gt;中&lt;code&gt;protocol buffer&lt;/code&gt;的使用示例，以及&lt;code&gt;protocol&lt;/code&gt;对象与&lt;code&gt;json&lt;/code&gt;对象互相转换的示例。&lt;/p&gt;
@@ -8731,10 +8745,10 @@ ngx_request.png
         </item>
         <item>
         <title>challenges of bpf tracing go</title>
-        <link>http://localhost:61543/p/challenges-of-bpf-tracing-go/</link>
+        <link>http://localhost:62264/p/challenges-of-bpf-tracing-go/</link>
         <pubDate>Tue, 19 Apr 2022 14:33:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/challenges-of-bpf-tracing-go/</guid>
+        <guid>http://localhost:62264/p/challenges-of-bpf-tracing-go/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -8747,18 +8761,18 @@ ngx_request.png
         </item>
         <item>
         <title>Archives</title>
-        <link>http://localhost:61543/archives/</link>
+        <link>http://localhost:62264/archives/</link>
         <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/archives/</guid>
+        <guid>http://localhost:62264/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>centos 安装docker并构建golang镜像</title>
-        <link>http://localhost:61543/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</link>
+        <link>http://localhost:62264/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</link>
         <pubDate>Fri, 04 Mar 2022 15:00:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</guid>
+        <guid>http://localhost:62264/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -8928,10 +8942,10 @@ ngx_request.png
         </item>
         <item>
         <title>eBPF及其对可观测的意义【译文】</title>
-        <link>http://localhost:61543/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</link>
+        <link>http://localhost:62264/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</link>
         <pubDate>Wed, 02 Mar 2022 16:34:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</guid>
+        <guid>http://localhost:62264/p/ebpf%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%8F%AF%E8%A7%82%E6%B5%8B%E7%9A%84%E6%84%8F%E4%B9%89%E8%AF%91%E6%96%87/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。&lt;br&gt;
 原文地址：&lt;a class=&#34;link&#34; href=&#34;https://newrelic.com/blog/best-practices/what-is-ebpf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -9035,10 +9049,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>centos 构建 local-k8s</title>
-        <link>http://localhost:61543/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/</link>
+        <link>http://localhost:62264/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/</link>
         <pubDate>Thu, 24 Feb 2022 17:27:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/</guid>
+        <guid>http://localhost:62264/p/centos-%E6%9E%84%E5%BB%BA-local-k8s/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。
 环境：Linux test 4.18.0-193.el8.x86_64&lt;/p&gt;
@@ -9214,10 +9228,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>Mac 绘图工具推荐</title>
-        <link>http://localhost:61543/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</link>
+        <link>http://localhost:62264/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</link>
         <pubDate>Wed, 16 Feb 2022 10:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</guid>
+        <guid>http://localhost:62264/p/mac-%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</guid>
         <description>&lt;p&gt;之前办公一直在&lt;code&gt;Windows&lt;/code&gt;系统中，诸如流程图、部署图等图表使用的是&lt;code&gt;visio&lt;/code&gt;。迁移到&lt;code&gt;Mac&lt;/code&gt;上后，&lt;code&gt;visio&lt;/code&gt;便不能使用了。转战到&lt;a class=&#34;link&#34; href=&#34;https://www.sketch.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;sketch&lt;/code&gt;&lt;/a&gt; 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。&lt;br&gt;
 目前在使用&lt;a class=&#34;link&#34; href=&#34;https://draw.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -9226,10 +9240,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>ELK-docker 实践</title>
-        <link>http://localhost:61543/p/elk-docker-%E5%AE%9E%E8%B7%B5/</link>
+        <link>http://localhost:62264/p/elk-docker-%E5%AE%9E%E8%B7%B5/</link>
         <pubDate>Tue, 04 Jan 2022 00:06:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/elk-docker-%E5%AE%9E%E8%B7%B5/</guid>
+        <guid>http://localhost:62264/p/elk-docker-%E5%AE%9E%E8%B7%B5/</guid>
         <description>&lt;h1 id=&#34;elk-docker-部署实践&#34;&gt;
     &lt;a href=&#34;#elk-docker-%e9%83%a8%e7%bd%b2%e5%ae%9e%e8%b7%b5&#34;&gt;#&lt;/a&gt;
     ELK docker 部署实践
@@ -9691,10 +9705,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>Quic协议</title>
-        <link>http://localhost:61543/p/quic%E5%8D%8F%E8%AE%AE/</link>
+        <link>http://localhost:62264/p/quic%E5%8D%8F%E8%AE%AE/</link>
         <pubDate>Tue, 09 Nov 2021 21:11:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/quic%E5%8D%8F%E8%AE%AE/</guid>
+        <guid>http://localhost:62264/p/quic%E5%8D%8F%E8%AE%AE/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -9728,10 +9742,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>emacs-若干语言 lsp 配置备注</title>
-        <link>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Tue, 12 Oct 2021 20:26:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;微软推出的&lt;a class=&#34;link&#34; href=&#34;https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;language server protol&lt;/a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;/code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;/code&gt; 中的 rust, golang, python, c/c++ lsp 配置&lt;/p&gt;
@@ -9930,10 +9944,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>redisgo 连接报错</title>
-        <link>http://localhost:61543/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</link>
+        <link>http://localhost:62264/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</link>
         <pubDate>Wed, 18 Aug 2021 17:26:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</guid>
+        <guid>http://localhost:62264/p/redisgo-%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;记一次&lt;code&gt;redisgo&lt;/code&gt;库使用时，连接远程&lt;code&gt;redis&lt;/code&gt;服务写数据报错的问题。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -9948,10 +9962,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>PHP-7.1升级至7.4兼容性</title>
-        <link>http://localhost:61543/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</link>
+        <link>http://localhost:62264/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</link>
         <pubDate>Mon, 02 Aug 2021 20:34:48 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</guid>
+        <guid>http://localhost:62264/p/php-7.1%E5%8D%87%E7%BA%A7%E8%87%B37.4%E5%85%BC%E5%AE%B9%E6%80%A7/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;php作为&lt;del&gt;动不动搞个大事情&lt;/del&gt;世界上最好的语言,&lt;del&gt;经常&lt;/del&gt;偶尔会出现由于版本升级导致的不兼容问题。笔者在工作中遇到了&lt;code&gt;php7.1&lt;/code&gt;升级到&lt;code&gt;php7.4&lt;/code&gt;导致的&lt;code&gt;each&lt;/code&gt;弃用、&lt;code&gt;mcrypt&lt;/code&gt;库启动导致的不兼容。在这里备注下兼容方式。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -10213,10 +10227,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>go-simplejson 插入数组</title>
-        <link>http://localhost:61543/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</link>
+        <link>http://localhost:62264/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</link>
         <pubDate>Thu, 22 Jul 2021 17:58:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</guid>
+        <guid>http://localhost:62264/p/go-simplejson-%E6%8F%92%E5%85%A5%E6%95%B0%E7%BB%84/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bitly/go-simplejson&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;go-simplejson&lt;/a&gt;是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。&lt;/p&gt;
@@ -10390,10 +10404,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>http及websocket性能对比</title>
-        <link>http://localhost:61543/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</link>
+        <link>http://localhost:62264/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</link>
         <pubDate>Thu, 15 Jul 2021 19:29:10 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</guid>
+        <guid>http://localhost:62264/p/http%E5%8F%8Awebsocket%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -10733,10 +10747,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>golang GMP</title>
-        <link>http://localhost:61543/p/golang-gmp/</link>
+        <link>http://localhost:62264/p/golang-gmp/</link>
         <pubDate>Thu, 15 Apr 2021 21:39:29 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-gmp/</guid>
+        <guid>http://localhost:62264/p/golang-gmp/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;/code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;/code&gt;的&lt;code&gt;GC&lt;/code&gt;实践。慢慢搞吧。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -10764,10 +10778,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>golang 封装</title>
-        <link>http://localhost:61543/p/golang-%E5%B0%81%E8%A3%85/</link>
+        <link>http://localhost:62264/p/golang-%E5%B0%81%E8%A3%85/</link>
         <pubDate>Thu, 08 Apr 2021 21:16:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/golang-%E5%B0%81%E8%A3%85/</guid>
+        <guid>http://localhost:62264/p/golang-%E5%B0%81%E8%A3%85/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -10966,10 +10980,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>ratelimit服务流量限制</title>
-        <link>http://localhost:61543/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</link>
+        <link>http://localhost:62264/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</link>
         <pubDate>Sun, 07 Feb 2021 17:30:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</guid>
+        <guid>http://localhost:62264/p/ratelimit%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F%E9%99%90%E5%88%B6/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以&lt;a class=&#34;link&#34; href=&#34;https://chai2010.cn/advanced-go-programming-book/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Go语言高级编程&lt;/a&gt; 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对&lt;code&gt;Jmeter&lt;/code&gt;及&lt;code&gt;golang ratelimit&lt;/code&gt;中的流量限制方法进行描述。&lt;/p&gt;
@@ -11103,10 +11117,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>org-mode使用备注</title>
-        <link>http://localhost:61543/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Mon, 11 Jan 2021 21:49:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11161,10 +11175,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>emacs! start org-mode! --org-mode使用备注</title>
-        <link>http://localhost:61543/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Sun, 10 Jan 2021 20:30:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;/code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;/code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11352,10 +11366,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>elscreen标签背景颜色</title>
-        <link>http://localhost:61543/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</link>
+        <link>http://localhost:62264/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</link>
         <pubDate>Wed, 23 Dec 2020 19:23:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</guid>
+        <guid>http://localhost:62264/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;使用&lt;code&gt;emacs&lt;/code&gt;过程中，配合&lt;code&gt;evil&lt;/code&gt;使用，按照&lt;code&gt;tab&lt;/code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;/code&gt;等任务划分到不同的&lt;code&gt;tab&lt;/code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;/code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;/code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;/code&gt;的方法，备注下。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11419,10 +11433,10 @@ eBPF 最开始的时候是作为一种增加过滤网络包时可观测性及安
         </item>
         <item>
         <title>Mac使用备注</title>
-        <link>http://localhost:61543/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Thu, 10 Dec 2020 19:40:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/mac%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近开始使用Mac了。在使用过程中，发现了一些&lt;code&gt;Mac OS&lt;/code&gt;和&lt;code&gt;Centos&lt;/code&gt;体验上不同的地方。在这里做一下备注。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -11461,10 +11475,10 @@ syntax on&lt;/p&gt;
         </item>
         <item>
         <title>find匹配文件名</title>
-        <link>http://localhost:61543/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</link>
+        <link>http://localhost:62264/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</link>
         <pubDate>Thu, 12 Nov 2020 21:44:28 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</guid>
+        <guid>http://localhost:62264/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</guid>
         <description>&lt;p&gt;目录内容：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11512,10 +11526,10 @@ syntax on&lt;/p&gt;
         </item>
         <item>
         <title>sed使用备注</title>
-        <link>http://localhost:61543/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:62264/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Thu, 12 Nov 2020 16:36:51 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:62264/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;h2 id=&#34;sed功能介绍&#34;&gt;
     &lt;a href=&#34;#sed%e5%8a%9f%e8%83%bd%e4%bb%8b%e7%bb%8d&#34;&gt;#&lt;/a&gt;
     sed功能介绍
@@ -11566,10 +11580,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>c&#43;&#43;插件管理--pluma&lt;实践&gt;</title>
-        <link>http://localhost:61543/p/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86--pluma%E5%AE%9E%E8%B7%B5/</link>
+        <link>http://localhost:62264/p/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86--pluma%E5%AE%9E%E8%B7%B5/</link>
         <pubDate>Thu, 29 Oct 2020 21:19:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86--pluma%E5%AE%9E%E8%B7%B5/</guid>
+        <guid>http://localhost:62264/p/c-%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86--pluma%E5%AE%9E%E8%B7%B5/</guid>
         <description>&lt;p&gt;最近研究了一下&lt;a class=&#34;link&#34; href=&#34;http://pluma-framework.sourceforge.net/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;pluma&lt;/a&gt;的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。&lt;br&gt;
 下面重新整理了一个例子，作为备注。&lt;/p&gt;
@@ -11865,10 +11879,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>python调试方法（其一）</title>
-        <link>http://localhost:61543/p/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E5%85%B6%E4%B8%80/</link>
+        <link>http://localhost:62264/p/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E5%85%B6%E4%B8%80/</link>
         <pubDate>Wed, 17 Jul 2019 22:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E5%85%B6%E4%B8%80/</guid>
+        <guid>http://localhost:62264/p/python%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E5%85%B6%E4%B8%80/</guid>
         <description>&lt;p&gt;&amp;lt;一&amp;gt; 这里记录一些python调试的方法：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12004,10 +12018,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>shell-访问字符串同名变量</title>
-        <link>http://localhost:61543/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</link>
+        <link>http://localhost:62264/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</link>
         <pubDate>Tue, 04 Jun 2019 21:53:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</guid>
+        <guid>http://localhost:62264/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</guid>
         <description>&lt;p&gt;考虑以下场景：&lt;br&gt;
 期望通过给定的变量名称&lt;code&gt;var_str&lt;/code&gt;，打印出该名称对应的变量值&lt;code&gt;${var_str}&lt;/code&gt;。使用指令&lt;code&gt;eval&lt;/code&gt;可以很方便的实现：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -12048,10 +12062,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>lisp-do循环</title>
-        <link>http://localhost:61543/p/lisp-do%E5%BE%AA%E7%8E%AF/</link>
+        <link>http://localhost:62264/p/lisp-do%E5%BE%AA%E7%8E%AF/</link>
         <pubDate>Mon, 03 Jun 2019 22:42:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/lisp-do%E5%BE%AA%E7%8E%AF/</guid>
+        <guid>http://localhost:62264/p/lisp-do%E5%BE%AA%E7%8E%AF/</guid>
         <description>&lt;p&gt;lisp中，do循环形象如下:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12115,10 +12129,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>lisp-let变量声明</title>
-        <link>http://localhost:61543/p/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</link>
+        <link>http://localhost:62264/p/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</link>
         <pubDate>Thu, 30 May 2019 22:51:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</guid>
+        <guid>http://localhost:62264/p/lisp-let%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E/</guid>
         <description>&lt;p&gt;lisp声明、使用变量的一种方法，是使用&lt;code&gt;let&lt;/code&gt;语句。&lt;br&gt;
 形如：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -12212,10 +12226,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>lisp-lambda函数</title>
-        <link>http://localhost:61543/p/lisp-lambda%E5%87%BD%E6%95%B0/</link>
+        <link>http://localhost:62264/p/lisp-lambda%E5%87%BD%E6%95%B0/</link>
         <pubDate>Wed, 29 May 2019 23:28:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/lisp-lambda%E5%87%BD%E6%95%B0/</guid>
+        <guid>http://localhost:62264/p/lisp-lambda%E5%87%BD%E6%95%B0/</guid>
         <description>&lt;p&gt;lisp中的lambda表达式，显然和python中的很相似。&lt;br&gt;
 参照《实用common lisp编程》：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -12292,10 +12306,10 @@ interesting。&lt;/p&gt;</description>
         </item>
         <item>
         <title>clisp编译</title>
-        <link>http://localhost:61543/p/clisp%E7%BC%96%E8%AF%91/</link>
+        <link>http://localhost:62264/p/clisp%E7%BC%96%E8%AF%91/</link>
         <pubDate>Tue, 28 May 2019 22:16:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/clisp%E7%BC%96%E8%AF%91/</guid>
+        <guid>http://localhost:62264/p/clisp%E7%BC%96%E8%AF%91/</guid>
         <description>&lt;p&gt;目前，lisp的开发环境基本上被&lt;a class=&#34;link&#34; href=&#34;https://common-lisp.net/project/lispbox/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;lispbox&lt;/a&gt;所垄断。所以本文来说一&lt;a class=&#34;link&#34; href=&#34;https://clisp.sourceforge.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CLISP&lt;/a&gt;，C语言实现的LISP解释器的安装。&lt;/p&gt;
@@ -12408,10 +12422,10 @@ interesting。&lt;/p&gt;</description>
         </item>
         <item>
         <title>lisp-hello world</title>
-        <link>http://localhost:61543/p/lisp-hello-world/</link>
+        <link>http://localhost:62264/p/lisp-hello-world/</link>
         <pubDate>Tue, 28 May 2019 21:52:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/p/lisp-hello-world/</guid>
+        <guid>http://localhost:62264/p/lisp-hello-world/</guid>
         <description>&lt;p&gt;lisp语言的基本表达式为S-表达式。这与受&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/ALGOL&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Algol&lt;/a&gt;语言影响的C系语言有很大的不同。显然，这很有趣：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -12434,10 +12448,10 @@ interesting。&lt;/p&gt;</description>
         </item>
         <item>
         <title>Search</title>
-        <link>http://localhost:61543/search/</link>
+        <link>http://localhost:62264/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:61543/search/</guid>
+        <guid>http://localhost:62264/search/</guid>
         <description></description>
         </item>
         
