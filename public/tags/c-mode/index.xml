@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>C-Mode on 李岩</title>
-        <link>http://localhost:62264/tags/c-mode/</link>
+        <link>http://localhost:1313/tags/c-mode/</link>
         <description>Recent content in C-Mode on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 15 Jul 2022 20:34:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/c-mode/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 15 Jul 2022 20:34:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/c-mode/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>让emacs在保存文件时自动格式化代码</title>
-        <link>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
+        <link>http://localhost:1313/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link>
         <pubDate>Fri, 15 Jul 2022 20:34:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
+        <guid>http://localhost:1313/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://liam.page/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;liam&lt;/a&gt;同学在&lt;a class=&#34;link&#34; href=&#34;https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

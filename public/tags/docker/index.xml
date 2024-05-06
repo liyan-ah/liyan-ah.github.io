@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Docker on 李岩</title>
-        <link>http://localhost:62264/tags/docker/</link>
+        <link>http://localhost:1313/tags/docker/</link>
         <description>Recent content in Docker on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 04 Mar 2022 15:00:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/docker/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 04 Mar 2022 15:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/docker/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>centos 安装docker并构建golang镜像</title>
-        <link>http://localhost:62264/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</link>
+        <link>http://localhost:1313/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</link>
         <pubDate>Fri, 04 Mar 2022 15:00:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</guid>
+        <guid>http://localhost:1313/p/centos-%E5%AE%89%E8%A3%85docker%E5%B9%B6%E6%9E%84%E5%BB%BAgolang%E9%95%9C%E5%83%8F/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。&lt;/p&gt;
 &lt;/blockquote&gt;

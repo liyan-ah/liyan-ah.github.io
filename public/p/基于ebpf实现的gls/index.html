@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=62264&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。\n# 基本功能 本文中基于ebpf实现的gls具有如下功能：\n基于goid的存储。即map[goid]=value； 基于goroutine派生关系设置的value缺省值。即map[goid=1]=121，且goid=1派生goid=2，则map[goid=2]=map[goid=1]=121；\n本文建议参照黑魔法-ebpf-对用户空间数据的写入进行理解。 ">
 <title>基于ebpf实现的gls</title>
 
-<link rel='canonical' href='http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
+<link rel='canonical' href='http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="基于ebpf实现的gls">
 <meta property='og:description' content=" 虽然golang并不推荐使用goid来构建gls(goroutine local storage)，仍然有着很多的实现gls并使用的尝试。github-gls这里是一个常见的实现，基本表述了golang里gls的实现思路：获取goid，基于goid构建一个存储。本文中笔者尝试基于ebpf来构建一个golang的gls。\n# 基本功能 本文中基于ebpf实现的gls具有如下功能：\n基于goid的存储。即map[goid]=value； 基于goroutine派生关系设置的value缺省值。即map[goid=1]=121，且goid=1派生goid=2，则map[goid=2]=map[goid=1]=121；\n本文建议参照黑魔法-ebpf-对用户空间数据的写入进行理解。 ">
-<meta property='og:url' content='http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
+<meta property='og:url' content='http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/'>
 <meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='code' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='gls' /><meta property='article:published_time' content='2022-11-25T01:14:00&#43;00:00'/><meta property='article:modified_time' content='2022-11-25T01:14:00&#43;00:00'/>
 <meta name="twitter:title" content="基于ebpf实现的gls">
@@ -70,7 +70,7 @@
         
         <div class="site-meta">
             <h1 class="site-name"><a href="/">李岩</a></h1>
-            <h2 class="site-description">后之视今，亦犹今之视昔。</h2>
+            <h2 class="site-description">努力做个工程师。</h2>
         </div>
     </header><ol class="menu-social">
             

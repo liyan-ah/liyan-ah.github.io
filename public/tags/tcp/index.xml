@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tcp on 李岩</title>
-        <link>http://localhost:62264/tags/tcp/</link>
+        <link>http://localhost:1313/tags/tcp/</link>
         <description>Recent content in Tcp on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Sat, 24 Feb 2024 15:55:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/tcp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 24 Feb 2024 15:55:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/tcp/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>TCP close 过程分析</title>
-        <link>http://localhost:62264/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</link>
+        <link>http://localhost:1313/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</link>
         <pubDate>Sat, 24 Feb 2024 15:55:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</guid>
+        <guid>http://localhost:1313/p/tcp-close-%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;最近做了一些 TCP 连接观测相关的项目，又到了一个节奏点上了。这里趁着这个机会，做一些总结，同时描述一下 tcp close 过程中的一些疑惑。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -22,7 +22,7 @@
 &lt;/h1&gt;&lt;p&gt;首先来看一下&lt;code&gt;tcp close&lt;/code&gt;的过程。&lt;br&gt;
 对&lt;code&gt;tcp&lt;/code&gt;涉及操作的分析最权威的自然是RFC文档。依据&lt;a class=&#34;link&#34; href=&#34;https://www.rfc-editor.org/rfc/pdfrfc/rfc793.txt.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RFC-793&lt;/a&gt;文档中的描述，&lt;code&gt;tcp close&lt;/code&gt;时的状态转移信息为如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:62264/tcp-state.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/tcp-state.png&#34;
 	
 	
 	
@@ -489,10 +489,10 @@
         </item>
         <item>
         <title>BPF 获取 LVS FullNat 模式下的 Client IP</title>
-        <link>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
+        <link>http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
         <pubDate>Wed, 03 Jan 2024 16:15:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
+        <guid>http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;搞项目。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -503,7 +503,7 @@
     &lt;a href=&#34;#%e4%b8%80%e6%95%88%e6%9e%9c&#34;&gt;#&lt;/a&gt;
     一、效果
 &lt;/h1&gt;&lt;p&gt;先看下采集效果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:62264/tcp-accept.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/tcp-accept.png&#34;
 	
 	
 	
@@ -518,7 +518,7 @@
     二、LVS FullNat
 &lt;/h1&gt;&lt;p&gt;关于&lt;code&gt;LVS&lt;/code&gt;的&lt;code&gt;Nat&lt;/code&gt;,&lt;code&gt;DR&lt;/code&gt;,&lt;code&gt;Tun&lt;/code&gt;以及&lt;code&gt;FullNat&lt;/code&gt;模式的介绍已经有了很多的资料，比如&lt;a class=&#34;link&#34; href=&#34;https://fafucoder.github.io/2021/12/19/linux-lvs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;这篇文章&lt;/a&gt;就介绍的很详细。这里笔者附上&lt;code&gt;FullNat&lt;/code&gt;模式下的示意图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:62264/full-nat.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/full-nat.png&#34;
 	
 	
 	
@@ -1054,10 +1054,10 @@
         </item>
         <item>
         <title>ebpf 采集ebpf 采集tag&#43;tcp五元组</title>
-        <link>http://localhost:62264/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</link>
+        <link>http://localhost:1313/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</link>
         <pubDate>Fri, 24 Feb 2023 21:44:49 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</guid>
+        <guid>http://localhost:1313/p/ebpf-%E9%87%87%E9%9B%86ebpf-%E9%87%87%E9%9B%86tag-tcp%E4%BA%94%E5%85%83%E7%BB%84/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用&lt;code&gt;ebpf&lt;/code&gt;来进行服务观测是有在进行的，比如获取目前&lt;code&gt;l1s&lt;/code&gt;上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如&lt;code&gt;trace&lt;/code&gt;及其他&lt;code&gt;header&lt;/code&gt;等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。&lt;/p&gt;
 &lt;/blockquote&gt;

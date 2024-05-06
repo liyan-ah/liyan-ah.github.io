@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Gls on 李岩</title>
-        <link>http://localhost:62264/tags/gls/</link>
+        <link>http://localhost:1313/tags/gls/</link>
         <description>Recent content in Gls on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Fri, 25 Nov 2022 01:14:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/gls/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 25 Nov 2022 01:14:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/gls/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>基于ebpf实现的gls</title>
-        <link>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
+        <link>http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</link>
         <pubDate>Fri, 25 Nov 2022 01:14:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
+        <guid>http://localhost:1313/p/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;虽然&lt;code&gt;golang&lt;/code&gt;并不推荐使用&lt;code&gt;goid&lt;/code&gt;来构建&lt;code&gt;gls&lt;/code&gt;(&lt;code&gt;goroutine local storage&lt;/code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;/code&gt;并使用的尝试。&lt;a class=&#34;link&#34; href=&#34;https://github.com/jtolio/gls&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;github-gls&lt;/a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;/code&gt;里&lt;code&gt;gls&lt;/code&gt;的实现思路：获取&lt;code&gt;goid&lt;/code&gt;，基于&lt;code&gt;goid&lt;/code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;/code&gt;来构建一个&lt;code&gt;golang&lt;/code&gt;的&lt;code&gt;gls&lt;/code&gt;。&lt;/p&gt;

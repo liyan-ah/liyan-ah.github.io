@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=62264&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇golang 常见类型字节数 ，开启了eBPF+golang的总结性工作。此后陆续整理了一些关于ebpf的使用文章，同时项目也在逐步的推进。eBPF的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。\neBPF能够提供一种切入服务细节的独特视角。本文即通过实例，对golang常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于golang-1.16来整理的。\n">
 <title>golang常见类型作为参数的eBPF解析</title>
 
-<link rel='canonical' href='http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/'>
+<link rel='canonical' href='http://localhost:1313/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/'>
 
 <link rel="stylesheet" href="/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css"><meta property='og:title' content="golang常见类型作为参数的eBPF解析">
 <meta property='og:description' content=" 即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇golang 常见类型字节数 ，开启了eBPF+golang的总结性工作。此后陆续整理了一些关于ebpf的使用文章，同时项目也在逐步的推进。eBPF的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。\neBPF能够提供一种切入服务细节的独特视角。本文即通过实例，对golang常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于golang-1.16来整理的。\n">
-<meta property='og:url' content='http://localhost:62264/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/'>
+<meta property='og:url' content='http://localhost:1313/p/golang%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%E7%9A%84ebpf%E8%A7%A3%E6%9E%90/'>
 <meta property='og:site_name' content='李岩'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bpf' /><meta property='article:tag' content='golang' /><meta property='article:published_time' content='2022-12-30T19:24:18&#43;00:00'/><meta property='article:modified_time' content='2022-12-30T19:24:18&#43;00:00'/>
 <meta name="twitter:title" content="golang常见类型作为参数的eBPF解析">
@@ -70,7 +70,7 @@
         
         <div class="site-meta">
             <h1 class="site-name"><a href="/">李岩</a></h1>
-            <h2 class="site-description">后之视今，亦犹今之视昔。</h2>
+            <h2 class="site-description">努力做个工程师。</h2>
         </div>
     </header><ol class="menu-social">
             

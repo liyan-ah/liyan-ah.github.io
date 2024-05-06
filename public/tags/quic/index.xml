@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Quic on 李岩</title>
-        <link>http://localhost:62264/tags/quic/</link>
+        <link>http://localhost:1313/tags/quic/</link>
         <description>Recent content in Quic on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Tue, 09 Nov 2021 21:11:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/quic/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Nov 2021 21:11:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/quic/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Quic协议</title>
-        <link>http://localhost:62264/p/quic%E5%8D%8F%E8%AE%AE/</link>
+        <link>http://localhost:1313/p/quic%E5%8D%8F%E8%AE%AE/</link>
         <pubDate>Tue, 09 Nov 2021 21:11:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/quic%E5%8D%8F%E8%AE%AE/</guid>
+        <guid>http://localhost:1313/p/quic%E5%8D%8F%E8%AE%AE/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；&lt;/p&gt;
 &lt;/blockquote&gt;

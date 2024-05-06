@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Lvs on 李岩</title>
-        <link>http://localhost:62264/tags/lvs/</link>
+        <link>http://localhost:1313/tags/lvs/</link>
         <description>Recent content in Lvs on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Wed, 03 Jan 2024 16:15:00 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/lvs/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 03 Jan 2024 16:15:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/lvs/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>BPF 获取 LVS FullNat 模式下的 Client IP</title>
-        <link>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
+        <link>http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</link>
         <pubDate>Wed, 03 Jan 2024 16:15:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
+        <guid>http://localhost:1313/p/bpf-%E8%8E%B7%E5%8F%96-lvs-fullnat-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84-client-ip/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;搞项目。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -22,7 +22,7 @@
     &lt;a href=&#34;#%e4%b8%80%e6%95%88%e6%9e%9c&#34;&gt;#&lt;/a&gt;
     一、效果
 &lt;/h1&gt;&lt;p&gt;先看下采集效果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:62264/tcp-accept.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/tcp-accept.png&#34;
 	
 	
 	
@@ -37,7 +37,7 @@
     二、LVS FullNat
 &lt;/h1&gt;&lt;p&gt;关于&lt;code&gt;LVS&lt;/code&gt;的&lt;code&gt;Nat&lt;/code&gt;,&lt;code&gt;DR&lt;/code&gt;,&lt;code&gt;Tun&lt;/code&gt;以及&lt;code&gt;FullNat&lt;/code&gt;模式的介绍已经有了很多的资料，比如&lt;a class=&#34;link&#34; href=&#34;https://fafucoder.github.io/2021/12/19/linux-lvs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;这篇文章&lt;/a&gt;就介绍的很详细。这里笔者附上&lt;code&gt;FullNat&lt;/code&gt;模式下的示意图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:62264/full-nat.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/full-nat.png&#34;
 	
 	
 	

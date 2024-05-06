@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Shell on 李岩</title>
-        <link>http://localhost:62264/tags/shell/</link>
+        <link>http://localhost:1313/tags/shell/</link>
         <description>Recent content in Shell on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Thu, 12 Nov 2020 21:44:28 +0000</lastBuildDate><atom:link href="http://localhost:62264/tags/shell/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 12 Nov 2020 21:44:28 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/shell/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>find匹配文件名</title>
-        <link>http://localhost:62264/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</link>
+        <link>http://localhost:1313/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</link>
         <pubDate>Thu, 12 Nov 2020 21:44:28 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</guid>
+        <guid>http://localhost:1313/p/find%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%90%8D/</guid>
         <description>&lt;p&gt;目录内容：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -59,10 +59,10 @@
         </item>
         <item>
         <title>sed使用备注</title>
-        <link>http://localhost:62264/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <link>http://localhost:1313/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
         <pubDate>Thu, 12 Nov 2020 16:36:51 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <guid>http://localhost:1313/p/sed%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
         <description>&lt;h2 id=&#34;sed功能介绍&#34;&gt;
     &lt;a href=&#34;#sed%e5%8a%9f%e8%83%bd%e4%bb%8b%e7%bb%8d&#34;&gt;#&lt;/a&gt;
     sed功能介绍
@@ -113,10 +113,10 @@ editors.&lt;/p&gt;
         </item>
         <item>
         <title>shell-访问字符串同名变量</title>
-        <link>http://localhost:62264/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</link>
+        <link>http://localhost:1313/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</link>
         <pubDate>Tue, 04 Jun 2019 21:53:00 +0000</pubDate>
         
-        <guid>http://localhost:62264/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</guid>
+        <guid>http://localhost:1313/p/shell-%E8%AE%BF%E9%97%AE%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F/</guid>
         <description>&lt;p&gt;考虑以下场景：&lt;br&gt;
 期望通过给定的变量名称&lt;code&gt;var_str&lt;/code&gt;，打印出该名称对应的变量值&lt;code&gt;${var_str}&lt;/code&gt;。使用指令&lt;code&gt;eval&lt;/code&gt;可以很方便的实现：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
