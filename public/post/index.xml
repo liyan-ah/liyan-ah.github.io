@@ -6,7 +6,25 @@
         <description>Recent content in Posts on 李岩</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-Hans</language>
-        <lastBuildDate>Sat, 20 Apr 2024 17:11:31 +0800</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 07 May 2024 11:39:00 +0800</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Cargo config 使用备注</title>
+        <link>http://localhost:1313/p/cargo-config-%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link>
+        <pubDate>Tue, 07 May 2024 11:39:00 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/cargo-config-%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid>
+        <description>&lt;p&gt;本文旨在回答如下问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Rust 项目中，如何配置 dependencies 的路径为指定仓库。&lt;/li&gt;
+&lt;li&gt;在不指定 branch 或 version 的情况下，dependencies 会拉取什么版本/仓库里的数据。&lt;/li&gt;
+&lt;li&gt;Rust 项目中，配置 dependencies 的最佳实践。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以下为正文。&lt;/p&gt;
+&lt;h2 id=&#34;如何配置-dependencies-的路径&#34;&gt;
+    &lt;a href=&#34;#%e5%a6%82%e4%bd%95%e9%85%8d%e7%bd%ae-dependencies-%e7%9a%84%e8%b7%af%e5%be%84&#34;&gt;#&lt;/a&gt;
+    如何配置 dependencies 的路径
+&lt;/h2&gt;</description>
+        </item>
+        <item>
         <title>合并区间</title>
         <link>http://localhost:1313/p/%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4/</link>
         <pubDate>Sat, 20 Apr 2024 17:11:31 +0800</pubDate>
