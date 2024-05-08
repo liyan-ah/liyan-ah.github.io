@@ -56,7 +56,8 @@ middle-lib = { git = "https://github.com/liyan-ah/middle-lib.git" } # 注意，�
 dep-check 编译时，其引用的`trait_lib::Check`和 middle-lib 里使用的`trait_lib::Check`就无法认为是同一个（即使实际上代码的提交是同一个）。依赖库的设置可以通过 Cargo.lock 里的 source 来确认。当 dep-check 和 middle-lib 的 Cargo.lock 对 trait-lib 的 source
 配置相同时，就不会出现类型不一致的问题。  
 由于使用了 tag / rev / branch 来作为 dependencies 的配置，一个问题是当 trait-lib 发生更新时，需要同时升级 middle-lib 和 dep-check 这两个仓库。否则就会出现版本不一致而编译失败的情况。如果使用 version 控制，由于 version 实际
-上表示的是一个[范围](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-cratesio)（准确来说，只要 x.y.z 中的 y 保持一致即可），只要 update 后的依赖库是同一个版本即可，不一定需要更新 Cargo.toml。
+上表示的是一个[范围](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-cratesio)，只要 update 后的依赖库是同一个版本即可（准确来说，x.y.z 中的 x.y 保持一致即可），可
+以在 cargo update 后检查 dep-check 中存在几个 trait-lib。在仅存在一个 trait-lib 时，说明依赖库不存在版本冲突，此时不需要更新 middle-lib 中的 Cargo.toml。
 
 配置的问题在这里有描述：[The dependency resolution is confused when using git dependency and there's a lockfile](https://github.com/rust-lang/cargo/issues/11490)。
 
