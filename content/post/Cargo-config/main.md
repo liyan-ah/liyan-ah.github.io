@@ -58,7 +58,7 @@ dep-check 编译时，其引用的`trait_lib::Check`和 middle-lib 里使用的`
 
 配置的问题在这里有描述：[The dependency resolution is confused when using git dependency and there's a lockfile](https://github.com/rust-lang/cargo/issues/11490)。
 
-> duck-typing 的接口在校验时还比较简单，只需要检查是否实现了目标类型/接口定义的函数即可。但是对于非 duck-typing，情况会复杂些：不同的库里是允许出现同名的 trait 的。如何确定项目中实现的 trait 和引用库中需要的 trait 是同一个 trait？这就需要确保项目中 trait 的来源库和引用库中所需要的 trait 来源库是相同的。而看起来，库是否相同，又是通过 source 来确定的。Cargo.toml 中的 source 毕竟是一个工程里的概念，是如何影响编译的呢？是否是编译过程中，函数签名里带着一些source 信息？还需要进一步的探索。
+> duck-typing 的接口在校验时还比较简单，只需要检查是否实现了目标类型/接口定义的函数即可。但是对于非 duck-typing，情况会复杂些：不同的库里是允许出现同名的 trait 的。如何确定项目中实现的 trait 和引用库中需要的 trait 是同一个 trait？这就需要确保项目中 trait 的来源库和引用库中所需要的 trait 来源库是相同的。而看起来，库是否相同，又是通过 source 来确定的。Cargo.toml 中的 source 毕竟是一个工程里的概念，是如何影响编译的呢？是否是编译过程中，函数签名里带着一些source 信息？还需要进一步的探索，期望能够整理成文档。
 
 
 ## dependences 配置的最佳实践？
