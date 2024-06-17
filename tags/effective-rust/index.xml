@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Effective-Rust on 李岩</title><link>https://liyan-ah.github.io/tags/effective-rust/</link><description>Recent content in Effective-Rust on 李岩</description><generator>Hugo -- gohugo.io</generator><language>zh-Hans</language><lastBuildDate>Mon, 17 Jun 2024 15:08:08 +0800</lastBuildDate><atom:link href="https://liyan-ah.github.io/tags/effective-rust/index.xml" rel="self" type="application/rss+xml"/><item><title>【译文/effective-rust】第 27 条：为公共接口撰写文档</title><link>https://liyan-ah.github.io/p/%E8%AF%91%E6%96%87/effective-rust%E7%AC%AC-27-%E6%9D%A1%E4%B8%BA%E5%85%AC%E5%85%B1%E6%8E%A5%E5%8F%A3%E6%92%B0%E5%86%99%E6%96%87%E6%A1%A3/</link><pubDate>Mon, 17 Jun 2024 15:08:08 +0800</pubDate><guid>https://liyan-ah.github.io/p/%E8%AF%91%E6%96%87/effective-rust%E7%AC%AC-27-%E6%9D%A1%E4%B8%BA%E5%85%AC%E5%85%B1%E6%8E%A5%E5%8F%A3%E6%92%B0%E5%86%99%E6%96%87%E6%A1%A3/</guid><description>&lt;blockquote>
+&lt;p>原文由笔者翻译并提交至 &lt;a class="link" href="https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html" target="_blank" rel="noopener"
+>rustx-labs/effective-rust-cn/item27&lt;/a>，同步转载到此处。&lt;/p>
+&lt;/blockquote>
+&lt;p>如果你的包（crate）会被其他程序员所使用，那么为包中的内容添加文档就是很好的实践，尤其是包中的公共接口。如果你的包不仅仅是随用随丢的代码，那么这个“其他程序员”就包括未来的你，那个已经忘掉了自己代码细节的你。&lt;/p>
+&lt;p>这个建议并不是 Rust 所独有的，它也并不是一个新的建议 —— 比如，&lt;a class="link" href="https://www.oreilly.com/library/view/effective-java-2nd/9780137150021/" target="_blank" rel="noopener"
+>Effective Java&lt;/a> 第二版（2008年出版）在第 44 条中建议：“为所有导出的 API 元素编写文档注释”。&lt;/p>
+&lt;p>Rust 文档类型注释的细节 —— 基于 Markdown 格式，以 /// 或者 //! 分割 —— 已经在&lt;a class="link" href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments" target="_blank" rel="noopener"
+>Rust book&lt;/a>中介绍了，如下为示例：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Rust" data-lang="Rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Calculate the [`BoundingBox`] that exactly encompasses a pair
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// of [`BoundingBox`] objects.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">union&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nc">BoundingBox&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然而，关于文档型注释的格式仍有一些值得关注的细节：&lt;/p>
+&lt;ul>
+&lt;li>使用代码格式：对于任何作为源代码的注释，使用反引号来确保在最终的文档中代码会以一种等宽字体来展示，并以此来明确的区分&lt;code>code&lt;/code>以及一般的文本。&lt;/li>
+&lt;li>添加丰富的引用内容：为任何能够给读者提供上下文信息的内容添加 Markdown 链接。特别地，可以使用比较方便的 [&lt;code>SomeThing&lt;/code>] 格式的交叉引用标注符语法 —— 括号内的&lt;code>Something&lt;/code>将会在最终文档中被添加正确的超链接。&lt;/li>
+&lt;li>多添加示例代码：如果接口应该如何使用并非一目了然的，那么添加一个使用该接口的&lt;code># Example&lt;/code>段落将会很有用。如在&lt;a class="link" href="https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html" target="_blank" rel="noopener"
+>文档注释&lt;/a>里的示例代码会在你执行&lt;code>cargo test&lt;/code>（详情查看&lt;a class="link" href="https://www.lurklurk.org/effective-rust/testing.html" target="_blank" rel="noopener"
+>第 13 条&lt;/a>）时编译并且运行，这一特性将有助于示例代码和它希望表述的代码保持一致。&lt;/li>
+&lt;li>为&lt;code>panic&lt;/code>和&lt;code>unsafe&lt;/code>的代码添加说明文档：如果存在会导致函数&lt;code>panic&lt;/code>的输入，在文档（&lt;code># Panics&lt;/code>段落）里说明规避&lt;code>panic!&lt;/code>的前置条件。同样地，在文档（&lt;code># Safety&lt;/code>段落）里说明&lt;code>unsafe&lt;/code>代码的使用要求。&lt;/li>
+&lt;/ul>
+&lt;p>Rust 的&lt;a class="link" href="https://doc.rust-lang.org/std/index.html" target="_blank" rel="noopener"
+>标准库&lt;/a>是一个能够实践了上述所有细节的优秀示例。&lt;/p>
+&lt;h2 id="工具">
+&lt;a href="#%e5%b7%a5%e5%85%b7">#&lt;/a>
+工具
+&lt;/h2>&lt;p>在注释文档中使用 Markdown 格式不仅意味着优美的输出，还意味着需要有一个明确的转换步骤（&lt;code>cargo doc&lt;/code>）。而转换也就会增加出现问题的可能性。&lt;/p>
+&lt;p>对于这个问题，最简单的建议是在写完文档后，运行&lt;code>cargo doc --open&lt;/code>（或者&lt;code>cargo doc --no-deps --open&lt;/code>，这个指令能够严格约束仅产生当前包中的文档）并来&lt;em>仔细阅读生成的结果&lt;/em>。&lt;/p>
+&lt;p>对于所有生成超链接的有效性，你当然可以人工地去校验它们，或者让机器来完成这项工作 —— 通过&lt;code>broken_intra_dock_links&lt;/code>的包特性&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#![deny(broken_intra_doc_links)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="sd">/// The bounding box for a [`Polygone`].
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="cp">#[derive(Clone, Debug)]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="nc">BoundingBox&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当特性生效的时候，&lt;code>cargo doc&lt;/code>将会找出无效的链接：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="n">error&lt;/span>: &lt;span class="nc">unresolved&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">link&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">`&lt;/span>&lt;span class="n">Polygone&lt;/span>&lt;span class="err">`&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>-&amp;gt; &lt;span class="nc">docs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">src&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">main&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">rs&lt;/span>:&lt;span class="mi">4&lt;/span>:&lt;span class="mi">30&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="sd">/// The bounding box for a [`Polygone`].
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">^^^^^^^^&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">no&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">item&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">named&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">`&lt;/span>&lt;span class="n">Polygone&lt;/span>&lt;span class="err">`&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">in&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">scope&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>你也可以设置要求文档化，通过在包里设置&lt;code>![warn(missing_docs)]&lt;/code>属性。当设置生效的时候，编译器将会给每个未配置文档的公开条目生成警告信息。然而，这样设置也存在着为了解决编译器报错而提供低质量注释文档的风险 —— 当然设置引入的问题不仅如此。&lt;/p>
+&lt;p>同样地，为了能够及时发现潜在风险，这些工具应该被纳入到你的持续集成系统（&lt;a class="link" href="https://www.lurklurk.org/effective-rust/ci.html" target="_blank" rel="noopener"
+>第 32 条&lt;/a>）。&lt;/p>
+&lt;h2 id="其他的文档位置">
+&lt;a href="#%e5%85%b6%e4%bb%96%e7%9a%84%e6%96%87%e6%a1%a3%e4%bd%8d%e7%bd%ae">#&lt;/a>
+其他的文档位置
+&lt;/h2>&lt;p>&lt;code>cargo doc&lt;/code>的输出是包中文档所在的主要位置，但并不是唯一的地方 —— 在项目中的其他地方添加注释也可以帮助用户理解如何使用你的代码。&lt;/p>
+&lt;p>在 Cargo 项目的&lt;code>examples/&lt;/code>子目录下可以添加一些方便使用包的示例代码。这些代码可以构建并运行，和集成测试（&lt;a class="link" href="https://www.lurklurk.org/effective-rust/testing.html" target="_blank" rel="noopener"
+>第 30 条&lt;/a>）的运行方式非常类似，不同的是这些代码提供的是便于理解包中接口使用的代码。&lt;/p>
+&lt;p>需要说明的是，&lt;code>tests/&lt;/code>子目录下的集成测试代码也可以给用户提供帮助，虽然它们的主要作用是测试包的对外接口。&lt;/p>
+&lt;h2 id="发布包的文档">
+&lt;a href="#%e5%8f%91%e5%b8%83%e5%8c%85%e7%9a%84%e6%96%87%e6%a1%a3">#&lt;/a>
+发布包的文档
+&lt;/h2>&lt;p>如果你的包会发布到&lt;code>crates.io&lt;/code>，项目的文档就可以在&lt;a class="link" href="https://docs.rs/" target="_blank" rel="noopener"
+>docs.rs&lt;/a>中查看到。docs.rs 是为发布的包构建并提供文档的官方 Rust 网站。&lt;/p>
+&lt;p>注意，&lt;code>crates.io&lt;/code>和&lt;code>docs.rs&lt;/code>的受众是不同的：&lt;code>crates.io&lt;/code>旨在为选择包的用户提供服务，而&lt;code>docs.rs&lt;/code>的受众是那些需要弄明白他们已经引用的包该如何使用的人（很明显的，这两种场景有很大的重叠）。&lt;/p>
+&lt;p>综上，一个包的主页在不同的地方会展示不同的内容：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>docs.rs&lt;/code>：展示&lt;code>cargo doc&lt;/code>产出结果的顶层页面，比如从顶层&lt;code>src/lib.rs&lt;/code>文件的&lt;code>//!&lt;/code>生成的文档。&lt;/li>
+&lt;li>&lt;code>crates.io&lt;/code>：展示包含在项目仓库中的任何顶层&lt;em>README.md&lt;/em> &lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>文件内容。&lt;/li>
+&lt;/ul>
+&lt;h2 id="不文档化的内容">
+&lt;a href="#%e4%b8%8d%e6%96%87%e6%a1%a3%e5%8c%96%e7%9a%84%e5%86%85%e5%ae%b9">#&lt;/a>
+不文档化的内容
+&lt;/h2>&lt;p>当一个项目&lt;em>要求&lt;/em>公共条目都需要添加注释的时候，很容易就陷入到给无价值的内容也文档化的陷阱中。编译器的缺少注释文档的警告只是提醒你添加真正需要内容 —— 有用的文档 —— 的一种表现，并且仅仅期望程序员添加必要的内容来消除警告。&lt;/p>
+&lt;p>好的注释文档是一种能够帮助用户了解他们所使用代码的福利；糟糕的注释文档则增加了代码的维护成本并且让用户在它们不再和代码保持一致的时候变得更加困惑。那么好与不好的区别是什么呢？&lt;/p>
+&lt;p>最重要的建议是&lt;em>避免重复可以从代码中看出的信息&lt;/em>。&lt;a class="link" href="https://rustx-labs.github.io/effective-rust-cn/chapter_1/item1-use-types.html" target="_blank" rel="noopener"
+>第 1 条&lt;/a>建议你的代码尽量的和 Rust 的类型系统保持一致；一旦你做到了这一点，就通过类型系统来说明这些语意。可以假定使用代码的用户对 Rust 已经熟悉了 —— 可能他们已经读了一些描述了如何高效使用语言的建议 —— 并且不需要重复从代码中的参数类型和函数签名中就能读出来的东西。&lt;/p>
+&lt;p>回到之前的例子，一个冗余的注释文档可能如下面描述的这样：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Return a new [`BoundingBox`] object that exactly encompasses a pair
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// of [`BoundingBox`] objects.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">///
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Parameters:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// - `a`: an immutable reference to a `BoundingBox`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// - `b`: an immutable reference to a `BoundingBox`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Returns: new `BoundingBox` object.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">union&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nc">BoundingBox&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个注释重复了很多从函数签名中就能读到的信息，注释信息毫无益处。&lt;/p>
+&lt;p>更糟的是，考虑一种代码重构后，将结果存储到其中一个参数（这是一种不兼容的变更；参照&lt;a class="link" href="https://www.lurklurk.org/effective-rust/semver.html" target="_blank" rel="noopener"
+>第 21 条&lt;/a>）。没有编译器或者工具能够发现注释没有随之更新，结果就产生了一个未能和代码逻辑保持一致的注释：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Return a new [`BoundingBox`] object that exactly encompasses a pair
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// of [`BoundingBox`] objects.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">///
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Parameters:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// - `a`: an immutable reference to a `BoundingBox`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// - `b`: an immutable reference to a `BoundingBox`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Returns: new `BoundingBox` object.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">union&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">mut&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>相反地，原本恰当的注释在重构中则可以毫发无损地保留下来，因为它的文本描述的是行为，而非语意本身：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Calculate the [`BoundingBox`] that exactly encompasses a pair
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// of [`BoundingBox`] objects.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">union&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">mut&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>先前的建议也可以帮助提升文档质量：&lt;em>在文档中包含任何从代码中无法了解的内容&lt;/em>。这包含前置条件、可变性、异常、报错条件以及任何可能会让用户感到意外的事情；如果你的代码不能遵守&lt;a class="link" href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment" target="_blank" rel="noopener"
+>最小惊讶原则&lt;/a>，确保这些意外都被记录在文档里，至少你可以说“我已经告诉过你了”。&lt;/p>
+&lt;p>另一个常见的失败情形是，注释里描述了其他使用这个方法的代码，而非这个方法做了什么：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Return the intersection of two [`BoundingBox`] objects, returning `None`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// if there is no intersection. The collision detection code in `hits.rs`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// uses this to do an initial check to see whether two objects might overlap,
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// before performing the more expensive pixel-by-pixel check in
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// `objects_overlap`.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">intersection&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">BoundingBox&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>像这样的注释几乎不可能和代码保持一致：当使用了这个方法的代码（比如，&lt;code>hits.rs&lt;/code>）变更的时候，这段描述了调用行为的注释相隔甚远而无法保持一致。&lt;/p>
+&lt;p>应当将注释重新组织以聚焦在&lt;em>为什么&lt;/em>这样使用，可以让这段注释更好的适应未来的变更。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// Return the intersection of two [`BoundingBox`] objects, returning `None`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// if there is no intersection. Note that intersection of bounding boxes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// is necessary but not sufficient for object collision -- pixel-by-pixel
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">/// checks are still required on overlap.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">&lt;/span>&lt;span class="k">pub&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">intersection&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">a&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">b&lt;/span>: &lt;span class="kp">&amp;amp;&lt;/span>&lt;span class="nc">BoundingBox&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>-&amp;gt; &lt;span class="nb">Option&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">BoundingBox&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当编写软件时，“面向未来的编程”&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>是一种很好的实践：调整代码结构以适应未来的变更。同样的原则也适用于文档：聚焦在语意，为什么这样做以及为什么不这样做，会让文本在未来的运行中始终是有意义的。&lt;/p>
+&lt;h2 id="总结">
+&lt;a href="#%e6%80%bb%e7%bb%93">#&lt;/a>
+总结
+&lt;/h2>&lt;ul>
+&lt;li>给公共的 API 内容添加注释文档。&lt;/li>
+&lt;li>为那些从代码中无法明确看出的内容添加描述 —— 比如&lt;code>panics&lt;/code>以及&lt;code>unsafe&lt;/code>的条件。&lt;/li>
+&lt;li>不要给可以从代码中明确看出的内容重复描述。&lt;/li>
+&lt;li>通过交叉引用及添加标志符来让导航变得明确。&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="注释">
+&lt;a href="#%e6%b3%a8%e9%87%8a">#&lt;/a>
+注释
+&lt;/h3>&lt;p>原文&lt;a class="link" href="https://www.lurklurk.org/effective-rust/documentation.html" target="_blank" rel="noopener"
+>点这里&lt;/a>查看。&lt;/p>
+&lt;!-- 参考链接 -->
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>这个配置也曾称成为&lt;code>intra_doc_link_resolution_failure&lt;/code>。&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>包含 &lt;em>README.md&lt;/em> 的引用动作可以被&lt;a class="link" href="https://doc.rust-lang.org/cargo/reference/manifest.html#the-readme-field" target="_blank" rel="noopener"
+>Cargo.toml 中的 readme 字段&lt;/a>覆盖。&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>Scott Meyers，More Effective C++ (Addison-Wesley)，第 32 条。&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item></channel></rss>
