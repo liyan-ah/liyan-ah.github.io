@@ -641,4 +641,4 @@ let y = log_failure!(std::str::from_utf8(b"\xc3\x28")); // invalid UTF-8
 [strum::FromRepr]: https://docs.rs/strum/latest/strum/derive.FromRepr.html
 [std::fmt 模块]: https://doc.rust-lang.org/std/fmt/index.html
 [LowerHex]: https://doc.rust-lang.org/std/fmt/trait.LowerHex.html
-[rustx-labs/effective-rust-cn/item27]: https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.htm
+[rustx-labs/effective-rust-cn/item27]: https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html
