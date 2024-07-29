@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Emacs on 李岩</title><link>https://liyan-ah.github.io/tags/emacs/</link><description>Recent content in Emacs on 李岩</description><generator>Hugo -- gohugo.io</generator><language>zh-Hans</language><lastBuildDate>Mon, 13 May 2024 10:51:15 +0800</lastBuildDate><atom:link href="https://liyan-ah.github.io/tags/emacs/index.xml" rel="self" type="application/rss+xml"/><item><title>Emacs 字符操作快捷键</title><link>https://liyan-ah.github.io/p/emacs-%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E5%BF%AB%E6%8D%B7%E9%94%AE/</link><pubDate>Mon, 13 May 2024 10:51:15 +0800</pubDate><guid>https://liyan-ah.github.io/p/emacs-%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid><description>&lt;p>Emacs 指令行中，比如 load-file 加载文件时默认会填充当前的目录，可以使用 Ctr-backspace 来较为快速的删除文本。也可以通过光标移动至待删除处，Ctr-k 来直接删除光标（含）之后的所有文本。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>快捷键&lt;/th>
+&lt;th>功能&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Ctr-backspace&lt;/td>
+&lt;td>删除光标前的一个单词&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Ctr-k&lt;/td>
+&lt;td>删除光标（含）后的所有文本&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>PlantUML-文本化绘制UML多类图表</title><link>https://liyan-ah.github.io/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</link><pubDate>Fri, 21 Apr 2023 20:51:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/plantuml-%E6%96%87%E6%9C%AC%E5%8C%96%E7%BB%98%E5%88%B6uml%E5%A4%9A%E7%B1%BB%E5%9B%BE%E8%A1%A8/</guid><description>&lt;blockquote>
+&lt;p>笔者一直都是文本编辑器教派的忠实拥趸：期望将所有的任务都通过文本编辑，而非鼠标/触摸板等，进行实现。从早年的&lt;code>Vim&lt;/code>，到现而今的&lt;code>Emacs&lt;/code>，对文本化完成需求是越来越习惯，也越来越依赖了。最近刚好有了些时间，把最近的一些实践整理下。&lt;/p>
+&lt;/blockquote>
+&lt;p>在之前的文章，&lt;a class="link" href="https://liyan-ah.github.io/2023/02/10/emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" target="_blank" rel="noopener"
+>emacs org-mode 绘制思维导图&lt;/a>，中，笔者有提到在探索不跳出&lt;code>Emacs&lt;/code>这一文本编辑器的情况下，完成思维导图绘制的需求。在翻了一些文章后，找到了一款神器：&lt;a class="link" href="https://plantuml.com/zh/" target="_blank" rel="noopener"
+>PlantUML&lt;/a>。其完美的匹配了笔者的需求：&lt;/p>
+&lt;ol>
+&lt;li>不仅是思维导图，工程、文档常用的&lt;code>UML&lt;/code>图像也能全部支持文本化表示；&lt;/li>
+&lt;li>功能强大，颜色、文本等格式均能支持；&lt;/li>
+&lt;li>&lt;code>Emacs&lt;/code>友好，而且可以集成到&lt;code>Org-mode&lt;/code>里使用。&lt;/li>
+&lt;/ol>
+&lt;p>而且，&lt;code>PlantUML&lt;/code>支持在线使用，意味着能够很方便的获取、使用。这里做下介绍。&lt;/p>
+&lt;h2 id="一依赖内容">
+&lt;a href="#%e4%b8%80%e4%be%9d%e8%b5%96%e5%86%85%e5%ae%b9">#&lt;/a>
+一、依赖内容
+&lt;/h2>&lt;p>这里先列一下笔者使用时的配置：&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>plantuml.jar&lt;/code>，安装在本地后，可以通过配置，在本地进行文本-&amp;gt;多格式输出的编译。&lt;a class="link" href="https://plantuml.com/zh/download" target="_blank" rel="noopener"
+>plantuml.jar 下载&lt;/a>；&lt;/li>
+&lt;li>&lt;code>plantuml&lt;/code> 配置。由于笔者还是使用的&lt;code>Emacs&lt;/code>，这里列一下参照官网配置的&lt;code>Emacs&lt;/code>设置。&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">plantuml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">安装&lt;/span> &lt;span class="n">plantuml&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">ensure&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span> &lt;span class="s1">&amp;#39;plantuml-mode) &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">设置&lt;/span> &lt;span class="n">plantuml&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">jar&lt;/span> &lt;span class="err">的本地路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">setq&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">plantuml&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">jar&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">path&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">expand&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">file&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="s2">&amp;#34;~/.emacs.d/tools/plantuml.jar&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">将&lt;/span> &lt;span class="o">.&lt;/span>&lt;span class="n">plantuml&lt;/span> &lt;span class="err">后缀文件默认以&lt;/span> &lt;span class="n">plantuml&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">打开。非必需，后面都在&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">里使用了&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">list&lt;/span> &lt;span class="s1">&amp;#39;auto-mode-alist &amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;\.plantuml&lt;/span>&lt;span class="se">\&amp;#39;&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="n">plantuml&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">比较重要，在&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">里声明&lt;/span> &lt;span class="n">plantuml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">babel&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="k">do&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nb">load&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">languages&lt;/span> &lt;span class="s1">&amp;#39;org-babel-load-languages &amp;#39;&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">plantuml&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>配置很简单。下面就可以愉快的使用了。&lt;/p>
+&lt;h2 id="二plantuml-介绍">
+&lt;a href="#%e4%ba%8cplantuml-%e4%bb%8b%e7%bb%8d">#&lt;/a>
+二、plantuml 介绍
+&lt;/h2>&lt;p>&lt;a class="link" href="https://plantuml.com/zh/" target="_blank" rel="noopener"
+>plantuml官网&lt;/a>，目前支持的部分图标类型：&lt;/p>
+&lt;ul>
+&lt;li>UML 图
+&lt;ol>
+&lt;li>时序图&lt;/li>
+&lt;li>用例图&lt;/li>
+&lt;li>状态图&lt;/li>
+&lt;li>活动图&lt;/li>
+&lt;li>类图&lt;/li>
+&lt;li>用例图&lt;/li>
+&lt;li>等等&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>非UML图
+&lt;ol>
+&lt;li>思维导图&lt;/li>
+&lt;li>甘特图&lt;/li>
+&lt;li>工作分解结构图&lt;/li>
+&lt;li>等等&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;p>在官网中，对每种图都给出了教程及示例，可以通过&lt;a class="link" href="http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000" target="_blank" rel="noopener"
+>在线生成&lt;/a> 进行感受。&lt;br>
+&lt;code>PlantUML&lt;/code>的输入是文本，输出可以是&lt;code>ASCII, PNG, SVG&lt;/code>等等格式。满足日常工作的需求。&lt;/p>
+&lt;h2 id="三思维导图">
+&lt;a href="#%e4%b8%89%e6%80%9d%e7%bb%b4%e5%af%bc%e5%9b%be">#&lt;/a>
+三、思维导图
+&lt;/h2>&lt;h3 id="31-一个简单的思维导图">
+&lt;a href="#31-%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84%e6%80%9d%e7%bb%b4%e5%af%bc%e5%9b%be">#&lt;/a>
+3.1 一个简单的思维导图
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#+begin_src plantuml :file mindmap.png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">@startmindmap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;style&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mindmapDiagram {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> .green {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BackgroundColor lightgreen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> .yellow {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BackgroundColor yellow
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> .rose{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BackgroundColor #FFBBCC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;/style&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * emacs planuml 介绍 &amp;lt;&amp;lt;rose&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> left side
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ** 依赖内容 &amp;lt;&amp;lt;yellow&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ plantuml.jar 安装
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ plantuml 配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ** plantuml 介绍 &amp;lt;&amp;lt;yellow&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 支持多种UML文本化编辑
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">\
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 多种格式文件输出的组件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 在线体验
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> right side
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ** 思维导图 &amp;lt;&amp;lt;green&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 一个简单的思维导图
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 编译输出
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ** 时序图 &amp;lt;&amp;lt;green&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 一个简单的时序图
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ***_ 编译输出
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">@endmindmap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+end_src
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>由于笔者已经在&lt;code>Org-mode&lt;/code>里配置了&lt;code>plantuml&lt;/code>，因此只要在&lt;code>begin_src&lt;/code>后声明&lt;code>plantuml&lt;/code>即可。通过&lt;code>:file mindmap.png&lt;/code>指定了输出的文件为&lt;code>png&lt;/code>格式内容。&lt;code>C-c C-e&lt;/code>或者&lt;code>org-export-dispatch&lt;/code>即可通过&lt;code>org-mode&lt;/code>的输出界面触发编译、输出。&lt;/p>
+&lt;h3 id="32-编译输出">
+&lt;a href="#32-%e7%bc%96%e8%af%91%e8%be%93%e5%87%ba">#&lt;/a>
+3.2 编译输出
+&lt;/h3>&lt;p>输出结果：
+mindmap.png
+&lt;img src="https://liyan-ah.github.io/mindmap.png"
+loading="lazy"
+alt="upload successful"
+>&lt;/p>
+&lt;h2 id="四时序图">
+&lt;a href="#%e5%9b%9b%e6%97%b6%e5%ba%8f%e5%9b%be">#&lt;/a>
+四、时序图
+&lt;/h2>&lt;h3 id="41-一个简单的时序图">
+&lt;a href="#41-%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84%e6%97%b6%e5%ba%8f%e5%9b%be">#&lt;/a>
+4.1 一个简单的时序图
+&lt;/h3>&lt;p>这里来一点展示内容更丰富的&lt;code>UML&lt;/code>时序图实际使用示例：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#+begin_src plantuml :file ngx_request.png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @startuml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> title: nginx+php请求处理示例
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> [-&amp;gt;nginx: &amp;lt;font color=blue&amp;gt;/caller_path
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> note right of nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nginx 视角:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> caller=nginx,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> caller_func=/caller_path,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> callee=php,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> callee_func=/index.php/caller_path
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> end note
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> activate nginx #yellow
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nginx-&amp;gt;php: &amp;lt;font color=red&amp;gt;/index.php/caller_path
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> activate php #yellow
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> note right of php #gray
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> laravel
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> end note
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> php-&amp;gt;callee: &amp;lt;font color=blue&amp;gt;/callee_path
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> note right of php
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> php 视角:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> caller=php,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> caller_func=/index.php/caller_path,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> callee=callee,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> callee_func=callee_path
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> end note
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> activate callee
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> callee-&amp;gt;php: response
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> deactivate callee
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> php-&amp;gt;nginx: response
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> deactivate php
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nginx-&amp;gt;[: response
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> deactivate nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> note over nginx, php #aqua: 实际四元组:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">\
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> caller=nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">caller_func=/caller_path,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">callee=callee,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">callee_func=callee_path,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @enduml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+end_src
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="42-编译输出">
+&lt;a href="#42-%e7%bc%96%e8%af%91%e8%be%93%e5%87%ba">#&lt;/a>
+4.2 编译输出
+&lt;/h3>&lt;p>输出结果如下：
+ngx_request.png
+&lt;img src="https://liyan-ah.github.io/ngx_request.png"
+loading="lazy"
+alt="upload successful"
+>
+可以看到，基本上能够满足一般工程文档使用的需求。&lt;/p>
+&lt;p>以上是本次介绍的内容。周末愉快～&lt;/p></description></item><item><title>emacs org-mode 绘制思维导图</title><link>https://liyan-ah.github.io/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</link><pubDate>Fri, 10 Feb 2023 19:46:21 +0000</pubDate><guid>https://liyan-ah.github.io/p/emacs-org-mode-%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</guid><description>&lt;blockquote>
+&lt;p>工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="依赖内容">
+&lt;a href="#%e4%be%9d%e8%b5%96%e5%86%85%e5%ae%b9">#&lt;/a>
+依赖内容
+&lt;/h1>&lt;ul>
+&lt;li>org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。&lt;/li>
+&lt;li>freemind 软件。用来查看生成的 mm 文件。&lt;/li>
+&lt;/ul>
+&lt;p>笔者试了一下，&lt;code>Xmind思维导图&lt;/code>看起来无法打开&lt;code>mm&lt;/code>文件，&lt;code>freemind&lt;/code>工作正常。也可能是我操作有问题。&lt;br>
+此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。&lt;/p>
+&lt;h1 id="org-contrib-安装">
+&lt;a href="#org-contrib-%e5%ae%89%e8%a3%85">#&lt;/a>
+org-contrib 安装
+&lt;/h1>&lt;p>笔者使用的&lt;code>emacs&lt;/code>发布版本默认没有&lt;code>org-contrib&lt;/code>，需要自行安装。安装过程也比较简单，从&lt;code>github&lt;/code>里把&lt;code>org-contrib&lt;/code>拉下来，在&lt;code>emacs init.el&lt;/code>里配置加载路径，然后主动加载需要的&lt;code>ox-freemind.el&lt;/code>即可。&lt;br>
+&lt;code>github org-contrib&lt;/code>地址为&lt;code>git@github.com:emacsmirror/org-contrib.git&lt;/code>。目录地址可以视自己的需求确定。笔者的&lt;code>emacs&lt;/code>配置都放到了&lt;code>.emacs.d&lt;/code>里，&lt;code>org-contrib&lt;/code>的本地目录也就放到了&lt;code>~/.emacs.d/org-contrib&lt;/code>这里。扩展下载后，在&lt;code>init.el&lt;/code>里做如下配置即可：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">ox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">fremind&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">这里改成本地的&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span> &lt;span class="err">地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">list&lt;/span> &lt;span class="s1">&amp;#39;load-path &amp;#34;~/.emacs.d/org-contrib/lisp&amp;#34;)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">目前只需要&lt;/span> &lt;span class="n">ox&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">freemind&lt;/span>&lt;span class="err">，因此仅加载这个插件。&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nb">load&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">file&lt;/span> &lt;span class="s2">&amp;#34;~/.emacs.d/org-contrib/lisp/ox-freemind.el&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装结束后，需要重新加载一下&lt;code>emacs&lt;/code>的配置文件，&lt;code>ox-freemind&lt;/code>才能可用。&lt;/p>
+&lt;h1 id="使用-org-mode-整理文档并转换">
+&lt;a href="#%e4%bd%bf%e7%94%a8-org-mode-%e6%95%b4%e7%90%86%e6%96%87%e6%a1%a3%e5%b9%b6%e8%bd%ac%e6%8d%a2">#&lt;/a>
+使用 org-mode 整理文档并转换
+&lt;/h1>&lt;p>这里直接贴一个示例：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#+TITLE: emacs org-mode 绘制思维导图&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#+OPTIONS: H:1000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span> &lt;span class="err">安装&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span> &lt;span class="err">可以直接从&lt;/span> &lt;span class="n">github&lt;/span> &lt;span class="err">下载，然后在&lt;/span> &lt;span class="n">emacs&lt;/span> &lt;span class="err">配置文件里加载。&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">**&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span> &lt;span class="n">github&lt;/span> &lt;span class="err">地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">***&lt;/span> &lt;span class="n">git&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">github&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">emacsmirror&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contrib&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">git&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">**&lt;/span> &lt;span class="n">emacs&lt;/span> &lt;span class="err">本地配置&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">***&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">list&lt;/span> &lt;span class="s1">&amp;#39;load-path &amp;#34;~/.emacs.d/org-contrib/lisp&amp;#34;)(load-file &amp;#34;~/.emacs.d/org-contrib/lisp/ox-freemind.el&amp;#34;)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">下文档编写&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">**&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">是&lt;/span> &lt;span class="n">emacs&lt;/span> &lt;span class="err">下的神器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">***&lt;/span> &lt;span class="err">打开&lt;/span> &lt;span class="n">freemind&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span> &lt;span class="err">文件，输入这个文本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">**&lt;/span> &lt;span class="err">转换文本文件到&lt;/span> &lt;span class="n">freemind&lt;/span> &lt;span class="n">mm&lt;/span> &lt;span class="err">文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">***&lt;/span> &lt;span class="n">M&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="n">org&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">freemind&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="k">export&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">freemind&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">*&lt;/span> &lt;span class="err">查看&lt;/span> &lt;span class="n">mm&lt;/span> &lt;span class="err">文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">**&lt;/span> &lt;span class="err">使用&lt;/span> &lt;span class="n">freemind&lt;/span> &lt;span class="err">查看生成的&lt;/span> &lt;span class="n">freemind&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mm&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>用&lt;code>emacs&lt;/code>打开一个&lt;code>freemind.org&lt;/code>，笔者这里直接触发了&lt;code>org-mode&lt;/code>。如果没有触发&lt;code>org-mode&lt;/code>的话，需要手动执行下&lt;code>M-x org-mode&lt;/code>。然后执行&lt;code>org-freemind-export-to-freemind&lt;/code>。如果没有这个函数，需要看下之前&lt;code>org-contrib&lt;/code>的安装是否有问题，或者加载路径是否正常，加载是否有报错。如果函数执行异常，则需要查下原因。笔者安装后即可直接执行，因此没有报错处置的经验可供参考。&lt;/p>
+&lt;h1 id="使用freemind查看及导出">
+&lt;a href="#%e4%bd%bf%e7%94%a8freemind%e6%9f%a5%e7%9c%8b%e5%8f%8a%e5%af%bc%e5%87%ba">#&lt;/a>
+使用freemind查看及导出
+&lt;/h1>&lt;p>&lt;code>mac&lt;/code>可以直接&lt;code>brew install --cask freemind&lt;/code>。或者到其他下载源下载，如&lt;a class="link" href="https://freemind.sourceforge.net/wiki/index.php/Download" target="_blank" rel="noopener"
+>freemind sourceforge 下载&lt;/a>。&lt;br>
+最后使用&lt;code>freemind&lt;/code>打开&lt;code>freemind.org&lt;/code>同级目录生成的&lt;code>freemind.mm&lt;/code>。展示效果如下：
+&lt;img src="https://liyan-ah.github.io/freemind.png"
+loading="lazy"
+alt="upload successful"
+>
+最后，可以使用&lt;code>emacs&lt;/code>查看导出的&lt;code>freemind.png&lt;/code>（🐶，笔者还在探索如何在不打开&lt;code>freemind&lt;/code>的情况下把&lt;code>mm&lt;/code>文件转换成&lt;code>png&lt;/code>)。&lt;/p></description></item><item><title>让emacs在保存文件时自动格式化代码</title><link>https://liyan-ah.github.io/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</link><pubDate>Fri, 15 Jul 2022 20:34:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/%E8%AE%A9emacs%E5%9C%A8%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E6%97%B6%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/</guid><description>&lt;blockquote>
+&lt;p>&lt;a class="link" href="https://liam.page/" target="_blank" rel="noopener"
+>liam&lt;/a>同学在&lt;a class="link" href="https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/" target="_blank" rel="noopener"
+>让 Vim 在保存文件时自动格式化代码&lt;/a>一文中展示了保存时自动化格式代码的&lt;code>vim&lt;/code>配置。作为&lt;code>emacs&lt;/code>用户，自然有自己的解决方案。以下呈现。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="配置">
+&lt;a href="#%e9%85%8d%e7%bd%ae">#&lt;/a>
+配置
+&lt;/h1>&lt;p>&lt;code>emacs&lt;/code>进行&lt;code>c/c++&lt;/code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把&lt;a class="link" href="https://microsoft.github.io/language-server-protocol/" target="_blank" rel="noopener"
+>&lt;code>lsp&lt;/code>&lt;/a>配置也一并带上了，不同于&lt;a class="link" href="https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/" target="_blank" rel="noopener"
+>emacs-若干语言 lsp 配置备注&lt;/a>里的&lt;code>eglot&lt;/code>，这里使用的是&lt;code>ccls&lt;/code>。直接上配置吧，比较简单：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">使用国内&lt;/span> &lt;span class="n">elpa&lt;/span> &lt;span class="err">源来加速插件安装&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">defun&lt;/span> &lt;span class="n">w&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pkg&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span> &lt;span class="n">would&lt;/span> &lt;span class="n">be&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">wrapper&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">require&lt;/span> &lt;span class="s1">&amp;#39;package)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">setq&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">archives&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;((&amp;#34;gnu&amp;#34; . &amp;#34;http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/&amp;#34;)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;melpa&amp;#34;&lt;/span> &lt;span class="o">.&lt;/span> &lt;span class="s2">&amp;#34;http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">initialize&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">refresh&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">contents&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="n">pkg&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span> &lt;span class="n">pkg&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">辅助判断插件安装通用函数&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">defun&lt;/span> &lt;span class="n">ensure&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">rest&lt;/span> &lt;span class="n">packages&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Assure every package was installed, ask for installation if it&amp;#39;s not.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">a&lt;/span> &lt;span class="n">list&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">installed&lt;/span> &lt;span class="n">packages&lt;/span> &lt;span class="ow">or&lt;/span> &lt;span class="n">nil&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">every&lt;/span> &lt;span class="n">skipped&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">mapcar&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">lambda&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">or&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">format&lt;/span> &lt;span class="s2">&amp;#34;Package &lt;/span>&lt;span class="si">%s&lt;/span>&lt;span class="s2"> is missing. Install it?&amp;#34;&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">w&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span> &lt;span class="n">package&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">package&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">packages&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span> &lt;span class="err">在文件保存时格式化代码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">ensure&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span> &lt;span class="s1">&amp;#39;clang-format)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">defun&lt;/span> &lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">on&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">save&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Create a buffer local save hook.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;before-save-hook&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">lambda&lt;/span> &lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">when&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">locate&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">dominating&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">file&lt;/span> &lt;span class="s2">&amp;#34;.&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;.clang-format&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span> &lt;span class="n">Continue&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">save&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span> &lt;span class="n">Buffer&lt;/span> &lt;span class="n">local&lt;/span> &lt;span class="n">hook&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">Run&lt;/span> &lt;span class="n">this&lt;/span> &lt;span class="n">hook&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">++-&lt;/span>&lt;span class="n">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;c-mode-hook (lambda () (clang-format-on-save-hook)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;c++-mode-hook (lambda () (clang-format-on-save-hook)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">create&lt;/span> &lt;span class="n">default&lt;/span> &lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span> &lt;span class="n">file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">releases&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">llvm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mf">3.6&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">tools&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docs&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ClangFormatStyleOptions&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">style&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">llvm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">dump&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">config&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="o">.&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">另外，这里列出使用的&lt;/span> &lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">language&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">server&lt;/span> &lt;span class="err">配置。&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="err">服务端使用&lt;/span> &lt;span class="n">ccls&lt;/span>&lt;span class="err">，客户端则使用&lt;/span> &lt;span class="n">ccls&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">el&lt;/span>&lt;span class="err">。同时将&lt;/span> &lt;span class="n">ccls&lt;/span> &lt;span class="err">作为&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="err">的&lt;/span>&lt;span class="n">hook运行&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">github&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">MaskRay&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ccls&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">wiki&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">Build&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">set&lt;/span> &lt;span class="n">up&lt;/span> &lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="o">++&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">ensure&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">installed&lt;/span> &lt;span class="s1">&amp;#39;ccls)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">use&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">package&lt;/span> &lt;span class="n">ccls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">:&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">++-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="n">objc&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="n">cuda&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">lambda&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">require&lt;/span> &lt;span class="s1">&amp;#39;ccls) (lsp))))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>代码格式部分则主要由&lt;code>.clang-format&lt;/code>文件控制。其配置方法可以参见官网：&lt;a class="link" href="https://clang.llvm.org/docs/ClangFormat.html" target="_blank" rel="noopener"
+>ClangFormat&lt;/a>。&lt;/p></description></item><item><title>emacs-若干语言 lsp 配置备注</title><link>https://liyan-ah.github.io/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</link><pubDate>Tue, 12 Oct 2021 20:26:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/</guid><description>&lt;blockquote>
+&lt;p>微软推出的&lt;a class="link" href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20" target="_blank" rel="noopener"
+>language server protol&lt;/a> 确实提升了文本编辑器的使用体验。就 &lt;code>emacs&lt;/code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code>emacs&lt;/code> 中的 rust, golang, python, c/c++ lsp 配置&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="rust">
+&lt;a href="#rust">#&lt;/a>
+rust
+&lt;/h1>&lt;p>这里使用 &lt;code>rust-analyzer&lt;/code> 作为 &lt;code>rust&lt;/code> 的语言服务器，在安装 &lt;code>rust-mode&lt;/code>后，通过绑定语言服务器信息，即可在打开由 &lt;code>cargo&lt;/code> 创建的工程时，顺利进入 &lt;code>lsp-mode&lt;/code>。需要关注的是，在非&lt;code>cargo&lt;/code>创建的项目中，笔者的&lt;code>lsp-mode&lt;/code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是&lt;code>rust-analyzer&lt;/code>主要是针对&lt;code>cargo&lt;/code>项目进行的设置，也可能是笔者设置的问题。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="nx">config&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">lsp&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="nx">emacs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="nx">rls&lt;/span> &lt;span class="nx">install&lt;/span> &lt;span class="nx">address&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nx">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="c1">//github.com/rust-lang-nursery/rls
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kn">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">installed&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">p&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">install&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">to&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">list&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">auto&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">alist&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;\.rs\&amp;#39;&amp;#34;&lt;/span> &lt;span class="p">.&lt;/span> &lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">hook&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">hook&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">lsp&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kn">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">installed&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">p&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rustic&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">install&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rustic&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nf">unless&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kn">package&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">installed&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">p&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">cargo&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">install&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">cargo&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">use&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="kn">package&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="nx">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">compatible&lt;/span> &lt;span class="nx">rust&lt;/span> &lt;span class="nf">mode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">hook&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">hook&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">hook&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">mode&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nf">hook&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nf">lambda&lt;/span> &lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">server&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">analyzer&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="nx">not&lt;/span> &lt;span class="nf">rls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">analyzer&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">server&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">command&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/opt/homebrew/bin/rust-analyzer&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">format&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">on&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">save&lt;/span> &lt;span class="nx">t&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="nx">has&lt;/span> &lt;span class="nx">annoying&lt;/span> &lt;span class="nx">bug&lt;/span> &lt;span class="nx">move&lt;/span> &lt;span class="nx">point&lt;/span> &lt;span class="nx">to&lt;/span> &lt;span class="nx">other&lt;/span> &lt;span class="nx">buffer&lt;/span> &lt;span class="nf">bug&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">indent&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">offset&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">match&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">angle&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">brackets&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span> &lt;span class="nx">thought&lt;/span> &lt;span class="nx">this&lt;/span> &lt;span class="nx">would&lt;/span> &lt;span class="nx">be&lt;/span> &lt;span class="nx">better&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">was&lt;/span> &lt;span class="nx">wrong&lt;/span>&lt;span class="p">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">rustic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">compile&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">display&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">method&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">popwin&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="nx">display&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">buffer&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="nx">display&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="nx">possible&lt;/span> &lt;span class="nx">in&lt;/span> &lt;span class="nx">popup&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">win&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">use&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="kn">package&lt;/span> &lt;span class="nx">cargo&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="nx">setq&lt;/span> &lt;span class="nx">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">server&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nx">rust&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="nx">analyzer&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="golang">
+&lt;a href="#golang">#&lt;/a>
+golang
+&lt;/h1>&lt;p>&lt;code>golang&lt;/code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且&lt;code>gopls&lt;/code>的使用体验非常好，完全不逊色与目前用户较多的&lt;code>goland&lt;/code>及&lt;code>vscode&lt;/code>。配合&lt;code>dlv-mode&lt;/code>使用，在调试上笔者认为能够更加的贴合&lt;code>unix&lt;/code>风格，也更加方便。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">Go&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">Set&lt;/span> &lt;span class="n">up&lt;/span> &lt;span class="n">before&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">save&lt;/span> &lt;span class="n">hooks&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">format&lt;/span> &lt;span class="n">buffer&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">delete&lt;/span> &lt;span class="n">imports&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">go&lt;/span> &lt;span class="n">install&lt;/span> &lt;span class="n">github&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">golang&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">tools&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">cmd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gopls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;(&lt;/span>&lt;span class="n">require&lt;/span> &lt;span class="s1">&amp;#39;lsp-mode)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">setq&lt;/span> &lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ui&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span> &lt;span class="n">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">defun&lt;/span> &lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">go&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">save&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hooks&lt;/span> &lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;before-save-hook #&amp;#39;&lt;/span>&lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">buffer&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;before-save-hook #&amp;#39;&lt;/span>&lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">organize&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">imports&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;go-mode-hook #&amp;#39;&lt;/span>&lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">go&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">install&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">save&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hooks&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> &lt;span class="n">Start&lt;/span> &lt;span class="n">LSP&lt;/span> &lt;span class="n">Mode&lt;/span> &lt;span class="ow">and&lt;/span> &lt;span class="n">YASnippet&lt;/span> &lt;span class="n">mode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;go-mode-hook #&amp;#39;&lt;/span>&lt;span class="n">lsp&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">deferred&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">hook&lt;/span> &lt;span class="s1">&amp;#39;go-mode-hook #&amp;#39;&lt;/span>&lt;span class="n">yas&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">minor&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">mode&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="python">
+&lt;a href="#python">#&lt;/a>
+python
+&lt;/h1>&lt;p>&lt;code>python&lt;/code>的语言服务器，笔者目前使用的是&lt;code>lsp-python-ms&lt;/code>进行配置的。这个插件解决了很多&lt;code>python lsp&lt;/code>的问题（实际上，在碰到这个插件之前，笔者一度要放弃安装&lt;code>python lsp&lt;/code>）。由于&lt;code>python&lt;/code>是解释型语言，对象的成员都较为灵活，一般编码阶段很难确认对象的成员及其确切的类型。所以在&lt;code>pylsp&lt;/code>使用过程中，往往会碰到无法有效提示的情况。满足一般提示需求吧。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">;;; set env for python
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; copied from
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; https://gitee.com/nutora-emacs/lsp-python-ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; python lsp-server use python-lsp-server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; install as: pip3 install python-lsp-server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(ensure-package-installed &amp;#39;lsp-python-ms)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(require &amp;#39;lsp-python-ms)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(setq lsp-python-ms-auto-install-server t)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(add-hook &amp;#39;python-mode-hook #&amp;#39;lsp)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="cc">
+&lt;a href="#cc">#&lt;/a>
+c/c++
+&lt;/h1>&lt;p>实际上，笔者很喜欢&lt;code>c/c++&lt;/code>的语言服务器，简单、方便，安装时无比的顺畅。完全符合笔者对&lt;code>c&lt;/code>语言简单、强大、靠谱的印象。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">;; set up lsp-mode for c/c++
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; brew install llvm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; https://clangd.llvm.org/installation
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(unless (package-installed-p &amp;#39;eglot)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (w-install &amp;#39;eglot))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(require &amp;#39;eglot)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(add-to-list &amp;#39;eglot-server-programs &amp;#39;((c++-mode c-mode) &amp;#34;clangd&amp;#34;))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(add-hook &amp;#39;c-mode-hook &amp;#39;eglot-ensure)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(add-hook &amp;#39;c++-mode-hook &amp;#39;eglot-ensure)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="使用的一点备注">
+&lt;a href="#%e4%bd%bf%e7%94%a8%e7%9a%84%e4%b8%80%e7%82%b9%e5%a4%87%e6%b3%a8">#&lt;/a>
+使用的一点备注
+&lt;/h1>&lt;p>这里唠叨一点&lt;/p>
+&lt;h2 id="lsp-的管理单位是文件目录">
+&lt;a href="#lsp-%e7%9a%84%e7%ae%a1%e7%90%86%e5%8d%95%e4%bd%8d%e6%98%af%e6%96%87%e4%bb%b6%e7%9b%ae%e5%bd%95">#&lt;/a>
+lsp 的管理单位是文件目录
+&lt;/h2>&lt;p>这里对于&lt;code>golang&lt;/code>及&lt;code>rust&lt;/code>尤为明显。在使用&lt;code>emacs&lt;/code>打开一个关联了有效语言服务器的文件时，底部会提示为当前文件选择一个工作目录。尤其是，当路径&lt;code>A&lt;/code>已经设为工作目录时，再将&lt;code>A/B&lt;/code>设为工作目录，&lt;code>A/B&lt;/code>的打开状态是会出现异常的。所以尽量保持每个工作目录的独特。&lt;br>
+这里附上一些&lt;code>emacs lsp-mode&lt;/code>中笔者常用的函数：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>指令&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>lsp-workspace-folders-remove&lt;/code>&lt;/td>
+&lt;td>将工作目录移除&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lsp-workspace-folders-add&lt;/code>&lt;/td>
+&lt;td>添加工作目录&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lsp-workspace-restart&lt;/code>&lt;/td>
+&lt;td>重启工作目录&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="其他备注">
+&lt;a href="#%e5%85%b6%e4%bb%96%e5%a4%87%e6%b3%a8">#&lt;/a>
+其他备注
+&lt;/h2>&lt;p>当安装了一个语言的&lt;code>lsp&lt;/code>服务及对应的&lt;code>emacs&lt;/code>客户端配置时，如果打开对应语言的文件发现&lt;code>lsp&lt;/code>没有生效，且打开&lt;code>toggle-debug-on-error&lt;/code>设置开启也没有发现任何报错，笔者建议重启&lt;code>emacs&lt;/code>。似乎&lt;code>emacs&lt;/code>热加载功能往往不会如人所愿。&lt;/p>
+&lt;h1 id="参考文献">
+&lt;a href="#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae">#&lt;/a>
+参考文献
+&lt;/h1>&lt;p>&lt;a class="link" href="https://emacs-lsp.github.io/lsp-mode/" target="_blank" rel="noopener"
+>emacs lsp mode&lt;/a>&lt;br>
+及其他网络文献&lt;/p></description></item><item><title>org-mode使用备注</title><link>https://liyan-ah.github.io/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link><pubDate>Mon, 11 Jan 2021 21:49:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid><description>&lt;blockquote>
+&lt;p>org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;/p>
+&lt;/blockquote>
+&lt;p>以下操作均在&lt;code>org-agenda&lt;/code>中的&lt;code>agenda for current week or day&lt;/code>视图下快速编辑：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>操作&lt;/th>
+&lt;th>快捷键&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>变更任务状态&lt;/td>
+&lt;td>t&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>添加备注&lt;/td>
+&lt;td>z&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>添加日记&lt;/td>
+&lt;td>i&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>编辑note&lt;/td>
+&lt;td>z&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>重建agenda&lt;/td>
+&lt;td>r&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>打开日历&lt;/td>
+&lt;td>a&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>下周任务列表&lt;/td>
+&lt;td>f&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>上周任务列表&lt;/td>
+&lt;td>b&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>打开任务所在原始文件&lt;/td>
+&lt;td>enter&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>emacs! start org-mode! --org-mode使用备注</title><link>https://liyan-ah.github.io/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</link><pubDate>Sun, 10 Jan 2021 20:30:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/emacs-start-org-mode--org-mode%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/</guid><description>&lt;blockquote>
+&lt;p>为了更好的&lt;code>live in emacs&lt;/code>，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code>org-mode&lt;/code>这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="org-mode介绍">
+&lt;a href="#org-mode%e4%bb%8b%e7%bb%8d">#&lt;/a>
+org-mode介绍
+&lt;/h1>&lt;p>在&lt;code>神的编辑器emacs&lt;/code>的传说中，往往有&lt;code>org-mode&lt;/code>的身影。虽然按照(org官网)&lt;a class="link" href="https://orgmode.org/" target="_blank" rel="noopener"
+>orgmode&lt;/a>官网的描述，&lt;code>org-mode&lt;/code>并不仅限于在&lt;code>emacs&lt;/code>中使用，如&lt;a class="link" href="https://zhuanlan.zhihu.com/p/57800574" target="_blank" rel="noopener"
+>开始使用 Org 模式吧，在没有 Emacs 的情况下&lt;/a>这篇文章就详细讲解了在&lt;code>vscode&lt;/code>中使用&lt;code>org-mode&lt;/code>的方式，但是配合&lt;code>emacs&lt;/code>的万物皆系于&lt;code>kbd&lt;/code>之上的使用习惯，&lt;code>org-mode&lt;/code>确实能够发挥最大的功能。&lt;br>
+&lt;code>org-mode&lt;/code>的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。&lt;/p>
+&lt;p>这里贴一下&lt;a class="link" href="https://wizardforcel.gitbooks.io/os-world-trip/content/42.html" target="_blank" rel="noopener"
+>开源世界旅行手册&lt;/a>中涉及的&lt;code>org-mode&lt;/code>与&lt;code>oneNote&lt;/code>的对比，能够更加直观的了解&lt;code>org-mode&lt;/code>的功能：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>org-mode vs oneNote&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>Org-mode&lt;/td>
+&lt;td>OneNote&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>标签&lt;/td>
+&lt;td>强大&lt;/td>
+&lt;td>不支持&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>日程表&lt;/td>
+&lt;td>强大&lt;/td>
+&lt;td>不支持&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>界面&lt;/td>
+&lt;td>字符&lt;/td>
+&lt;td>漂亮&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>TablePC&lt;/td>
+&lt;td>不支持&lt;/td>
+&lt;td>非常好&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>摘录&lt;/td>
+&lt;td>保持源格式&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>便捷&lt;/td>
+&lt;td>Emacs 内置&lt;/td>
+&lt;td>安装麻烦&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h1 id="基本使用流程">
+&lt;a href="#%e5%9f%ba%e6%9c%ac%e4%bd%bf%e7%94%a8%e6%b5%81%e7%a8%8b">#&lt;/a>
+基本使用流程
+&lt;/h1>&lt;p>目前还处于探索阶段了，简单描述下&lt;code>org-mode&lt;/code>的配置流程。
+0. 版本
+使用的是&lt;code>emacs-27.1&lt;/code>版本，默认内置了&lt;code>org-mode&lt;/code>(值得一提的是，当我在写一篇文章时，发现hexo#admin编辑器是支持部分&lt;code>emacs&lt;/code>快捷键的，又反映了&lt;code>emacs&lt;/code>影响之广)。&lt;/p>
+&lt;ol>
+&lt;li>设置&lt;br>
+&lt;code>org-mode&lt;/code>在使用时，一般是在文本文档中编辑待办内容，将待办内容加入&lt;code>org-mode&lt;/code>的日程表。而后通过&lt;code>org-agenda&lt;/code>来查看指定日期的待办内容，并随着待办内容设置事务的进度。&lt;br>
+使用前，如果是使用&lt;code>emacs&lt;/code>进行编辑的话，可以在&lt;code>emacs&lt;/code>配置文件中作如下设置：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">;; 将.org结尾的文档，均以org-mode打开
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(add-to-list &amp;#39;auto-mode-alist &amp;#39;(&amp;#34;\.org\&amp;#39;&amp;#34; . org-mode))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">;; 将org-agenda绑定为Ctrl-c a 快捷键
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(global-set-key (kbd &amp;#34;C-c a&amp;#34;) &amp;#39;org-agenda)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>重新打开&lt;code>emacs&lt;/code>使配置生效，重新载入&lt;code>emacs&lt;/code>配置文件即可。
+使用时，可以单独建立一个文件夹，来存储不同需求的日程文档（如，笔者在&lt;code>~/.org/&lt;/code>目录下创建了&lt;code>2021.org&lt;/code>,&lt;code>learn.org&lt;/code>等多个文档）。以下是一个简单的待办文档内容（引用自&lt;a class="link" href="https://wizardforcel.gitbooks.io/os-world-trip/content/42.html" target="_blank" rel="noopener"
+>文章3&lt;/a>）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#+STARTUP: overview
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+TAGS: { 桌面(d) 服务器(s) } 编辑器(e) 浏览器(f) 多媒体(m) 压缩(z)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+TAGS: { @Windows(w) @Linux(l) }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+TAGS: { 糟糕(1) 凑合(2) 不错(3) 很好(4) 极品(5) }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+SEQ_TODO: TODO(T) WAIT(W) | DONE(D!) CANCELED(C@)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#+COLUMNS: %10ITEM %10PRIORITY %15TODO %65TAGS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* 工作 &amp;lt;2021-01-10&amp;gt;-&amp;lt;2022-01-10&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">** Emacs &amp;lt;2021-01-10 21:00 ++1d&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 神之编辑器
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*** org-mode
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 组织你的意念
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>（更多的内容可以查看下&lt;a class="link" href="https://wizardforcel.gitbooks.io/os-world-trip/content/42.html" target="_blank" rel="noopener"
+>原文&lt;/a>，本文仅简单介绍）
+以&lt;code>#+&lt;/code>开头的可以认为是本地设置内容。&lt;code>#+TAGS: &lt;/code>后设置的内容，是本日程中预设的日程标签，标签&lt;code>()&lt;/code>中的是该标签的缩写，需要保持唯一。在下面的日程（或者&lt;code>标题&lt;/code>，可以很容易的看出来，和&lt;code>markdown&lt;/code>是类似的语法）上使用快捷键&lt;code>Ctrl-c Ctrl-c&lt;/code>(或者说，&lt;code>C-c C-c&lt;/code>)，即可给日程打上标签。每个&lt;code>{}&lt;/code>内的标签是互斥的，在设置时，可以注意下。&lt;br>
+下面的日程中,&lt;code>&amp;lt;2021-01-10&amp;gt;-&amp;lt;2022-01-10&amp;gt;&lt;/code>表示该事件时间范围为&lt;code>2021-01-10&lt;/code>至&lt;code>2022-01-10&lt;/code>结束。&lt;code>&amp;lt;2021-01-10 21:00 ++1d&amp;gt;&lt;/code>表示这个子任务的时间开始于&lt;code>2021-01-10 21:00&lt;/code>而后每天重复一次(++1w，++1m为周、月，以此类推)。&lt;br>
+而后，保存文件。使用&lt;code>Ctrl-c [&lt;/code>将当前日程文件纳入&lt;code>org-mode&lt;/code>的日程表。使用前面配置的快捷键&lt;code>C-c a&lt;/code>唤出日历，会出现如下提示：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Press key for an agenda command:&lt;/th>
+&lt;th>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>a&lt;/td>
+&lt;td>本周事件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>t&lt;/td>
+&lt;td>显示所有事件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>m&lt;/td>
+&lt;td>查询标签&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>L&lt;/td>
+&lt;td>当前缓冲区时间线&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>s&lt;/td>
+&lt;td>查询关键词&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>T&lt;/td>
+&lt;td>查询带 TODO 关键词的项&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M&lt;/td>
+&lt;td>查询带 TODO 关键词的标签&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>#&lt;/td>
+&lt;td>显示已停止事件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>q&lt;/td>
+&lt;td>退出日程表&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>选择&lt;code>a&lt;/code>，可以查看本周的事件。如果已经到了所设置的事件区间，即可看到我们设置的事件内容。&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>以上算是简单的入门了。&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h1 id="相关文章">
+&lt;a href="#%e7%9b%b8%e5%85%b3%e6%96%87%e7%ab%a0">#&lt;/a>
+相关文章
+&lt;/h1>&lt;ol>
+&lt;li>&lt;a class="link" href="https://victor72.github.io/blog/2016/06/20/with-org-page-manage-lives/" target="_blank" rel="noopener"
+>使用org-mode 管理日常事务- 日知录&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.cnblogs.com/holbrook/archive/2012/04/17/2454619.html" target="_blank" rel="noopener"
+>用Org-mode实现GTD&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://wizardforcel.gitbooks.io/os-world-trip/content/42.html" target="_blank" rel="noopener"
+>组织你的意念：Emacs org mode&lt;/a>.&lt;/li>
+&lt;/ol></description></item><item><title>elscreen标签背景颜色</title><link>https://liyan-ah.github.io/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</link><pubDate>Wed, 23 Dec 2020 19:23:00 +0000</pubDate><guid>https://liyan-ah.github.io/p/elscreen%E6%A0%87%E7%AD%BE%E8%83%8C%E6%99%AF%E9%A2%9C%E8%89%B2/</guid><description>&lt;blockquote>
+&lt;p>使用&lt;code>emacs&lt;/code>过程中，配合&lt;code>evil&lt;/code>使用，按照&lt;code>tab&lt;/code>的划分，将编辑、浏览、&lt;code>leetcode&lt;/code>等任务划分到不同的&lt;code>tab&lt;/code>便于切换及管理。美中不足的是，模拟标签的&lt;code>elscreen&lt;/code>默认将其他标签的颜色设置成&lt;code>:background blue :foreground black&lt;/code>的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code>face-attribute&lt;/code>的方法，备注下。&lt;/p>
+&lt;/blockquote>
+&lt;p>在初始文件的最后添加：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">;; 选中标签设置为绿底黑字，其他标签为黄底黑字
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(set-face-attribute &amp;#39;elscreen-tab-other-screen-face nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> :background &amp;#34;yellow&amp;#34; :foreground &amp;#34;black&amp;#34;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(set-face-attribute &amp;#39;elscreen-tab-current-screen-face nil
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> :background &amp;#34;green&amp;#34; :foreground &amp;#34;black&amp;#34;)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;!-- more -->
+&lt;p>备注下&lt;a class="link" href="https://github.com/knu/elscreen" target="_blank" rel="noopener"
+>&lt;code>elscreen&lt;/code>&lt;/a>原始代码：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">(defface elscreen-tab-current-screen-face
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#39;((((class color))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (:background &amp;#34;white&amp;#34; :foreground &amp;#34;black&amp;#34;))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (t (:underline t)))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Face for current screen tab.&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> :group &amp;#39;elscreen)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(defface elscreen-tab-other-screen-face
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#39;((((type x w32 mac ns) (class color))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> :background &amp;#34;Gray85&amp;#34; :foreground &amp;#34;Gray50&amp;#34;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (((class color))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> (:background &amp;#34;blue&amp;#34; :foreground &amp;#34;black&amp;#34; :underline t)))
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;Face for tabs other than current screen one.&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> :group &amp;#39;elscreen)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Faces.html" target="_blank" rel="noopener"
+>emacs defface&lt;/a>&lt;/p></description></item></channel></rss>
