@@ -1,0 +1,6 @@
+[files]
+extend-exclude = ["public/**/*", "themes/**/*", "**/*.svg"]
+
+[default.extend-words]
+typ = "typ"
+ba = "ba"
