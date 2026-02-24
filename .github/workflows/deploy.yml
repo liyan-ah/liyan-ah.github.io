@@ -2,9 +2,9 @@ name: Deploy to Github Pages
 
 on:
     push:
-        branches: [main]
+        branches: [draft]
     pull_request:
-        branches: [main]
+        branches: [draft]
 
 jobs:
     build:
@@ -21,8 +21,18 @@ jobs:
                   fetch-depth: 0
 
             - name: Setup Zola
-              uses: shalzz/zola-deploy-action@v0.17.2
+              run: |
+                  curl -sL https://github.com/getzola/zola/releases/download/v0.22.1/zola-v0.22.1-x86_64-unknown-linux-gnu.tar.gz | tar xz
+                  sudo mv zola-v0.22.1-x86_64-unknown-linux-gnu/zola /usr/local/bin/
+                  zola --version
+
+            - name: Build
+              run: zola build
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@v4
               with:
-                  target_branch: gh-pages
-                  build_only: ${{ github.event_name == 'pull_request' }}
-                  args: --minify --gc
+                  branch: gh-pages
+                  folder: public
+                  clean: true
+                  single-commit: true
