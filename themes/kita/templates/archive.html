@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block main %}
+
+<h1 class="mb-16">{{ page.title }}</h1>
+
+{# Get all unique pages from all tags #}
+{% set all_pages = [] %}
+{% set tags = get_taxonomy(kind="tags") %}
+{% for tag in tags.items %}
+{% set_global all_pages = all_pages | concat(with=tag.pages) %}
+{% endfor %}
+
+{# Remove duplicates by using a set-like approach #}
+{% set unique_pages = [] %}
+{% set seen = [] %}
+{% for page in all_pages %}
+{% if page.permalink not in seen %}
+{% set_global seen = seen | concat(with=[page.permalink]) %}
+{% set_global unique_pages = unique_pages | concat(with=[page]) %}
+{% endif %}
+{% endfor %}
+
+{% set sorted_pages = unique_pages | sort(attribute="date") | reverse %}
+
+{% for year, posts in sorted_pages | group_by(attribute="year") %}
+<h2>{{ year }} <sup class="opacity-60">{{ posts | length }}</sup></h2>
+
+<div class="not-prose pl-6">
+  <ul>
+    {% for post in posts %}
+    <li>
+      <div class="my-2 flex items-center justify-between">
+        <a class="secondary-link" href="{{ post.permalink }}">{{ post.title }}</a>
+        <time class="font-mono text-sm opacity-60">{{ post.date | date(format="%m-%d") }}</time>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endfor %}
+{% endblock main %}
