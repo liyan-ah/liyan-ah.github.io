@@ -72,7 +72,7 @@ smart_punctuation = false
 social_image = "./favicon.svg"
 
 [extra.profile]
-name = "liyan-ah"
+name = "李岩"
 bio = "后之视今，亦犹今之视昔"
 avatar_url = "./avatar.svg"
 avatar_invert = true
