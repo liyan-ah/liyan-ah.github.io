@@ -16,10 +16,77 @@ path = "about"
 
 {% admonition(type="success", title="基础信息") %}
 
-- 后端程序员
-- 从事过多个互联网行业
+- 后端工程师
+- 混迹于信息科技企业
 - 人菜瘾大
 - Github：<https://github.com/liyan-ah>
+
+{% end %}
+
+{% admonition(type="note", title="专业知识") %}
+
+- 行业知识
+  - 科技零售
+  - 出行
+  - 语音
+  - 搜索
+  - 职业道德
+- 领域知识
+  - LSM-Tree 存储
+    - 日志存储系统
+  - 可观测
+    - MTL融合
+    - OpenTelemetry
+    - 无侵入采集
+  - 搜索引擎
+    - 一级引擎（精排）
+    - 二级引擎（粗排）
+    - 排序策略
+      - 决策树
+      - LTR
+    - 排序质量
+      - 召回率
+      - 准确率
+- 技术栈
+  - 微服务
+    - RPC
+      - Thrift
+      - GRPC
+    - 缓存
+      - Redis
+    - RDS
+      - MySQL
+  - BPF
+    - 观测工具
+      - bpftrace
+      - cilium-bpf
+      - Aya
+    - 应用层观测
+      - Golang 调用链路观测
+      - LVS FullNat
+    - 操作系统观测
+      - TCP/UDP 调用
+  - 存储
+    - LSM-Tree
+      - InfluxDB
+      - LevelDB
+      - RocksDB
+    - DataFusion
+      - Ballista
+    - MemoryDB
+      - DuckDB
+  - 可观测
+    - Profilling
+      - 火焰图
+    - Metric
+      - Prometheus
+      - Grafana
+- 编程语言
+  - Python
+  - Shell
+  - Go
+  - Rust
+- Learning...
 
 {% end %}
 
@@ -28,17 +95,7 @@ path = "about"
 - 运动
   - 爬山
   - 跑步
-- 电影
 - 读书
-
-{% end %}
-
-{% admonition(type="note", title="专业知识") %}
-
-- Python
-- Shell
-- Go
-- Rust
-- Learning...
+- 电影
 
 {% end %}
