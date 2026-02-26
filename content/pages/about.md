@@ -25,68 +25,84 @@ path = "about"
 
 {% admonition(type="note", title="专业知识") %}
 
-- 行业知识
-  - 科技零售
-  - 出行
-  - 语音
-  - 搜索
-  - 职业道德
-- 领域知识
-  - LSM-Tree 存储
-    - 日志存储系统
-  - 可观测
-    - MTL融合
-    - OpenTelemetry
-    - 无侵入采集
-  - 搜索引擎
-    - 一级引擎（精排）
-    - 二级引擎（粗排）
-    - 排序策略
-      - 决策树
-      - LTR
-    - 排序质量
-      - 召回率
-      - 准确率
-- 技术栈
-  - 微服务
-    - RPC
-      - Thrift
-      - GRPC
-    - 缓存
-      - Redis
-    - RDS
-      - MySQL
-  - BPF
-    - 观测工具
-      - bpftrace
-      - cilium-bpf
-      - Aya
-    - 应用层观测
-      - Golang 调用链路观测
-      - LVS FullNat
-    - 操作系统观测
-      - TCP/UDP 调用
-  - 存储
-    - LSM-Tree
-      - InfluxDB
-      - LevelDB
-      - RocksDB
-    - DataFusion
-      - Ballista
-    - MemoryDB
-      - DuckDB
-  - 可观测
-    - Profilling
-      - 火焰图
-    - Metric
-      - Prometheus
-      - Grafana
-- 编程语言
-  - Python
-  - Shell
-  - Go
-  - Rust
+<details>
+<summary>行业知识</summary>
+
+- 科技零售
+- 出行
+- 语音
+- 搜索
+- 职业道德
+</details>
+
+<details>
+<summary>领域知识</summary>
+
+- LSM-Tree 存储
+  - 日志存储系统
+- 可观测
+  - MTL融合
+  - OpenTelemetry
+  - 无侵入采集
+- 搜索引擎
+  - 一级引擎（精排）
+  - 二级引擎（粗排）
+  - 排序策略
+    - 决策树
+    - LTR
+  - 排序质量
+    - 召回率
+    - 准确率
+</details>
+
+<details>
+<summary>技术栈</summary>
+
+- 微服务
+  - RPC
+    - Thrift
+    - GRPC
+  - 缓存
+    - Redis
+  - RDS
+    - MySQL
+- BPF
+  - 观测工具
+    - bpftrace
+    - cilium-bpf
+    - Aya
+  - 应用层观测
+    - Golang 调用链路观测
+    - LVS FullNat
+  - 操作系统观测
+    - TCP/UDP 调用
+- 存储
+  - LSM-Tree
+    - InfluxDB
+    - LevelDB
+    - RocksDB
+  - DataFusion
+    - Ballista
+  - MemoryDB
+    - DuckDB
+- 可观测
+  - Profilling
+    - 火焰图
+  - Metric
+    - Prometheus
+    - Grafana
+</details>
+
+<details>
+<summary>编程技能</summary>
+
+- Python
+- Shell
+- Go
+- Rust
+- Vibe Coding
 - Learning...
+</details>
 
 {% end %}
 
