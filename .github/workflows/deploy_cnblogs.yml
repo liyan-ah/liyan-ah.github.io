@@ -72,6 +72,7 @@ jobs:
                                  echo "---"
                                  echo "title: $title"
                                  echo "description: $description"
+                                 echo "date: $date"
                                  echo "tags: $tag_list"
                                  echo "category: $category_list"
                                  echo "---"
