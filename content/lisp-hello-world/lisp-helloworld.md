@@ -1,6 +1,0 @@
-```
-;the bellow is hello world function in lisp
-  (defun hello-world()
-    "hello world function in lisp"
-    (format t "hello, world!"));```
-由<code>()</code>所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。
