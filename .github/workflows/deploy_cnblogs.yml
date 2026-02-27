@@ -67,19 +67,22 @@ jobs:
                               # 创建新文件
                               local new_file="$item/${datestamp}.md"
 
-                              # 创建新的 Front Matter（YAML 格式）
-                              {
-                                echo "---"
-                                echo "title: $title"
-                                echo "description: $description"
-                                echo "tags: $tag_list"
-                                echo "category: $category_list"
-                                echo "---"
-                                echo ""
-                                echo "$content"
-                              } > "$new_file"
-                              
-                              echo "Processed: $item -> ${datestamp}.md"
+                               # 创建新的 Front Matter（YAML 格式）
+                               {
+                                 echo "---"
+                                 echo "title: $title"
+                                 echo "description: $description"
+                                 echo "tags: $tag_list"
+                                 echo "category: $category_list"
+                                 echo "---"
+                                 echo ""
+                                 echo "$content"
+                               } > "$new_file"
+
+                               # 删除旧的 index.md
+                               rm "$index_file"
+
+                               echo "Processed: $item -> ${datestamp}.md"
                             fi
                           fi
                         fi
