@@ -64,19 +64,20 @@ jobs:
                               # 移除 Front Matter 并获取正文
                               local content=$(sed '1,/^+++$/{ /^+++$/{ N; d; }; d; }' "$index_file")
 
-                              # 创建新的 Front Matter（YAML 格式）
-                              local new_frontmatter="---
-title: $title
-description: $description
-tags: $tag_list
-category: $category_list
----"
-                              
                               # 创建新文件
                               local new_file="$item/${datestamp}.md"
-                              echo "$new_frontmatter" > "$new_file"
-                              echo "" >> "$new_file"
-                              echo "$content" >> "$new_file"
+
+                              # 创建新的 Front Matter（YAML 格式）
+                              {
+                                echo "---"
+                                echo "title: $title"
+                                echo "description: $description"
+                                echo "tags: $tag_list"
+                                echo "category: $category_list"
+                                echo "---"
+                                echo ""
+                                echo "$content"
+                              } > "$new_file"
                               
                               echo "Processed: $item -> ${datestamp}.md"
                             fi
