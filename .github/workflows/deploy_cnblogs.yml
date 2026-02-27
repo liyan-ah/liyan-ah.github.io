@@ -22,49 +22,70 @@ jobs:
             - name: Process CNBlogs content
               run: |
                   #!/bin/bash
-                  
+
                   process_directory() {
                     local dir="$1"
-                    
+
                     for item in "$dir"/*; do
                       if [ -d "$item" ]; then
                         local basename=$(basename "$item")
                         # 跳过 pages 目录
                         if [ "$basename" != "pages" ] && [ "$basename" != "_index.md" ]; then
                           local index_file="$item/index.md"
-                          
+
                           if [ -f "$index_file" ]; then
-                            # 提取 title：使用 awk 按 = 分割，获取第二个字段，tr 去掉引号和空格
+                            # 提取信息
                             local title=$(grep "^title" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
-                            
-                              if [ -n "$title" ]; then
-                               # 替换文件名中的特殊字符
-                               title="${title//\//-}"  # 替换 / 为 -
-                               title="${title//\\/-}"  # 替换 \ 为 -
-                               title="${title//:/-}"   # 替换 : 为 -
-                               title="${title//\?/-}"  # 替换 ? 为 -
-                               title="${title//\*/-}"  # 替换 * 为 -
-                               title="${title//\|/-}"  # 替换 | 为 -
-                               title="${title//\"/-}"  # 替换 " 为 -
-                               title="${title//</-}"   # 替换 < 为 -
-                               title="${title//>/-}"   # 替换 > 为 -
-                              
-                              # 移除 Front Matter (第一个 +++ 到第二个 +++)
-                              local temp_file="${index_file}.tmp"
-                              sed '1,/^+++$/{ /^+++$/{ N; d; }; d; }' "$index_file" > "$temp_file"
+                            local description=$(grep "^description" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
+                            local date=$(grep "^date" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
+                            local categories=$(grep "^categories" "$index_file" | head -1)
+                            local tags=$(grep "^tags" "$index_file" | head -1)
+
+                            # 将日期转换为时间戳（格式：YYYYMMDD）
+                            local datestamp=$(echo "$date" | sed 's/[-:]//g' | cut -c1-8)
+
+                            if [ -n "$datestamp" ]; then
+                              # 提取分类和标签，转换为 YAML 格式
+                              local category_list=""
+                              local tag_list=""
+
+                              # 处理分类
+                              if [ -n "$categories" ]; then
+                                # 从 categories = ["分类1", "分类2"] 提取内容
+                                category_list=$(echo "$categories" | sed 's/categories.*=\s*//; s/\[//; s/\]//; s/"//g; s/'\''//g')
+                              fi
+
+                              # 处理标签
+                              if [ -n "$tags" ]; then
+                                # 从 tags = ["标签1", "标签2"] 提取内容
+                                tag_list=$(echo "$tags" | sed 's/tags.*=\s*//; s/\[//; s/\]//; s/"//g; s/'\''//g')
+                              fi
+
+                              # 移除 Front Matter 并获取正文
+                              local content=$(sed '1,/^+++$/{ /^+++$/{ N; d; }; d; }' "$index_file")
+
+                              # 创建新的 Front Matter（YAML 格式）
+                              local new_frontmatter="---
+title: $title
+description: $description
+tags: $tag_list
+category: $category_list
+---"
                               
                               # 创建新文件
-                              local new_file="$item/${title}.md"
-                              mv "$temp_file" "$new_file"
+                              local new_file="$item/${datestamp}.md"
+                              echo "$new_frontmatter" > "$new_file"
+                              echo "" >> "$new_file"
+                              echo "$content" >> "$new_file"
                               
-                              echo "Processed: $item -> ${title}.md"
+                              echo "Processed: $item -> ${datestamp}.md"
                             fi
                           fi
                         fi
                       fi
                     done
                   }
-                  
+
                   process_directory "content_cnblogs"
 
             - name: Checkout cnblogs branch
