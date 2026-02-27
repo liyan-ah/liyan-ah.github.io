@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - php</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/php/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-08-02T20:34:48+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/php/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>PHP-7.1升级至7.4兼容性</title>
+        <published>2021-08-02T20:34:48+08:00</published>
+        <updated>2021-08-02T20:34:48+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/php-7-1sheng-ji-zhi-7-4jian-rong-xing/"/>
+        <id>https://liyan-ah.github.io/php-7-1sheng-ji-zhi-7-4jian-rong-xing/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;php作为&lt;del&gt;动不动搞个大事情&lt;&#x2F;del&gt;世界上最好的语言,&lt;del&gt;经常&lt;&#x2F;del&gt;偶尔会出现由于版本升级导致的不兼容问题。笔者在工作中遇到了&lt;code&gt;php7.1&lt;&#x2F;code&gt;升级到&lt;code&gt;php7.4&lt;&#x2F;code&gt;导致的&lt;code&gt;each&lt;&#x2F;code&gt;弃用、&lt;code&gt;mcrypt&lt;&#x2F;code&gt;库启动导致的不兼容。在这里备注下兼容方式。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

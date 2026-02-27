@@ -1,0 +1,100 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    李岩的博客
+  </title><meta name=theme-color><meta content=努力做个程序员 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=李岩的博客 property=og:title><meta content=努力做个程序员 property=og:description><meta content=https://liyan-ah.github.io property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>#可观测</h1><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">Datafusion 学习（0）</h2><div class="not-prose my-1 truncate"><p>记录一些 datafusion 的学习内容。</div><div class="text-sm antialiased opacity-60"><time>2024-09-08</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/datafusion-learning-0/>Datafusion 学习（0）</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">无侵入观测服务拓扑四元组的一种实现</h2><div class="not-prose my-1 truncate"><blockquote><p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。</blockquote><p>服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务<code>A</code>的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务<code>B</code>, <code>C</code>的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。<pre><code>                       service call                  
+                                                     
+     ,-------.          ,-.          ,-.          ,-.
+     |outisde|          |A|          |B|          |C|
+     `---+---'          `+'          `+'          `+'
+         |      /a       |            |            | 
+         |-------------->|            |            | 
+         |               |            |            | 
+         |               |    /b      |            | 
+         |               |----------->|            | 
+         |               |            |            | 
+         |               |           /c            | 
+         |               |------------------------>| 
+     ,---+---.          ,+.          ,+.          ,+.
+     |outisde|          |A|          |B|          |C|
+     `-------'          `-'          `-'          `-'
+</code></pre><p>在弄清楚四元组是什么之后，下面进入今天的话题：如何使用<code>BPF</code>来采集四元组。需要说明的是，笔者这里的语言使用的是<code>golang-1.16</code>。<code>golang</code>不同语言版本间的区别，见：<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2023/03/03/golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/#more target=_blank>golang-1.17+调用规约</a>。<br> 值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。<br> 按照惯例，先看下效果吧：<pre><code># 启动采集
+bpftrace ./http.bt
+Attaching 2 probes...  # 未触发请求前，停止在这里
+caller:                # 触发请求后，输出
+  	caller_path: /handle
+callee:
+  	method: GET
+  	host: 0.0.0.0:9932
+  	url: /echo
+  
+caller:
+  	caller_path: /echo
+callee: none
+  
+# 开始服务
+./http_demo &
+# 触发请求
+curl http://0.0.0.0:9932/handle
+</code></pre></div><div class="text-sm antialiased opacity-60"><time>2023-03-29</time><span class=mx-1>·</span><span>6min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/>无侵入观测服务拓扑四元组的一种实现</a></section><nav class="not-prose mt-16 flex font-bold"></nav></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

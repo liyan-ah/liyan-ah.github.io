@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    李岩的博客
+  </title><meta name=theme-color><meta content=努力做个程序员 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=李岩的博客 property=og:title><meta content=努力做个程序员 property=og:description><meta content=https://liyan-ah.github.io property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>#程序人生</h1><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">challenges of bpf tracing go</h2><div class="not-prose my-1 truncate"></div><div class="text-sm antialiased opacity-60"><time>2022-04-19</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/challenges-of-bpf-tracing-go/>challenges of bpf tracing go</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">eBPF及其对可观测的意义【译文】</h2><div class="not-prose my-1 truncate"><blockquote><p>最近在做 eBPF 的技术调研。看到很多对 eBPF 的介绍。为了加强对内容的理解，笔者选择了其中的一篇尝试翻译。本着便于笔者自己理解的角度，很多内容加入了自己的一些理解，因此并不能算是严格意义上的“翻译”。文章涉及了 eBPF 的介绍、优势、不足，算是一篇 eBPF 的很好的介绍。现在把它贴上来，算是纪念自己的第一篇“译文”。<br> 原文地址：<a rel="noopener nofollow noreferrer external" href=https://newrelic.com/blog/best-practices/what-is-ebpf target=_blank>What Is eBPF and Why Does It Matter for Observability?</a></blockquote></div><div class="text-sm antialiased opacity-60"><time>2022-03-02</time><span class=mx-1>·</span><span>11min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/ebpfji-qi-dui-ke-guan-ce-de-yi-yi-yi-wen/>eBPF及其对可观测的意义【译文】</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">Mac 绘图工具推荐</h2><div class="not-prose my-1 truncate"></div><div class="text-sm antialiased opacity-60"><time>2022-02-16</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/mac-hui-tu-gong-ju-tui-jian/>Mac 绘图工具推荐</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">Mac使用备注</h2><div class="not-prose my-1 truncate"><blockquote><p>最近开始使用Mac了。在使用过程中，发现了一些<code>Mac OS</code>和<code>Centos</code>体验上不同的地方。在这里做一下备注。</blockquote><h3 id=bu-fen-linuxzhi-ling-que-shi>部分Linux指令缺失</h3><p><code>Mac OS</code>并没有实现所有的<code>Linux</code>下的指令，如<code>realpath</code>这里就需要单独安装一些扩展包了：<blockquote><p>brew install coreutils</blockquote></div><div class="text-sm antialiased opacity-60"><time>2020-12-10</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/macshi-yong-bei-zhu/>Mac使用备注</a></section><nav class="not-prose mt-16 flex font-bold"><a class="rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/page/2/>← Prev Page</a></nav></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

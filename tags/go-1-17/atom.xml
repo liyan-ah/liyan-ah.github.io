@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - go-1.17</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/go-1-17/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-03-03T20:59:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/go-1-17/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>go-1.17+ 调用规约</title>
+        <published>2023-03-03T20:59:00+08:00</published>
+        <updated>2023-03-03T20:59:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/"/>
+        <id>https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;go-1.17&lt;&#x2F;code&gt;是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到&lt;code&gt;go-1.17&lt;&#x2F;code&gt;之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和&lt;code&gt;C&#x2F;C++&lt;&#x2F;code&gt;的是完全不一致的。这个问题使得笔者在处理&lt;code&gt;ebpf&lt;&#x2F;code&gt;方案时，始终无法覆盖&lt;code&gt;go-1.17+&lt;&#x2F;code&gt;的版本。虽然短期不会造成影响，线上服务使用的大多还在&lt;code&gt;go-1.16&lt;&#x2F;code&gt;以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下&lt;code&gt;go-1.17+&lt;&#x2F;code&gt;的调用规约。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;go&lt;&#x2F;code&gt;在&lt;code&gt;1.17&lt;&#x2F;code&gt;之前使用的是内存栈来传递参数，这种传参的方式使得&lt;code&gt;golang&lt;&#x2F;code&gt;的语言设计很灵活：&lt;code&gt;golang&lt;&#x2F;code&gt;函数的多返回值能够很容易的实现。同样的，由于&lt;code&gt;golang&lt;&#x2F;code&gt;需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;go.googlesource.com&#x2F;proposal&#x2F;+&#x2F;refs&#x2F;changes&#x2F;78&#x2F;248178&#x2F;1&#x2F;design&#x2F;40724-register-calling.md&quot;&gt;Proposal: Register-based Go calling convention&lt;&#x2F;a&gt;文章里对这个问题进行了详细的讨论，总结起来是&lt;code&gt;golang&lt;&#x2F;code&gt;的特性使得使用系统默认规约并不能带来多语言交互上的收益，且&lt;code&gt;golang&lt;&#x2F;code&gt;希望保持独特。&lt;br &#x2F;&gt;
+本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是&lt;code&gt;x86_64&lt;&#x2F;code&gt;的&lt;code&gt;centos8&lt;&#x2F;code&gt;系统。其他架构下，寄存器名称可能不同。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

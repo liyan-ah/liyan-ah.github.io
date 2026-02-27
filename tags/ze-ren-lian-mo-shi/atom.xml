@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 责任链模式</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/ze-ren-lian-mo-shi/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-02-12T11:40:14+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/ze-ren-lian-mo-shi/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>一种责任链模式的实现</title>
+        <published>2026-02-12T11:40:14+08:00</published>
+        <updated>2026-02-12T11:40:14+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/handle-chain/"/>
+        <id>https://liyan-ah.github.io/handle-chain/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/handle-chain/">&lt;blockquote&gt;
+&lt;p&gt;许久没有写博客了，25年全年都没有更新。估计26年上半年还会继续占用时间，想写点东西还是比较困难的。今天整理了下遇到的比较优美的代码，发出来赏析下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;责任链模式的常见使用场景是对目标数据需要进行多个独立规则的校验，如请求参数能否解析、参数中的业务指标是否非法、权限信息是否正常等。这种需求一般可以将校验的过程抽象成一个接口，然后将每个校验操作都封装成一个接口的实现，在校验管理器中维护一个注册、校验函数。但是这种方法并不优美，尤其是对于&lt;code&gt;Rust&lt;&#x2F;code&gt;语言来说，&lt;code&gt;Rust&lt;&#x2F;code&gt;本身的链式操作是很优美的，将这些校验操作进行封装，通过链式操作来生效则会比较优雅。&lt;&#x2F;p&gt;
+&lt;p&gt;如下是其中的一个通用实现。这里&lt;code&gt;Handler&lt;&#x2F;code&gt;是抽象出来的处理接口，而&lt;code&gt;HandlerA&lt;&#x2F;code&gt;是其中的一个实现。通过定义&lt;code&gt;HandlerChainExt&lt;&#x2F;code&gt; 接口以及 &lt;code&gt;Chain&lt;&#x2F;code&gt; 结构体，即可实现在不改变&lt;code&gt;Handler&lt;&#x2F;code&gt;定义以及&lt;code&gt;HandlerA&lt;&#x2F;code&gt;实现的前提下完成链式操作。这无疑是非常优雅的。而且通过下面的单测示例可以看到，&lt;code&gt;.and_then&lt;&#x2F;code&gt;的调用方式极其简洁、明了。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;#[cfg(test)]
+mod tests {
+    use std::fmt::Debug;
+
+    use anyhow;
+    use tracing::tracing::debug;
+
+    #[async_trait]
+    trait Handler: Debug + Send + Sync {
+        type WriteInput: Debug + Send + Sync;
+        type WriteOutput: Debug + Send + Sync;
+        async fn check(&amp;amp;self, input: Self::WriteInput) -&amp;gt; anyhow::Result&amp;lt;Self::WriteOutput&amp;gt;;
+    }
+
+    #[derive(Debug)]
+    struct HandlerA {
+        output: String,
+    }
+
+    impl HandlerA {
+        fn new(output: String) -&amp;gt; Self {
+            Self { output }
+        }
+    }
+
+    #[async_trait]
+    impl Handler for HandlerA {
+        type WriteInput = String;
+        type WriteOutput = String;
+
+        async fn check(&amp;amp;self, input: String) -&amp;gt; Result&amp;lt;String, anyhow::Error&amp;gt; {
+            debug!(&amp;quot;handler A, {input}&amp;quot;);
+            println!(&amp;quot;handler A, input: {input}&amp;quot;);
+            println!(&amp;quot;hanlder A, output: {input}|{}&amp;quot;, self.output);
+            Ok(format!(&amp;quot;{input}|{}&amp;quot;, self.output))
+        }
+    }
+
+    trait HandlerChainExt: Handler + Sized {
+        fn and_then&amp;lt;T&amp;gt;(self, next: T) -&amp;gt; Chain&amp;lt;Self, T&amp;gt;
+        where
+            T: Handler,
+        {
+            Chain {
+                first: self,
+                second: next,
+            }
+        }
+    }
+
+    impl&amp;lt;T&amp;gt; HandlerChainExt for T where T: Handler {}
+
+    #[derive(Debug)]
+    struct Chain&amp;lt;T, U&amp;gt; {
+        first: T,
+        second: U,
+    }
+
+    impl&amp;lt;T, U&amp;gt; Chain&amp;lt;T, U&amp;gt; {
+        #[allow(dead_code)]
+        fn new(first: T, second: U) -&amp;gt; Self {
+            Self { first, second }
+        }
+    }
+
+    #[async_trait]
+    impl&amp;lt;T, U&amp;gt; Handler for Chain&amp;lt;T, U&amp;gt;
+    where
+        T: Handler,
+        U: Handler&amp;lt;WriteInput = T::WriteOutput&amp;gt;,
+    {
+        type WriteInput = T::WriteInput;
+        type WriteOutput = U::WriteOutput;
+
+        async fn check(&amp;amp;self, input: Self::WriteInput) -&amp;gt; anyhow::Result&amp;lt;Self::WriteOutput&amp;gt; {
+            let output = self.first.check(input).await?;
+            self.second.check(output).await
+        }
+    }
+
+    #[tokio::test]
+    async fn test_handler_chain() {
+        let handler = HandlerA::new(&amp;quot;aa&amp;quot;.into())
+            .and_then(HandlerA::new(&amp;quot;bb&amp;quot;.into()))
+            .and_then(HandlerA::new(&amp;quot;cc&amp;quot;.into()));
+        assert!(handler
+            .check(&amp;quot;raw_input&amp;quot;.into())
+            .await
+            .is_ok_and(|x| x == &amp;quot;raw_input|aa|bb|cc&amp;quot;));
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;Rust&lt;&#x2F;code&gt;语言的特点使得很多代码实现显得非常优雅，后面再找一些。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

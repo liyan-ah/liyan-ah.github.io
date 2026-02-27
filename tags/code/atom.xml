@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - code</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/code/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-11-25T01:14:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/code/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>基于ebpf实现的gls</title>
+        <published>2022-11-25T01:14:00+08:00</published>
+        <updated>2022-11-25T01:14:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/"/>
+        <id>https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;虽然&lt;code&gt;golang&lt;&#x2F;code&gt;并不推荐使用&lt;code&gt;goid&lt;&#x2F;code&gt;来构建&lt;code&gt;gls&lt;&#x2F;code&gt;(&lt;code&gt;goroutine local storage&lt;&#x2F;code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;&#x2F;code&gt;并使用的尝试。&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;jtolio&#x2F;gls&quot;&gt;github-gls&lt;&#x2F;a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;&#x2F;code&gt;里&lt;code&gt;gls&lt;&#x2F;code&gt;的实现思路：获取&lt;code&gt;goid&lt;&#x2F;code&gt;，基于&lt;code&gt;goid&lt;&#x2F;code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;来构建一个&lt;code&gt;golang&lt;&#x2F;code&gt;的&lt;code&gt;gls&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;ji-ben-gong-neng&quot;&gt;基本功能&lt;&#x2F;h1&gt;
+&lt;p&gt;本文中基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;实现的&lt;code&gt;gls&lt;&#x2F;code&gt;具有如下功能：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于&lt;code&gt;goid&lt;&#x2F;code&gt;的存储。即&lt;code&gt;map[goid]=value&lt;&#x2F;code&gt;；&lt;&#x2F;li&gt;
+&lt;li&gt;基于&lt;code&gt;goroutine&lt;&#x2F;code&gt;派生关系设置的&lt;code&gt;value&lt;&#x2F;code&gt;缺省值。即&lt;code&gt;map[goid=1]=121&lt;&#x2F;code&gt;，且&lt;code&gt;goid=1&lt;&#x2F;code&gt;派生&lt;code&gt;goid=2&lt;&#x2F;code&gt;，则&lt;code&gt;map[goid=2]=map[goid=1]=121&lt;&#x2F;code&gt;；&lt;br &#x2F;&gt;
+本文建议参照&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2022&#x2F;11&#x2F;04&#x2F;%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5&#x2F;#more&quot;&gt;黑魔法-ebpf-对用户空间数据的写入&lt;&#x2F;a&gt;进行理解。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>黑魔法--用 ebpf 构建用户空间数据的桥梁</title>
+        <published>2022-11-04T18:00:00+08:00</published>
+        <updated>2022-11-04T18:00:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/"/>
+        <id>https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/</id>
+        
+        <summary type="html">&lt;p&gt;在之前的示例中，仅涉及到&lt;code&gt;ebpf&lt;&#x2F;code&gt;对用户空间数据的读取。工程性较强的如：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2022&#x2F;10&#x2F;21&#x2F;ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83&#x2F;&quot;&gt;ebpf采集mysql请求信息及ebpf对应用安全的思考&lt;&#x2F;a&gt;也仅是通过&lt;code&gt;urpobe&lt;&#x2F;code&gt;采集用户空间的数据。本文介绍点&lt;code&gt;ebpf&lt;&#x2F;code&gt;的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang proto3 使用</title>
+        <published>2022-05-19T17:53:00+08:00</published>
+        <updated>2022-05-19T17:53:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-proto3-shi-yong/"/>
+        <id>https://liyan-ah.github.io/golang-proto3-shi-yong/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;一直都比较赞赏&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;developers.google.com&#x2F;protocol-buffers&#x2F;docs&#x2F;proto3&quot;&gt;&lt;code&gt;protocol buffer&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;。由于其表现性强、压缩比高，可以把很多结构都写到&lt;code&gt;proto&lt;&#x2F;code&gt;文件中，同时添加很多的注释。当需要进行进行数据存储时，使用&lt;code&gt;proto&lt;&#x2F;code&gt;序列化结果替代&lt;code&gt;json&lt;&#x2F;code&gt;，可以省去很多的冗余字段。本篇找了一些&lt;code&gt;golang&lt;&#x2F;code&gt;中&lt;code&gt;protocol buffer&lt;&#x2F;code&gt;的使用示例，以及&lt;code&gt;protocol&lt;&#x2F;code&gt;对象与&lt;code&gt;json&lt;&#x2F;code&gt;对象互相转换的示例。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>challenges of bpf tracing go</title>
+        <published>2022-04-19T14:33:00+08:00</published>
+        <updated>2022-04-19T14:33:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/challenges-of-bpf-tracing-go/"/>
+        <id>https://liyan-ah.github.io/challenges-of-bpf-tracing-go/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/challenges-of-bpf-tracing-go/">&lt;blockquote&gt;
+&lt;p&gt;goroutine 开销为 2KB（最少），对比线程 2MB 的开销，有明显的优势。当goroutine 栈资源不足时，runtime 会将整个 goroutine stack 拷贝、重新分配空间。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Instead of using a thread for every goroutine, Go multiplexes goroutines across multiple threads (&quot;M:N scheduling&quot;). So instead of each thread having a default 2MB stack, each goroutine has a tiny 2KB stack that&#x27;s managed by the runtime instead of the operating system. When the program needs to grow the stack for a goroutine and there&#x27;s not enough room, the runtime copies the entire goroutine&#x27;s stack to another place in memory where it has enough room to expand.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.0x74696d.com&#x2F;posts&#x2F;challenges-of-bpf-tracing-go&#x2F;&quot;&gt;Challenges of BPF Tracing Go&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

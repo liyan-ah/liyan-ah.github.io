@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - observe</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/observe/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-08T19:43:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/observe/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>如何追踪golang channel?</title>
+        <published>2023-12-08T19:43:00+08:00</published>
+        <updated>2023-12-08T19:43:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/"/>
+        <id>https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2023&#x2F;03&#x2F;29&#x2F;cljb83dmh003dkcs61joe1kfh&#x2F;#more&quot;&gt;无侵入观测服务拓扑四元组的一种实现&lt;&#x2F;a&gt;中，笔者有提到追踪&lt;code&gt;golang&lt;&#x2F;code&gt;处理过程的两个无法解决的问题是&lt;code&gt;golang&lt;&#x2F;code&gt;里的&lt;code&gt;channel&lt;&#x2F;code&gt;处理以及&lt;code&gt;goroutine pool&lt;&#x2F;code&gt;。再深究下，这两个问题实际上都可以归纳到对&lt;code&gt;channel&lt;&#x2F;code&gt;的处理，因为很多&lt;code&gt;goroutine pool&lt;&#x2F;code&gt;都离不了&lt;code&gt;channel&lt;&#x2F;code&gt;的使用，比如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Jeffail&#x2F;tunny&quot;&gt;Jeffail&#x2F;tunny&lt;&#x2F;a&gt;这个库。&lt;br &#x2F;&gt;
+本文将会构建一个&lt;code&gt;channel&lt;&#x2F;code&gt;的追踪的方案。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

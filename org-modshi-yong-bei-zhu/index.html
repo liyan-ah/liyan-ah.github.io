@@ -1,0 +1,81 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    emacs! start org-mode! --org-mode使用备注 - 李岩的博客
+  </title><meta name=theme-color><meta content="emacs! start org-mode! --org-mode使用备注" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="emacs! start org-mode! --org-mode使用备注" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="emacs! start org-mode! --org-mode使用备注" property=og:description><meta content=https://liyan-ah.github.io/org-modshi-yong-bei-zhu/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/org-modshi-yong-bei-zhu/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">emacs! start org-mode! --org-mode使用备注</h1><div class="text-sm antialiased opacity-60"><time>2021-01-10</time><span class=mx-1>·</span><span>6min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#org-modejie-shao>org-mode介绍</a><li><a href=#ji-ben-shi-yong-liu-cheng>基本使用流程</a><li><a href=#xiang-guan-wen-zhang>相关文章</a></ul></details></nav><section><blockquote><p>为了更好的<code>live in emacs</code>，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把<code>org-mode</code>这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。</blockquote><h1 id=org-modejie-shao>org-mode介绍</h1><p>在<code>神的编辑器emacs</code>的传说中，往往有<code>org-mode</code>的身影。虽然按照(org官网)<a rel="noopener nofollow noreferrer external" href=https://orgmode.org/ target=_blank>orgmode</a>官网的描述，<code>org-mode</code>并不仅限于在<code>emacs</code>中使用，如<a rel="noopener nofollow noreferrer external" href=https://zhuanlan.zhihu.com/p/57800574 target=_blank>开始使用 Org 模式吧，在没有 Emacs 的情况下</a>这篇文章就详细讲解了在<code>vscode</code>中使用<code>org-mode</code>的方式，但是配合<code>emacs</code>的万物皆系于<code>kbd</code>之上的使用习惯，<code>org-mode</code>确实能够发挥最大的功能。<br> <code>org-mode</code>的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。</p><span id=continue-reading></span><p>这里贴一下<a rel="noopener nofollow noreferrer external" href=https://wizardforcel.gitbooks.io/os-world-trip/content/42.html target=_blank>开源世界旅行手册</a>中涉及的<code>org-mode</code>与<code>oneNote</code>的对比，能够更加直观的了解<code>org-mode</code>的功能：<table><thead><tr><th>org-mode vs oneNote<th><th><tbody><tr><td><td>Org-mode<td>OneNote<tr><td>标签<td>强大<td>不支持<tr><td>日程表<td>强大<td>不支持<tr><td>界面<td>字符<td>漂亮<tr><td>TablePC<td>不支持<td>非常好<tr><td>摘录<td>保持源格式<td><tr><td>便捷<td>Emacs 内置<td>安装麻烦</table><h1 id=ji-ben-shi-yong-liu-cheng>基本使用流程</h1><p>目前还处于探索阶段了，简单描述下<code>org-mode</code>的配置流程。 0. 版本 使用的是<code>emacs-27.1</code>版本，默认内置了<code>org-mode</code>(值得一提的是，当我在写一篇文章时，发现hexo#admin编辑器是支持部分<code>emacs</code>快捷键的，又反映了<code>emacs</code>影响之广)。<ol><li>设置<br> <code>org-mode</code>在使用时，一般是在文本文档中编辑待办内容，将待办内容加入<code>org-mode</code>的日程表。而后通过<code>org-agenda</code>来查看指定日期的待办内容，并随着待办内容设置事务的进度。<br> 使用前，如果是使用<code>emacs</code>进行编辑的话，可以在<code>emacs</code>配置文件中作如下设置：</ol><pre><code>;; 将.org结尾的文档，均以org-mode打开
+(add-to-list 'auto-mode-alist '("\.org\'" . org-mode))
+;; 将org-agenda绑定为Ctrl-c a 快捷键
+(global-set-key (kbd "C-c a") 'org-agenda)
+</code></pre><p>重新打开<code>emacs</code>使配置生效，重新载入<code>emacs</code>配置文件即可。 使用时，可以单独建立一个文件夹，来存储不同需求的日程文档（如，笔者在<code>~/.org/</code>目录下创建了<code>2021.org</code>,<code>learn.org</code>等多个文档）。以下是一个简单的待办文档内容（引用自<a rel="noopener nofollow noreferrer external" href=https://wizardforcel.gitbooks.io/os-world-trip/content/42.html target=_blank>文章3</a>）：<pre><code>#+STARTUP: overview  
+#+TAGS: { 桌面(d) 服务器(s) }  编辑器(e) 浏览器(f) 多媒体(m) 压缩(z)
+#+TAGS:  { @Windows(w)  @Linux(l) }    
+#+TAGS:  { 糟糕(1) 凑合(2) 不错(3) 很好(4) 极品(5) }  
+#+SEQ_TODO: TODO(T) WAIT(W) | DONE(D!) CANCELED(C@)  
+#+COLUMNS: %10ITEM  %10PRIORITY %15TODO %65TAGS  
+* 工作  &lt;2021-01-10>-&lt;2022-01-10>
+** Emacs  &lt;2021-01-10 21:00 ++1d>
+   神之编辑器  
+*** org-mode  
+    组织你的意念  
+</code></pre><p>（更多的内容可以查看下<a rel="noopener nofollow noreferrer external" href=https://wizardforcel.gitbooks.io/os-world-trip/content/42.html target=_blank>原文</a>，本文仅简单介绍） 以<code>#+</code>开头的可以认为是本地设置内容。<code>#+TAGS: </code>后设置的内容，是本日程中预设的日程标签，标签<code>()</code>中的是该标签的缩写，需要保持唯一。在下面的日程（或者<code>标题</code>，可以很容易的看出来，和<code>markdown</code>是类似的语法）上使用快捷键<code>Ctrl-c Ctrl-c</code>(或者说，<code>C-c C-c</code>)，即可给日程打上标签。每个<code>{}</code>内的标签是互斥的，在设置时，可以注意下。<br> 下面的日程中,<code>&lt;2021-01-10>-&lt;2022-01-10></code>表示该事件时间范围为<code>2021-01-10</code>至<code>2022-01-10</code>结束。<code>&lt;2021-01-10 21:00 ++1d></code>表示这个子任务的时间开始于<code>2021-01-10 21:00</code>而后每天重复一次(++1w，++1m为周、月，以此类推)。<br> 而后，保存文件。使用<code>Ctrl-c [</code>将当前日程文件纳入<code>org-mode</code>的日程表。使用前面配置的快捷键<code>C-c a</code>唤出日历，会出现如下提示：<p>|Press key for an agenda command:| |----|----| |a| 本周事件| |t| 显示所有事件| |m| 查询标签| |L| 当前缓冲区时间线| |s| 查询关键词| |T| 查询带 TODO 关键词的项| |M| 查询带 TODO 关键词的标签| |#| 显示已停止事件| |q| 退出日程表| 选择<code>a</code>，可以查看本周的事件。如果已经到了所设置的事件区间，即可看到我们设置的事件内容。<br> 以上算是简单的入门了。<h1 id=xiang-guan-wen-zhang>相关文章</h1><ol><li><a rel="noopener nofollow noreferrer external" href=https://victor72.github.io/blog/2016/06/20/with-org-page-manage-lives/ target=_blank>使用org-mode 管理日常事务- 日知录</a><li><a rel="noopener nofollow noreferrer external" href=https://www.cnblogs.com/holbrook/archive/2012/04/17/2454619.html target=_blank>用Org-mode实现GTD</a><li><a rel="noopener nofollow noreferrer external" href=https://wizardforcel.gitbooks.io/os-world-trip/content/42.html target=_blank>组织你的意念：Emacs org mode</a>.</ol></section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/emacs/>emacs</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/org-mode/>org-mode</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/><span class=mr-1.5>←</span><span>elscreen标签背景颜色</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/><span>org-mode使用备注</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

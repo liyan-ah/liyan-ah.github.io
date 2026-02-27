@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - tools</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/tools/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-02-16T10:51:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/tools/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>Mac 绘图工具推荐</title>
+        <published>2022-02-16T10:51:00+08:00</published>
+        <updated>2022-02-16T10:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/mac-hui-tu-gong-ju-tui-jian/"/>
+        <id>https://liyan-ah.github.io/mac-hui-tu-gong-ju-tui-jian/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/mac-hui-tu-gong-ju-tui-jian/">&lt;p&gt;之前办公一直在&lt;code&gt;Windows&lt;&#x2F;code&gt;系统中，诸如流程图、部署图等图表使用的是&lt;code&gt;visio&lt;&#x2F;code&gt;。迁移到&lt;code&gt;Mac&lt;&#x2F;code&gt;上后，&lt;code&gt;visio&lt;&#x2F;code&gt;便不能使用了。转战到&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.sketch.com&#x2F;&quot;&gt;&lt;code&gt;sketch&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; 上，用着颇为顺手，无奈试用期到了之后，就无法使用了。评估了下使用需求及产品价格，只能启用。&lt;br &#x2F;&gt;
+目前在使用&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;draw.io&#x2F;&quot;&gt;&lt;code&gt;draw.io&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; 进行日常绘图，开源、跨平台、免费、使用流畅，可以在线使用或者客户端使用。基本满足日常需求。用着还是比较好的。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

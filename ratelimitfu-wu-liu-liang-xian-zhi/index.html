@@ -1,0 +1,104 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    ratelimit服务流量限制 - 李岩的博客
+  </title><meta name=theme-color><meta content=ratelimit服务流量限制 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=ratelimit服务流量限制 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=ratelimit服务流量限制 property=og:description><meta content=https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">ratelimit服务流量限制</h1><div class="text-sm antialiased opacity-60"><time>2021-02-07</time><span class=mx-1>·</span><span>7min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#qi-yin>起因</a><li><a href=#lou-tong-fa>漏桶法</a><li><a href=#ling-pai-tong-fa>令牌桶法</a><li><a href=#jmeterzhong-tun-tu-liang-de-kong-zhi-luo-ji>Jmeter中吞吐量的控制逻辑</a><li><a href=#golang-ratelimitjie-shao>golang ratelimit介绍</a><li><a href=#zong-jie>总结</a></ul></details></nav><section><blockquote><p>在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以<a rel="noopener nofollow noreferrer external" href=https://chai2010.cn/advanced-go-programming-book/ target=_blank>Go语言高级编程</a> 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对<code>Jmeter</code>及<code>golang ratelimit</code>中的流量限制方法进行描述。</blockquote><ol><li>起因<li>漏桶法<li>令牌桶法<li>Jmeter中流量吞吐控制<li>golang ratelimit</ol><span id=continue-reading></span><h1 id=qi-yin>起因</h1><p>流量限制手段在系统流量控制以及系统质量评估上都有广泛的应用。对于有多个子模块/下游的系统，如果已知其中一个模块/下游是整个系统处理能力的瓶颈，从系统的入口添加流量限制并添加超量告警，不失为是保护系统的有效手段。从质量保证的手段来说，在衡量一个系统的稳定性时，需要有一个有效的手段来控制给予系统的压力并进行控制。<br> 固定并发数量的流量控制方式是相对容易实现的：对于系统而言，可以添加一个连接池；对于请求方而言，维护一个请求并发池即可。对于固定QPS的流量控制手段而言，则又复杂一些：由于基本指令的直接支持，所以固定QPS的流量控制手段多在基于并发的流量控制上进行二次的封装。封装的措施实际上又会影响控制的效果。笔者曾经在搜索系统上，尝试基于Jmeter，使用1000个线程来产生一个固定的100QPS的并发数。由于Jmeter固定吞吐量实现的特点，导致实际产生的效果中，100个请求多集中在1分钟的前几秒，甚至是最开始1s的前若干ms。使得服务承受的顺势并发非常大，服务出现异常也是可以预见的事情了。<br> 了解一些流量控制的手段还是有必要的。本文主要梳理一下<a rel="noopener nofollow noreferrer external" href=https://chai2010.cn/advanced-go-programming-book/ target=_blank>Go语言高级编程</a>提到的漏桶及令牌桶两种方法，并且进行简单的实现。<h1 id=lou-tong-fa>漏桶法</h1><p>基于<a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Leaky_bucket target=_blank>Leaky_bucket</a>的描述，目前广泛流行的漏桶法存在两种模式：度量法（the leaky bucket as a meter）及队列法（the leaky bucket as a queue）。<br> 度量法在处理时，单位时间内的请求如果超过了预设的数量，会将请求丢弃。比如，需要固定的流量为100QPS，我们以100ms作为一个衡量单元，即10 query/100ms。则，在单位的100ms内，如果请求数量超过了10，则将超过10的请求丢弃。对于队列法，则会将超过的请求均放在一个队列里，在下个时间单位内，按照先进先出的原则，处理队列内的请求。<br> 在请求数量较多且分布均匀的场景下，度量法更加适用。系统已经处于处理的极限，额外的请求存储似乎不太现实。对于流量分布不均的场景下，队列法能够抹平流量的不均匀。在队列长度可控的场景下，队列法能够兼顾请求方（尽量不丢请求）及服务方（控制流量）。至于超出的部分，应该考虑引入告警等方式来把控风险。<h1 id=ling-pai-tong-fa>令牌桶法</h1><p>对令牌桶法的详细介绍见<a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Token_bucket target=_blank>Token bucket</a>。令牌桶法可以认为是更加一般的漏桶法。严格意义上的漏桶法要求每次仅有一个单位的请求被允许，令牌桶法则将其扩展为固定时间段内，产出多个令牌，被请求申请。当令牌桶法每次仅允许一个令牌时，显然就成了漏桶法。<h1 id=jmeterzhong-tun-tu-liang-de-kong-zhi-luo-ji>Jmeter中吞吐量的控制逻辑</h1><p>笔者找到的Jmeter最新版本为<a rel="noopener nofollow noreferrer external" href=https://github.com/apache/jmeter/blob/master/src/components/src/main/java/org/apache/jmeter/timers/ConstantThroughputTimer.java target=_blank>ConstantThroughputTimer</a>。在该实现中，主要分为单线程、多线程、共享线程等模式下的吞吐量（Jmeter中的吞吐量为Query Per Minutes)等模式。可以看出，Jmeter在不同的限流逻辑下，计算每个线程需要的delay时间实现jmeter的请求调度，体现了漏桶法的思路。 相关代码如下：<pre><code>    // Calculate the delay based on the mode
+    private long calculateDelay() {
+        long delay;
+        // N.B. we fetch the throughput each time, as it may vary during a test
+        double msPerRequest = MILLISEC_PER_MIN / getThroughput();
+        switch (mode) {
+        case AllActiveThreads: // Total number of threads
+            delay = Math.round(JMeterContextService.getNumberOfThreads() * msPerRequest);
+            break;
+
+        case AllActiveThreadsInCurrentThreadGroup: // Active threads in this group
+            delay = Math.round(JMeterContextService.getContext().getThreadGroup().getNumberOfThreads() * msPerRequest);
+            break;
+
+        case AllActiveThreads_Shared: // All threads - alternate calculation
+            delay = calculateSharedDelay(allThreadsInfo,Math.round(msPerRequest));
+            break;
+
+        case AllActiveThreadsInCurrentThreadGroup_Shared: //All threads in this group - alternate calculation
+            final org.apache.jmeter.threads.AbstractThreadGroup group =
+                JMeterContextService.getContext().getThreadGroup();
+            ThroughputInfo groupInfo = threadGroupsInfoMap.get(group);
+            if (groupInfo == null) {
+                groupInfo = new ThroughputInfo();
+                ThroughputInfo previous = threadGroupsInfoMap.putIfAbsent(group, groupInfo);
+                if (previous != null) { // We did not replace the entry
+                    groupInfo = previous; // so use the existing one
+                }
+            }
+            delay = calculateSharedDelay(groupInfo,Math.round(msPerRequest));
+            break;
+
+        case ThisThreadOnly:
+        default: // e.g. 0
+            delay = Math.round(msPerRequest); // i.e. * 1
+            break;
+        return delay;
+    }
+</code></pre><h1 id=golang-ratelimitjie-shao>golang ratelimit介绍</h1><p>golang中也有很多请求控制的方法。工程中经常使用的 <code>chan(bool)</code>+<code>WaitGroup</code>池化了请求限制，可以认为是令牌桶法的思路的一种简化；golang自带的<code>Ticker</code>则会在固定的时间间隔内产生一个就绪的状态，可以看出漏桶法的思想。更加工程化的选择，可以看下<a rel="noopener nofollow noreferrer external" href=https://github.com/uber-go/ratelimit target=_blank>golang ratelimit</a>uber开源的这个golang版本的ratelimit实现。水平优先，就贴一个网上找来的源码分析文章<a rel="noopener nofollow noreferrer external" href=https://www.cyhone.com/articles/analysis-of-uber-go-ratelimit/ target=_blank>uber-go 漏桶限流器使用与原理分析</a>。<h1 id=zong-jie>总结</h1><p>本文对常用的两个限流方法<code>漏桶法</code>及<code>令牌桶法</code>进行了简单的描述。同时简单涉及了下<code>Jmeter</code>中的流量限制及<code>golang</code>中不同请求限制措施的思路。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/xi-tong-wen-ding-xing/>系统稳定性</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/ya-li-ce-shi/>压力测试</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/zi-wo-xiu-yang/>自我修养</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/du-dai-ma/>读代码</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/><span class=mr-1.5>←</span><span>org-mode使用备注</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-ji-cheng/><span>golang 封装</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

@@ -1,0 +1,291 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    无侵入观测服务拓扑四元组的一种实现 - 李岩的博客
+  </title><meta name=theme-color><meta content=无侵入观测服务拓扑四元组的一种实现 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=无侵入观测服务拓扑四元组的一种实现 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=无侵入观测服务拓扑四元组的一种实现 property=og:description><meta content=https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">无侵入观测服务拓扑四元组的一种实现</h1><div class="text-sm antialiased opacity-60"><time>2023-03-29</time><span class=mx-1>·</span><span>6min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-duan-golangdai-ma-shi-li>一段golang代码示例</a><li><a href=#cai-ji-de-luo-ji>采集的逻辑</a><li><a href=#fang-an-de-you-que-dian>方案的优缺点</a></ul></details></nav><section><blockquote><p>最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。</blockquote><p>服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务<code>A</code>的角度，就存在如下两个四元组: [A, /a, B, /b]，[A, /a, C, /c]。站在服务<code>B</code>, <code>C</code>的角度，也存在两个四元组（可能有不同的理解）: [B, /b, none, none], [C, /c, none, none]。<pre><code>                       service call                  
+                                                     
+     ,-------.          ,-.          ,-.          ,-.
+     |outisde|          |A|          |B|          |C|
+     `---+---'          `+'          `+'          `+'
+         |      /a       |            |            | 
+         |-------------->|            |            | 
+         |               |            |            | 
+         |               |    /b      |            | 
+         |               |----------->|            | 
+         |               |            |            | 
+         |               |           /c            | 
+         |               |------------------------>| 
+     ,---+---.          ,+.          ,+.          ,+.
+     |outisde|          |A|          |B|          |C|
+     `-------'          `-'          `-'          `-'
+</code></pre><p>在弄清楚四元组是什么之后，下面进入今天的话题：如何使用<code>BPF</code>来采集四元组。需要说明的是，笔者这里的语言使用的是<code>golang-1.16</code>。<code>golang</code>不同语言版本间的区别，见：<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2023/03/03/golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6/#more target=_blank>golang-1.17+调用规约</a>。<br> 值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。<br> 按照惯例，先看下效果吧：<pre><code># 启动采集
+bpftrace ./http.bt
+Attaching 2 probes...  # 未触发请求前，停止在这里
+caller:                # 触发请求后，输出
+  	caller_path: /handle
+callee:
+  	method: GET
+  	host: 0.0.0.0:9932
+  	url: /echo
+  
+caller:
+  	caller_path: /echo
+callee: none
+  
+# 开始服务
+./http_demo &
+# 触发请求
+curl http://0.0.0.0:9932/handle
+</code></pre><span id=continue-reading></span><h1 id=yi-duan-golangdai-ma-shi-li>一段golang代码示例</h1><p>下面是一段<code>golang</code>的<code>http</code>服务的代码：<pre><code>package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type Resp struct {
+	Errno  int    `json:"errno"`
+	Errmsg string `json:"errmsg"`
+}
+
+//go:noinline
+func echo(c *gin.Context) {
+	c.JSON(http.StatusOK, &Resp{
+		Errno:  0,
+		Errmsg: "ok",
+	})
+	return
+}
+
+//go:noinline
+func handle(c *gin.Context) {
+	client := http.Client{}
+	req, _ := http.NewRequest(http.MethodGet, "http://0.0.0.0:9932/echo", nil)
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("failed to request", err.Error())
+		c.JSON(http.StatusOK, &Resp{
+			Errno:  1,
+			Errmsg: "failed to request",
+		})
+		return
+	}
+	respB, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("read resp failed")
+		c.JSON(http.StatusOK, &Resp{
+			Errno:  2,
+			Errmsg: "failed to read request",
+		})
+		return
+	}
+	defer resp.Body.Close()
+	fmt.Println("resp: ", string(respB))
+	c.JSON(http.StatusOK, &Resp{
+		Errno:  0,
+		Errmsg: "request okay",
+	})
+	return
+}
+
+func main() {
+	s := http.Server{
+		Addr: "0.0.0.0:9932",
+	}
+	r := gin.Default()
+	r.GET("/echo", echo)
+	r.GET("/handle", handle)
+	s.Handler = r
+	if err := s.ListenAndServe(); err != nil {
+		fmt.Println("error, ", err.Error())
+	}
+}
+</code></pre><p>这是一段比较简单的<code>golang</code>代码。需要注意的是，这里的四元组是：[local, /handle, local, /echo]。为了便于示例说明，这里的<code>handle</code>的逻辑和请求下游的逻辑是串行的，没有开新的<code>goroutine</code>。这一点很重要，后面会说明。<h1 id=cai-ji-de-luo-ji>采集的逻辑</h1><p>下面是采集的逻辑：<pre><code>/*
+func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {
+...
+}
+type Request struct {
+	Method string
+	URL *url.URL
+}
+type URL struct {
+	Scheme      string
+	Opaque      string    // encoded opaque data
+	User        *Userinfo // username and password information
+	Host        string    // host or host:port
+	Path        string    // path (relative paths may omit leading slash)
+	RawPath     string    // encoded path hint (see EscapedPath method)
+	ForceQuery  bool      // append a query ('?') even if RawQuery is empty
+	RawQuery    string    // encoded query values, without '?'
+	Fragment    string    // fragment for references, without '#'
+	RawFragment string    // encoded fragment hint (see EscapedFragment method)
+}
+*/
+uprobe:./http_demo:net/http.serverHandler.ServeHTTP
+{
+    $req_addr = sarg3;
+
+    $url_addr = *(uint64*)($req_addr+16);
+
+    $path_addr = *(uint64*)($url_addr+56);
+    $path_len  = *(uint64*)($url_addr+64);
+
+	// 在http请求触发处，依据pid将caller_func存储起来
+    @caller_path_addr[pid] = $path_addr;
+    @caller_path_len[pid]  = $path_len;
+    @callee_set[pid] = 0;
+}
+
+
+/*
+type Request struct {
+	Method string
+	URL *url.URL
+}
+
+func (c *Client) do(req *Request) (retres *Response, reterr error) {
+...
+}
+
+*/
+uprobe:./http_demo:"net/http.(*Client).do"
+{
+	// 依据 pid 获取 caller 信息
+    printf("caller: 
+  caller_path: %s
+",
+           str(@caller_path_addr[pid], @caller_path_len[pid]));
+
+    $req_addr = sarg1;
+
+	// 获取 callee 信息
+    $addr = *(uint64*)($req_addr);
+    $len  = *(uint64*)($req_addr + 8);
+    printf("callee: 
+  method: %s
+", str($addr, $len));
+
+    $url_addr = *(uint64*)($req_addr + 16);
+
+    $addr = *(uint64*)($url_addr + 40);
+    $len  = *(uint64*)($url_addr + 48);
+    printf("  host: %s
+", str($addr, $len));
+
+    $addr = *(uint64*)($url_addr + 56);
+    $len  = *(uint64*)($url_addr + 64);
+    printf("  url: %s
+
+", str($addr, $len));
+
+    @callee_set[pid] = 1
+}
+
+uprobe:./http_demo:"net/http.(*response).finishRequest"
+{
+	// 如果没有下游请求，单独输出
+    if (@callee_set[pid] == 0){
+        printf("caller: 
+  caller_path: %s
+",
+               str(@caller_path_addr[pid], @caller_path_len[pid]));
+        printf("callee: none
+
+");
+        @callee_set[pid] = 1;
+    }
+}
+</code></pre><p>到这里就基本上把主要思路介绍清楚了。需要说明的是，示例里使用的是<code>pid</code>作为<code>caller_map</code>里的<code>key</code>，当存在并发时，<code>pid</code>肯定是不够的。对于<code>golang</code>语言，可以使用<code>goid</code>作为<code>caller_map</code>的<code>key</code>。目前对于使用<code>golang</code>常规的使用来说，就足够了。引入<code>goid</code>的另一个问题是，业务代码里可能使用新的<code>goroutine</code>来进行<code>callee</code>的请求、处理。这里就需要引入<code>goroutine</code>的派生关系维护，或者<code>session trace</code>。关于<code>session trace</code>，可以参见<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/11/25/%E5%9F%BA%E4%BA%8Eebpf%E5%AE%9E%E7%8E%B0%E7%9A%84gls/#more target=_blank>基于ebpf实现的gls</a>这部分的逻辑，思路都是一致的。<br> 但是<code>session trace</code>能够覆盖所有的场景么？看一下下面的逻辑：<pre><code>var(
+	info = make(chan interface{}, 1000)
+)
+
+func handle(info chan interface{}){
+	for{
+    	select{
+    		case inf,ok &lt;- info:
+        	// do some request
+    		...
+    	}
+    }
+}
+
+type Resp struct{
+	Code int 	`json:"code"`
+    Msg string 	`json:"msg"`
+}
+
+func Handler(ctx *gin.Context){
+	info &lt;- ctx
+    c.JSON(http.StatusOk, &Resp{Code: 0, Msg: "okay"})
+}
+
+func main(){
+	go handle(info)
+    // normal http register and start 
+    ...
+}
+</code></pre><p>以上是一种<code>http</code>请求的处理方式，大抵的意思是对于每个请求，<code>handleFunc</code>并没有立即有效响应，而是通过<code>channel</code>将一部分的请求信息传递到其他<code>goroutine</code>里处理。这样虽然<code>callerFunc</code>的响应客观上触发了<code>callee</code>的请求，但是<code>handle()</code>所在的<code>goroutine</code>并不是<code>handleFunc</code>派生的。这种场景下，<code>trace</code>也就断掉了。同理，如果是开了<code>goroutine pool</code>来处理，也会丢失。<h1 id=fang-an-de-you-que-dian>方案的优缺点</h1><ol><li>优点。一如笔者在示例及<code>demo</code>中介绍的，对于方案<code>trace</code>能够覆盖的通信类型，<code>callerFunc, callee, calleeFunc</code>等的获取可以直接通过解析函数的参数来获取。对比基于<code>kprobe</code>的报文解析方案，即通过<code>hook tcp_send tcp_rcv</code>等来获取传输层报文，不需要进行复杂的报文解析。这就使得整个解析的触发次数接近<code>O(n)</code>，即一次<code>http</code>交互，一次<code>probe</code>的触发。此外，<code>hook kprobe</code>显然会对机器上所有会调用这个<code>kprobe</code>的进程造成影响，因为其他进程也会等待着调用<code>kprobe</code>。但是本方案里涉及的还仅是目标程序启动后的进程受到影响，并不会从调用角度来影响其他进程（但是<code>CPU</code>的抢占等是会产生轻微影响的）。<li>缺点。本方案的缺点同样很明显：它把语言及框架的依赖引入进来了。相对于<code>kprobe</code>可以直接面向协议进行解析，本方案需要考虑各种语言。同时，如果同一个语言中存在多种<code>http</code>的实现，也需要进行逐个适配。从这一角度而言，<code>golang</code>天然贴合本方案：其拥有官方统一维护的<code>net/http</code>库，同时，下游的请求方式也一并维护了。</ol><p>以上是本次介绍的全部内容。在<code>ebpf</code>落地上，笔者还有很多内容需要探索，期望将来能够落地更多有价值的场景。周末愉快～</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/ke-guan-ce/>可观测</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/ke-guan-ce/>可观测</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/><span class=mr-1.5>←</span><span>go-1.17+ 调用规约</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/plantuml-wen-ben-hua-hui-zhi-umlduo-lei-tu-biao/><span>PlantUML-文本化绘制UML多类图表</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

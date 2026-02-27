@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 理论内容</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/categories/li-lun-nei-rong/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-10-02T14:11:34+08:00</updated>
+    <id>https://liyan-ah.github.io/categories/li-lun-nei-rong/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>存储概述</title>
+        <published>2024-10-02T14:11:34+08:00</published>
+        <updated>2024-10-02T14:11:34+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/storage-introduction/"/>
+        <id>https://liyan-ah.github.io/storage-introduction/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/storage-introduction/">&lt;blockquote&gt;
+&lt;p&gt;最近工作中一直接触存储相关的内容，感觉对现在的存储分类及各个存储的优缺点等了解的还很少。趁着这个机会整理下相关的内容。相信会有收获。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;jian-jie&quot;&gt;简介&lt;&#x2F;h2&gt;
+&lt;p&gt;存储是系统设计中不可缺少的一部分，而存储的选择又有很多种，相关的概念也很繁杂：关系型数据库、列数据库、文件型数据库等等。在为系统选择合适的数据库之前，显然需要了解这些数据库的概念及它们的优缺点。这些是笔者还不具备的能力。笔者试着在本文中对这些概念进行总结，并结合实践来论述下使用需要注意的内容。本文主要内容均整理自互联网文档。希望是个引子，后面依据实践，持续补充及修正涉及到的内容。&lt;&#x2F;p&gt;
+&lt;p&gt;从工作中的经验来看，笔者对存储系统一般关注系统的存储方式、数据一致性的保障方式、如何进行扩展。部分已确定的内容罗列在下面：&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;系统&lt;&#x2F;th&gt;&lt;th&gt;存储类型&lt;&#x2F;th&gt;&lt;th&gt;存储方式&lt;&#x2F;th&gt;&lt;th&gt;CAP满足&lt;&#x2F;th&gt;&lt;th&gt;扩展方式&lt;&#x2F;th&gt;&lt;th&gt;常见优化&lt;&#x2F;th&gt;&lt;th&gt;价格&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;MySQL&lt;&#x2F;td&gt;&lt;td&gt;关系型数据库&lt;&#x2F;td&gt;&lt;td&gt;B+树 (InnoDB引擎)&lt;&#x2F;td&gt;&lt;td&gt;CA（同步复制），AP（异步复制、半同步复制）&lt;&#x2F;td&gt;&lt;td&gt;一般采用主从同步的方式。通过消费binlog, redolog, undolog 来实现数据间的一致性。&lt;&#x2F;td&gt;&lt;td&gt;加机器（CPU、内存、SSD盘）、集群同步方式修改（异步同步）、读写分离、分库分表&lt;&#x2F;td&gt;&lt;td&gt;均衡&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Elasticsearch&lt;&#x2F;td&gt;&lt;td&gt;检索系统&lt;&#x2F;td&gt;&lt;td&gt;索引+JSON为基础的文档&lt;&#x2F;td&gt;&lt;td&gt;CA（设置同步配置），AP&lt;&#x2F;td&gt;&lt;td&gt;扩展 shard 来实现水平扩展&lt;&#x2F;td&gt;&lt;td&gt;增加 Shard，索引优化，加机器&lt;&#x2F;td&gt;&lt;td&gt;涉及到倒排索引的构建，较为耗费 CPU&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;mysql&quot;&gt;MySQL&lt;&#x2F;h2&gt;
+&lt;p&gt;本节期望能够回答以下问题：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL 是否一定是 B+ 树的存储结构。&lt;&#x2F;li&gt;
+&lt;li&gt;InnoDB 为何选择 B+ 树数据结构。&lt;&#x2F;li&gt;
+&lt;li&gt;一个 InnoDB 实例支持多少条数据记录。&lt;&#x2F;li&gt;
+&lt;li&gt;InnoDB 中索引（含主键）都存储在哪里。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;2-1-jian-shu&quot;&gt;2.1 简述&lt;&#x2F;h3&gt;
+&lt;p&gt;MySQL 是最经典的存储系统了，作为关系型数据库中当之无愧的主流，很难找出一个后端的系统（非某个单独的服务）在运行时可以完全不使用 MySQL（笔者工作的这些年还没有遇到过）。通常认为 MySQL 是行数据库，这通常是指 InnoDB 存储引擎是行数据库。需要注意的是，MySQL 同样是有列数据库引擎&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#12&quot;&gt;1&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-2-innodb&quot;&gt;2.2 InnoDB&lt;&#x2F;h3&gt;
+&lt;p&gt;MySQL 支持诸多的存储引擎，一般会使用 InnoDB&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#7&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;（当然也支持 MyISAM，CSV，内存等方式的存储引擎）。本文中对 MySQL 的介绍也默认以 InnoDB 作为存储引擎。从分类上来看，MySQL 是典型的关系型数据库了：它的所有数据检索、查询等操作都是以关系组织操作为核心的。在此基础上有诸如外键、多表联查等操作。关系型数据库也是比较贴合实际的各种数据关系并且易于理解的，很多数据库课程中往往会通过构建一个图书管理系统的方式来学习 MySQL，这里书籍种类标签、各种借阅的关系描述也是关系型数据库所擅长的。&lt;&#x2F;p&gt;
+&lt;p&gt;InnoDB 引擎默认使用 B+ 树来存储数据&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#9&quot;&gt;3&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;：将索引存储在内存中而将实际的数据存储在磁盘中，而且由于 B+ 树的特点，使得任意记录所在的页均可通过有限次的检索动作来定位到，并加载到内存中做进一步的检索。这一点较好的兼容了数据的查询性能及数据的存储容量。实际的记录会存放在数据页中（一般在磁盘中）。而索引页一般会在 MySQL 进程启动后加载到内存中。值的注意的是，MySQL 实例启动后，可以支持多种通信方式：TCP 连接、管道｜共享内存（需要指定参数）、UNIX 套接字等。&lt;&#x2F;p&gt;
+&lt;p&gt;InnoDB 引擎中，明确声明为主键的字段（或者在没有明确生命为主键的情况下，第一个被声明为索引的字段）会存储在聚集索引表中（B+树）。而非主键的索引则存储在辅助索引表中（同样为 B+ 树）。不同的是，与聚集索引表中会存储数据页的地址不同，辅助索引表中存储的是目标数据的聚集索引信息，即主键信息。当使用非主键索引查询数据时，需要先从辅助索引表中检索出主键的值，再到聚集索引中检索出实际数据页的内容并加载到内存中。在硬盘足够大的情况下，B+ 树中索引的设计决定了单个 InnoDB 实例能够存储多少数据&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#11&quot;&gt;4&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。需要注意的是， B+ 树并不是二叉树，父节点可能会有很多子节点。限制内存非叶节点中能够存储索引条数的因素包括索引字段的大小、InnoDB 自身的叶结构等。从理论上看，单个 InnoDB 实例能存储多少数据取决于单个 B+ 树能存储多少数据。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-3-dai-que-ren&quot;&gt;2.3 待确认&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;一条记录的写入、同步、查询的过程。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;elasticsearch&quot;&gt;Elasticsearch&lt;&#x2F;h2&gt;
+&lt;p&gt;本节期望能够回答以下问题：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;ES 的数据存储方式。&lt;&#x2F;li&gt;
+&lt;li&gt;ES 的数据同步方式。&lt;&#x2F;li&gt;
+&lt;li&gt;ES 的数据存储、查询过程。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;3-1-jian-shu&quot;&gt;3.1 简述&lt;&#x2F;h3&gt;
+&lt;p&gt;Elasticsearch，ES，也是经典的存储了，其本身基于 Lucene 进行构建。ES 强大的全文索引能力使得其经常运用在很多检索的场景中，比如视频网站或者简单的文档检索就可以直接使用 ES，从这一点看，预期说 ES 是存储系统，不如说 ES 是检索系统。因为其强大的检索能力，以 ES 为基础的 ELK 生态系统也是日志存储中可以开箱即用的解决方案。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-2-xi-tong-zu-cheng&quot;&gt;3.2 系统组成&lt;&#x2F;h3&gt;
+&lt;p&gt;ES 对外通过 index 提供查询能力，index 又可以通过设置 shard 数目来达到横向扩展的能力。当一个 ES 集群的读写压力很大时，可以通过调大 shard 数来使得单个 shard 的读写压力更小。当然，如果每个 node 节点启动了很多的 shard，比如已经到了机器的性能极限，此时即使扩充 shard，物理机的限制也会使得 ES 的查询效果有优化效果。除了横向扩展，ES 还通过 Replicas 备份的方式来实现容灾备份的效果。当 index 中的某个 shard 出现异常时，可以切换到备份的分片中&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#14&quot;&gt;5&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。值的注意的是，index 中包含了正倒排的索引，而基础数据仍然是基于 JSON 的展示结构&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#19&quot;&gt;6&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-3-shu-ju-chu-li-guo-cheng&quot;&gt;3.3 数据处理过程&lt;&#x2F;h3&gt;
+&lt;p&gt;数据的写入动作会由 Coordinate Node 来处理，该 Node 可能是集群中的任一 Node。而后会依据文档 ID 来路由到对应的 shard 组（包含其备份）中的一个 node1 上。node1 在处理完成本节点的操作后，会将请求并行发送到其他副本中，在确认其他副本写入完成后，会将写成功的结果发送回去（可以通过参数控制，满足了 C）&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#18&quot;&gt;7&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;数据在检索时，同样会将请求发送到 Coordinating Node，并在该 Node 上进行分词等操作。而后将分词结果发送到所有的 shard 上去检索 doc 的排序字段。排序字段检索结果依旧会汇聚到该 Node 上，排序后找到所需要的 doc id 并到该 doc 的 shard 上取获取实际的 doc，返回给 Client&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#20&quot;&gt;8&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-4-dai-que-ren&quot;&gt;3.4 待确认&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;完整的架构图。&lt;&#x2F;li&gt;
+&lt;li&gt;完整的数据处理流程。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;clickhouse&quot;&gt;ClickHouse&lt;&#x2F;h2&gt;
+&lt;p&gt;本节期望能够回答以下问题：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;CK 的数据存储方式，横向扩展方式。&lt;&#x2F;li&gt;
+&lt;li&gt;CK 的数据同步方式。&lt;&#x2F;li&gt;
+&lt;li&gt;CK 的数据存储、查询过程。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;4-1-jian-shu&quot;&gt;4.1 简述&lt;&#x2F;h3&gt;
+&lt;p&gt;ClickHouse 是近几年比较火的列式存储数据库。其与行式存储的区别可以认为是：列式存储是以列为单位的存储。当一行中往往仅需要读取少数几个列的情况下，列存储能够获得更好的读取效果。而且，由于每列的数据往往是相同的类型，按照列进行存储可以更方便的进行压缩。这样的特性使得列存储在 OLAP 的场景下可以获得更好的检索效果及更好的资源利用率&lt;sup class=&quot;footnote-reference&quot;&gt;&lt;a href=&quot;#22&quot;&gt;9&lt;&#x2F;a&gt;&lt;&#x2F;sup&gt;。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;4-2-xi-tong-zu-cheng&quot;&gt;4.2 系统组成&lt;&#x2F;h3&gt;
+&lt;p&gt;CK 同样有诸多的表引擎，使用比较广泛的是 MergeTree。一般来说，每个 Table 可以按照多个 Partition 来进行划分。&lt;&#x2F;p&gt;
+&lt;p&gt;集群部署时，一般使用 ZooKeeper 来维护集群的关系，启动多个节点并按照节点的角色划分来实现主备及横向扩展。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;4-3-dai-que-ren&quot;&gt;4.3 待确认&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;CK 数据同步方式。&lt;&#x2F;li&gt;
+&lt;li&gt;CK 数据处理过程。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;hou-ji&quot;&gt;后记&lt;&#x2F;h2&gt;
+&lt;p&gt;存储是一个很广大的领域。仅本文中设计到的 MySQL、ES、CK 这三种典型的存储系统就消耗了笔者两天的时间来准备文档，而且涉及的内容还很浅。而本文中未涉及到的 Druid、HDFS、Redis、RocksDB、Cassandra 等涉及的存储内容更多。感觉笔者一时怕是无法有效的整理完成。本次且这样吧。&lt;&#x2F;p&gt;
+&lt;p&gt;在本次整理的过程中，笔者同样感觉到资料的缺失：MySQL 的文档及图书资料较为丰富，到后面的 ES、CK 等就开始缺少内容了。希望笔者能够贡献若干篇有深度的文章。&lt;&#x2F;p&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;1&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;10&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;draveness.me&#x2F;mysql-innodb&#x2F;。较为详细的介绍了 InnoDB 的一些概念。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;2&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;11&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;wtzbk&#x2F;p&#x2F;14410608.html。介绍了 MySQL 数据写入时的处理过程。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;3&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;12&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;danielzzz&#x2F;p&#x2F;16852877.html。MySQL 如何保障数据一致性。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;4&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;13&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6895761455358935053。MySQL 的 CAP 取舍介绍。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;5&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;14&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;64578822&#x2F;cap-theorm-why-mysql-is-ca。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;6&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;15&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;kylinlin&#x2F;p&#x2F;5258719.html。MySQL 主从同步过程介绍。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;7&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;2&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;dev.mysql.com&#x2F;doc&#x2F;refman&#x2F;8.4&#x2F;en&#x2F;innodb-introduction.html。InnoDB introduction。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;8&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;16&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1899186。InnoDB 为什么要选择 B+ 树来存储数据。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;9&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;3&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;medium.com&#x2F;@relieved_gold_mole_613&#x2F;why-does-mysql-use-b-trees-7807ed3090bc。 why does mysql use b+ tree。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;10&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;17&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;book.douban.com&#x2F;subject&#x2F;24708143&#x2F;。MySQL 技术内幕（InnoDB 存储引擎）。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;11&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;4&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;2123136。单表最大 2000 万行数据。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;12&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;1&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;dhName&#x2F;p&#x2F;14233938.html。mysql 的存储引擎和 infobright 引擎说明。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;13&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;18&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;elasticsearch.cn&#x2F;article&#x2F;6178。ES 中数据是如何存储的。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;14&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;5&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;32990496。从 Elasticsearch 来看分布式架构系统设计。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;15&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;19&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;fxh0707&#x2F;p&#x2F;17126196.html。ES 文档存储流程。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;16&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;20&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;2398626。Elasticsearch 数据写入、检索流程及底层原理全方位解析。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;17&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;21&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.elastic.co&#x2F;guide&#x2F;en&#x2F;elasticsearch&#x2F;reference&#x2F;current&#x2F;docs-replication.html。Reading and Writing documents。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;18&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;7&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jimoer&#x2F;p&#x2F;15573952.html。ES 写入数据的过程是怎样的？以及是如何快速更新索引数据的？&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;19&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;6&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.knowi.com&#x2F;blog&#x2F;what-is-elastic-search&#x2F;。what is elastic search。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;20&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;8&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;liuzhihang&#x2F;p&#x2F;elasticsearch-4.html。ES 查询检索数据的过程。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;21&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;22&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;xie.infoq.cn&#x2F;article&#x2F;9f325fb7ddc5d12362f4c88a8。行式存储与列式存储。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;22&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;9&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;ya-qiang&#x2F;p&#x2F;13680283.html。ClickHouse 的特性。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;23&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;23&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;clickhouse.com&#x2F;docs&#x2F;zh&#x2F;development&#x2F;architecture。ClickHouse 架构概述。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;24&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;24&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;crazymakercircle&#x2F;p&#x2F;16718469.html。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;25&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;25&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1953788。常见 ClickHouse 集群部署架构。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;26&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;26&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;xie.infoq.cn&#x2F;article&#x2F;cc6415931f2f9aa26b6ae12e2。ClickHouse 常见集群部署架构。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+&lt;div class=&quot;footnote-definition&quot; id=&quot;27&quot;&gt;&lt;sup class=&quot;footnote-definition-label&quot;&gt;27&lt;&#x2F;sup&gt;
+&lt;p&gt;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;eedbaa&#x2F;p&#x2F;14512803.html。ClickHouse 数据存储结构。&lt;&#x2F;p&gt;
+&lt;&#x2F;div&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>Quic协议</title>
+        <published>2021-11-09T21:11:00+08:00</published>
+        <updated>2021-11-09T21:11:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/quicxie-yi/"/>
+        <id>https://liyan-ah.github.io/quicxie-yi/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Quic 协议作为应用层的协议，在无线、弱网场景下的移动通信领域有广阔的应用场景。本文简单记录一些 Quic 的知识点，同时附上介绍的详细文章；&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

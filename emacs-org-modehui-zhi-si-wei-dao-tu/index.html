@@ -1,0 +1,87 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    emacs org-mode 绘制思维导图 - 李岩的博客
+  </title><meta name=theme-color><meta content="emacs org-mode 绘制思维导图" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="emacs org-mode 绘制思维导图" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="emacs org-mode 绘制思维导图" property=og:description><meta content=https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">emacs org-mode 绘制思维导图</h1><div class="text-sm antialiased opacity-60"><time>2023-02-10</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-lai-nei-rong>依赖内容</a><li><a href=#org-contrib-an-zhuang>org-contrib 安装</a><li><a href=#shi-yong-org-mode-zheng-li-wen-dang-bing-zhuan-huan>使用 org-mode 整理文档并转换</a><li><a href=#shi-yong-freemindcha-kan-ji-dao-chu>使用freemind查看及导出</a></ul></details></nav><section><blockquote><p>工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.</blockquote><h1 id=yi-lai-nei-rong>依赖内容</h1><ul><li>org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。<li>freemind 软件。用来查看生成的 mm 文件。</ul><p>笔者试了一下，<code>Xmind思维导图</code>看起来无法打开<code>mm</code>文件，<code>freemind</code>工作正常。也可能是我操作有问题。<br> 此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。</p><span id=continue-reading></span><h1 id=org-contrib-an-zhuang>org-contrib 安装</h1><p>笔者使用的<code>emacs</code>发布版本默认没有<code>org-contrib</code>，需要自行安装。安装过程也比较简单，从<code>github</code>里把<code>org-contrib</code>拉下来，在<code>emacs init.el</code>里配置加载路径，然后主动加载需要的<code>ox-freemind.el</code>即可。<br> <code>github org-contrib</code>地址为<code>git@github.com:emacsmirror/org-contrib.git</code>。目录地址可以视自己的需求确定。笔者的<code>emacs</code>配置都放到了<code>.emacs.d</code>里，<code>org-contrib</code>的本地目录也就放到了<code>~/.emacs.d/org-contrib</code>这里。扩展下载后，在<code>init.el</code>里做如下配置即可：<pre><code>;; ox-fremind
+;; 这里改成本地的 org-contrib 地址
+(add-to-list 'load-path "~/.emacs.d/org-contrib/lisp")
+;; 目前只需要 ox-freemind，因此仅加载这个插件。
+(load-file "~/.emacs.d/org-contrib/lisp/ox-freemind.el")
+</code></pre><p>安装结束后，需要重新加载一下<code>emacs</code>的配置文件，<code>ox-freemind</code>才能可用。<h1 id=shi-yong-org-mode-zheng-li-wen-dang-bing-zhuan-huan>使用 org-mode 整理文档并转换</h1><p>这里直接贴一个示例：<pre><code>#+TITLE:  emacs org-mode 绘制思维导图
+#+OPTIONS: H:1000
+
+* org-contrib 安装
+   org-contrib 可以直接从 github 下载，然后在 emacs 配置文件里加载。
+** org-contrib github 地址
+*** git@github.com:emacsmirror/org-contrib.git
+** emacs 本地配置
+*** (add-to-list 'load-path "~/.emacs.d/org-contrib/lisp")(load-file "~/.emacs.d/org-contrib/lisp/ox-freemind.el")
+* org-mode 下文档编写
+** org-mode 是 emacs 下的神器
+*** 打开 freemind.org 文件，输入这个文本
+** 转换文本文件到 freemind mm 文件
+*** M-x org-freemind-export-to-freemind
+* 查看 mm 文件
+** 使用 freemind 查看生成的 freemind.mm
+</code></pre><p>用<code>emacs</code>打开一个<code>freemind.org</code>，笔者这里直接触发了<code>org-mode</code>。如果没有触发<code>org-mode</code>的话，需要手动执行下<code>M-x org-mode</code>。然后执行<code>org-freemind-export-to-freemind</code>。如果没有这个函数，需要看下之前<code>org-contrib</code>的安装是否有问题，或者加载路径是否正常，加载是否有报错。如果函数执行异常，则需要查下原因。笔者安装后即可直接执行，因此没有报错处置的经验可供参考。<h1 id=shi-yong-freemindcha-kan-ji-dao-chu>使用freemind查看及导出</h1><p><code>mac</code>可以直接<code>brew install --cask freemind</code>。或者到其他下载源下载，如<a rel="noopener nofollow noreferrer external" href=https://freemind.sourceforge.net/wiki/index.php/Download target=_blank>freemind sourceforge 下载</a>。<br> 最后使用<code>freemind</code>打开<code>freemind.org</code>同级目录生成的<code>freemind.mm</code>。展示效果如下： <img alt="upload successful" src=https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/freemind.png> 最后，可以使用<code>emacs</code>查看导出的<code>freemind.png</code>（🐶，笔者还在探索如何在不打开<code>freemind</code>的情况下把<code>mm</code>文件转换成<code>png</code>)。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/emacs/>emacs</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/><span class=mr-1.5>←</span><span>golang常见类型作为参数的eBPF解析</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/ebpf-cai-ji-caller-func/><span>ebpf 采集ebpf 采集tag+tcp五元组</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

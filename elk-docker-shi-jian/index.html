@@ -1,0 +1,253 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    ELK-docker 实践 - 李岩的博客
+  </title><meta name=theme-color><meta content="ELK-docker 实践" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="ELK-docker 实践" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="ELK-docker 实践" property=og:description><meta content=https://liyan-ah.github.io/elk-docker-shi-jian/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/elk-docker-shi-jian/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">ELK-docker 实践</h1><div class="text-sm antialiased opacity-60"><time>2022-01-04</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#elk-docker-bu-shu-shi-jian>ELK docker 部署实践</a><li><a href=#elasticsearch-an-zhuang>Elasticsearch 安装</a><li><a href=#logstash-an-zhuang>Logstash 安装</a><li><a href=#filebeat-an-zhuang>filebeat 安装</a><li><a href=#let-it-run>let it run</a><li><a href=#can-kao-wen-xian>参考文献</a></ul></details></nav><section><h1 id=elk-docker-bu-shu-shi-jian>ELK docker 部署实践</h1><blockquote><p>本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。</blockquote><span id=continue-reading></span><h1 id=elasticsearch-an-zhuang>Elasticsearch 安装</h1><p>这里参照官网给出的<code>docker-compose.yml</code>文件设置<code>elasticsearch</code>集群。<code>elastisearch</code>支持<code>single-node</code>及<code>multi node cluster</code>两种部署模式。在本文中，实际上两种方式都能达到效果。使用<code>single-node</code>启动的环境，查看集群状态时会出现<code>status:yellow</code>。将<code>docker-compose.yml</code>文件放置在一个单独的目录下，然后创建<code>data01, data02, data03</code>目录。依据实际需要，还可创建<code>plugins</code>目录映射。<pre><code>version: '2'
+services:
+  es01:
+    container_name: es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./data01:/usr/share/elasticsearch/data
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elastic
+
+  es02:
+    container_name: es02
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    volumes:
+      - ./data02:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elastic
+
+  es03:
+    container_name: es03
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elastic
+
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
+    external: true
+</code></pre><p>注意这里将集群的网络设置为<code>external</code>，这样后续的<code>logstash</code>才能找到服务节点。此外，由于笔者的机器可用存储较小，因此设置<code>es</code>的存储占用设置为<code>128m</code>。实际使用时，可以按照需求进行调整。 运行<code>docker-compose up -d</code>即可后台启动。启动后，<code>curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"</code> 判断集群状态。<h1 id=logstash-an-zhuang>Logstash 安装</h1><blockquote><p>collect, parse transform logs</blockquote><pre><code>version: '2'
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.15.0
+    container_name: logstash
+    user: root
+    ports:
+      - 5004:5004
+    volumes:
+      - ./config:/usr/share/logstash/config/
+      - /etc/localtime:/etc/localtime
+    command: bash -c "cd /usr/share/logstash && logstash -f config/online.conf"
+    networks:
+      - elastic
+
+networks:
+  elastic:
+    driver: bridge
+    external: true
+</code></pre><pre><code># ./config/online.conf
+input {
+  # 这里支持多种 input
+  beats {
+    port => 5004
+    codec => "json"
+  }
+}
+
+filter {
+  # 这里基于 ruby 脚本进行过滤
+  ruby {
+    path => "./config/filter.rb"
+  }
+}
+
+output {
+  # 这里将过滤后的结果输出到标准输出及 es 中
+  stdout {
+    codec => json
+  }
+  elasticsearch {
+    hosts => ["es01:9200"]
+    index => "logstash"
+    #user => ""
+    #password => ""
+  }
+}
+</code></pre><pre><code># config/filter.rb
+# 按照 online.conf 中的配置，logstash 启动后，会读取 filter.rb，并使用 filter 函数作为过滤函数。
+require "json"
+
+BEGIN{
+  puts "start event filter"
+}
+
+END{
+  puts "end event filter"
+}
+
+def filter(event)
+  puts event
+  if event.get("[errno]") != 0
+    return []
+  end
+  valid_age = 0
+  event.get("[data]").each{ | info |
+    if info["age"] &lt; 10
+      valid_age += info["age"]
+    end
+  }
+  event.set("[data]", valid_age)
+  return [event]
+end
+
+</code></pre><p>logstash 启动后，会监听容器内的 <code>5004</code> 接口（配置于<code>online.conf</code>中），如果有信息传入，则会经过<code>filter.rb</code>中的 <code>filter()</code> 函数对数据进行处理。而后输出到标准输出及 <code>es01</code>容器<code>5004</code>端口的<code>elasticsearch</code>服务。由于<code>elasticsearch</code>及<code>logstash</code>容器使用了相同的网络，因此可以互相感知。<h1 id=filebeat-an-zhuang>filebeat 安装</h1><blockquote><p>filebeat 作为轻量级的日志收集器，仅占用很少的资源，即可完成日志的采集，并且转发至配置的<code>logstash</code>进行后续的处理、归档等操作。</blockquote><pre><code>version: '2'
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.16.0
+    container_name: filebeat
+    user: root
+    environment:
+      - strict.perms=false
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./data:/usr/share/filebat/data
+    networks:
+      - elastic
+    command: bash -c "cd /usr/share/filebeat && filebeat -e -c ./filebeat.yml"
+
+networks:
+  elastic:
+    driver: bridge
+    external: true
+</code></pre><pre><code># filebeat.yml
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/filebeat/input.log
+
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+filbeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+output.logstash:
+  hosts: "logstash:5004"
+</code></pre><p>容器启动后，会监听<code>/usr/share/filebeat/input.log</code>文件。当该文件发生变更时，<code>filebeat</code>会读取增量的内容并进行转发。<h1 id=let-it-run>let it run</h1><p>经过上述步骤，一个简单的日志监听、采集、处理、存档的流程就构建了。为了测试，可以在<code>filebeat</code>容器的<code>/usr/share/filebeat/input.log</code>中写入：<pre><code>{"errno": 0,"data": [{"age": 9,"name": "tt"},{"age": 8,"name": "gg"}]}
+</code></pre><p>按照<code>logstash:online.conf</code>的逻辑，会向<code>elasticsearch</code>的<code>logstash</code>写入信息。<h1 id=can-kao-wen-xian>参考文献</h1><ol><li><a rel="noopener nofollow noreferrer external" href=https://www.cnblogs.com/zhangfushuai/p/14975307.html target=_blank>Linux-ELK日志收集</a><li><a rel="noopener nofollow noreferrer external" href=https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker target=_blank>Install Elasticsearch with Docker</a><li><a rel="noopener nofollow noreferrer external" href=https://www.cnblogs.com/cjsblog/p/9459781.html target=_blank>Logstash介绍</a></ol></section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/elk/>elk</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/quicxie-yi/><span class=mr-1.5>←</span><span>Quic协议</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/mac-hui-tu-gong-ju-tui-jian/><span>Mac 绘图工具推荐</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - org-mode</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/org-mode/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-01-11T21:49:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/org-mode/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>org-mode使用备注</title>
+        <published>2021-01-11T21:49:00+08:00</published>
+        <updated>2021-01-11T21:49:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/">&lt;blockquote&gt;
+&lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;以下操作均在&lt;code&gt;org-agenda&lt;&#x2F;code&gt;中的&lt;code&gt;agenda for current week or day&lt;&#x2F;code&gt;视图下快速编辑：&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;操作&lt;&#x2F;th&gt;&lt;th&gt;快捷键&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;变更任务状态&lt;&#x2F;td&gt;&lt;td&gt;t&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加备注&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加日记&lt;&#x2F;td&gt;&lt;td&gt;i&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;编辑note&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;重建agenda&lt;&#x2F;td&gt;&lt;td&gt;r&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开日历&lt;&#x2F;td&gt;&lt;td&gt;a&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;下周任务列表&lt;&#x2F;td&gt;&lt;td&gt;f&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;上周任务列表&lt;&#x2F;td&gt;&lt;td&gt;b&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开任务所在原始文件&lt;&#x2F;td&gt;&lt;td&gt;enter&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs! start org-mode! --org-mode使用备注</title>
+        <published>2021-01-10T20:30:00+08:00</published>
+        <updated>2021-01-10T20:30:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;&#x2F;code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;&#x2F;code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;org-modejie-shao&quot;&gt;org-mode介绍&lt;&#x2F;h1&gt;
+&lt;p&gt;在&lt;code&gt;神的编辑器emacs&lt;&#x2F;code&gt;的传说中，往往有&lt;code&gt;org-mode&lt;&#x2F;code&gt;的身影。虽然按照(org官网)&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;orgmode.org&#x2F;&quot;&gt;orgmode&lt;&#x2F;a&gt;官网的描述，&lt;code&gt;org-mode&lt;&#x2F;code&gt;并不仅限于在&lt;code&gt;emacs&lt;&#x2F;code&gt;中使用，如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57800574&quot;&gt;开始使用 Org 模式吧，在没有 Emacs 的情况下&lt;&#x2F;a&gt;这篇文章就详细讲解了在&lt;code&gt;vscode&lt;&#x2F;code&gt;中使用&lt;code&gt;org-mode&lt;&#x2F;code&gt;的方式，但是配合&lt;code&gt;emacs&lt;&#x2F;code&gt;的万物皆系于&lt;code&gt;kbd&lt;&#x2F;code&gt;之上的使用习惯，&lt;code&gt;org-mode&lt;&#x2F;code&gt;确实能够发挥最大的功能。&lt;br &#x2F;&gt;
+&lt;code&gt;org-mode&lt;&#x2F;code&gt;的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

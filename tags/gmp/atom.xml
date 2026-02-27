@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - GMP</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/gmp/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-04-15T21:39:29+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/gmp/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>golang GMP</title>
+        <published>2021-04-15T21:39:29+08:00</published>
+        <updated>2021-04-15T21:39:29+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-gmp/"/>
+        <id>https://liyan-ah.github.io/golang-gmp/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;&#x2F;code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;GC&lt;&#x2F;code&gt;实践。慢慢搞吧。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;qian-yan&quot;&gt;前言&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;Golang&lt;&#x2F;code&gt;作为语言层面支持并发的语言，使用&lt;code&gt;go&lt;&#x2F;code&gt;可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的所谓&lt;em&gt;纤程&lt;&#x2F;em&gt;是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如&lt;code&gt;Python&lt;&#x2F;code&gt;的协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的纤程，总是能够对应到操作系统认可的执行单元上。对于&lt;code&gt;Python&lt;&#x2F;code&gt;的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于&lt;code&gt;CPU&lt;&#x2F;code&gt;密集型的操作，仅使用协程是无法达到优化效果的：这种场景下&lt;code&gt;Python&lt;&#x2F;code&gt;会推荐多进程。相比起来，&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;go&lt;&#x2F;code&gt;野心更大一些：期望给用户以&lt;code&gt;go&lt;&#x2F;code&gt;作为接口，在语言内实现与操作系统调度单元的交互。&lt;code&gt;Golang&lt;&#x2F;code&gt;里实际的调度模型是&lt;code&gt;GMP&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

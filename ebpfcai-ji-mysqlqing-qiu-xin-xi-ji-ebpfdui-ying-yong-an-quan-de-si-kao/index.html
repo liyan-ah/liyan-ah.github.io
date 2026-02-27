@@ -1,0 +1,192 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    ebpf采集mysql请求信息及ebpf对应用安全的思考 - 李岩的博客
+  </title><meta name=theme-color><meta content=ebpf采集mysql请求信息及ebpf对应用安全的思考 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=ebpf采集mysql请求信息及ebpf对应用安全的思考 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=ebpf采集mysql请求信息及ebpf对应用安全的思考 property=og:description><meta content=https://liyan-ah.github.io/ebpfcai-ji-mysqlqing-qiu-xin-xi-ji-ebpfdui-ying-yong-an-quan-de-si-kao/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/ebpfcai-ji-mysqlqing-qiu-xin-xi-ji-ebpfdui-ying-yong-an-quan-de-si-kao/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">ebpf采集mysql请求信息及ebpf对应用安全的思考</h1><div class="text-sm antialiased opacity-60"><time>2022-10-21</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#mu-biao>目标</a><li><a href=#bpftrace-dai-ma>bpftrace 代码</a><li><a href=#dui-cai-ji-dai-ma-de-yi-xie-shuo-ming>对采集代码的一些说明</a><li><a href=#ebpf-yu-ying-yong-an-quan-de-yi-xie-si-kao>ebpf 与应用安全的一些思考</a></ul></details></nav><section><blockquote><p>本文笔者继续介绍<code>ebpf</code> 的应用：使用<code>bpftrace</code>采集<code>mysql</code>连接信息，包括数据库地址、<code>db_name</code>、<code>user_name</code>。在展示采集操作的同时，附上对<code>ebpf</code>对云时代应用安全的一些思考。</blockquote><h1 id=mu-biao>目标</h1><p>使用<code>bpftrace</code>对一个运行中进程的<code>mysql</code>请求进行采集，目标采集内容包括数据库地址、<code>db_name</code>、<code>user_name</code>。</p><span id=continue-reading></span><p>目标进程代码如下:<pre><code>// blog/main.go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
+	"xorm.io/xorm"
+)
+
+var sqlE *xorm.Engine
+
+func init() {
+	fmt.Println("init from main")
+	var err error
+	sqlE, err = xorm.NewEngine("mysql",
+		"test:mysqltest@tcp(localhost:3306)/test_db?charset=utf8&parseTime=true") // 随便写个数据库信息，假装是正确的
+	if err != nil {
+		log.Printf("init mysql failed: %+v
+", err)
+	}
+}
+
+type Resp struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+type SqlInfo struct {
+	Id      int64     `json:"id" xorm:"pk bigint(20)"`
+	Created time.Time `json:"created" xorm:"created"`
+	Info    string    `json:"info"`
+}
+
+func (sql *SqlInfo) TableName() string {
+	return "sql_info"
+}
+
+func Mysql(c *gin.Context) {
+	info := c.Query("info")
+	if info == "" {
+		now := time.Now().Format("2008-01-02 15:04:05")
+		info = now
+	}
+	sqlInfo := SqlInfo{
+		Info: info,
+	}
+	affected, err := sqlE.Insert(&sqlInfo)
+	if err != nil {
+		log.Printf("insert db with error: %+v
+", err)
+	} else {
+		log.Printf("affect column nums: %d
+", affected)
+	}
+
+	c.JSON(http.StatusOK, &Resp{Code: 0, Msg: "mysql req over"})
+	return
+}
+
+func main() {
+	r := gin.Default()
+	srv := &http.Server{
+		Addr: "0.0.0.0:9981",
+	}
+	log.Println("server start at: 0.0.0.0:9981")
+	r.GET("/sql", Mysql)
+	srv.Handler = r
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Fatal("error with start listener")
+	}
+}
+</code></pre><h1 id=bpftrace-dai-ma>bpftrace 代码</h1><p>直接上代码了：<pre><code>#! /bin/bpftrace
+
+/* 保存在 blog/blog.bt 里
+ 这里使用的 uprobe 函数为 go-sql-driver 里的内容。源代码在：
+ https://github.com/go-sql-driver/mysql/blob/master/connector.go#L23
+ 定义为：
+ func (c *connector) Connect(ctx context.Context) (driver.Conn, error) {...}
+*/
+uprobe:./blog:"github.com/go-sql-driver/mysql.(*connector).Connect"
+{
+    printf("Connect
+");
+    $cfg_addr = *(uint64*)sarg0; // 获取 c.cfg 的地址
+    $user_addr = *(uint64*)($cfg_addr); // 获取 c.cfg.User
+    $user_len = *(uint64*)($cfg_addr+8); // 获取 len(c.cfg.User)
+    //$pwd_addr = *(uint64*)($cfg_addr+16); // 请注意这里注释掉的内容
+    //$pwd_len = *(uint64*)($cfg_addr+24);
+    $addr_addr = *(uint64*)($cfg_addr+48);
+    $addr_len = *(uint64*)($cfg_addr+56);
+    $db_addr = *(uint64*)($cfg_addr+64);
+    $db_len = *(uint64*)($cfg_addr+72);
+    printf("user: %s
+", str($user_addr, $user_len));
+    //printf("pwd: %s
+", str($pwd_addr, $pwd_len));
+    printf("addr: %s
+", str($addr_addr, $addr_len));
+    printf("db: %s
+", str($db_addr, $db_len));
+}
+
+</code></pre><p>而后启动应用程序<code>blog</code>，启动监听程序<code>sudo bpftrace ./blog.bt</code>，请求<code>blog</code>的<code>/sql</code>接口以触发<code>blog</code>对<code>sql</code>的请求。整个过程对<code>blog</code>程序来说没有任何的不平凡之处，但是我们已经获取了采集结果。 附上执行结果如下：<pre><code>$ ./blog
+init from main
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+2022/10/21 20:15:38 server start at: 0.0.0.0:9981
+[GIN-debug] GET    /sql                      --> main.Mysql (3 handlers)
+2022/10/21 20:18:52 insert db with error: dial tcp 127.0.0.1:3306: connect: connection refused
+[GIN] 2022/10/21 - 20:18:52 | 200 |    3.679499ms |       127.0.0.1 | GET      "/sql"
+</code></pre><p>此时，在采集侧：<pre><code>$ sudo ./blog.bt
+Attaching 1 probe...
+Connect
+user: test
+addr: localhost:3306
+db: test_db
+</code></pre><p>我们已经获取了需要的信息。<h1 id=dui-cai-ji-dai-ma-de-yi-xie-shuo-ming>对采集代码的一些说明</h1><p><code>bpftrace</code>语法部分，参见<a rel="noopener nofollow noreferrer external" href=https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md target=_blank>github-bpftrace-reference_guid</a>。里面有<code>ebpf</code>的一些简单介绍以及<code>bpftrace</code>的使用说明。代码里的主要逻辑，则需要参见<code>golang</code>的语法来理解。部分简述如下：<ul><li>类里的方法，实际调用的时候，第一个参数为对象的地址；<li>go-1.16 及之前的版本，参数存储在栈上；</ul><p>剩下的内容就比较好理解了：<code>ebpf</code>提供的核心功能包括按需读取用户空间内的数据。结合<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/#more target=_blank>golang-常见类型字节数</a>可以比较快的推导出我们需要的信息在地址内的偏移量。同时，在<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more target=_blank>bpftrace无侵入遍历golang链表</a>曾经提到过，如果目标对象比较大，无法在<code>ebpf</code>代码里完整定义该对象（内核限制单个<code>ebpf</code>的<code>hook</code>点程序的栈空间大小在<code>512B</code>），我们访问对象里的成员时，使用的方法就是偏移量访问。<h1 id=ebpf-yu-ying-yong-an-quan-de-yi-xie-si-kao>ebpf 与应用安全的一些思考</h1><p>最后提一点自己的思考。<br> 请回到<code>bpftrace</code>代码里，里面的<code>pasword</code>信息获取的操作被注释掉了。其实我们去掉注释，仍然能够按照预期获取结果。这就意味着，如果我们拥有机器上的权限，并且机器满足我们的采集需求，应用里的核心信息（这里是数据库的密码）将被简单的获取。无论数据库密码如何存储：配置文件、源代码、通过网络配置下发等。只要有涉及数据库访问的用户态函数，有涉及数据库密码传递的内容，这些信息存在被获取的风险，只要采集人拥有<code>root</code>权限。<br> 这里引出另外一个问题：如果一个用户拥有机器上的管理员权限，<code>TA</code>是否应该拥有机器上所有进程信息的准入权。这里的进程信息，显然是包括机器上容器内的进程信息的，无论是公有云或者私有云。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>bpf</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/mysql/>mysql</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/safety/>safety</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/x86-64-chuan-can-fang-shi/><span class=mr-1.5>←</span><span>x86_64 寄存器传参方式</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/><span>黑魔法--用 ebpf 构建用户空间数据的桥梁</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

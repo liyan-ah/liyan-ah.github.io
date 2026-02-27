@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - simplejson</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/simplejson/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-07-22T17:58:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/simplejson/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>go-simplejson 插入数组</title>
+        <published>2021-07-22T17:58:00+08:00</published>
+        <updated>2021-07-22T17:58:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/"/>
+        <id>https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bitly&#x2F;go-simplejson&quot;&gt;go-simplejson&lt;&#x2F;a&gt;是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

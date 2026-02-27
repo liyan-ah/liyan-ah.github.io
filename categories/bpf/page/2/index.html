@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    李岩的博客
+  </title><meta name=theme-color><meta content=努力做个程序员 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=李岩的博客 property=og:title><meta content=努力做个程序员 property=og:description><meta content=https://liyan-ah.github.io property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>#BPF</h1><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">golang常见类型作为参数的eBPF解析</h2><div class="not-prose my-1 truncate"><blockquote><p>即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/ target=_blank>golang 常见类型字节数 </a>，开启了<code>eBPF+golang</code>的总结性工作。此后陆续整理了一些关于<code>ebpf</code>的使用文章，同时项目也在逐步的推进。<code>eBPF</code>的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。</blockquote><p><code>eBPF</code>能够提供一种切入服务细节的独特视角。本文即通过实例，对<code>golang</code>常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于<code>golang-1.16</code>来整理的。</div><div class="text-sm antialiased opacity-60"><time>2022-12-30</time><span class=mx-1>·</span><span>7min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/>golang常见类型作为参数的eBPF解析</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">基于ebpf实现的gls</h2><div class="not-prose my-1 truncate"><blockquote><p>虽然<code>golang</code>并不推荐使用<code>goid</code>来构建<code>gls</code>(<code>goroutine local storage</code>)，仍然有着很多的实现<code>gls</code>并使用的尝试。<a rel="noopener nofollow noreferrer external" href=https://github.com/jtolio/gls target=_blank>github-gls</a>这里是一个常见的实现，基本表述了<code>golang</code>里<code>gls</code>的实现思路：获取<code>goid</code>，基于<code>goid</code>构建一个存储。本文中笔者尝试基于<code>ebpf</code>来构建一个<code>golang</code>的<code>gls</code>。</blockquote><h1 id=ji-ben-gong-neng>基本功能</h1><p>本文中基于<code>ebpf</code>实现的<code>gls</code>具有如下功能：<ul><li>基于<code>goid</code>的存储。即<code>map[goid]=value</code>；<li>基于<code>goroutine</code>派生关系设置的<code>value</code>缺省值。即<code>map[goid=1]=121</code>，且<code>goid=1</code>派生<code>goid=2</code>，则<code>map[goid=2]=map[goid=1]=121</code>；<br> 本文建议参照<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/#more target=_blank>黑魔法-ebpf-对用户空间数据的写入</a>进行理解。</ul></div><div class="text-sm antialiased opacity-60"><time>2022-11-25</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/>基于ebpf实现的gls</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">黑魔法--用 ebpf 构建用户空间数据的桥梁</h2><div class="not-prose my-1 truncate"><p>在之前的示例中，仅涉及到<code>ebpf</code>对用户空间数据的读取。工程性较强的如：<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/ target=_blank>ebpf采集mysql请求信息及ebpf对应用安全的思考</a>也仅是通过<code>urpobe</code>采集用户空间的数据。本文介绍点<code>ebpf</code>的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。</div><div class="text-sm antialiased opacity-60"><time>2022-11-04</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/>黑魔法--用 ebpf 构建用户空间数据的桥梁</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">BPF 获取 LVS FullNat 模式下的 Client IP</h2><div class="not-prose my-1 truncate"><blockquote><p>搞项目。</blockquote><p>观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在<code>LVS</code>下面的。这就势必涉及到<code>LVS</code>预设的工作模式下，一般都是<code>FULLNET</code>，需要的<code>real client ip</code>的信息获取方式。<br> 笔者通过调研，实现了一种通过<code>BPF</code>来观测挂载在<code>LVS</code>下的<code>RS</code>被调用<code>TCP</code>连接信息的方式。本文中关于<code>toa</code>的操作及代码定义均引用自<a rel="noopener nofollow noreferrer external" href=https://github.com/Huawei/TCP_option_address/tree/master target=_blank>Huawei/TCP_option_address</a>。</div><div class="text-sm antialiased opacity-60"><time>2024-01-03</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/>BPF 获取 LVS FullNat 模式下的 Client IP</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">eBPF tail-calls示例</h2><div class="not-prose my-1 truncate"><blockquote><p>最近在整理一些技术文章。本来希望把涉及ELF的内容整理出来，结果发现太难了。ELF涉及的内容要多很多，如果要把希望整理的内容表述清楚，还需要做一些准备的工作。刚好最近完成了tail-calls 的调研，先把关于eBPF的tail-calls的功能整理下吧。</blockquote><p><code>eBPF</code>程序是事件驱动的，这就意味着当目标事件触发后，程序才能执行。考虑这样一个场景：有几个不同的<code>BPF</code>程序均挂载在相同的<code>hook</code>点上，而执行需要保持一定的顺序。这时就需要借助<code>tail calls</code>的功能来实现。</div><div class="text-sm antialiased opacity-60"><time>2023-08-26</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/ebpf-tail-calls/>eBPF tail-calls示例</a></section><nav class="not-prose mt-16 flex font-bold"><a class="rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/categories/bpf/>← Prev Page</a><a class="ml-auto rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/categories/bpf/page/3/>Next Page →</a></nav></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

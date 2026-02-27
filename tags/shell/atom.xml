@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - shell</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/shell/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-11-12T21:44:28+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/shell/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>find匹配文件名</title>
+        <published>2020-11-12T21:44:28+08:00</published>
+        <updated>2020-11-12T21:44:28+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/findpi-pei-wen-jian-ming/"/>
+        <id>https://liyan-ah.github.io/findpi-pei-wen-jian-ming/</id>
+        
+        <summary type="html">&lt;p&gt;目录内容：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;text  text.bak
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;希望从中找到&lt;code&gt;text.bak&lt;&#x2F;code&gt;。使用&lt;code&gt;find&lt;&#x2F;code&gt;实现。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>sed使用备注</title>
+        <published>2020-11-12T16:36:51+08:00</published>
+        <updated>2020-11-12T16:36:51+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/sedshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/sedshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;h2 id=&quot;sedgong-neng-jie-shao&quot;&gt;sed功能介绍&lt;&#x2F;h2&gt;
+&lt;p&gt;先看下官方的介绍&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Sed  is a stream editor. A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline).&lt;br &#x2F;&gt;
+While in some ways similar to an editor which permits scripted edits (such as ed), sed works by making only one pass over the  input(s),  and&lt;br &#x2F;&gt;
+is consequently more efficient.  But it is sed’s ability to filter text in a pipeline which particularly distinguishes it from other types of&lt;br &#x2F;&gt;
+editors.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;大概的意思，是面向流的文本编辑工具。一般用来对文件中的文本进行替换等操作。&lt;br &#x2F;&gt;
+以下备注一些常用的操作方式了。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>shell-访问字符串同名变量</title>
+        <published>2019-06-04T21:53:00+08:00</published>
+        <updated>2019-06-04T21:53:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/shell-fang-wen-zi-fu-chuan-tong-ming-bian-liang/"/>
+        <id>https://liyan-ah.github.io/shell-fang-wen-zi-fu-chuan-tong-ming-bian-liang/</id>
+        
+        <summary type="html">&lt;p&gt;考虑以下场景：&lt;br &#x2F;&gt;
+期望通过给定的变量名称&lt;code&gt;var_str&lt;&#x2F;code&gt;，打印出该名称对应的变量值&lt;code&gt;${var_str}&lt;&#x2F;code&gt;。使用指令&lt;code&gt;eval&lt;&#x2F;code&gt;可以很方便的实现：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;var_str=&amp;quot;1213&amp;quot;;
+ned_param_name=&amp;quot;var_str&amp;quot;;
+eval echo &amp;#39;$&amp;#39;&amp;quot;${ned_param_name}&amp;quot;;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;输出结果为&lt;code&gt;1213&lt;&#x2F;code&gt;;&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

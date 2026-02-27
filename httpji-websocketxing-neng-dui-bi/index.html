@@ -1,0 +1,205 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    http及websocket性能对比 - 李岩的博客
+  </title><meta name=theme-color><meta content=http及websocket性能对比 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=http及websocket性能对比 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=http及websocket性能对比 property=og:description><meta content=https://liyan-ah.github.io/httpji-websocketxing-neng-dui-bi/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/httpji-websocketxing-neng-dui-bi/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">http及websocket性能对比</h1><div class="text-sm antialiased opacity-60"><time>2021-07-15</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#chang-jing>场景</a><li><a href=#dai-ma>代码</a><li><a href=#jie-guo>结果</a><li><a href=#wen-ti-jie-lun>问题结论</a><li><a href=#wen-ti-si-kao>问题思考</a><li><a href=#wen-zhang-tui-jian>文章推荐</a></ul></details></nav><section><blockquote><p>从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。</blockquote><span id=continue-reading></span><h1 id=chang-jing>场景</h1><p>在服务端分别启动了<code>http</code>服务及<code>websocket</code>服务，返回所接受到的信息。构造<code>BenchmarkHttp</code>、<code>BenchmarkWS</code>进行请求，发送递增字符串。<h1 id=dai-ma>代码</h1><pre><code>// server.go
+
+/*
+	golang中使用的是http1.1协议，默认为长链接。仅第一次发送请求时进行握手。
+*/
+
+package main
+
+import (
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"sync"
+
+	"github.com/gorilla/websocket"
+)
+
+var ws_addr = flag.String("ws_addr", "localhost:9080", "websocket http service address")
+var http_addr = flag.String("http_addr", "localhost:9090", "http address address")
+
+var upgrader = websocket.Upgrader{} // use default options
+
+func ws_echo(w http.ResponseWriter, r *http.Request) {
+	c, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Print("upgrade:", err)
+		return
+	}
+	defer c.Close()
+	for {
+		mt, message, err := c.ReadMessage()
+		if err != nil {
+			log.Println("read:", err)
+			break
+		}
+		log.Printf("recv: %s", message)
+		err = c.WriteMessage(mt, message)
+		if err != nil {
+			log.Println("write:", err)
+			break
+		}
+	}
+}
+
+func http_echo(w http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+	echo_data := req.Form.Get("echo")
+	fmt.Println(echo_data)
+	io.WriteString(w, echo_data)
+	return
+
+}
+
+func start_websocket() {
+	http.HandleFunc("/ws_echo", ws_echo)
+	log.Fatal(http.ListenAndServe(*ws_addr, nil))
+}
+
+func start_http() {
+	http.HandleFunc("/http_echo", http_echo)
+	log.Fatal(http.ListenAndServe(*http_addr, nil))
+}
+
+func main() {
+	flag.Parse()
+	log.SetFlags(0)
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	go start_websocket()
+	go start_http()
+	wg.Wait()
+
+}
+</code></pre><pre><code>// web_test.go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strconv"
+	"testing"
+
+	"github.com/gorilla/websocket"
+)
+
+func BenchmarkHttp(b *testing.B) {
+	client := &http.Client{}
+	for i := 0; i &lt; b.N; i++ {
+		i_str := strconv.Itoa(i)
+		req, err := http.NewRequest(http.MethodGet, "http://localhost:9090/http_echo?echo="+i_str, nil)
+		if err != nil {
+			fmt.Println("create new request failed", err.Error())
+			return
+		}
+		//b.ResetTimer()
+		resp, err := client.Do(req)
+		if err != nil {
+			fmt.Println("got http request error", err.Error())
+			return
+		}
+		_, _ = ioutil.ReadAll(resp.Body)
+		//fmt.Println(string(body))
+	}
+}
+
+func BenchmarkWs(b *testing.B) {
+	addr := "localhost:9080"
+	u := url.URL{Scheme: "ws", Host: addr, Path: "/ws_echo"}
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if err != nil {
+		fmt.Println("Error, create websocket connect failed")
+		return
+	}
+	for i := 0; i &lt; b.N; i++ {
+		err = c.WriteMessage(websocket.TextMessage, []byte(strconv.Itoa(i)))
+		if err != nil {
+			fmt.Println("write ws message failed, ", err.Error())
+			continue
+		}
+		_, message, err := c.ReadMessage()
+		if err != nil {
+			fmt.Println("Error, recv message failed")
+			fmt.Println(string(message))
+			continue
+		}
+		//fmt.Println(string(message))
+	}
+	err = c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+	c.Close()
+}
+</code></pre><h1 id=jie-guo>结果</h1><pre><code>go test -bench=. -benchtime=3s -run=none
+BenchmarkHttp-8   	   57764	     62737 ns/op
+BenchmarkWs-8     	  101538	     36740 ns/op
+PASS
+ok  	web_perf	8.850s
+</code></pre><p>从结果中可以直观的看到，<code>websocket</code>协议有明显的性能优势。<h1 id=wen-ti-jie-lun>问题结论</h1><p>上次提出了两个问题，后来经过测试，有了结论。这里贴一下。<ul><li>单个goroutine 崩溃时，该进程内其他的goroutine也会崩溃。通常的做法是使用一层wrapper，进行recover获取及现场、日志等保存；<li>golang中线程的实现，runtime中，初始化时会申请内核态线程；见<code>runtime/proc.go</code>；</ul><h1 id=wen-ti-si-kao>问题思考</h1><ul><li>http1.0, http1.1, http2.0, http3.0, websocket, quic协议的介绍；<li>rpc调用与websocket通信之间的网络延时对比；</ul><h1 id=wen-zhang-tui-jian>文章推荐</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzAwMDAxNjU4Mg==&mid=2247484725&idx=1&sn=63941cdb8ba8961457ae7667eed84448&scene=21#wechat_redirect" rel="noopener nofollow noreferrer external" target=_blank>net/http长链接&连接池使用时的超时陷阱</a> <a rel="noopener nofollow noreferrer external" href=https://blog.csdn.net/qq_39898645/article/details/109181736 target=_blank>换电脑后，hexo-next 窝火的报错</a> <a rel="noopener nofollow noreferrer external" href=https://blog.csdn.net/diaosssss/article/details/92830934 target=_blank>golang调度器初始化</a></section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/websocket/>websocket</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-gmp/><span class=mr-1.5>←</span><span>golang GMP</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/><span>go-simplejson 插入数组</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

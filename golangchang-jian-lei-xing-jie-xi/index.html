@@ -1,0 +1,442 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    golang常见类型作为参数的eBPF解析 - 李岩的博客
+  </title><meta name=theme-color><meta content=golang常见类型作为参数的eBPF解析 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=golang常见类型作为参数的eBPF解析 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=golang常见类型作为参数的eBPF解析 property=og:description><meta content=https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">golang常见类型作为参数的eBPF解析</h1><div class="text-sm antialiased opacity-60"><time>2022-12-30</time><span class=mx-1>·</span><span>7min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#shu-zhi-lei-xing>数值类型</a><li><a href=#string>string</a><li><a href=#slice>slice</a><li><a href=#ding-chang-shu-zu>定长数组</a><li><a href=#jie-gou-ti>结构体</a><li><a href=#zhi-zhen>指针</a><li><a href=#map>map</a><li><a href=#interface>interface</a><li><a href=#xie-zai-zui-hou>写在最后</a></ul></details></nav><section><blockquote><p>即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/ target=_blank>golang 常见类型字节数 </a>，开启了<code>eBPF+golang</code>的总结性工作。此后陆续整理了一些关于<code>ebpf</code>的使用文章，同时项目也在逐步的推进。<code>eBPF</code>的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。</blockquote><p><code>eBPF</code>能够提供一种切入服务细节的独特视角。本文即通过实例，对<code>golang</code>常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于<code>golang-1.16</code>来整理的。</p><span id=continue-reading></span><h1 id=shu-zhi-lei-xing>数值类型</h1><p>目前<code>golang</code>支持的数值类型大概有<code>int</code>, <code>int8</code>, <code>int16</code>, <code>int32</code>, <code>int64</code>及相对应的无符号类型。无符号类型在传递时和对应的有符号类型是一致的，这里不再赘述。<code>int</code>在不同平台上大小会不同，<code>64</code>位操作系统时，<code>sizeof(int)=sizeof(int64)</code>。作为参数传递时，数值类型会直接传递值。<br> 一般来说，<code>int8</code>, <code>int16</code>, <code>int32</code>在作为参数传递时，基于内存对齐的原则，会使用<code>8B</code>的空间来传递。但是并不绝对，笔者在准备本篇文章时，就找到了这样的示例：<pre><code>// type/main.go
+package main
+
+import "fmt"
+
+// 如果严格按照"内存对齐"来推算，int_p 的参数大小应为 8B*5
+//go:noinline
+func int_p(a int8, b int16, c int32, d int64, e int) {
+	fmt.Println(a, b, c, d, e)
+}
+
+func main() {
+	int_p(1, 2, 3, 4, 5)
+}
+
+/* 
+从输出结果来看，int_p 参数列表带大小为 3*8B，其中第一个 8B 的分布为：
+ |int8|--|int16|int32|
+ | 1B |1B| 2B  | 4B  |
+ type/type.bt
+*/
+uprobe:./type:"main.int_p"
+{
+    printf("int8:  %d
+", (int8)(sarg0));
+    printf("int16: %d
+", (int16)(sarg0>>16));
+    printf("int32: %d
+", (int32)(sarg0>>32));
+    printf("int64: %d
+", sarg1);
+    printf("int:   %d
+", sarg2);
+}
+
+// 运行结果
+Attaching 1 probe...
+int8:  1
+int16: 2
+int32: 3
+int64: 4
+int:   5
+</code></pre><p>由此可知，当数值类型作为函数参数时，需要结合前后参数来判断是否触发了内存对齐，进而判断数值类型参数的具体位置。<h1 id=string>string</h1><p><code>string</code>是由<code>8B addr + 8B length</code>来描述的。作为函数参数传递时，亦通过这样的方式来解析：<pre><code>// type/main.go
+package main
+
+import "fmt"
+
+//go:noinline
+func string_p(name string) {
+	fmt.Println(name)
+}
+
+func main() {
+	name := string("didi")
+	string_p(name)
+}
+
+// type/type.bt
+uprobe:./type:"main.string_p"
+{
+    printf("addr:   %d
+", sarg0);
+    printf("length: %d
+", sarg1);
+    printf("name:   %s
+", str(sarg0, sarg1));
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+addr:   4958864        // 所谓的地址，就是这么个东西 @V@
+length: 4
+name:   didi
+</code></pre><p>由于<code>string</code>的地址和长度都是<code>8B</code>，所以不会触发内存对齐。<h1 id=slice>slice</h1><p><code>slice</code>是由<code>8B addr + 8B length + 8B cap</code>来描述的。作为函数值来传递时，需要关注地址及长度，以防止出现过解析的情况：<pre><code>// type/main.go
+package main
+
+import "fmt"
+
+//go:noinline
+func slice_p(slices []int64) {
+	fmt.Println(slices)
+}
+
+func main() {
+	slices := []int64{1, 2, 3}
+	slice_p(slices)
+}
+
+// type/type.bt
+uprobe:./type:"main.slice_p"
+{
+    printf("addr:   %d
+", sarg0);
+    printf("length: %d
+", sarg1);
+    printf("cap:    %d
+", sarg2);
+
+    $pos = 0;
+    $offset = 0;
+    unroll(10){
+        if ($pos >= sarg1){
+            return;
+        }
+        $value = *(int64*)(sarg0+$offset);
+        printf("%d: %d
+", $pos, $value);
+
+        $offset = $offset+8;
+        $pos = $pos + 1;
+    }
+    return;
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+addr:   1310720
+length: 3
+cap:    3
+0: 1
+1: 2
+2: 3
+</code></pre><p>由于<code>eBPF</code>对循环的长度是有限制的，所以通过循环来读取数据会麻烦。一般可以直接将所有的数据都读出来，记录长度并将其传递到用户空间处理。<h1 id=ding-chang-shu-zu>定长数组</h1><p><code>golang</code>的定长数组在传递时，会直接将数据拷贝上去。所以一般是不建议使用定长数组作为函数参数。<pre><code>// type/main.go
+package main
+
+import "fmt"
+
+//go:noinline
+func array_p(slices [4]int64) {
+	fmt.Println(slices)
+}
+
+func main() {
+	arrays := [4]int64{1, 2, 3, 4}
+	array_p(arrays)
+}
+
+// type/type.bt
+uprobe:./type:"main.array_p"
+{
+    printf("arr[0]: %d
+", sarg0);
+    printf("arr[1]: %d
+", sarg1);
+    printf("arr[2]: %d
+", sarg2);
+    printf("arr[3]: %d
+", sarg3);
+    return;
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+arr[0]: 1
+arr[1]: 2
+arr[2]: 3
+arr[3]: 4
+</code></pre><p>需要注意的是，定长数组作为结构体参数时，也是直接将参数堆积的，而不是类似<code>slice</code>的由指针及长度组成。<h1 id=jie-gou-ti>结构体</h1><p><code>golang</code>结构体作为函数参数传递时，会直接将结构体内的成员逐个传递。<pre><code>// type/main.go
+package main
+
+import (
+	"fmt"
+)
+
+type S struct {
+	X int64
+	Y int64
+	Z [3]int64
+	A int64
+}
+
+// 请注意 other 参数，虽然其作为函数的第二个参数，但其在函数列表中的偏移量是 48B
+//go:noinline
+func struct_p(s S, other int64) {
+	fmt.Println(s, other)
+}
+
+func main() {
+	s := S{
+		X: 1,
+		Y: 2,
+		Z: [3]int64{3, 4, 5},
+		A: 6,
+	}
+	struct_p(s, 7)
+}
+
+// type/type.bt
+uprobe:./type:"main.struct_p"
+{
+    printf("X: %d
+", sarg0);
+    printf("Y: %d
+", sarg1);
+    printf("A: %d
+", sarg5);
+    printf("other: %d
+", sarg6);
+    return;
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+X: 1
+Y: 2
+A: 6
+other: 7
+</code></pre><p>结构体作为函数参数，往往会涉及到内存对齐的问题。需要逐个分析了。<h1 id=zhi-zhen>指针</h1><p><code>golang</code>指针作为函数参数时，会直接传递指针数值。<pre><code>// type/main.go
+package main
+
+import (
+	"fmt"
+)
+
+type P struct {
+	X int64
+	Y int64
+	Z [3]int64
+	A int64
+}
+
+//go:noinline
+func pointer_p(p *P) {
+	fmt.Println(*p)
+}
+
+func main() {
+	p := &P{
+		X: 1,
+		Y: 2,
+		Z: [3]int64{3, 4, 5},
+		A: 6,
+	}
+	pointer_p(p)
+}
+
+// type/type.bt
+uprobe:./type:"main.pointer_p"
+{
+    $p = sarg0;
+    printf("X: %d
+", *(int64*)($p+0));
+    printf("Y: %d
+", *(int64*)($p+8));
+    printf("A: %d
+", *(int64*)($p+40));
+    return;
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+X: 1
+Y: 2
+A: 6
+</code></pre><p>解析<code>golang</code>指针成员的时候，需要提前知晓指针结构体的内容。<h1 id=map>map</h1><p><code>golang</code>的<code>map</code>实现比较复杂，详细的介绍可以看下这篇文章：<a rel="noopener nofollow noreferrer external" href=https://golang.design/go-questions/map/principal/ target=_blank>golang map</a>。<code>map</code>作为参数传递时，实际上传递的是<code>hmap</code>的指针。<br> 由于<code>golang</code>的<code>map</code>实际的结构及具体结构体的大小会受到<code>map key, map value</code>的影响，这对使用<code>eBPF</code>来解析<code>golang map</code>带来了额外的挑战。所幸本文并不期望提供一个<code>golang map</code>解析的通用方法，我们可以提前定义所需要解析的<code>map</code>为<code>map[int64]int64</code>，在这个条件下，<code>bmap</code>的结构就为：<pre><code>// sizeof(bmap) = 144B
+type bmap struct {
+    topbits  [8]uint8 // 8B
+    keys     [8]int64 // 64B
+    values   [8]int64 // 64B
+    //pad      uintptr //不需要添加内存对齐参数
+    overflow uintptr
+}
+</code></pre><p>确定了<code>bmap</code>的信息后，可以看到，<code>keys</code>及<code>values</code>的偏移信息就确定了，可以直接读取。但是由于<code>key</code>实际映射时是通过<code>hash</code>来决定其位置的，完整的读取<code>map</code>显然是很困难的。<pre><code>// type/main.go
+package main
+
+import "fmt"
+
+//go:noinline
+func map_p(m map[int64]int64) {
+	fmt.Println(m)
+}
+
+func main() {
+	m := map[int64]int64{}
+	for i := int64(1); i &lt;= int64(10); i++ {
+		m[i] = i
+	}
+	map_p(m)
+}
+
+// type/type.bt
+uprobe:./type:"main.map_p"
+{
+    $hmap_addr = sarg0;
+    $bucket_addr = *(uint64*)($hmap_addr+16);
+    $bucket_offset = 0;
+    unroll(2){ // 尝试读取两个 bmap
+        $bmap_addr = $bucket_addr + $bucket_offset;
+        $key_addr = $bmap_addr + 8;
+        $value_addr = $bmap_addr + 72;
+
+        $offset = 0;
+        unroll(8){ // 读取每个 bmap 的所有 key-value
+            $key = *(int64*)($key_addr+$offset);
+            $value = *(int64*)($value_addr+$offset);
+            printf("key: %d, value: %d
+", $key, $value);
+            $offset = $offset + 8;
+        }
+        $bucket_offset = $bucket_offset + 144;
+    }
+    return;
+}
+
+// 笔者的这次运行，把[1,10]所有的key都输出了
+bpftrace ./type.bt
+Attaching 1 probe...
+key: 2, value: 2
+key: 3, value: 3
+key: 5, value: 5
+key: 6, value: 6
+key: 7, value: 7
+key: 8, value: 8
+key: 9, value: 9
+key: 10, value: 10
+key: 1, value: 1
+key: 4, value: 4
+key: 0, value: 0
+key: 0, value: 0
+key: 0, value: 0
+key: 0, value: 0
+key: 0, value: 0
+key: 0, value: 0
+</code></pre><p>使用<code>eBPF</code>来读取<code>map</code>，不得不预设一个确定的大小。至于是否能够读取所有的<code>map</code>值，就不好说了。<h1 id=interface>interface</h1><p><code>golang</code>的<code>interface</code>是由<code>8B type pointer</code>+<code>8B struct pointer</code>组成的。当解析<code>interface</code>的时候，需要的往往是<code>struct pointer</code>。<pre><code>// type/main.go
+package main
+
+import (
+	"fmt"
+)
+
+type Inter interface{}
+
+type S struct {
+	X int64
+	Y int64
+	Z [3]int64
+	A int64
+}
+
+//go:noinline
+func struct_p(i Inter, other int64) {
+	s, _ := i.(S)
+	fmt.Println(s, other)
+}
+
+func main() {
+	s := S{
+		X: 1,
+		Y: 2,
+		Z: [3]int64{3, 4, 5},
+		A: 6,
+	}
+	struct_p(s, 7)
+}
+
+// type/type.bt
+uprobe:./type:"main.struct_p"
+{
+    $addr = sarg1;
+    printf("X: %d
+", *(int64*)($addr+0));
+    printf("Y: %d
+", *(int64*)($addr+8));
+    printf("A: %d
+", *(int64*)($addr+40));
+    printf("other: %d
+", sarg2);
+    return;
+}
+
+bpftrace ./type.bt
+Attaching 1 probe...
+X: 1
+Y: 2
+A: 6
+other: 7
+</code></pre><p>从示例中可以看出，当解析<code>interface</code>时，<code>interface</code>具体的结构体成员对我们而言更加重要。在实际的工程里，往往会出现多个结构体实现同一个<code>interface</code>，并且均可以作为该<code>interface</code>来传递值的情况。这时就需要依据所实际期望解析的结构体来进行实际采集的过滤或者适配了。<h1 id=xie-zai-zui-hou>写在最后</h1><p>本文编写的文章超过了笔者的估计时间 :)。<code>anyway</code>，这篇文章最终整理完成了。期望有读者能够籍此对<code>eBPF</code>有直观的认识，同时体会到其观察<code>golang</code>的独特视角。<br> 周末愉快，新年快乐！</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>BPF</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/><span class=mr-1.5>←</span><span>基于ebpf实现的gls</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/><span>emacs org-mode 绘制思维导图</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

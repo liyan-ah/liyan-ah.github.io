@@ -1,0 +1,6 @@
+/* 代码块自动换行 */
+pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-x: visible !important;
+}

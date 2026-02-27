@@ -1,0 +1,201 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    黑魔法--用 ebpf 构建用户空间数据的桥梁 - 李岩的博客
+  </title><meta name=theme-color><meta content="黑魔法--用 ebpf 构建用户空间数据的桥梁" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="黑魔法--用 ebpf 构建用户空间数据的桥梁" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="黑魔法--用 ebpf 构建用户空间数据的桥梁" property=og:description><meta content=https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">黑魔法--用 ebpf 构建用户空间数据的桥梁</h1><div class="text-sm antialiased opacity-60"><time>2022-11-04</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yun-xing-xiao-guo>运行效果</a><li><a href=#ying-yong-ji-si-kao>应用及思考</a><li><a href=#ebpf-luo-ji>ebpf 逻辑</a></ul></details></nav><section><p>在之前的示例中，仅涉及到<code>ebpf</code>对用户空间数据的读取。工程性较强的如：<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/ target=_blank>ebpf采集mysql请求信息及ebpf对应用安全的思考</a>也仅是通过<code>urpobe</code>采集用户空间的数据。本文介绍点<code>ebpf</code>的“黑魔法”：将用户空间数据的读取、用户空间数据的写入结合起来，成为用户空间数据交互的桥梁。</p><span id=continue-reading></span><h1 id=yun-xing-xiao-guo>运行效果</h1><p>在看运行效果之前，需要先看下目标示例的代码以便更好的理解本文介绍的功能：<pre><code>// user/obj/obj.go
+package main
+
+import (
+	"fmt"
+)
+
+var Len = 5
+
+// 预设的 uprobe
+//go:noinline
+func Set(info []byte) {
+	fmt.Println("info: ", string(info))
+	return
+}
+
+// 预设的 uprobe
+//go:noinline
+func Get(info []byte) []byte {
+	fmt.Printf("info addr: %p
+", info)
+	fmt.Println(string(info))         // 请注意这里的输出操作
+	return info
+}
+
+type Third struct {
+	Info string
+}
+
+func (t *Third) SetSomething(info string) {
+	infoByt := []byte(info)
+	// 这里假设是个约束
+	infoByt = infoByt[:Len]
+	Set(infoByt)  // 在这里调用预设的处理函数
+}
+
+func (t *Third) GetSomething() string {
+	infoByt := make([]byte, Len, Len)
+	infoByt = Get(infoByt) // 在这里调用预设的处理函数
+	return string(infoByt)
+}
+
+func main() {
+	third1 := Third{}
+	info := "12345"
+	third1.SetSomething(info)  // 请注意，这里进行写入的对象
+
+	/* very long handle logic, many goroutines or proces happend here */
+
+	third2 := Third{}
+    // 请注意，这里读取的对象和上述执行写入的对象是完全没有关系的
+	infoGet := third2.GetSomething()
+	fmt.Printf("after getInfo, [%s]
+", infoGet)
+}
+</code></pre><p>这段代码非常简单，下面进行了两次执行来说明<code>ebpf</code>达到的效果：<pre><code>$ ./obj  // 第一次，没有使用 ebpf 生效。代码的正常输出结果
+info:  12345
+info addr: 0xc0000180f0
+                         // 请注意这里
+after getInfo, []
+
+$ ./obj  // 第二次，开始执行前开启 ebpf 监听
+info:  12345
+info addr: 0xc0000180f0
+12345                    // 请注意这里
+after getInfo, [12345]
+</code></pre><p>请关注上述示例里的注释。通过<code>ebpf</code>的<code>attach</code>，实现了数据从用户空间-><code>ebpf</code>空间->用户空间，这个过程并不关心用户代码里发生了什么，<code>ebpf</code>只关注预设的<code>uprobe</code>是怎么被调用的。<h1 id=ying-yong-ji-si-kao>应用及思考</h1><p><code>ebpf</code>的这个功能显然具有很广泛的应用，但是具体的应用就需要结合业务的应用来说明了（颇有一些拿着锤子找钉子的感觉），比如：结合调用了特定埋点<code>sdk</code>的使用，能够用来对<code>traceId</code>信息的补全。<br> 事物自然都有两面性，<code>ebpf</code>提供了变更用户空间数据的潜力，自然就会带来风险：代码里的逻辑似乎不再靠谱了。而且，想象下将代码里的读操作，变更为删除操作，将会对用户空间的安全造成很大的破坏。<h1 id=ebpf-luo-ji>ebpf 逻辑</h1><p>之前一直是使用<code>bpftrace</code>来进行示例演示的，但是本文涉及的功能需要使用<code>long bpf_probe_write_user(void *dst, const void *src, u32 len)</code>这个<code>bpf-helper</code>函数。笔者没有找到<code>bpftrace</code>里的调用方式，因此采用<code>cilium-ebpf</code>来进行示例演示。其中涉及的主要<code>bpf</code>代码附在下面，基本表述了相对原生的<code>bpf-helper</code>的调用方法。<pre><code>struct{
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(key_size, sizeof(u32));
+    __uint(value_size, sizeof(u8)*5);
+    __uint(max_entries, 100);
+} info_map SEC(".maps");
+
+struct event{
+    u64 pid_tgid;
+
+    u8 info[5];  // 这里的成员长度，请结合 obj.go 来看
+    uintptr_t addr;
+    long res;
+};
+typedef struct event event_t;
+// Force emitting struct event into the ELF.
+const struct event *unused __attribute__((unused));
+
+struct {
+  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+} events SEC(".maps");
+
+SEC("uprobe/main_set")
+int uprobe__main_set(struct pt_regs *ctx){
+    uintptr_t info_p = 0;
+    u8 info[5];
+    u64 pid_tgid = bpf_get_current_pid_tgid();
+
+    SARG(ctx, 0, info_p);
+
+    bpf_probe_read(&info, sizeof(info), (const void*)info_p);
+    u32 tgid = (u32)(pid_tgid >> 32);
+    bpf_map_update_elem(&info_map, &tgid, &info, BPF_ANY);
+
+    event_t event = {};
+    event.pid_tgid = pid_tgid;
+    memcpy(event.info, info, sizeof(info));
+    bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+    
+    return 0;
+}
+
+SEC("uprobe/main_get")
+int uprobe__main_get(struct pt_regs *ctx){
+    uintptr_t info_p = 0;
+    u64 pid_tgid = bpf_get_current_pid_tgid();
+
+    void* r_info_p = NULL;
+    u32 tgid = (u32)(pid_tgid >> 32);
+    r_info_p = bpf_map_lookup_elem(&info_map, &tgid);
+    if (r_info_p == NULL){
+        return 0;
+    }
+    event_t event = {};
+    event.pid_tgid = pid_tgid;
+
+    SARG(ctx, 0, info_p);
+
+    u8 info[5];
+    memcpy(info, r_info_p, sizeof(info));
+
+    memcpy(event.info, info, sizeof(event.info));
+
+    event.res = bpf_probe_write_user((u8*)info_p, info, sizeof(info));
+    event.addr = info_p;
+
+    bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+    return 0;
+}
+</code></pre><p>以上，周末愉快。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>BPF</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/code/>code</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/ebpfcai-ji-mysqlqing-qiu-xin-xi-ji-ebpfdui-ying-yong-an-quan-de-si-kao/><span class=mr-1.5>←</span><span>ebpf采集mysql请求信息及ebpf对应用安全的思考</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/><span>基于ebpf实现的gls</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

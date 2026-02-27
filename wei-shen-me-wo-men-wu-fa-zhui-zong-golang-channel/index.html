@@ -1,0 +1,428 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    如何追踪golang channel? - 李岩的博客
+  </title><meta name=theme-color><meta content="如何追踪golang channel?" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="如何追踪golang channel?" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="如何追踪golang channel?" property=og:description><meta content=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">如何追踪golang channel?</h1><div class="text-sm antialiased opacity-60"><time>2023-12-08</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-zhui-zong-xiao-guo>一、追踪效果</a><li><a href=#er-fang-an-she-ji>二、方案设计</a><li><a href=#san-fang-an-shi-xian>三、方案实现</a><li><a href=#si-zhui-zong-de-feng-xian>四、追踪的风险</a></ul></details></nav><section><blockquote><p>2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。</blockquote><p>在<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2023/03/29/cljb83dmh003dkcs61joe1kfh/#more target=_blank>无侵入观测服务拓扑四元组的一种实现</a>中，笔者有提到追踪<code>golang</code>处理过程的两个无法解决的问题是<code>golang</code>里的<code>channel</code>处理以及<code>goroutine pool</code>。再深究下，这两个问题实际上都可以归纳到对<code>channel</code>的处理，因为很多<code>goroutine pool</code>都离不了<code>channel</code>的使用，比如<a rel="noopener nofollow noreferrer external" href=https://github.com/Jeffail/tunny target=_blank>Jeffail/tunny</a>这个库。<br> 本文将会构建一个<code>channel</code>的追踪的方案。</p><span id=continue-reading></span><h1 id=yi-zhui-zong-xiao-guo>一、追踪效果</h1><p>按照惯例，我们还是来看下效果。<pre><code>// terminal 1，启动服务
+$ ./drink-srv
+
+// terminal 2，启动追踪脚本
+$ sudo bpftrace ./drink.bt
+Attaching 7 probes...  // 启动后停止在这里
+serve HTTP: /alcohol   // 触发接口后输出
+caller: /alcohol, callee: :/unknown/prepare/hotel
+serve HTTP: /tea
+caller: /tea, callee: :/unknown/prepare/club
+
+// terminal 3，触发服务接口
+$ curl "localhost:1423/alcohol?age=22"
+$ curl "localhost:1423/tea?age=12"
+
+</code></pre><h1 id=er-fang-an-she-ji>二、方案设计</h1><p>关于<code>golang channel</code>的实现及设计，可以参见<a rel="noopener nofollow noreferrer external" href=https://i6448038.github.io/2019/04/11/go-channel/ target=_blank>图解Go的channel底层实现</a>，里面有非常生动的动图实现；搭配源码食用更好<a rel="noopener nofollow noreferrer external" href=https://github.com/golang/go/blob/master/src/runtime/chan.go target=_blank>runtime/chan.go</a>。<br> 笔者在这里再简单的总结下，对<code>send</code>及<code>recv</code>两种操作设计的状态做一个简单的概述： <code>chan-send</code>的状态： <img alt="overwrote existing file" src=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/chan-send.png> <code>chan-recv</code>的状态： <img alt="overwrote existing file" src=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/chan-recv.png><p>比如，对于下面的代码，派生出的<code>g1</code>在开启<code>select</code>后，由于<code>ticketChan</code>是空的，会触发<code>g1</code>让出<code>m</code>里的执行权限，进入<code>gopark</code>状态。同时，<code>ticketChan</code>会将<code>g1</code>封装成<code>sudog</code>，放到<code>recvq</code>队列中。当一段时间之后，其他的<code>g</code>将数据写入<code>channel</code>里时，会在<code>chansend</code>时，检查到<code>recvq</code>不为空，会直接将数据拷贝到空闲的<code>sudog</code>中。<pre><code>var ticketChan = make(chan TicketInfo, 10)
+func HandleDrink() {
+    for {
+        select {
+        case info, ok := &lt;-ticketChan:
+			...
+            }
+        }
+    }
+}
+func main() {
+    go HandleDrink()
+    ...
+}
+
+</code></pre><p><code>chanrecv</code>进入<code>recvq</code>对应的<code>golang</code>处理逻辑在这里：<pre><code>// runtime/chan.go
+	...
+	// no sender available: block on this channel.
+	gp := getg()
+	mysg := acquireSudog()
+	mysg.releasetime = 0
+	if t0 != 0 {
+		mysg.releasetime = -1
+	}
+	// No stack splits between assigning elem and enqueuing mysg
+	// on gp.waiting where copystack can find it.
+	mysg.elem = ep
+	mysg.waitlink = nil
+	gp.waiting = mysg
+	mysg.g = gp
+	mysg.isSelect = false
+	mysg.c = c
+	gp.param = nil
+	c.recvq.enqueue(mysg)
+    ...
+    
+</code></pre><p><code>chansend</code>直接将数据拷贝到<code>recvq</code>对应的<code>golang</code>处理逻辑在这里：<pre><code>// runtime/chan.go
+	...
+	if sg := c.recvq.dequeue(); sg != nil {
+		// Found a waiting receiver. We pass the value we want to send
+		// directly to the receiver, bypassing the channel buffer (if any).
+		send(c, sg, ep, func() { unlock(&c.lock) }, 3)
+		return true
+	}
+    ...
+    
+</code></pre><h1 id=san-fang-an-shi-xian>三、方案实现</h1><p>了解了<code>channel</code>的处理流程，追踪的方案就比较明确了，直接在关键的函数处设置<code>hook</code>点即可。先来看下目标服务：<pre><code>package main
+
+import (
+	"log"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+const (
+	ALCOHOL = iota + 1001
+	COCO
+	COFFEE
+	TEA
+)
+
+type TicketInfo struct {
+	Age  int
+	Name string
+	Type int
+}
+
+var ticketChan = make(chan TicketInfo, 10)
+
+func AlcoholH(c *gin.Context) {
+	var ticket = TicketInfo{}
+	var err error
+	ticket.Age, err = strconv.Atoi(c.Query("age"))
+	if err != nil {
+		c.String(http.StatusOK, "handle failed")
+		return
+	}
+	ticket.Name = c.Query("name")
+	ticket.Type = ALCOHOL
+	ticketChan &lt;- ticket
+	return
+}
+
+func TeaH(c *gin.Context) {
+	var ticket = TicketInfo{}
+	var err error
+	ticket.Age, err = strconv.Atoi(c.Query("age"))
+	if err != nil {
+		log.Println("handle failed, ", err.Error())
+		c.String(http.StatusOK, "handle failed")
+		return
+	}
+	ticket.Name = c.Query("name")
+	ticket.Type = TEA
+	ticketChan &lt;- ticket
+	c.String(http.StatusOK, "okay")
+	return
+}
+
+func HandleDrink() {
+	for {
+		select {
+		case info, ok := &lt;-ticketChan:
+			if !ok {
+				log.Println("chan closed.")
+				return
+			}
+			log.Println("get ticket")
+			switch info.Type {
+			case ALCOHOL:
+				Alcohol(info)
+			case COCO:
+				SoftDrink(info)
+			case COFFEE, TEA:
+				Tea(info)
+			default:
+				log.Println("unknown drink type")
+			}
+		}
+	}
+}
+
+func Alcohol(ticket TicketInfo) {
+	var url = "http://localhost/unknown/prepare/hotel"
+	http.DefaultClient.Get(url)
+	return
+}
+
+func SoftDrink(ticket TicketInfo) {
+	log.Printf("[%s, %d] drink %d", ticket.Name, ticket.Age, ticket.Type)
+	return
+}
+
+func Tea(ticket TicketInfo) {
+	var url = "http://localhost/unknown/prepare/club"
+	http.DefaultClient.Get(url)
+	return
+}
+
+func main() {
+	defer func() {
+		close(ticketChan)
+	}()
+
+	go HandleDrink()
+
+	var r = gin.Default()
+	r.GET("/alcohol", AlcoholH)
+	r.GET("/tea", TeaH)
+
+	var srv = &http.Server{
+		Addr:    "127.0.0.1:1423",
+		Handler: r,
+	}
+	if srv.ListenAndServe() != nil {
+		log.Println("failed to handle service listen")
+		return
+	}
+}
+
+</code></pre><p>对于这样的一个服务，希望达到示例中的追踪效果，对应的方案为：<pre><code>#define OFF_TASK_THRD 4992
+#define OFF_THRD_FSBASE 40
+#define GOID_OFFSET 152
+
+uprobe:./drink-srv:"runtime.runqput"
+{
+  $prob_mark = "runqput";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  if (@new_go[tid, pid] == 0){
+    return;
+  }
+  $p_goid = @new_go[tid, pid];
+
+  $g = (uint64)(reg("bx"));
+  $goid = *(uint64*)($g+GOID_OFFSET);
+  @caller_addr[$goid] = @caller_addr[$p_goid];
+  @caller_len[$goid]  = @caller_len[$p_goid];
+}
+
+uprobe:./drink-srv:"runtime.newproc1"
+{
+  $prob_mark = "newproc1";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $g = (uint64)(reg("bx"));
+  $goid = *(uint64*)($g+GOID_OFFSET);
+  if (@caller_addr[$goid] == 0){
+    return;
+  }
+  @new_go[tid, pid] = $goid;
+}
+
+// 这里，将 caller 信息和写入 channel 信息的 key 关联起来
+uprobe:./drink-srv:"runtime.chansend"
+{
+  $prob_mark = "chansend";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $cur = (uint64)curtask;
+  $fsbase = *(uint64*)($cur+OFF_TASK_THRD+OFF_THRD_FSBASE);
+  $g = *(uint64*)($fsbase-8);
+  $goid = *(uint64*)($g+GOID_OFFSET);
+
+  // 如果当前执行goroutine中没有caller，跳过
+  if(@caller_addr[$goid] == 0){
+    return;
+  }
+
+  $chan = (uint64)reg("ax");
+  $qcount = *(uint32*)($chan + 0);
+  $buf = *(uint64*)($chan+16);
+  @send_addr[$chan, $qcount] = @caller_addr[$goid];
+  @send_len[$chan, $qcount]  = @caller_len[$goid];
+
+  return;
+}
+
+
+uprobe:./drink-srv:"runtime.chanrecv"
+{
+  $prob_mark = "chanrecv";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $cur = (uint64)curtask;
+  $fsbase = *(uint64*)($cur+OFF_TASK_THRD+OFF_THRD_FSBASE);
+  $g = *(uint64*)($fsbase-8);
+  $goid = *(uint64*)($g+GOID_OFFSET);
+
+  $chan = (uint64)reg("ax");
+  $qcount = *(uint32*)($chan + 0);
+  $buf = *(uint64*)($chan+16);
+  if (@send_addr[$chan, $qcount] == 0){
+    return;
+  }
+  @caller_addr[$goid] = @send_addr[$chan, $qcount];
+  @caller_len[$goid]  = @send_len[$chan, $qcount];
+
+  return;
+}
+
+uprobe:./drink-srv:"runtime.send"
+{
+  $prob_mark = "send";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $chan = (uint64)reg("ax");
+  $sg = (uint64)reg("bx");
+  $g = *(uint64*)($sg+0);
+  $goid = *(uint64*)($g+GOID_OFFSET);
+
+  $qcount = *(uint32*)($chan+0);
+
+  @caller_addr[$goid] = @send_addr[$chan, $qcount];
+  @caller_len[$goid]  = @send_len[$chan, $qcount];
+
+  return;
+}
+
+
+/*
+type serverHandler struct {
+	srv *Server
+}
+func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request) {
+*/
+uprobe:./drink-srv:"net/http.serverHandler.ServeHTTP"
+{
+  $prob_mark = "ServeHTTP";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $cur = (uint64)curtask;
+  $fsbase = *(uint64*)($cur+OFF_TASK_THRD+OFF_THRD_FSBASE);
+  $g = *(uint64*)($fsbase-8);
+  $goid = *(uint64*)($g+GOID_OFFSET);
+
+  $req_addr = reg("di");
+  // offset(Request.URL) = 16
+  $url_addr = *(uint64*)($req_addr+16);
+  // offset(URL.Path) = 56
+  $path_addr = *(uint64*)($url_addr+56);
+  $path_len  = *(uint64*)($url_addr+64);
+
+  @caller_addr[$goid] = $path_addr;
+  @caller_len[$goid]  = $path_len;
+
+  printf("serve HTTP: %s
+", str($path_addr, $path_len));
+
+  return;
+}
+
+/*
+func (c *Client) do(req *Request) (retres *Response, reterr error) {
+*/
+uprobe:./drink-srv:"net/http.(*Client).do"
+{
+  $prob_mark = "do";
+  @prob[$prob_mark] = @prob[$prob_mark] + 1;
+
+  $cur = (uint64)curtask;
+  $fsbase = *(uint64*)($cur+OFF_TASK_THRD+OFF_THRD_FSBASE);
+  $g = *(uint64*)($fsbase-8);
+  $goid = *(uint64*)($g+GOID_OFFSET);
+
+  if (@caller_addr[$goid] == 0){
+    printf("%d: has no caller.
+", $goid);
+    return;
+  }
+
+  $req_addr = reg("bx");
+  // offset(Request.URL) = 16
+  $url_addr = *(uint64*)($req_addr+16);
+  // offset(URL.Host) = 40
+  $host_addr = *(uint64*)($req_addr+40);
+  $host_len  = *(uint64*)($req_addr+48);
+  // offset(URL.Path) = 56
+  $path_addr = *(uint64*)($url_addr+56);
+  $path_len  = *(uint64*)($url_addr+64);
+
+  $c_addr = @caller_addr[$goid];
+  $c_len  = @caller_len[$goid];
+
+  printf("caller: %s, callee: %s:%s
+", str($c_addr, $c_len),
+    str($host_addr, $host_len), str($path_addr, $path_len));
+}
+
+</code></pre><h1 id=si-zhui-zong-de-feng-xian>四、追踪的风险</h1><p>至此，看起来<code>golang channel</code>是可以追踪的。但是实际上并非如此。比如如下这个示例：<pre><code>func HandleDrink() {
+    for {
+        select {
+        case info, ok := &lt;-ticketChan:
+			...
+        default: // 注意这个 stop
+        	// no stop here
+        }
+    }
+}
+
+</code></pre><p>这段逻辑在代码编写、编译阶段均无问题，是一段完全合理的逻辑。当我们试图追踪这段代码时：<pre><code>$ sudo bpftrace ./drink.bt
+Attaching 7 probes...
+^C  // 直接停止，没有请求
+@prob[chanrecv]: 908571
+
+</code></pre><p>注意，此时并没有做任何的操作，但是这个<code>chanrecv</code>这个<code>hook</code>点已经触发了数十万次。而我们知道，<code>BPF hook</code>点的触发并非没有开销的。因此，目标的代码在完全合理的情况下，我们的追踪程序会给系统带来很大的负载。这显然是我们需要避免的。<p>以上，周末愉快～</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>BPF</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/channel/>channel</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/observe/>observe</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/bpftrace-bian-li-golang-lian-biao-go17/><span class=mr-1.5>←</span><span>bpftrace 遍历 golang 链表（go17+）</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/><span>BPF 获取 LVS FullNat 模式下的 Client IP</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

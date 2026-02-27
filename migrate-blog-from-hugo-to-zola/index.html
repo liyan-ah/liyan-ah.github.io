@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    从Hugo到Zola——又一次博客迁移 - 李岩的博客
+  </title><meta name=theme-color><meta content=又迁移博客了，这次是从Hugo迁到了Zola。 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=从Hugo到Zola——又一次博客迁移 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=又迁移博客了，这次是从Hugo迁到了Zola。 property=og:description><meta content=https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">从Hugo到Zola——又一次博客迁移</h1><div class="text-sm antialiased opacity-60"><time>2026-02-25</time><span class=mx-1>·</span><span>8min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#qian-yi-ti-yan>迁移体验</a><li><a href=#qian-yi-guo-cheng>迁移过程</a></ul></details></nav><section><p>又迁移博客了。回顾下最早的博客是使用<code>Hexo</code>写的，当时工作了两年，希望能通过一种方式对工作中的经验进行整理。<code>Hexo</code>的完成度很高，可以直接在<code>Hexo-Admin</code>中对博客进行撰写，同时实时渲染，查看效果。但是每次在使用时，往往会遇到很多依赖的更新，而且往往会有一些不兼容——可能是本地环境和博文框架的不兼容，或者是依赖升级后的不兼容。厌倦了长久的依赖升级等待以及冲突修复后，我从<code>Hexo</code>迁移到了<code>Hugo</code>。<code>Hugo</code>的完成度同样非常高，直接从网络上使用一个公开的模版即可流畅的启动，自己撰写一个简易的迁移脚本即可完成博文主要内容的迁移。<code>Hugo</code>迁移至<code>Zola</code>的契机是26年的2月12日，提交了一篇博客<a href=/handle-chain/>一种责任链模式的实现</a>，2月24日查看时，发现未更新。确认是<code>deploy.yml</code>执行<code>build</code>时出现失败，解决未果，遂弃之。使用<code>Zola</code>来重新启动。<h2 id=qian-yi-ti-yan>迁移体验</h2><p>总体来看尚可，从三个方面来评价迁移体验。就迁移后至今的使用来看，<code>Zola</code>的使用方式和<code>Hugo</code>相比是很接近的，基本上一个指令即可启动。完成度上，仍然是<code>Hexo</code>最好，<code>Hugo</code>次之，<code>Zola</code>看着完成度欠缺。<code>Hexo</code>支持<code>Admin</code>插件来新建、编辑、发布博客；<code>Hugo</code>支持命令行新建一篇博文；<code>Zola</code>则只能手动操作了。另一个重要的特性是使用的可靠性，这个可能更多的是和博客的主题选择有关。本次迁移后使用的是<a rel="noopener nofollow noreferrer external" href=https://github.com/st1020/kita target=_blank>Kita</a>主题，主题较为简洁，具备基础性的功能——对应的是一些功能的缺失，如留言功能和全局搜索功能，这两个功能对我而言都可有可无。<p>迁移后，博客通过<code>Emacs</code>的<code>eww</code>仍然能够较为便捷的访问。<h2 id=qian-yi-guo-cheng>迁移过程</h2><p>依稀记得此前的<code>Hugo</code>迁移过程还是比较顺利的，主要是对此前博文的一些标签的格式转换。本次迁移在大模型的加持下，一些格式转换是非常容易做的。只是主题使用上有一些繁琐。下面记录下我这里的过程，希望能够提供一些参考。<ol><li>主题设置 拷贝一份目标主题的博客，这样就能够省去很多参数的配置的工作。本人这里拷贝的是<a rel="noopener nofollow noreferrer external" href=https://github.com/st1020/blog target=_blank>st1020/blog</a> <code>Kita</code>作者本人的博客参数设置。拷贝后主要做<code>content/</code>博文目录的调整和<code>static/</code>目录下各种<code>icon</code>的调整。</ol><ul><li>拷贝后保留<code>content/</code>目录下的<code>_index.md</code>和<code>pages/</code>，目录下的其他博文内容删除。调整<code>config.toml</code>中的博文说明内容、博客首页栏目内容，调整<code>content/pages/about.md</code>中的个人介绍。<li>将此前<code>Hugo</code>主题下的行走<code>icon</code>拷贝到了<code>static</code>目录下，通过大模型来对目录下原有<code>icon</code>进行替换。</ul><p>这样一来，主题设置初步完成。<ol start=2><li>博文迁移 将旧博文中的文档迁移到新博文目录的<code>content/</code>目录下。<code>Hugo</code>中也是在<code>content/</code>目录，我这里是直接进行的拷贝。拷贝后需要对如下内容进行调整：</ol><ul><li>博文中的前置变量。此前我的博文前置变量使用的是<code>Yaml</code>格式，这次迁移使用大模型全部转换为了<code>Toml</code>格式。<code>categories</code>和<code>tags</code>需要放置在<code>[taxonomies]</code>配置下。<li>博文目录文档名。<code>Zola</code>上实践较好的是<code>content/{{blog-name}}/index.md</code>。此前<code>Hugo</code>中的博文对于博文的文档名没有过多的限制，而<code>Zola</code>上默认是识别<code>index.md/_index.md</code>。从实践中看，将旧的博文文档都调整成<code>content/{{blog-name}}/index.md</code>效果较好。<li>处理图片。此前<code>Hugo</code>中将图片均放置在<code>public/</code>目录下。本次迁移将<code>public/</code>下的图片均放置到博文目录中，便于管理。这一步也由大模型进行处理。</ul><p>上述内容设置完成后，在本地是可以直接启动并且预览的。如果都没有问题，即可以发起迁移。<ul><li>基于旧博文的主分支克隆一个备份的分支。做个备份，留个念想。<li>使用新博文的文件覆盖博文主分支的文件。由于本人在<code>github</code>上创建了<code>Action</code>，会触发博文内容的编译，因此<code>public/</code>目录中的内容对我而言是不需要的。这里覆盖后清理了<code>public/</code>下生成的博文页。<li>更新博文主分支，等待<code>Action</code>执行。这里补充一些细节，我的博文主分支是<code>master</code>，在<code>github</code>个人页上配置的博文分支是<code>gh-pages</code>。我这里的更新指的是更新<code>master</code>分支。更新后，<code>github</code>会依据<code>master</code>分支中的<code>.github/workflows/deploy.yml</code>配置的<code>Action</code>对<code>master</code>上的内容触发<code>zola build</code>，并将<code>master</code>分支中的<code>public/</code>更新到<code>gh-pages</code>分支，从而完成对博文的更新。这样一来，<code>master</code>分支即可无需保存诸多的编译产物，保持<code>master</code>分支的简洁。</ul><p>本次迁移相比<code>Hexo</code>迁移到<code>Hugo</code>，迁移的诉求更加明确——只希望能够尽可能稳定的保留博客的基础功能，尽可能多的去除额外的可能会带来维护成本的功能。本次迁移由于大量的使用了大模型，因此很多的程序性工作完成的都很顺利。确实是大模型的时代了。<p>以上，新春愉快～</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bo-ke-qian-yi/>博客迁移</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/zola/>Zola</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/hugo/>Hugo</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/handle-chain/><span class=mr-1.5>←</span><span>一种责任链模式的实现</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>
