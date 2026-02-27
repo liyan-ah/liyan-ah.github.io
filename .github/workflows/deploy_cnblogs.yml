@@ -33,11 +33,11 @@ jobs:
                         if [ "$basename" != "pages" ] && [ "$basename" != "_index.md" ]; then
                           local index_file="$item/index.md"
 
-                          if [ -f "$index_file" ]; then
-                            # 提取信息
-                            local title=$(grep "^title" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
-                            local description=$(grep "^description" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
-                            local date=$(grep "^date" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
+                            if [ -f "$index_file" ]; then
+                              # 提取信息
+                              local title=$(grep "^title" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*["'"'"']//; s/["'"'"'][[:space:]]*$//')
+                              local description=$(grep "^description" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*["'"'"']//; s/["'"'"'][[:space:]]*$//')
+                              local date=$(grep "^date" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
                             local categories=$(grep "^categories" "$index_file" | head -1)
                             local tags=$(grep "^tags" "$index_file" | head -1)
 
