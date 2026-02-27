@@ -1,0 +1,85 @@
+name: Deploy to CNBlogs
+
+on:
+    push:
+        branches: [master]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Copy content to content_cnblogs
+              run: cp -r content content_cnblogs
+
+            - name: Process CNBlogs content
+              run: |
+                  #!/bin/bash
+                  
+                  process_directory() {
+                    local dir="$1"
+                    
+                    for item in "$dir"/*; do
+                      if [ -d "$item" ]; then
+                        local basename=$(basename "$item")
+                        # 跳过 pages 目录
+                        if [ "$basename" != "pages" ] && [ "$basename" != "_index.md" ]; then
+                          local index_file="$item/index.md"
+                          
+                          if [ -f "$index_file" ]; then
+                            # 提取 title，支持单引号和双引号
+                            local title=$(grep -oP '^title\s*=\s*["\047]\K[^"\047]+' "$index_file" | head -1)
+                            
+                            if [ -n "$title" ]; then
+                              # 移除 Front Matter (第一个 +++ 到第二个 +++)
+                              local temp_file="${index_file}.tmp"
+                              sed '1,/^+++$/{ /^+++$/{ N; d; }; d; }' "$index_file" > "$temp_file"
+                              
+                              # 创建新文件
+                              local new_file="$item/${title}.md"
+                              mv "$temp_file" "$new_file"
+                              
+                              echo "Processed: $item -> ${title}.md"
+                            fi
+                          fi
+                        fi
+                      fi
+                    done
+                  }
+                  
+                  process_directory "content_cnblogs"
+
+            - name: Checkout cnblogs branch
+              run: |
+                  git fetch origin cnblogs:cnblogs || git checkout -b cnblogs
+                  git checkout cnblogs
+
+            - name: Replace content in cnblogs branch
+              run: |
+                  rm -rf content
+                  mv content_cnblogs content
+
+            - name: Commit and push to cnblogs
+              run: |
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add -A
+                  git commit -m "Update CNBlogs content from master" || exit 0
+                  git push -u origin cnblogs
+
+            - name: Cleanup on master
+              run: |
+                  git checkout master
+                  rm -rf content_cnblogs
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add -A
+                  git commit -m "Clean up CNBlogs temporary content" || exit 0
+                  git push origin master
