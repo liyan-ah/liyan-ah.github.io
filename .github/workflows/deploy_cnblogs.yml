@@ -38,6 +38,17 @@ jobs:
                             local title=$(grep -oP '^title\s*=\s*["\047]\K[^"\047]+' "$index_file" | head -1)
                             
                             if [ -n "$title" ]; then
+                              # 替换文件名中的特殊字符
+                              title="${title//\//-}"  # 替换 / 为 -
+                              title="${title//\\/-}"  # 替换 \ 为 -
+                              title="${title//:/-}"   # 替换 : 为 -
+                              title="${title//?/-}"   # 替换 ? 为 -
+                              title="${title//*/-}"   # 替换 * 为 -
+                              title="${title//\|/-}"  # 替换 | 为 -
+                              title="${title//\"/-}"  # 替换 " 为 -
+                              title="${title//</-}"   # 替换 < 为 -
+                              title="${title//>/-}"   # 替换 > 为 -
+                              
                               # 移除 Front Matter (第一个 +++ 到第二个 +++)
                               local temp_file="${index_file}.tmp"
                               sed '1,/^+++$/{ /^+++$/{ N; d; }; d; }' "$index_file" > "$temp_file"
