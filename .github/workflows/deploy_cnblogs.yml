@@ -34,8 +34,8 @@ jobs:
                           local index_file="$item/index.md"
                           
                           if [ -f "$index_file" ]; then
-                            # 提取 title，支持单引号和双引号
-                            local title=$(sed -n "s/^title\s*=\s*['\"]\\([^'\"]*\\)['\"].*/\\1/p" "$index_file" | head -1)
+                            # 提取 title：先 grep 找到 title 行，awk 获取最后一个字段，tr 去掉引号
+                            local title=$(grep "title" "$index_file" | head -1 | awk '{print $NF}' | tr -d '"\047')
                             
                             if [ -n "$title" ]; then
                               # 替换文件名中的特殊字符
