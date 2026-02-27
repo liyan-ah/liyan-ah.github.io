@@ -37,17 +37,17 @@ jobs:
                             # 提取 title：使用 awk 按 = 分割，获取第二个字段，tr 去掉引号和空格
                             local title=$(grep "^title" "$index_file" | awk -F '=' '{print $2}' | tr -d '"\047 ')
                             
-                            if [ -n "$title" ]; then
-                              # 替换文件名中的特殊字符
-                              title="${title//\//-}"  # 替换 / 为 -
-                              title="${title//\\/-}"  # 替换 \ 为 -
-                              title="${title//:/-}"   # 替换 : 为 -
-                              title="${title//?/-}"   # 替换 ? 为 -
-                              title="${title//*/-}"   # 替换 * 为 -
-                              title="${title//\|/-}"  # 替换 | 为 -
-                              title="${title//\"/-}"  # 替换 " 为 -
-                              title="${title//</-}"   # 替换 < 为 -
-                              title="${title//>/-}"   # 替换 > 为 -
+                              if [ -n "$title" ]; then
+                               # 替换文件名中的特殊字符
+                               title="${title//\//-}"  # 替换 / 为 -
+                               title="${title//\\/-}"  # 替换 \ 为 -
+                               title="${title//:/-}"   # 替换 : 为 -
+                               title="${title//\?/-}"  # 替换 ? 为 -
+                               title="${title//\*/-}"  # 替换 * 为 -
+                               title="${title//\|/-}"  # 替换 | 为 -
+                               title="${title//\"/-}"  # 替换 " 为 -
+                               title="${title//</-}"   # 替换 < 为 -
+                               title="${title//>/-}"   # 替换 > 为 -
                               
                               # 移除 Front Matter (第一个 +++ 到第二个 +++)
                               local temp_file="${index_file}.tmp"
