@@ -37,7 +37,7 @@ jobs:
                               # 提取信息
                               local title=$(grep "^title" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*["'"'"']//; s/["'"'"'][[:space:]]*$//')
                               local description=$(grep "^description" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*["'"'"']//; s/["'"'"'][[:space:]]*$//')
-                              local date=$(grep "^date" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+                              local date=$(grep "^date" "$index_file" | awk -F '=' '{print $2}' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s/"//g')
                             local categories=$(grep "^categories" "$index_file" | head -1)
                             local tags=$(grep "^tags" "$index_file" | head -1)
 
