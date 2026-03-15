@@ -1,0 +1,121 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    大模型使用中遇到的坑——HTTP query 参数探讨 - 李岩的博客
+  </title><meta name=theme-color><meta content="AI 时代了，应当要对基础的概念加深了解，否则就容易陷入到模型的幻觉中而不自知。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="大模型使用中遇到的坑——HTTP query 参数探讨" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="AI 时代了，应当要对基础的概念加深了解，否则就容易陷入到模型的幻觉中而不自知。" property=og:description><meta content=https://liyan-ah.github.io/http-protocol/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/http-protocol/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">大模型使用中遇到的坑——HTTP query 参数探讨</h1><div class="text-sm antialiased opacity-60"><time>2026-03-15</time><span class=mx-1>·</span><span>5min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#xie-yi-yue-ding>协议约定</a><li><a href=#http-server-shi-xian>http-server 实现</a><li><a href=#ying-xiang>影响</a></ul></details></nav><section><p>大模型就像是一个无所不知的助手，给它的任何任务都可以快速的完成。通过收集一些和大模型交互过程中不符合预期的案例，既可以提升和大模型的协作效率，也可以对自己的知识进行检验。<p>最近遇到的一个案例是，需要提供一个<code>HTTP</code>服务的接口，同事使用大模型给出的接口定义示例是：<pre><code data-lang=http>GET /path?a=1&b=2&a=2&a=3
+</code></pre><p>这里的问题，在<code>query</code>参数中出现了<code>a</code>的多次赋值。这个接口很可能是大模型结合代码中实际使用的服务框架给出来的，服务框架中对<code>query</code>参数重复时，可能会返回所有的值而非第一个或者最后一个。本文章就对<code>HTTP</code>的<code>query</code>参数进行说明吧。<h2 id=xie-yi-yue-ding>协议约定</h2><p><code>HTTP</code>的结构在<a rel="noopener nofollow noreferrer external" href=https://www.rfc-editor.org/rfc/rfc3986#page-16 target=_blank>rfc3986#page-16</a>中约定如下所示，<code>query</code>部分，也就是<code>URI</code>中<code>?</code>之后、<code>#</code>之前的这部分，则是我们要关注的。但是在[rfc3968]中没有进一步的对<code>qeury</code>的约定。<pre><code>  foo://example.com:8042/over/there?name=ferret#nose
+  \_/   \______________/\_________/ \_________/ \__/
+   |           |            |            |        |
+scheme     authority       path        query   fragment
+   |   _____________________|__
+  / \ /                        \
+  urn:example:animal:ferret:nose
+</code></pre><p>对<code>HTTP/1.1</code>的约定则可以在<a rel="noopener nofollow noreferrer external" href=https://www.rfc-editor.org/rfc/rfc7230.html target=_blank>rfc7230</a>中找到，其中定义的<code>HTTP</code>协议如下的（1）所示。通过对<code>HTTP-message</code>继续拆解，本次我们关注的<code>query</code>则是在<code>request-target</code>部分。<pre><code>（1）
+HTTP-message   = start-line
+                 *( header-field CRLF )
+                 CRLF
+                 [ message-body ]
+
+（2）
+start-line     = request-line / status-line
+
+（3）
+request-line   = method SP request-target SP HTTP-version CRLF
+
+（4）
++---------+-------------------------------------------------+-------+
+| Method  | Description                                     | Sec.  |
++---------+-------------------------------------------------+-------+
+| GET     | Transfer a current representation of the target | 4.3.1 |
+|         | resource.                                       |       |
+| HEAD    | Same as GET, but only transfer the status line  | 4.3.2 |
+|         | and header section.                             |       |
+| POST    | Perform resource-specific processing on the     | 4.3.3 |
+|         | request payload.                                |       |
+| PUT     | Replace all current representations of the      | 4.3.4 |
+|         | target resource with the request payload.       |       |
+| DELETE  | Remove all current representations of the       | 4.3.5 |
+|         | target resource.                                |       |
+| CONNECT | Establish a tunnel to the server identified by  | 4.3.6 |
+|         | the target resource.                            |       |
+| OPTIONS | Describe the communication options for the      | 4.3.7 |
+|         | target resource.                                |       |
+| TRACE   | Perform a message loop-back test along the path | 4.3.8 |
+|         | to the target resource.                         |       |
++---------+-------------------------------------------------+-------+
+
+（5）
+request-target = origin-form
+               / absolute-form
+               / authority-form
+               / asterisk-form
+               
+（6）
+origin-form    = absolute-path [ "?" query ]
+
+请求 http://www.example.org/where?q=now 的 HTTP-message 为：
+GET /where?q=now HTTP/1.1
+Host: www.example.org
+
+</code></pre><p>对<code>request-target</code>部分在定义在<a rel="noopener nofollow noreferrer external" href=https://www.rfc-editor.org/rfc/rfc7230.html#section-5.3 target=_blank>rfc7230#5.3</a>，这里列举了四种<code>request-target</code>类型。一般业务使用时填充的是<code>origin-form</code>，在设置了代理的情况下会使用<code>absolute-form</code>。<p>这里的问题是，<code>HTTP</code>原始约定中没有对<code>query</code>的格式进行约定。<code>query</code>的具体解析方式依赖于<code>http-server</code>的具体实现，这就会产生一些细微的差异。<h2 id=http-server-shi-xian>http-server 实现</h2><p>通过大模型的汇总，常见的处理模式如下：<table><thead><tr><th style=text-align:left>处理方式<th style=text-align:left>示例<th style=text-align:left>典型框架<tbody><tr><td style=text-align:left><strong>最后值优先</strong><td style=text-align:left><code>a=1&a=2</code> → <code>a=2</code><td style=text-align:left>PHP（默认）、Express.js<tr><td style=text-align:left><strong>第一值优先</strong><td style=text-align:left><code>a=1&a=2</code> → <code>a=1</code><td style=text-align:left>较少见<tr><td style=text-align:left><strong>数组/列表</strong><td style=text-align:left><code>a=1&a=2</code> → <code>a=[1, 2]</code><td style=text-align:left>Python、Ruby、Java Spring<tr><td style=text-align:left><strong>合并为字符串</strong><td style=text-align:left><code>a=1&a=2</code> → <code>a="1,2"</code><td style=text-align:left>某些旧系统<tr><td style=text-align:left><strong>报错</strong><td style=text-align:left>返回 400 Bad Request<td style=text-align:left>严格验证的 API</table><p>可以看到，具体的语言、框架可能对<code>query</code>中重复参数的处理不同。<h2 id=ying-xiang>影响</h2><p>这个重复参数的接口约定没有实际使用，我们最终采取了<code>POST</code>+<code>json request body</code>的方式来约定了一版新的接口，使用了更为确定且清晰的约定。假设使用了大模型给出的原始版本，可能客户端的大模型会按照接口的约定来设定请求、服务端的大模型大模型按照接口的约定来进行处理。假设未来对这个服务的接口进行重构，新的语言/框架对于重复参数仅取最后一个值，而客户端感知不到这一变更，这就会产生功能上的混淆。<p>或许在使用大模型进行编程时，至少需要对接口的约定进行详尽的沟通，或者让大模型判断下潜在的兼容性影响。可能添加一些<code>SKILL</code>会好一些。大模型使用带来的一个影响是代码量的膨胀、服务数量的膨胀，在宏观角度下、大模型的<code>SKILL</code>不完全相同，一些细微的概念或者约定的差异可能就会给系统带来影响。又或者，未来程序员需要维护大模型的统一<code>SKILL</code>，其他的<code>agent</code>则在这一共享<code>SKILL</code>的共识下进行协作。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/li-lun-nei-rong/>理论内容</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/http-protocol/>HTTP-Protocol</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/da-mo-xing-shi-jian/>大模型实践</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/da-mo-xing-shi-yong-tan-tao/>大模型使用探讨</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/><span class=mr-1.5>←</span><span>从Hugo到Zola——又一次博客迁移</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

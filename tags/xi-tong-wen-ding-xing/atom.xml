@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 系统稳定性</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/xi-tong-wen-ding-xing/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-02-07T17:30:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/xi-tong-wen-ding-xing/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>ratelimit服务流量限制</title>
+        <published>2021-02-07T17:30:00+08:00</published>
+        <updated>2021-02-07T17:30:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/"/>
+        <id>https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;chai2010.cn&#x2F;advanced-go-programming-book&#x2F;&quot;&gt;Go语言高级编程&lt;&#x2F;a&gt; 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对&lt;code&gt;Jmeter&lt;&#x2F;code&gt;及&lt;code&gt;golang ratelimit&lt;&#x2F;code&gt;中的流量限制方法进行描述。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;起因&lt;&#x2F;li&gt;
+&lt;li&gt;漏桶法&lt;&#x2F;li&gt;
+&lt;li&gt;令牌桶法&lt;&#x2F;li&gt;
+&lt;li&gt;Jmeter中流量吞吐控制&lt;&#x2F;li&gt;
+&lt;li&gt;golang ratelimit&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,120 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    【译文/effective-rust】第 27 条：为公共接口撰写文档 - 李岩的博客
+  </title><meta name=theme-color><meta content="本文为 effective-rust 第 27 条的译文。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="【译文/effective-rust】第 27 条：为公共接口撰写文档" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="本文为 effective-rust 第 27 条的译文。" property=og:description><meta content=https://liyan-ah.github.io/document-public-interfaces/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/document-public-interfaces/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">【译文/effective-rust】第 27 条：为公共接口撰写文档</h1><div class="text-sm antialiased opacity-60"><time>2024-06-17</time><span class=mx-1>·</span><span>12min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#gong-ju>工具</a><li><a href=#qi-ta-de-wen-dang-wei-zhi>其他的文档位置</a><li><a href=#fa-bu-bao-de-wen-dang>发布包的文档</a><li><a href=#bu-wen-dang-hua-de-nei-rong>不文档化的内容</a><li><a href=#zong-jie>总结</a> <ul><li><a href=#zhu-shi>注释</a></ul></ul></details></nav><section><blockquote><p>原文由笔者翻译并提交至 <a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html target=_blank>rustx-labs/effective-rust-cn/item27</a>，同步转载到此处。</blockquote><p>如果你的包（crate）会被其他程序员所使用，那么为包中的内容添加文档就是很好的实践，尤其是包中的公共接口。如果你的包不仅仅是随用随丢的代码，那么这个“其他程序员”就包括未来的你，那个已经忘掉了自己代码细节的你。<p>这个建议并不是 Rust 所独有的，它也并不是一个新的建议 —— 比如，<a rel="noopener nofollow noreferrer external" href=https://www.oreilly.com/library/view/effective-java-2nd/9780137150021/ target=_blank>Effective Java</a> 第二版（2008年出版）在第 44 条中建议：“为所有导出的 API 元素编写文档注释”。<p>Rust 文档类型注释的细节 —— 基于 Markdown 格式，以 /// 或者 //! 分割 —— 已经在<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments target=_blank>Rust book</a>中介绍了，如下为示例：<pre><code data-lang=Rust>/// Calculate the [`BoundingBox`] that exactly encompasses a pair
+/// of [`BoundingBox`] objects.
+pub fn union(a: &BoundingBox, b: &BoundingBox) -> BoundingBox {
+    // ...
+}
+</code></pre><p>然而，关于文档型注释的格式仍有一些值得关注的细节：<ul><li>使用代码格式：对于任何作为源代码的注释，使用反引号来确保在最终的文档中代码会以一种等宽字体来展示，并以此来明确的区分<code>code</code>以及一般的文本。<li>添加丰富的引用内容：为任何能够给读者提供上下文信息的内容添加 Markdown 链接。特别地，可以使用比较方便的 [<code>SomeThing</code>] 格式的交叉引用标注符语法 —— 括号内的<code>Something</code>将会在最终文档中被添加正确的超链接。<li>多添加示例代码：如果接口应该如何使用并非一目了然的，那么添加一个使用该接口的<code># Example</code>段落将会很有用。如在<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html target=_blank>文档注释</a>里的示例代码会在你执行<code>cargo test</code>（详情查看<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/testing.html target=_blank>第 13 条</a>）时编译并且运行，这一特性将有助于示例代码和它希望表述的代码保持一致。<li>为<code>panic</code>和<code>unsafe</code>的代码添加说明文档：如果存在会导致函数<code>panic</code>的输入，在文档（<code># Panics</code>段落）里说明规避<code>panic!</code>的前置条件。同样地，在文档（<code># Safety</code>段落）里说明<code>unsafe</code>代码的使用要求。</ul><p>Rust 的<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/std/index.html target=_blank>标准库</a>是一个能够实践了上述所有细节的优秀示例。<h2 id=gong-ju>工具</h2><p>在注释文档中使用 Markdown 格式不仅意味着优美的输出，还意味着需要有一个明确的转换步骤（<code>cargo doc</code>）。而转换也就会增加出现问题的可能性。<p>对于这个问题，最简单的建议是在写完文档后，运行<code>cargo doc --open</code>（或者<code>cargo doc --no-deps --open</code>，这个指令能够严格约束仅产生当前包中的文档）并来<em>仔细阅读生成的结果</em>。<p>对于所有生成超链接的有效性，你当然可以人工地去校验它们，或者让机器来完成这项工作 —— 通过<code>broken_intra_dock_links</code>的包特性<sup class=footnote-reference><a href=#1>1</a></sup>：<pre><code data-lang=rust>#![deny(broken_intra_doc_links)]
+
+/// The bounding box for a [`Polygone`].
+#[derive(Clone, Debug)]
+pub struct BoundingBox {
+    // ...
+}
+</code></pre><p>当特性生效的时候，<code>cargo doc</code>将会找出无效的链接：<pre><code data-lang=rust>error: unresolved link to `Polygone`
+ --> docs/src/main.rs:4:30
+  |
+4 | /// The bounding box for a [`Polygone`].
+  |                              ^^^^^^^^ no item named `Polygone` in scope
+  |
+</code></pre><p>你也可以设置要求文档化，通过在包里设置<code>![warn(missing_docs)]</code>属性。当设置生效的时候，编译器将会给每个未配置文档的公开条目生成警告信息。然而，这样设置也存在着为了解决编译器报错而提供低质量注释文档的风险 —— 当然设置引入的问题不仅如此。<p>同样地，为了能够及时发现潜在风险，这些工具应该被纳入到你的持续集成系统（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/ci.html target=_blank>第 32 条</a>）。<h2 id=qi-ta-de-wen-dang-wei-zhi>其他的文档位置</h2><p><code>cargo doc</code>的输出是包中文档所在的主要位置，但并不是唯一的地方 —— 在项目中的其他地方添加注释也可以帮助用户理解如何使用你的代码。<p>在 Cargo 项目的<code>examples/</code>子目录下可以添加一些方便使用包的示例代码。这些代码可以构建并运行，和集成测试（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/testing.html target=_blank>第 30 条</a>）的运行方式非常类似，不同的是这些代码提供的是便于理解包中接口使用的代码。<p>需要说明的是，<code>tests/</code>子目录下的集成测试代码也可以给用户提供帮助，虽然它们的主要作用是测试包的对外接口。<h2 id=fa-bu-bao-de-wen-dang>发布包的文档</h2><p>如果你的包会发布到<code>crates.io</code>，项目的文档就可以在<a rel="noopener nofollow noreferrer external" href=https://docs.rs/ target=_blank>docs.rs</a>中查看到。docs.rs 是为发布的包构建并提供文档的官方 Rust 网站。<p>注意，<code>crates.io</code>和<code>docs.rs</code>的受众是不同的：<code>crates.io</code>旨在为选择包的用户提供服务，而<code>docs.rs</code>的受众是那些需要弄明白他们已经引用的包该如何使用的人（很明显的，这两种场景有很大的重叠）。<p>综上，一个包的主页在不同的地方会展示不同的内容：<ul><li><code>docs.rs</code>：展示<code>cargo doc</code>产出结果的顶层页面，比如从顶层<code>src/lib.rs</code>文件的<code>//!</code>生成的文档。<li><code>crates.io</code>：展示包含在项目仓库中的任何顶层<em>README.md</em> <sup class=footnote-reference><a href=#2>2</a></sup>文件内容。</ul><h2 id=bu-wen-dang-hua-de-nei-rong>不文档化的内容</h2><p>当一个项目<em>要求</em>公共条目都需要添加注释的时候，很容易就陷入到给无价值的内容也文档化的陷阱中。编译器的缺少注释文档的警告只是提醒你添加真正需要内容 —— 有用的文档 —— 的一种表现，并且仅仅期望程序员添加必要的内容来消除警告。<p>好的注释文档是一种能够帮助用户了解他们所使用代码的福利；糟糕的注释文档则增加了代码的维护成本并且让用户在它们不再和代码保持一致的时候变得更加困惑。那么好与不好的区别是什么呢？<p>最重要的建议是<em>避免重复可以从代码中看出的信息</em>。<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_1/item1-use-types.html target=_blank>第 1 条</a>建议你的代码尽量的和 Rust 的类型系统保持一致；一旦你做到了这一点，就通过类型系统来说明这些语意。可以假定使用代码的用户对 Rust 已经熟悉了 —— 可能他们已经读了一些描述了如何高效使用语言的建议 —— 并且不需要重复从代码中的参数类型和函数签名中就能读出来的东西。<p>回到之前的例子，一个冗余的注释文档可能如下面描述的这样：<pre><code data-lang=rust>/// Return a new [`BoundingBox`] object that exactly encompasses a pair
+/// of [`BoundingBox`] objects.
+///
+/// Parameters:
+///  - `a`: an immutable reference to a `BoundingBox`
+///  - `b`: an immutable reference to a `BoundingBox`
+/// Returns: new `BoundingBox` object.
+pub fn union(a: &BoundingBox, b: &BoundingBox) -> BoundingBox {
+</code></pre><p>这个注释重复了很多从函数签名中就能读到的信息，注释信息毫无益处。<p>更糟的是，考虑一种代码重构后，将结果存储到其中一个参数（这是一种不兼容的变更；参照<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/semver.html target=_blank>第 21 条</a>）。没有编译器或者工具能够发现注释没有随之更新，结果就产生了一个未能和代码逻辑保持一致的注释：<pre><code data-lang=rust>/// Return a new [`BoundingBox`] object that exactly encompasses a pair
+/// of [`BoundingBox`] objects.
+///
+/// Parameters:
+///  - `a`: an immutable reference to a `BoundingBox`
+///  - `b`: an immutable reference to a `BoundingBox`
+/// Returns: new `BoundingBox` object.
+pub fn union(a: &mut BoundingBox, b: &BoundingBox) {
+</code></pre><p>相反地，原本恰当的注释在重构中则可以毫发无损地保留下来，因为它的文本描述的是行为，而非语意本身：<pre><code data-lang=rust>/// Calculate the [`BoundingBox`] that exactly encompasses a pair
+/// of [`BoundingBox`] objects.
+pub fn union(a: &mut BoundingBox, b: &BoundingBox) {
+</code></pre><p>先前的建议也可以帮助提升文档质量：<em>在文档中包含任何从代码中无法了解的内容</em>。这包含前置条件、可变性、异常、报错条件以及任何可能会让用户感到意外的事情；如果你的代码不能遵守<a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Principle_of_least_astonishment target=_blank>最小惊讶原则</a>，确保这些意外都被记录在文档里，至少你可以说“我已经告诉过你了”。<p>另一个常见的失败情形是，注释里描述了其他使用这个方法的代码，而非这个方法做了什么：<pre><code data-lang=rust>/// Return the intersection of two [`BoundingBox`] objects, returning `None`
+/// if there is no intersection. The collision detection code in `hits.rs`
+/// uses this to do an initial check to see whether two objects might overlap,
+/// before performing the more expensive pixel-by-pixel check in
+/// `objects_overlap`.
+pub fn intersection(
+    a: &BoundingBox,
+    b: &BoundingBox,
+) -> Option&lt;BoundingBox> {
+</code></pre><p>像这样的注释几乎不可能和代码保持一致：当使用了这个方法的代码（比如，<code>hits.rs</code>）变更的时候，这段描述了调用行为的注释相隔甚远而无法保持一致。<p>应当将注释重新组织以聚焦在<em>为什么</em>这样使用，可以让这段注释更好的适应未来的变更。<pre><code data-lang=rust>/// Return the intersection of two [`BoundingBox`] objects, returning `None`
+/// if there is no intersection.  Note that intersection of bounding boxes
+/// is necessary but not sufficient for object collision -- pixel-by-pixel
+/// checks are still required on overlap.
+pub fn intersection(
+    a: &BoundingBox,
+    b: &BoundingBox,
+) -> Option&lt;BoundingBox> {
+</code></pre><p>当编写软件时，“面向未来的编程”<sup class=footnote-reference><a href=#3>3</a></sup>是一种很好的实践：调整代码结构以适应未来的变更。同样的原则也适用于文档：聚焦在语意，为什么这样做以及为什么不这样做，会让文本在未来的运行中始终是有意义的。<h2 id=zong-jie>总结</h2><ul><li>给公共的 API 内容添加注释文档。<li>为那些从代码中无法明确看出的内容添加描述 —— 比如<code>panics</code>以及<code>unsafe</code>的条件。<li>不要给可以从代码中明确看出的内容重复描述。<li>通过交叉引用及添加标志符来让导航变得明确。</ul><hr><h3 id=zhu-shi>注释</h3><div class=footnote-definition id=1><sup class=footnote-definition-label>1</sup><p>这个配置也曾称成为<code>intra_doc_link_resolution_failure</code>。</div><div class=footnote-definition id=2><sup class=footnote-definition-label>2</sup><p>包含 <em>README.md</em> 的引用动作可以被<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/cargo/reference/manifest.html#the-readme-field target=_blank>Cargo.toml 中的 readme 字段</a>覆盖。</div><div class=footnote-definition id=3><sup class=footnote-definition-label>3</sup><p>Scott Meyers，More Effective C++ (Addison-Wesley)，第 32 条。</div><p>原文<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/documentation.html target=_blank>点这里</a>查看。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/yi-wen/>译文</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/effective-rust/>effective-rust</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/3-sum/><span class=mr-1.5>←</span><span>3-sum 问题</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/use-macros-judiciously/><span>【译文/effective-rust】第 28 条：在合适的时候使用宏</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

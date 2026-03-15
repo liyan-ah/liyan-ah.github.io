@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - Hugo</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/hugo/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-02-25T10:51:14+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/hugo/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>从Hugo到Zola——又一次博客迁移</title>
+        <published>2026-02-25T10:51:14+08:00</published>
+        <updated>2026-02-25T10:51:14+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/"/>
+        <id>https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/">&lt;p&gt;又迁移博客了。回顾下最早的博客是使用&lt;code&gt;Hexo&lt;&#x2F;code&gt;写的，当时工作了两年，希望能通过一种方式对工作中的经验进行整理。&lt;code&gt;Hexo&lt;&#x2F;code&gt;的完成度很高，可以直接在&lt;code&gt;Hexo-Admin&lt;&#x2F;code&gt;中对博客进行撰写，同时实时渲染，查看效果。但是每次在使用时，往往会遇到很多依赖的更新，而且往往会有一些不兼容——可能是本地环境和博文框架的不兼容，或者是依赖升级后的不兼容。厌倦了长久的依赖升级等待以及冲突修复后，我从&lt;code&gt;Hexo&lt;&#x2F;code&gt;迁移到了&lt;code&gt;Hugo&lt;&#x2F;code&gt;。&lt;code&gt;Hugo&lt;&#x2F;code&gt;的完成度同样非常高，直接从网络上使用一个公开的模版即可流畅的启动，自己撰写一个简易的迁移脚本即可完成博文主要内容的迁移。&lt;code&gt;Hugo&lt;&#x2F;code&gt;迁移至&lt;code&gt;Zola&lt;&#x2F;code&gt;的契机是26年的2月12日，提交了一篇博客&lt;a href=&quot;&#x2F;handle-chain&#x2F;&quot;&gt;一种责任链模式的实现&lt;&#x2F;a&gt;，2月24日查看时，发现未更新。确认是&lt;code&gt;deploy.yml&lt;&#x2F;code&gt;执行&lt;code&gt;build&lt;&#x2F;code&gt;时出现失败，解决未果，遂弃之。使用&lt;code&gt;Zola&lt;&#x2F;code&gt;来重新启动。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;qian-yi-ti-yan&quot;&gt;迁移体验&lt;&#x2F;h2&gt;
+&lt;p&gt;总体来看尚可，从三个方面来评价迁移体验。就迁移后至今的使用来看，&lt;code&gt;Zola&lt;&#x2F;code&gt;的使用方式和&lt;code&gt;Hugo&lt;&#x2F;code&gt;相比是很接近的，基本上一个指令即可启动。完成度上，仍然是&lt;code&gt;Hexo&lt;&#x2F;code&gt;最好，&lt;code&gt;Hugo&lt;&#x2F;code&gt;次之，&lt;code&gt;Zola&lt;&#x2F;code&gt;看着完成度欠缺。&lt;code&gt;Hexo&lt;&#x2F;code&gt;支持&lt;code&gt;Admin&lt;&#x2F;code&gt;插件来新建、编辑、发布博客；&lt;code&gt;Hugo&lt;&#x2F;code&gt;支持命令行新建一篇博文；&lt;code&gt;Zola&lt;&#x2F;code&gt;则只能手动操作了。另一个重要的特性是使用的可靠性，这个可能更多的是和博客的主题选择有关。本次迁移后使用的是&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;st1020&#x2F;kita&quot;&gt;Kita&lt;&#x2F;a&gt;主题，主题较为简洁，具备基础性的功能——对应的是一些功能的缺失，如留言功能和全局搜索功能，这两个功能对我而言都可有可无。&lt;&#x2F;p&gt;
+&lt;p&gt;迁移后，博客通过&lt;code&gt;Emacs&lt;&#x2F;code&gt;的&lt;code&gt;eww&lt;&#x2F;code&gt;仍然能够较为便捷的访问。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;qian-yi-guo-cheng&quot;&gt;迁移过程&lt;&#x2F;h2&gt;
+&lt;p&gt;依稀记得此前的&lt;code&gt;Hugo&lt;&#x2F;code&gt;迁移过程还是比较顺利的，主要是对此前博文的一些标签的格式转换。本次迁移在大模型的加持下，一些格式转换是非常容易做的。只是主题使用上有一些繁琐。下面记录下我这里的过程，希望能够提供一些参考。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;主题设置
+拷贝一份目标主题的博客，这样就能够省去很多参数的配置的工作。本人这里拷贝的是&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;st1020&#x2F;blog&quot;&gt;st1020&#x2F;blog&lt;&#x2F;a&gt; &lt;code&gt;Kita&lt;&#x2F;code&gt;作者本人的博客参数设置。拷贝后主要做&lt;code&gt;content&#x2F;&lt;&#x2F;code&gt;博文目录的调整和&lt;code&gt;static&#x2F;&lt;&#x2F;code&gt;目录下各种&lt;code&gt;icon&lt;&#x2F;code&gt;的调整。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;ul&gt;
+&lt;li&gt;拷贝后保留&lt;code&gt;content&#x2F;&lt;&#x2F;code&gt;目录下的&lt;code&gt;_index.md&lt;&#x2F;code&gt;和&lt;code&gt;pages&#x2F;&lt;&#x2F;code&gt;，目录下的其他博文内容删除。调整&lt;code&gt;config.toml&lt;&#x2F;code&gt;中的博文说明内容、博客首页栏目内容，调整&lt;code&gt;content&#x2F;pages&#x2F;about.md&lt;&#x2F;code&gt;中的个人介绍。&lt;&#x2F;li&gt;
+&lt;li&gt;将此前&lt;code&gt;Hugo&lt;&#x2F;code&gt;主题下的行走&lt;code&gt;icon&lt;&#x2F;code&gt;拷贝到了&lt;code&gt;static&lt;&#x2F;code&gt;目录下，通过大模型来对目录下原有&lt;code&gt;icon&lt;&#x2F;code&gt;进行替换。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;这样一来，主题设置初步完成。&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;博文迁移
+将旧博文中的文档迁移到新博文目录的&lt;code&gt;content&#x2F;&lt;&#x2F;code&gt;目录下。&lt;code&gt;Hugo&lt;&#x2F;code&gt;中也是在&lt;code&gt;content&#x2F;&lt;&#x2F;code&gt;目录，我这里是直接进行的拷贝。拷贝后需要对如下内容进行调整：&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;ul&gt;
+&lt;li&gt;博文中的前置变量。此前我的博文前置变量使用的是&lt;code&gt;Yaml&lt;&#x2F;code&gt;格式，这次迁移使用大模型全部转换为了&lt;code&gt;Toml&lt;&#x2F;code&gt;格式。&lt;code&gt;categories&lt;&#x2F;code&gt;和&lt;code&gt;tags&lt;&#x2F;code&gt;需要放置在&lt;code&gt;[taxonomies]&lt;&#x2F;code&gt;配置下。&lt;&#x2F;li&gt;
+&lt;li&gt;博文目录文档名。&lt;code&gt;Zola&lt;&#x2F;code&gt;上实践较好的是&lt;code&gt;content&#x2F;{{blog-name}}&#x2F;index.md&lt;&#x2F;code&gt;。此前&lt;code&gt;Hugo&lt;&#x2F;code&gt;中的博文对于博文的文档名没有过多的限制，而&lt;code&gt;Zola&lt;&#x2F;code&gt;上默认是识别&lt;code&gt;index.md&#x2F;_index.md&lt;&#x2F;code&gt;。从实践中看，将旧的博文文档都调整成&lt;code&gt;content&#x2F;{{blog-name}}&#x2F;index.md&lt;&#x2F;code&gt;效果较好。&lt;&#x2F;li&gt;
+&lt;li&gt;处理图片。此前&lt;code&gt;Hugo&lt;&#x2F;code&gt;中将图片均放置在&lt;code&gt;public&#x2F;&lt;&#x2F;code&gt;目录下。本次迁移将&lt;code&gt;public&#x2F;&lt;&#x2F;code&gt;下的图片均放置到博文目录中，便于管理。这一步也由大模型进行处理。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;上述内容设置完成后，在本地是可以直接启动并且预览的。如果都没有问题，即可以发起迁移。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于旧博文的主分支克隆一个备份的分支。做个备份，留个念想。&lt;&#x2F;li&gt;
+&lt;li&gt;使用新博文的文件覆盖博文主分支的文件。由于本人在&lt;code&gt;github&lt;&#x2F;code&gt;上创建了&lt;code&gt;Action&lt;&#x2F;code&gt;，会触发博文内容的编译，因此&lt;code&gt;public&#x2F;&lt;&#x2F;code&gt;目录中的内容对我而言是不需要的。这里覆盖后清理了&lt;code&gt;public&#x2F;&lt;&#x2F;code&gt;下生成的博文页。&lt;&#x2F;li&gt;
+&lt;li&gt;更新博文主分支，等待&lt;code&gt;Action&lt;&#x2F;code&gt;执行。这里补充一些细节，我的博文主分支是&lt;code&gt;master&lt;&#x2F;code&gt;，在&lt;code&gt;github&lt;&#x2F;code&gt;个人页上配置的博文分支是&lt;code&gt;gh-pages&lt;&#x2F;code&gt;。我这里的更新指的是更新&lt;code&gt;master&lt;&#x2F;code&gt;分支。更新后，&lt;code&gt;github&lt;&#x2F;code&gt;会依据&lt;code&gt;master&lt;&#x2F;code&gt;分支中的&lt;code&gt;.github&#x2F;workflows&#x2F;deploy.yml&lt;&#x2F;code&gt;配置的&lt;code&gt;Action&lt;&#x2F;code&gt;对&lt;code&gt;master&lt;&#x2F;code&gt;上的内容触发&lt;code&gt;zola build&lt;&#x2F;code&gt;，并将&lt;code&gt;master&lt;&#x2F;code&gt;分支中的&lt;code&gt;public&#x2F;&lt;&#x2F;code&gt;更新到&lt;code&gt;gh-pages&lt;&#x2F;code&gt;分支，从而完成对博文的更新。这样一来，&lt;code&gt;master&lt;&#x2F;code&gt;分支即可无需保存诸多的编译产物，保持&lt;code&gt;master&lt;&#x2F;code&gt;分支的简洁。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;本次迁移相比&lt;code&gt;Hexo&lt;&#x2F;code&gt;迁移到&lt;code&gt;Hugo&lt;&#x2F;code&gt;，迁移的诉求更加明确——只希望能够尽可能稳定的保留博客的基础功能，尽可能多的去除额外的可能会带来维护成本的功能。本次迁移由于大量的使用了大模型，因此很多的程序性工作完成的都很顺利。确实是大模型的时代了。&lt;&#x2F;p&gt;
+&lt;p&gt;以上，新春愉快～&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - Code</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/categories/code/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-05-26T14:39:35+08:00</updated>
+    <id>https://liyan-ah.github.io/categories/code/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>3-sum 问题</title>
+        <published>2024-05-26T14:39:35+08:00</published>
+        <updated>2024-05-26T14:39:35+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/3-sum/"/>
+        <id>https://liyan-ah.github.io/3-sum/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/3-sum/">&lt;h2 id=&quot;cong-3-sum-wen-ti-kai-shi-shuo-qi&quot;&gt;从 3-sum 问题开始说起&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;leetcode.cn&#x2F;problems&#x2F;3sum&#x2F;description&#x2F;&quot;&gt;3-sum&lt;&#x2F;a&gt; 问题是 leetcode 中的一个经典问题。笔者最近重新重新回顾了这个问题，尴尬的是
+关键时刻居然没有解出来。今天来重新回顾下。作为数组类问题中的经典问题，笔者认为这里有三个关键点：&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;记得排序。数组问题大多需要进行排序，有序的数组才具有可操作性。&lt;&#x2F;li&gt;
+&lt;li&gt;通过比较，来决定下标移动的位置。在处理 2-sum 过程时，比较当前下标数字的和与目标值的大小来决定下标的下一步移动方向。&lt;&#x2F;li&gt;
+&lt;li&gt;对去重的处理。尴尬的就是这部分的处理过程。以笔者目前写代码的习惯，会直接使用 set 来进行去重。翻了下代码，对这部分的处理确实有点绕。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;围绕第三点，下面给出两个解法。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;set-qu-zhong&quot;&gt;set 去重&lt;&#x2F;h3&gt;
+&lt;p&gt;先看第一种解法，在处理结果集不重复时，使用 HashSet 来处理结果集唯一性的问题：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;impl Solution {
+    pub fn three_sum_n(mut nums: Vec&amp;lt;i32&amp;gt;, sum: i32) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        nums.sort();
+        let mut res = std::collections::HashSet::new();
+        for i in 0..nums.len() {
+            let target = sum - nums[i];
+            let mut left = i + 1;
+            let mut right = nums.len() - 1;
+            while left &amp;lt; right {
+                if nums[left] + nums[right] == target {
+                    &#x2F;&#x2F; 题目中要求的时结果集不重复。直接使用 set 来保证唯一性。
+                    res.insert(vec![nums[i], nums[left], nums[right]]);
+                    &#x2F;&#x2F; 找到一个后，同时移动 left &amp;amp; right 后继续遍历
+                    left += 1;
+                    right -= 1;
+                    continue;
+                }
+                if nums[left] + nums[right] &amp;gt; target {
+                    right -= 1;
+                } else {
+                    left += 1;
+                }
+            }
+        }
+
+        res.into_iter().collect()
+    }
+
+    pub fn three_sum(mut nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        Self::three_sum_n(nums, 0)
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;tong-guo-bi-jiao-lai-qu-zhong&quot;&gt;通过比较来去重&lt;&#x2F;h3&gt;
+&lt;p&gt;第二种解法也是经典解法：在移动下标时，确保当前值和前一个值不同。笔
+者回顾了下自己的思路以及给候选人的建议：先进行去重，然后进行比对。
+先去重的问题就是，像 [0, 0, 0] 这样的结果就会先被去重环节排除
+掉。而题目中没有结果集中的 [x, y, z] x != y &amp;amp;&amp;amp; y != z 的条件。
+正确的去重方式应该是，通过后置位和前置位的对比来允许 [0, 0, 0]的
+候选集能够出现。解题过程如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;impl Solution {
+    pub fn three_sum_n(mut nums: Vec&amp;lt;i32&amp;gt;, sum: i32) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        nums.sort();
+        let mut res = vec![];
+        for i in 0..nums.len() {
+            &#x2F;&#x2F; 同样需要对 i 进行去重处理
+            if i != 0 &amp;amp;&amp;amp; nums[i] == nums[i-1]{
+                continue;
+            }
+            let target = sum - nums[i];
+            let mut left = i + 1;
+            let mut right = nums.len() - 1;
+            while left &amp;lt; right {
+                &#x2F;&#x2F; 允许第一个 left 值继续处理。第二个值和前置值对比
+                if left != i + 1 &amp;amp;&amp;amp; nums[left] == nums[left - 1] {
+                    left += 1;
+                    continue;
+                }
+                &#x2F;&#x2F; 允许第一个 right 值继续处理。第二个值和前置值对比
+                if right != nums.len() - 1 &amp;amp;&amp;amp; nums[right] == nums[right + 1] {
+                    right -= 1;
+                    continue;
+                }
+
+                if nums[left] + nums[right] == target {
+                    res.push(vec![nums[i], nums[left], nums[right]]);
+                    &#x2F;&#x2F; 找到一个后，同时移动 left &amp;amp; right 后继续遍历
+                    left += 1;
+                    right -= 1;
+                    continue;
+                }
+                if nums[left] + nums[right] &amp;gt; target {
+                    right -= 1;
+                } else {
+                    left += 1;
+                }
+            }
+        }
+        res
+    }
+
+    pub fn three_sum(mut nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        Self::three_sum_n(nums, 0)
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;yi-xie-gan-xiang&quot;&gt;一些感想&lt;&#x2F;h2&gt;
+&lt;p&gt;最近接触了很多实习生，感觉现在的实习生实力都很强。笔者找工作时，简历里的项目只有小学期的一个项目以及实验室里的一个项目，而且工程量都很小。现在
+的候选人都可以在网上找一些开源项目的教程项目来学习了，而且给开源项目提 PR 的能力也很强。确实超过笔者很多。&lt;br &#x2F;&gt;
+另一点感想是，学校所在的城市对学生的工程能力还是有影响的：北上的研究生工程实践都很多，而且普遍对工程涉及的一些项目（Redis, ES等）都有一些了解。
+而非大厂所在城市的学校，研究生跟着导师做的项目普遍偏学术，而且对工程的了解要少很多。这确实是地利带来的影响，而且确实对候选人的面试有很大的影响。
+还是应该通过适当的实习来接触行业。同样的，工作了也需要不断的提升自己的视野面。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>Cargo config 使用备注</title>
+        <published>2024-05-07T11:39:00+08:00</published>
+        <updated>2024-05-07T11:39:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/cargo-config/"/>
+        <id>https://liyan-ah.github.io/cargo-config/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/cargo-config/">&lt;p&gt;本文旨在回答如下问题：&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Rust 项目中，如何配置 dependencies 的路径为指定仓库。&lt;&#x2F;li&gt;
+&lt;li&gt;在不指定 branch 或 version 的情况下，dependencies 会拉取什么版本&#x2F;仓库里的数据。&lt;&#x2F;li&gt;
+&lt;li&gt;Rust 项目中，配置 dependencies 的最佳实践。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;以下为正文。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ru-he-pei-zhi-dependencies-de-lu-jing&quot;&gt;如何配置 dependencies 的路径？&lt;&#x2F;h2&gt;
+&lt;p&gt;出于稳定性考虑，工作中使用的项目，尤其是一些开源的项目，往往无法和社区时刻保持一致。甚至，在选定了一个基线版本后，以周或者年计，主干会持续保持这个版本。有一些效果较好的“新特性”需要合入时，就需要以 patch 的形式合入。同样出于稳定性考虑，
+或者兼容性考虑，服务的依赖，甚至依赖的依赖都是无法进行升级的。如果项目的新特性需要依赖库进行变更，就只能将依赖库的基线版本单独维护，按需合入依赖库的 patch。这样的维护方式看起来较为繁琐，但是能够有效避免项目因依赖库的升级而引入新的问
+题。&lt;br &#x2F;&gt;
+有了这样的需求，对应到 Rust 项目中，就需要对 Cargo.toml 里的 dependencies 配置进行调整，将部分依赖调整为自有库。
+参照&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;specifying-dependencies.html&quot;&gt;reference&#x2F;specifying-dependencies&lt;&#x2F;a&gt;，可以通过如下方式来指定依赖库：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+regex = { version = &amp;quot;1.10.3&amp;quot;, git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;regex.git&amp;quot;, branch = &amp;quot;next&amp;quot;, rev = &amp;quot;0c0990399270277832fbb5b91a1fa118e6f63dba&amp;quot;, tag = &amp;quot;11.10.4&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;除了 git，version、branch、rev 以及 tag 都是可选的，补充四者中的一个参数即可实现分支提交控制的目的。在实践过程中，考虑到分支上的提交是时刻进行的，在确认了基础的功能后，可以考虑发布一个版本。一来可以通过 tag 来进行版本&#x2F;功能的
+发布控制，同时也便于后续的功能梳理以及项目整理关键里程碑可视化。通过 branch 来指定依赖库会比较方便，这种方式对仓库的开发流程管理较为依赖：如果分支上提交了功能异常的代码，项目的编译就会异常。rev 方案也可以唯一指定代码版本，只是看起来
+不像 tag 那样直观。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;dependences-mo-ren-la-qu-shen-me-ban-ben&quot;&gt;dependences 默认拉取什么版本？&lt;&#x2F;h2&gt;
+&lt;p&gt;笔者在近期的工作中，遇到了如下的配置方式：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+regex = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;regex.git&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;这里并没有指定 version, branch 或者 rev。但是在编译项目时也会进行拉取的动作。默认会拉取目标仓库的最新提交（效果和直接 git clone 一致）。&lt;br &#x2F;&gt;
+在复杂的项目中，通常会出现依赖库和依赖库的依赖有重合的情况。而Rust 工程在编译时，会通过校验目标库的 source 信息（Cargo.lock 中生成）来识别两个库是相同。当项目的依赖库的 dependence 配置和项目依赖库的依赖的 dependence 配置不同时，
+就会出现种种类型不兼容的情况。比如，目前有这样的一个项目&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;，其依赖
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;和&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;两个库。同时，&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;又对
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;存在依赖。当&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;使用了&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;，并且将该&lt;code&gt;trait&lt;&#x2F;code&gt;通过引用
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;里的函数进行处理时，就涉及到&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;和&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;对&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;的引用校验问题：两个库里涉及的&lt;code&gt;Check&lt;&#x2F;code&gt;是否是同一个&lt;code&gt;Trait&lt;&#x2F;code&gt;？就笔者目前的理解来看，由于 rust 里的 trait 采用的不是 duck-typing，因此就需要编译器在编译时对类型进行强校验。在这个小示例中，如果 middle-lib
+的 dependencies 设置如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;而 dep-check 的 dependencies 设置如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+middle-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib.git&amp;quot; } # 注意，这种配置方式在 Cargo.lock 生成后，除非使用 cargo update 触发更新，否则依赖版本不会随着代码提交而更新。
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;dep-check 编译时，其引用的&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;和 middle-lib 里使用的&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;就无法认为是同一个（即使实际上代码的提交是同一个）。依赖库的设置可以通过 Cargo.lock 里的 source 来确认。当 dep-check 和 middle-lib 的 Cargo.lock 对 trait-lib 的 source
+配置相同时，就不会出现类型不一致的问题。&lt;br &#x2F;&gt;
+由于使用了 tag &#x2F; rev &#x2F; branch 来作为 dependencies 的配置，一个问题是当 trait-lib 发生更新时，需要同时升级 middle-lib 和 dep-check 这两个仓库。否则就会出现版本不一致而编译失败的情况。如果使用 version 控制，由于 version 实际
+上表示的是一个&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;specifying-dependencies.html#specifying-dependencies-from-cratesio&quot;&gt;范围&lt;&#x2F;a&gt;，只要 update 后的依赖库是同一个版本即可（准确来说，x.y.z 中的 x.y 保持一致即可），可
+以在 cargo update 后检查 dep-check 的 Cargo.lock 中存在几个 trait-lib。在仅存在一个 trait-lib 时，说明依赖库不存在版本冲突，此时不需要更新 middle-lib 中的 Cargo.toml。&lt;&#x2F;p&gt;
+&lt;p&gt;配置的问题在这里有描述：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;cargo&#x2F;issues&#x2F;11490&quot;&gt;The dependency resolution is confused when using git dependency and there&#x27;s a lockfile&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;duck-typing 的接口在校验时还比较简单，只需要检查是否实现了目标类型&#x2F;接口定义的函数即可。但是对于非 duck-typing，情况会复杂些：不同的库里是允许出现同名的 trait 的。如何确定项目中实现的 trait 和引用库中需要的 trait 是同一个 trait？这就需要确保项目中 trait 的来源库和引用库中所需要的 trait 来源库是相同的。而看起来，库是否相同，又是通过 source 来确定的。Cargo.toml 中的 source 毕竟是一个工程里的概念，是如何影响编译的呢？是否是编译过程中，函数签名里带着一些source 信息？还需要进一步的探索，期望能够整理成文档。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;dependences-pei-zhi-de-zui-jia-shi-jian&quot;&gt;dependences 配置的最佳实践？&lt;&#x2F;h2&gt;
+&lt;p&gt;golang 和 rust 都支持通过配置 git 仓库的地址来直接引用，个人还是比较喜欢 rust 的配置方式：通过 Cargo.toml 能够简洁、明了的声明各种依赖的信息，在工程里可以直接使用库名（而非 golang 里的项目地址）。此外，rust 里的 workspace 机制
+对仓库里存在多个 sub-lib 时也能较好的处理依赖的管理。&lt;br &#x2F;&gt;
+下面是一个实践示例&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[workspace]
+members = [
+    &amp;quot;dep-check&amp;quot;,
+    &amp;quot;dep-run&amp;quot;,
+]
+
+default-members = [&amp;quot;dep-check&amp;quot;]
+resolver = &amp;quot;2&amp;quot;
+
+[workspacepackage]
+name = &amp;quot;dep-check&amp;quot;
+version = &amp;quot;0.1.0&amp;quot;
+edition = &amp;quot;2021&amp;quot;
+
+# See more keys and their definitions at https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;manifest.html
+
+[workspace.dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+middle-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;对于其中的一个 member:dep-check，其配置为：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[package]
+name = &amp;quot;dep-check&amp;quot;
+version = &amp;quot;0.1.0&amp;quot;
+edition = &amp;quot;2021&amp;quot;
+
+# See more keys and their definitions at https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;manifest.html
+
+[dependencies]
+trait-lib = { workspace = true }
+middle-lib = { workspace = true }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;这样，就能很便捷的对项目里的依赖进行管理了。&lt;&#x2F;p&gt;
+&lt;p&gt;以上。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>合并区间</title>
+        <published>2024-04-20T17:11:31+08:00</published>
+        <updated>2024-04-20T17:11:31+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/merge-range/"/>
+        <id>https://liyan-ah.github.io/merge-range/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;很久没有找工作的经历了，反而由于种种原因，最近接触了一些候选人。总体的感觉是最近是越来越卷了。
+候选人的的水平明显比笔者毕业的时候高的多，也可能是笔者太菜了。其中一个合并区间的问题，笔者看到了
+一个很有意思的解法。在这里记录下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;《合并区间》问题的思路很明显：排序、合并。笔者最近见到了一种特殊场景下很有意思的解法：在数据范围较小的情况下，使用桶的思想来
+解决，就不再需要进行排序了。算法复杂度也从时间复杂度&lt;code&gt;o(nlgn)&lt;&#x2F;code&gt;降到了&lt;code&gt;o(n)&lt;&#x2F;code&gt;。这里记录下。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>x86_64 寄存器传参方式</title>
+        <published>2022-08-31T19:51:00+08:00</published>
+        <updated>2022-08-31T19:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/x86-64-chuan-can-fang-shi/"/>
+        <id>https://liyan-ah.github.io/x86-64-chuan-can-fang-shi/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/x86-64-chuan-can-fang-shi/">&lt;blockquote&gt;
+&lt;p&gt;x86_64 架构下，寄存器传参时，仅 arg1-arg6 会通过寄存器进行，arg7+ 的参数，将会放到栈上进行。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;yan-zheng-dai-ma&quot;&gt;验证代码&lt;&#x2F;h1&gt;
+&lt;pre&gt;&lt;code&gt;# 环境
+├── arg.bt
+├── arg_test
+└── hello.c
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre&gt;&lt;code&gt;&#x2F;&#x2F; hello.c, gcc -o arg_test hello.c
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+
+void print_arg(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6,
+               int arg7, int arg8){
+    printf(&amp;quot;%d, %d, %d, %d, %d, %d, %d, %d
+&amp;quot;, arg1, arg2, arg3, arg4, arg5,
+           arg6, arg7, arg8);
+    return;
+}
+
+int main(){
+    print_arg(1,2,3,4,5,6,7,8);
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre&gt;&lt;code&gt;&#x2F;&#x2F; arg.bt
+#!&#x2F;bin&#x2F;bpftrace
+
+uprobe:.&#x2F;arg_test:print_arg
+{
+    printf(&amp;quot;== enter print_arg
+&amp;quot;);
+    printf(&amp;quot;arg1: %d
+&amp;quot;, arg0);
+    printf(&amp;quot;arg2: %d
+&amp;quot;, arg1);
+    printf(&amp;quot;arg3: %d
+&amp;quot;, arg2);
+    printf(&amp;quot;arg4: %d
+&amp;quot;, arg3);
+    printf(&amp;quot;arg5: %d
+&amp;quot;, arg4);
+    printf(&amp;quot;arg6: %d
+&amp;quot;, arg5);
+    printf(&amp;quot;arg7: %d
+&amp;quot;, sarg0);
+    printf(&amp;quot;arg8: %d
+&amp;quot;, sarg1);
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;zhi-xing-jie-guo&quot;&gt;执行结果&lt;&#x2F;h1&gt;
+&lt;pre&gt;&lt;code&gt;sudo bpftrace arg.bt
+Attaching 1 probe...
+== enter print_arg
+arg1: 1
+arg2: 2
+arg3: 3
+arg4: 4
+arg5: 5
+arg6: 6
+arg7: 7
+arg8: 8
+
+.&#x2F;arg_test
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;can-zhao&quot;&gt;参照&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;wiki.cdot.senecacollege.ca&#x2F;wiki&#x2F;X86_64_Register_and_Instruction_Quick_Start&quot;&gt;X86 64 Register and Instruction Quick Start&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang proto3 使用</title>
+        <published>2022-05-19T17:53:00+08:00</published>
+        <updated>2022-05-19T17:53:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-proto3-shi-yong/"/>
+        <id>https://liyan-ah.github.io/golang-proto3-shi-yong/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;一直都比较赞赏&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;developers.google.com&#x2F;protocol-buffers&#x2F;docs&#x2F;proto3&quot;&gt;&lt;code&gt;protocol buffer&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;。由于其表现性强、压缩比高，可以把很多结构都写到&lt;code&gt;proto&lt;&#x2F;code&gt;文件中，同时添加很多的注释。当需要进行进行数据存储时，使用&lt;code&gt;proto&lt;&#x2F;code&gt;序列化结果替代&lt;code&gt;json&lt;&#x2F;code&gt;，可以省去很多的冗余字段。本篇找了一些&lt;code&gt;golang&lt;&#x2F;code&gt;中&lt;code&gt;protocol buffer&lt;&#x2F;code&gt;的使用示例，以及&lt;code&gt;protocol&lt;&#x2F;code&gt;对象与&lt;code&gt;json&lt;&#x2F;code&gt;对象互相转换的示例。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>centos 安装docker并构建golang镜像</title>
+        <published>2022-03-04T15:00:00+08:00</published>
+        <updated>2022-03-04T15:00:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/centos-an-zhuang-dockerbing-gou-jian-golangjing-xiang/"/>
+        <id>https://liyan-ah.github.io/centos-an-zhuang-dockerbing-gou-jian-golangjing-xiang/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>centos 构建 local-k8s</title>
+        <published>2022-02-24T17:27:00+08:00</published>
+        <updated>2022-02-24T17:27:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/centos-gou-jian-k8s-ji-qun/"/>
+        <id>https://liyan-ah.github.io/centos-gou-jian-k8s-ji-qun/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;工作原因，需要安装一个 local-k8s。中间碰了很多坑，做个记录。
+环境：Linux test 4.18.0-193.el8.x86_64&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>ELK-docker 实践</title>
+        <published>2022-01-04T00:06:00+08:00</published>
+        <updated>2022-01-04T00:06:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/elk-docker-shi-jian/"/>
+        <id>https://liyan-ah.github.io/elk-docker-shi-jian/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;elk-docker-bu-shu-shi-jian&quot;&gt;ELK docker 部署实践&lt;&#x2F;h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文主要对 ELK 套件中的 filebeat, logstash, elasticsearch 的安装进行实践，以及简单运行。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs-若干语言 lsp 配置备注</title>
+        <published>2021-10-12T20:26:00+08:00</published>
+        <updated>2021-10-12T20:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;微软推出的&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;microsoft.github.io&#x2F;language-server-protocol&#x2F;#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&quot;&gt;language server protol&lt;&#x2F;a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;&#x2F;code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;&#x2F;code&gt; 中的 rust, golang, python, c&#x2F;c++ lsp 配置&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>redisgo 连接报错</title>
+        <published>2021-08-18T17:26:00+08:00</published>
+        <updated>2021-08-18T17:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/"/>
+        <id>https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/">&lt;blockquote&gt;
+&lt;p&gt;记一次&lt;code&gt;redisgo&lt;&#x2F;code&gt;库使用时，连接远程&lt;code&gt;redis&lt;&#x2F;code&gt;服务写数据报错的问题。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;redis&lt;&#x2F;code&gt;写数据时，出现报错&lt;code&gt;write: broken pipe&lt;&#x2F;code&gt;及&lt;code&gt;write: connection reset by peer&lt;&#x2F;code&gt;。看着都是网络的问题，使用&lt;code&gt;redis-cli&lt;&#x2F;code&gt;可以登陆并且执行查询等操作。经过排查，是写的数据量过大，导致写数据持续时间过长，排查的思路是猜想-&amp;gt;验证&lt;code&gt;@A@&lt;&#x2F;code&gt;。&lt;br &#x2F;&gt;
+对于多个数据可以进行拆分。对于单个完整的数据，还没有太好的拆分思路（或许基于 &lt;code&gt;pb&lt;&#x2F;code&gt; 进行压缩，会是个好方式？）&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;can-kao-wen-zhang&quot;&gt;参考文章&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;xieganyu3460&#x2F;article&#x2F;details&#x2F;82884346&quot;&gt;python redis读写报错：Broken Pipe Error Redis&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>PHP-7.1升级至7.4兼容性</title>
+        <published>2021-08-02T20:34:48+08:00</published>
+        <updated>2021-08-02T20:34:48+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/php-7-1sheng-ji-zhi-7-4jian-rong-xing/"/>
+        <id>https://liyan-ah.github.io/php-7-1sheng-ji-zhi-7-4jian-rong-xing/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;php作为&lt;del&gt;动不动搞个大事情&lt;&#x2F;del&gt;世界上最好的语言,&lt;del&gt;经常&lt;&#x2F;del&gt;偶尔会出现由于版本升级导致的不兼容问题。笔者在工作中遇到了&lt;code&gt;php7.1&lt;&#x2F;code&gt;升级到&lt;code&gt;php7.4&lt;&#x2F;code&gt;导致的&lt;code&gt;each&lt;&#x2F;code&gt;弃用、&lt;code&gt;mcrypt&lt;&#x2F;code&gt;库启动导致的不兼容。在这里备注下兼容方式。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>go-simplejson 插入数组</title>
+        <published>2021-07-22T17:58:00+08:00</published>
+        <updated>2021-07-22T17:58:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/"/>
+        <id>https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bitly&#x2F;go-simplejson&quot;&gt;go-simplejson&lt;&#x2F;a&gt;是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>http及websocket性能对比</title>
+        <published>2021-07-15T19:29:10+08:00</published>
+        <updated>2021-07-15T19:29:10+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/httpji-websocketxing-neng-dui-bi/"/>
+        <id>https://liyan-ah.github.io/httpji-websocketxing-neng-dui-bi/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;从过往的经历中来看，使用websocket作为http协议的替代似乎是一种潮流。websocket以其小包头、全双工的优势，弥补了http协议的性能上的缺陷。对于长链接需求，完全可以在初始化时创建websocket连接，在业务交互时直接进行通信，使得通信过程更加流畅。相信在基于Quic的http3协议走向成熟应用前，websocket在性能上都具有优势。本文以golang语言为基础，构造场景进行两种协议的性能对比。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang GMP</title>
+        <published>2021-04-15T21:39:29+08:00</published>
+        <updated>2021-04-15T21:39:29+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-gmp/"/>
+        <id>https://liyan-ah.github.io/golang-gmp/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;&#x2F;code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;GC&lt;&#x2F;code&gt;实践。慢慢搞吧。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;qian-yan&quot;&gt;前言&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;Golang&lt;&#x2F;code&gt;作为语言层面支持并发的语言，使用&lt;code&gt;go&lt;&#x2F;code&gt;可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的所谓&lt;em&gt;纤程&lt;&#x2F;em&gt;是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如&lt;code&gt;Python&lt;&#x2F;code&gt;的协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的纤程，总是能够对应到操作系统认可的执行单元上。对于&lt;code&gt;Python&lt;&#x2F;code&gt;的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于&lt;code&gt;CPU&lt;&#x2F;code&gt;密集型的操作，仅使用协程是无法达到优化效果的：这种场景下&lt;code&gt;Python&lt;&#x2F;code&gt;会推荐多进程。相比起来，&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;go&lt;&#x2F;code&gt;野心更大一些：期望给用户以&lt;code&gt;go&lt;&#x2F;code&gt;作为接口，在语言内实现与操作系统调度单元的交互。&lt;code&gt;Golang&lt;&#x2F;code&gt;里实际的调度模型是&lt;code&gt;GMP&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang 封装</title>
+        <published>2021-04-08T21:16:00+08:00</published>
+        <updated>2021-04-08T21:16:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-ji-cheng/"/>
+        <id>https://liyan-ah.github.io/golang-ji-cheng/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>ratelimit服务流量限制</title>
+        <published>2021-02-07T17:30:00+08:00</published>
+        <updated>2021-02-07T17:30:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/"/>
+        <id>https://liyan-ah.github.io/ratelimitfu-wu-liu-liang-xian-zhi/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;在日常的工作中，固定QPS或者固定并发数是常用的两个衡量系统容量时采用的流量控制手段。本文以&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;chai2010.cn&#x2F;advanced-go-programming-book&#x2F;&quot;&gt;Go语言高级编程&lt;&#x2F;a&gt; 服务流量限制的内容为开端，对服务流量限制进行展开描述，同时对&lt;code&gt;Jmeter&lt;&#x2F;code&gt;及&lt;code&gt;golang ratelimit&lt;&#x2F;code&gt;中的流量限制方法进行描述。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;起因&lt;&#x2F;li&gt;
+&lt;li&gt;漏桶法&lt;&#x2F;li&gt;
+&lt;li&gt;令牌桶法&lt;&#x2F;li&gt;
+&lt;li&gt;Jmeter中流量吞吐控制&lt;&#x2F;li&gt;
+&lt;li&gt;golang ratelimit&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>org-mode使用备注</title>
+        <published>2021-01-11T21:49:00+08:00</published>
+        <updated>2021-01-11T21:49:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/">&lt;blockquote&gt;
+&lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;以下操作均在&lt;code&gt;org-agenda&lt;&#x2F;code&gt;中的&lt;code&gt;agenda for current week or day&lt;&#x2F;code&gt;视图下快速编辑：&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;操作&lt;&#x2F;th&gt;&lt;th&gt;快捷键&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;变更任务状态&lt;&#x2F;td&gt;&lt;td&gt;t&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加备注&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加日记&lt;&#x2F;td&gt;&lt;td&gt;i&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;编辑note&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;重建agenda&lt;&#x2F;td&gt;&lt;td&gt;r&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开日历&lt;&#x2F;td&gt;&lt;td&gt;a&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;下周任务列表&lt;&#x2F;td&gt;&lt;td&gt;f&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;上周任务列表&lt;&#x2F;td&gt;&lt;td&gt;b&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开任务所在原始文件&lt;&#x2F;td&gt;&lt;td&gt;enter&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs! start org-mode! --org-mode使用备注</title>
+        <published>2021-01-10T20:30:00+08:00</published>
+        <updated>2021-01-10T20:30:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;&#x2F;code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;&#x2F;code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;org-modejie-shao&quot;&gt;org-mode介绍&lt;&#x2F;h1&gt;
+&lt;p&gt;在&lt;code&gt;神的编辑器emacs&lt;&#x2F;code&gt;的传说中，往往有&lt;code&gt;org-mode&lt;&#x2F;code&gt;的身影。虽然按照(org官网)&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;orgmode.org&#x2F;&quot;&gt;orgmode&lt;&#x2F;a&gt;官网的描述，&lt;code&gt;org-mode&lt;&#x2F;code&gt;并不仅限于在&lt;code&gt;emacs&lt;&#x2F;code&gt;中使用，如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57800574&quot;&gt;开始使用 Org 模式吧，在没有 Emacs 的情况下&lt;&#x2F;a&gt;这篇文章就详细讲解了在&lt;code&gt;vscode&lt;&#x2F;code&gt;中使用&lt;code&gt;org-mode&lt;&#x2F;code&gt;的方式，但是配合&lt;code&gt;emacs&lt;&#x2F;code&gt;的万物皆系于&lt;code&gt;kbd&lt;&#x2F;code&gt;之上的使用习惯，&lt;code&gt;org-mode&lt;&#x2F;code&gt;确实能够发挥最大的功能。&lt;br &#x2F;&gt;
+&lt;code&gt;org-mode&lt;&#x2F;code&gt;的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>elscreen标签背景颜色</title>
+        <published>2020-12-23T19:23:00+08:00</published>
+        <updated>2020-12-23T19:23:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/"/>
+        <id>https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;使用&lt;code&gt;emacs&lt;&#x2F;code&gt;过程中，配合&lt;code&gt;evil&lt;&#x2F;code&gt;使用，按照&lt;code&gt;tab&lt;&#x2F;code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;&#x2F;code&gt;等任务划分到不同的&lt;code&gt;tab&lt;&#x2F;code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;&#x2F;code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;&#x2F;code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;&#x2F;code&gt;的方法，备注下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在初始文件的最后添加：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;; 选中标签设置为绿底黑字，其他标签为黄底黑字
+(set-face-attribute &amp;#39;elscreen-tab-other-screen-face nil
+                    :background &amp;quot;yellow&amp;quot; :foreground &amp;quot;black&amp;quot;)
+(set-face-attribute &amp;#39;elscreen-tab-current-screen-face nil
+                    :background &amp;quot;green&amp;quot; :foreground &amp;quot;black&amp;quot;)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>find匹配文件名</title>
+        <published>2020-11-12T21:44:28+08:00</published>
+        <updated>2020-11-12T21:44:28+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/findpi-pei-wen-jian-ming/"/>
+        <id>https://liyan-ah.github.io/findpi-pei-wen-jian-ming/</id>
+        
+        <summary type="html">&lt;p&gt;目录内容：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;text  text.bak
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;希望从中找到&lt;code&gt;text.bak&lt;&#x2F;code&gt;。使用&lt;code&gt;find&lt;&#x2F;code&gt;实现。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>sed使用备注</title>
+        <published>2020-11-12T16:36:51+08:00</published>
+        <updated>2020-11-12T16:36:51+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/sedshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/sedshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;h2 id=&quot;sedgong-neng-jie-shao&quot;&gt;sed功能介绍&lt;&#x2F;h2&gt;
+&lt;p&gt;先看下官方的介绍&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Sed  is a stream editor. A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline).&lt;br &#x2F;&gt;
+While in some ways similar to an editor which permits scripted edits (such as ed), sed works by making only one pass over the  input(s),  and&lt;br &#x2F;&gt;
+is consequently more efficient.  But it is sed’s ability to filter text in a pipeline which particularly distinguishes it from other types of&lt;br &#x2F;&gt;
+editors.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;大概的意思，是面向流的文本编辑工具。一般用来对文件中的文本进行替换等操作。&lt;br &#x2F;&gt;
+以下备注一些常用的操作方式了。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>c++插件管理--pluma&lt;实践&gt;</title>
+        <published>2020-10-29T21:19:00+08:00</published>
+        <updated>2020-10-29T21:19:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/c-cha-jian-guan-li-pluma/"/>
+        <id>https://liyan-ah.github.io/c-cha-jian-guan-li-pluma/</id>
+        
+        <summary type="html">&lt;p&gt;最近研究了一下&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;http:&#x2F;&#x2F;pluma-framework.sourceforge.net&#x2F;&quot;&gt;pluma&lt;&#x2F;a&gt;的使用。发现官网上的简单示例对于刚入门的人来说还是麻烦了些（而且还有语法错误）。&lt;br &#x2F;&gt;
+下面重新整理了一个例子，作为备注。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>python调试方法（其一）</title>
+        <published>2019-07-17T22:51:00+08:00</published>
+        <updated>2019-07-17T22:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/pythondiao-shi-fang-fa-qi-yi/"/>
+        <id>https://liyan-ah.github.io/pythondiao-shi-fang-fa-qi-yi/</id>
+        
+        <summary type="html">&lt;p&gt;&amp;lt;一&amp;gt; 这里记录一些python调试的方法：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;# coding=UTF-8
+&amp;#39;&amp;#39;&amp;#39; python debug method 1
+use print function to get output informatino
+&amp;#39;&amp;#39;&amp;#39;
+DEBUG = True
+
+def _debug_(*args, **kwds):
+	&amp;#39;&amp;#39;&amp;#39; depends on DEBUG value, print some function &amp;#39;&amp;#39;&amp;#39;
+    global DEBUG
+    if DEBUG:
+    	print(args, kwds)
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+	_debug_(&amp;quot;this is a test&amp;quot;)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;最常见的调试方法了。&lt;code&gt;print&lt;&#x2F;code&gt;可以依据需求调整为其他的方式（&lt;code&gt;logging&lt;&#x2F;code&gt;输出日志或者直接输出到文件中均可）。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>shell-访问字符串同名变量</title>
+        <published>2019-06-04T21:53:00+08:00</published>
+        <updated>2019-06-04T21:53:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/shell-fang-wen-zi-fu-chuan-tong-ming-bian-liang/"/>
+        <id>https://liyan-ah.github.io/shell-fang-wen-zi-fu-chuan-tong-ming-bian-liang/</id>
+        
+        <summary type="html">&lt;p&gt;考虑以下场景：&lt;br &#x2F;&gt;
+期望通过给定的变量名称&lt;code&gt;var_str&lt;&#x2F;code&gt;，打印出该名称对应的变量值&lt;code&gt;${var_str}&lt;&#x2F;code&gt;。使用指令&lt;code&gt;eval&lt;&#x2F;code&gt;可以很方便的实现：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;var_str=&amp;quot;1213&amp;quot;;
+ned_param_name=&amp;quot;var_str&amp;quot;;
+eval echo &amp;#39;$&amp;#39;&amp;quot;${ned_param_name}&amp;quot;;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;输出结果为&lt;code&gt;1213&lt;&#x2F;code&gt;;&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-do循环</title>
+        <published>2019-06-03T22:42:00+08:00</published>
+        <updated>2019-06-03T22:42:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-doxun-huan/"/>
+        <id>https://liyan-ah.github.io/lisp-doxun-huan/</id>
+        
+        <summary type="html">&lt;p&gt;lisp中，do循环形象如下:&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;(do (variable-definition*)
+    (end-test-form result-form*)
+    statement*);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-let变量声明</title>
+        <published>2019-05-30T22:51:00+08:00</published>
+        <updated>2019-05-30T22:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-letbian-liang-sheng-ming/"/>
+        <id>https://liyan-ah.github.io/lisp-letbian-liang-sheng-ming/</id>
+        
+        <summary type="html">&lt;p&gt;lisp声明、使用变量的一种方法，是使用&lt;code&gt;let&lt;&#x2F;code&gt;语句。&lt;br &#x2F;&gt;
+形如：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;(let ((variable declare1) (variable declare2) (...))
+;  (varaible used here));
+(defun foo(x)
+  (format t &amp;quot;Parameter: ~a~%&amp;quot; x)
+  (let ((x 2))
+    (format t &amp;quot;Outer LET: ~a~%&amp;quot; x)
+    (let ((x 3))
+      (format t &amp;quot;Inner LET: ~a~%&amp;quot; x))
+    (format t &amp;quot;Outer LET: ~a~%&amp;quot; x))
+  (format t &amp;quot;Parameter: ~a~%&amp;quot; x));
+
+(foo 10);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-lambda函数</title>
+        <published>2019-05-29T23:28:00+08:00</published>
+        <updated>2019-05-29T23:28:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-lambdahan-shu/"/>
+        <id>https://liyan-ah.github.io/lisp-lambdahan-shu/</id>
+        
+        <summary type="html">&lt;p&gt;lisp中的lambda表达式，显然和python中的很相似。&lt;br &#x2F;&gt;
+参照《实用common lisp编程》：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;按照 min max, 步长step为参数的fn计算的长度输出 *
+(defun plot (fn min max step)
+  (loop for i from min to max by step do
+        (loop repeat (funcall fn i) do (format t &amp;quot;*&amp;quot;))
+        (format t &amp;quot;~%&amp;quot;)))
+
+(plot #&amp;#39;exp 0 4 1&#x2F;2);
+(plot #&amp;#39;(lambda (x) (* 2 x)) 0 10 1);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>clisp编译</title>
+        <published>2019-05-28T22:16:00+08:00</published>
+        <updated>2019-05-28T22:16:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/clispbian-yi/"/>
+        <id>https://liyan-ah.github.io/clispbian-yi/</id>
+        
+        <summary type="html">&lt;p&gt;目前，lisp的开发环境基本上被&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;common-lisp.net&#x2F;project&#x2F;lispbox&#x2F;&quot;&gt;lispbox&lt;&#x2F;a&gt;所垄断。所以本文来说一&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;clisp.sourceforge.io&#x2F;&quot;&gt;CLISP&lt;&#x2F;a&gt;，C语言实现的LISP解释器的安装。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-hello world</title>
+        <published>2019-05-28T21:52:00+08:00</published>
+        <updated>2019-05-28T21:52:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-hello-world/"/>
+        <id>https://liyan-ah.github.io/lisp-hello-world/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/lisp-hello-world/">&lt;p&gt;lisp语言的基本表达式为S-表达式。这与受&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;ALGOL&quot;&gt;Algol&lt;&#x2F;a&gt;语言影响的C系语言有很大的不同。显然，这很有趣：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;the bellow is hello world function in lisp
+  (defun hello-world()
+    &amp;quot;hello world function in lisp&amp;quot;
+    (format t &amp;quot;hello, world!&amp;quot;));```
+由&amp;lt;code&amp;gt;()&amp;lt;&#x2F;code&amp;gt;所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+</feed>

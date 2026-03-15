@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - gls</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/gls/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-11-25T01:14:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/gls/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>基于ebpf实现的gls</title>
+        <published>2022-11-25T01:14:00+08:00</published>
+        <updated>2022-11-25T01:14:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/"/>
+        <id>https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;虽然&lt;code&gt;golang&lt;&#x2F;code&gt;并不推荐使用&lt;code&gt;goid&lt;&#x2F;code&gt;来构建&lt;code&gt;gls&lt;&#x2F;code&gt;(&lt;code&gt;goroutine local storage&lt;&#x2F;code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;&#x2F;code&gt;并使用的尝试。&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;jtolio&#x2F;gls&quot;&gt;github-gls&lt;&#x2F;a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;&#x2F;code&gt;里&lt;code&gt;gls&lt;&#x2F;code&gt;的实现思路：获取&lt;code&gt;goid&lt;&#x2F;code&gt;，基于&lt;code&gt;goid&lt;&#x2F;code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;来构建一个&lt;code&gt;golang&lt;&#x2F;code&gt;的&lt;code&gt;gls&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;ji-ben-gong-neng&quot;&gt;基本功能&lt;&#x2F;h1&gt;
+&lt;p&gt;本文中基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;实现的&lt;code&gt;gls&lt;&#x2F;code&gt;具有如下功能：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于&lt;code&gt;goid&lt;&#x2F;code&gt;的存储。即&lt;code&gt;map[goid]=value&lt;&#x2F;code&gt;；&lt;&#x2F;li&gt;
+&lt;li&gt;基于&lt;code&gt;goroutine&lt;&#x2F;code&gt;派生关系设置的&lt;code&gt;value&lt;&#x2F;code&gt;缺省值。即&lt;code&gt;map[goid=1]=121&lt;&#x2F;code&gt;，且&lt;code&gt;goid=1&lt;&#x2F;code&gt;派生&lt;code&gt;goid=2&lt;&#x2F;code&gt;，则&lt;code&gt;map[goid=2]=map[goid=1]=121&lt;&#x2F;code&gt;；&lt;br &#x2F;&gt;
+本文建议参照&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2022&#x2F;11&#x2F;04&#x2F;%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5&#x2F;#more&quot;&gt;黑魔法-ebpf-对用户空间数据的写入&lt;&#x2F;a&gt;进行理解。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;</summary>
+        
+    </entry>
+</feed>

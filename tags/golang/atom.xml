@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - golang</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/golang/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-08T19:43:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/golang/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>如何追踪golang channel?</title>
+        <published>2023-12-08T19:43:00+08:00</published>
+        <updated>2023-12-08T19:43:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/"/>
+        <id>https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2023&#x2F;03&#x2F;29&#x2F;cljb83dmh003dkcs61joe1kfh&#x2F;#more&quot;&gt;无侵入观测服务拓扑四元组的一种实现&lt;&#x2F;a&gt;中，笔者有提到追踪&lt;code&gt;golang&lt;&#x2F;code&gt;处理过程的两个无法解决的问题是&lt;code&gt;golang&lt;&#x2F;code&gt;里的&lt;code&gt;channel&lt;&#x2F;code&gt;处理以及&lt;code&gt;goroutine pool&lt;&#x2F;code&gt;。再深究下，这两个问题实际上都可以归纳到对&lt;code&gt;channel&lt;&#x2F;code&gt;的处理，因为很多&lt;code&gt;goroutine pool&lt;&#x2F;code&gt;都离不了&lt;code&gt;channel&lt;&#x2F;code&gt;的使用，比如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Jeffail&#x2F;tunny&quot;&gt;Jeffail&#x2F;tunny&lt;&#x2F;a&gt;这个库。&lt;br &#x2F;&gt;
+本文将会构建一个&lt;code&gt;channel&lt;&#x2F;code&gt;的追踪的方案。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>BPF追踪Go程序的挑战</title>
+        <published>2023-06-25T17:08:00+08:00</published>
+        <updated>2023-06-25T17:08:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang/"/>
+        <id>https://liyan-ah.github.io/golang/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;原文地址&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.0x74696d.com&#x2F;posts&#x2F;challenges-of-bpf-tracing-go&#x2F;&quot;&gt;Challenges of BPF Tracing Go&lt;&#x2F;a&gt;。翻译不尽如人意，继续努力。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;bpfzhui-zong-gocheng-xu-de-tiao-zhan&quot;&gt;BPF追踪Go程序的挑战&lt;&#x2F;h1&gt;
+&lt;p&gt;当大家对&lt;code&gt;Go 1.17&lt;&#x2F;code&gt;语言调用规约(&lt;code&gt;function calling convention&lt;&#x2F;code&gt;)调整带来的性能优化感到兴奋时，我却遗憾的看到&lt;code&gt;Go 1.17&lt;&#x2F;code&gt;并没有让&lt;code&gt;BPF uretprobe&lt;&#x2F;code&gt;变得可行。事实证明，我还没有完全意识到&lt;code&gt;Go&lt;&#x2F;code&gt;的可调整的栈空间会让事情变得多复杂。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>无侵入观测服务拓扑四元组的一种实现</title>
+        <published>2023-03-29T19:42:00+08:00</published>
+        <updated>2023-03-29T19:42:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/"/>
+        <id>https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务&lt;code&gt;A&lt;&#x2F;code&gt;的角度，就存在如下两个四元组: [A, &#x2F;a, B, &#x2F;b]，[A, &#x2F;a, C, &#x2F;c]。站在服务&lt;code&gt;B&lt;&#x2F;code&gt;, &lt;code&gt;C&lt;&#x2F;code&gt;的角度，也存在两个四元组（可能有不同的理解）: [B, &#x2F;b, none, none], [C, &#x2F;c, none, none]。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;                       service call                  
+                                                     
+     ,-------.          ,-.          ,-.          ,-.
+     |outisde|          |A|          |B|          |C|
+     `---+---&amp;#39;          `+&amp;#39;          `+&amp;#39;          `+&amp;#39;
+         |      &#x2F;a       |            |            | 
+         |--------------&amp;gt;|            |            | 
+         |               |            |            | 
+         |               |    &#x2F;b      |            | 
+         |               |-----------&amp;gt;|            | 
+         |               |            |            | 
+         |               |           &#x2F;c            | 
+         |               |------------------------&amp;gt;| 
+     ,---+---.          ,+.          ,+.          ,+.
+     |outisde|          |A|          |B|          |C|
+     `-------&amp;#39;          `-&amp;#39;          `-&amp;#39;          `-&amp;#39;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在弄清楚四元组是什么之后，下面进入今天的话题：如何使用&lt;code&gt;BPF&lt;&#x2F;code&gt;来采集四元组。需要说明的是，笔者这里的语言使用的是&lt;code&gt;golang-1.16&lt;&#x2F;code&gt;。&lt;code&gt;golang&lt;&#x2F;code&gt;不同语言版本间的区别，见：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2023&#x2F;03&#x2F;03&#x2F;golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6&#x2F;#more&quot;&gt;golang-1.17+调用规约&lt;&#x2F;a&gt;。&lt;br &#x2F;&gt;
+值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。&lt;br &#x2F;&gt;
+按照惯例，先看下效果吧：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;# 启动采集
+bpftrace .&#x2F;http.bt
+Attaching 2 probes...  # 未触发请求前，停止在这里
+caller:                # 触发请求后，输出
+  	caller_path: &#x2F;handle
+callee:
+  	method: GET
+  	host: 0.0.0.0:9932
+  	url: &#x2F;echo
+  
+caller:
+  	caller_path: &#x2F;echo
+callee: none
+  
+# 开始服务
+.&#x2F;http_demo &amp;amp;
+# 触发请求
+curl http:&#x2F;&#x2F;0.0.0.0:9932&#x2F;handle
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>go-1.17+ 调用规约</title>
+        <published>2023-03-03T20:59:00+08:00</published>
+        <updated>2023-03-03T20:59:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/"/>
+        <id>https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;go-1.17&lt;&#x2F;code&gt;是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到&lt;code&gt;go-1.17&lt;&#x2F;code&gt;之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和&lt;code&gt;C&#x2F;C++&lt;&#x2F;code&gt;的是完全不一致的。这个问题使得笔者在处理&lt;code&gt;ebpf&lt;&#x2F;code&gt;方案时，始终无法覆盖&lt;code&gt;go-1.17+&lt;&#x2F;code&gt;的版本。虽然短期不会造成影响，线上服务使用的大多还在&lt;code&gt;go-1.16&lt;&#x2F;code&gt;以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下&lt;code&gt;go-1.17+&lt;&#x2F;code&gt;的调用规约。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;go&lt;&#x2F;code&gt;在&lt;code&gt;1.17&lt;&#x2F;code&gt;之前使用的是内存栈来传递参数，这种传参的方式使得&lt;code&gt;golang&lt;&#x2F;code&gt;的语言设计很灵活：&lt;code&gt;golang&lt;&#x2F;code&gt;函数的多返回值能够很容易的实现。同样的，由于&lt;code&gt;golang&lt;&#x2F;code&gt;需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;go.googlesource.com&#x2F;proposal&#x2F;+&#x2F;refs&#x2F;changes&#x2F;78&#x2F;248178&#x2F;1&#x2F;design&#x2F;40724-register-calling.md&quot;&gt;Proposal: Register-based Go calling convention&lt;&#x2F;a&gt;文章里对这个问题进行了详细的讨论，总结起来是&lt;code&gt;golang&lt;&#x2F;code&gt;的特性使得使用系统默认规约并不能带来多语言交互上的收益，且&lt;code&gt;golang&lt;&#x2F;code&gt;希望保持独特。&lt;br &#x2F;&gt;
+本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是&lt;code&gt;x86_64&lt;&#x2F;code&gt;的&lt;code&gt;centos8&lt;&#x2F;code&gt;系统。其他架构下，寄存器名称可能不同。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang常见类型作为参数的eBPF解析</title>
+        <published>2022-12-30T19:24:18+08:00</published>
+        <updated>2022-12-30T19:24:18+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/"/>
+        <id>https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;即将过去的2022年，笔者相当比例的精力都投入在了eBPF上。最初的时候，写了一篇&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2022&#x2F;06&#x2F;06&#x2F;golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0&#x2F;&quot;&gt;golang 常见类型字节数
+&lt;&#x2F;a&gt;，开启了&lt;code&gt;eBPF+golang&lt;&#x2F;code&gt;的总结性工作。此后陆续整理了一些关于&lt;code&gt;ebpf&lt;&#x2F;code&gt;的使用文章，同时项目也在逐步的推进。&lt;code&gt;eBPF&lt;&#x2F;code&gt;的实际落地有很大的挑战，但是最终还是找到了一些落地的场景。年底了，结合最近的调研工作，笔者整理了这篇文章。既算是对之前文章的呼应，也是对今年整理内容的总结。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;eBPF&lt;&#x2F;code&gt;能够提供一种切入服务细节的独特视角。本文即通过实例，对&lt;code&gt;golang&lt;&#x2F;code&gt;常见类型作为函数参数时进行解析，期望读者能够感受这一视角。需要说明的是，本文是基于&lt;code&gt;golang-1.16&lt;&#x2F;code&gt;来整理的。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>基于ebpf实现的gls</title>
+        <published>2022-11-25T01:14:00+08:00</published>
+        <updated>2022-11-25T01:14:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/"/>
+        <id>https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;虽然&lt;code&gt;golang&lt;&#x2F;code&gt;并不推荐使用&lt;code&gt;goid&lt;&#x2F;code&gt;来构建&lt;code&gt;gls&lt;&#x2F;code&gt;(&lt;code&gt;goroutine local storage&lt;&#x2F;code&gt;)，仍然有着很多的实现&lt;code&gt;gls&lt;&#x2F;code&gt;并使用的尝试。&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;jtolio&#x2F;gls&quot;&gt;github-gls&lt;&#x2F;a&gt;这里是一个常见的实现，基本表述了&lt;code&gt;golang&lt;&#x2F;code&gt;里&lt;code&gt;gls&lt;&#x2F;code&gt;的实现思路：获取&lt;code&gt;goid&lt;&#x2F;code&gt;，基于&lt;code&gt;goid&lt;&#x2F;code&gt;构建一个存储。本文中笔者尝试基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;来构建一个&lt;code&gt;golang&lt;&#x2F;code&gt;的&lt;code&gt;gls&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;ji-ben-gong-neng&quot;&gt;基本功能&lt;&#x2F;h1&gt;
+&lt;p&gt;本文中基于&lt;code&gt;ebpf&lt;&#x2F;code&gt;实现的&lt;code&gt;gls&lt;&#x2F;code&gt;具有如下功能：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于&lt;code&gt;goid&lt;&#x2F;code&gt;的存储。即&lt;code&gt;map[goid]=value&lt;&#x2F;code&gt;；&lt;&#x2F;li&gt;
+&lt;li&gt;基于&lt;code&gt;goroutine&lt;&#x2F;code&gt;派生关系设置的&lt;code&gt;value&lt;&#x2F;code&gt;缺省值。即&lt;code&gt;map[goid=1]=121&lt;&#x2F;code&gt;，且&lt;code&gt;goid=1&lt;&#x2F;code&gt;派生&lt;code&gt;goid=2&lt;&#x2F;code&gt;，则&lt;code&gt;map[goid=2]=map[goid=1]=121&lt;&#x2F;code&gt;；&lt;br &#x2F;&gt;
+本文建议参照&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2022&#x2F;11&#x2F;04&#x2F;%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5&#x2F;#more&quot;&gt;黑魔法-ebpf-对用户空间数据的写入&lt;&#x2F;a&gt;进行理解。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>bpftrace 无侵入遍历golang链表</title>
+        <published>2022-07-22T21:48:00+08:00</published>
+        <updated>2022-07-22T21:48:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/"/>
+        <id>https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;bpftrace&lt;&#x2F;code&gt; 基于 &lt;code&gt;bcc&lt;&#x2F;code&gt; 进行开发的工具，语法简洁、功能强大。用其分析&lt;code&gt;Linux&lt;&#x2F;code&gt; 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用&lt;code&gt;bpftrace&lt;&#x2F;code&gt;无侵入遍历链表成员的方式，介绍&lt;code&gt;bpftrace&lt;&#x2F;code&gt; &lt;code&gt;attach uprobe&lt;&#x2F;code&gt; 的使用。更多使用说明见:&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;iovisor&#x2F;bpftrace&#x2F;blob&#x2F;master&#x2F;docs&#x2F;reference_guide.md&quot;&gt;bpftrace官网使用文档&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang 常见类型字节数</title>
+        <published>2022-06-06T14:36:00+08:00</published>
+        <updated>2022-06-06T14:36:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-chang-jian-lei-xing-zi-jie-shu/"/>
+        <id>https://liyan-ah.github.io/golang-chang-jian-lei-xing-zi-jie-shu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;ebpf&lt;&#x2F;code&gt; 分析&lt;code&gt;golang&lt;&#x2F;code&gt;程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;xin-xi&quot;&gt;信息&lt;&#x2F;h1&gt;
+&lt;p&gt;这里列出基本类型及其作为参数传递时，占用的空间大小如下表。&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;类型&lt;&#x2F;th&gt;&lt;th&gt;长度&lt;&#x2F;th&gt;&lt;th&gt;说明&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;指针&lt;&#x2F;td&gt;&lt;td&gt;8B&lt;&#x2F;td&gt;&lt;td&gt;64位机为 8Byte, 32位机位4Byte&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;context&lt;&#x2F;td&gt;&lt;td&gt;16B&lt;&#x2F;td&gt;&lt;td&gt;interface 类型。其中，前8B是类型信息，后8B是对象的指针信息&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;interface&lt;&#x2F;td&gt;&lt;td&gt;16B&lt;&#x2F;td&gt;&lt;td&gt;2 个指针，详见&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;draveness.me&#x2F;golang&#x2F;docs&#x2F;part2-foundation&#x2F;ch04-basic&#x2F;golang-interface&#x2F;&quot;&gt;draveness-go-interface&lt;&#x2F;a&gt;，或者 runtime&#x2F;runtime2.go iface&#x2F;eface 定义&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;int64&lt;&#x2F;td&gt;&lt;td&gt;8B&lt;&#x2F;td&gt;&lt;td&gt;-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;int&lt;&#x2F;td&gt;&lt;td&gt;8B&lt;&#x2F;td&gt;&lt;td&gt;64位机为 8Byte, 32位机位4Byte&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;string&lt;&#x2F;td&gt;&lt;td&gt;16B&lt;&#x2F;td&gt;&lt;td&gt;8B 地址 + 8B string长度&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;slice&lt;&#x2F;td&gt;&lt;td&gt;24B&lt;&#x2F;td&gt;&lt;td&gt;8B地址 + 8B slice 成员数量 + 8B slice capability&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;func&lt;&#x2F;td&gt;&lt;td&gt;8B&lt;&#x2F;td&gt;&lt;td&gt;func 作为函数参数时，传递的是 func 的地址&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs-若干语言 lsp 配置备注</title>
+        <published>2021-10-12T20:26:00+08:00</published>
+        <updated>2021-10-12T20:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;微软推出的&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;microsoft.github.io&#x2F;language-server-protocol&#x2F;#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&quot;&gt;language server protol&lt;&#x2F;a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;&#x2F;code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;&#x2F;code&gt; 中的 rust, golang, python, c&#x2F;c++ lsp 配置&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>go-simplejson 插入数组</title>
+        <published>2021-07-22T17:58:00+08:00</published>
+        <updated>2021-07-22T17:58:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/"/>
+        <id>https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bitly&#x2F;go-simplejson&quot;&gt;go-simplejson&lt;&#x2F;a&gt;是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang GMP</title>
+        <published>2021-04-15T21:39:29+08:00</published>
+        <updated>2021-04-15T21:39:29+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-gmp/"/>
+        <id>https://liyan-ah.github.io/golang-gmp/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;写点东西还是难，果然还是搬运工来的轻松些。今天搬运点Golang的&lt;code&gt;GMP&lt;&#x2F;code&gt;模型看看。最近在准备一篇&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;GC&lt;&#x2F;code&gt;实践。慢慢搞吧。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;qian-yan&quot;&gt;前言&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;Golang&lt;&#x2F;code&gt;作为语言层面支持并发的语言，使用&lt;code&gt;go&lt;&#x2F;code&gt;可以让搬砖体验飞起。但是从直觉来说，事情并没有这么简单：从操作系统层面来说，进程和线程是操作系统认可的并行机制。协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的所谓&lt;em&gt;纤程&lt;&#x2F;em&gt;是期望一堆程序员期望将操作系统的工作拿过来，以满足一些优化的效果。所以诸如&lt;code&gt;Python&lt;&#x2F;code&gt;的协程以及&lt;code&gt;Golang&lt;&#x2F;code&gt;的纤程，总是能够对应到操作系统认可的执行单元上。对于&lt;code&gt;Python&lt;&#x2F;code&gt;的协程还好理解一些，是严格运行在自己的线程里的，只是语言层面实现了线程内的上下文切换优化。所以对于&lt;code&gt;CPU&lt;&#x2F;code&gt;密集型的操作，仅使用协程是无法达到优化效果的：这种场景下&lt;code&gt;Python&lt;&#x2F;code&gt;会推荐多进程。相比起来，&lt;code&gt;Golang&lt;&#x2F;code&gt;的&lt;code&gt;go&lt;&#x2F;code&gt;野心更大一些：期望给用户以&lt;code&gt;go&lt;&#x2F;code&gt;作为接口，在语言内实现与操作系统调度单元的交互。&lt;code&gt;Golang&lt;&#x2F;code&gt;里实际的调度模型是&lt;code&gt;GMP&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>golang 封装</title>
+        <published>2021-04-08T21:16:00+08:00</published>
+        <updated>2021-04-08T21:16:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/golang-ji-cheng/"/>
+        <id>https://liyan-ah.github.io/golang-ji-cheng/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;golang作为一种高级语言，实现了面向对象语言的封装、继承、多态的特性。本文简要介绍下golang面向对象的这些特性。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

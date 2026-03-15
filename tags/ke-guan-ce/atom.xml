@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 可观测</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/ke-guan-ce/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-03-29T19:42:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/ke-guan-ce/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>无侵入观测服务拓扑四元组的一种实现</title>
+        <published>2023-03-29T19:42:00+08:00</published>
+        <updated>2023-03-29T19:42:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/"/>
+        <id>https://liyan-ah.github.io/wu-qin-ru-guan-ce-fu-wu-si-yuan-zu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;最近有了些时间，继续整理下之前的项目。服务四元组的信息对于故障处置、根因定位等都有重要意义。使用eBPF可以做到无侵入用户代码获取服务四元组信息的功能。这一点在工程应用上很有意义。笔者在这方面投入了一些精力，这里做一下简单的总结。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;服务四元组指的是[caller, caller_func, callee, callee_func]四元组。如下图是一个调用示例，站在服务&lt;code&gt;A&lt;&#x2F;code&gt;的角度，就存在如下两个四元组: [A, &#x2F;a, B, &#x2F;b]，[A, &#x2F;a, C, &#x2F;c]。站在服务&lt;code&gt;B&lt;&#x2F;code&gt;, &lt;code&gt;C&lt;&#x2F;code&gt;的角度，也存在两个四元组（可能有不同的理解）: [B, &#x2F;b, none, none], [C, &#x2F;c, none, none]。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;                       service call                  
+                                                     
+     ,-------.          ,-.          ,-.          ,-.
+     |outisde|          |A|          |B|          |C|
+     `---+---&amp;#39;          `+&amp;#39;          `+&amp;#39;          `+&amp;#39;
+         |      &#x2F;a       |            |            | 
+         |--------------&amp;gt;|            |            | 
+         |               |            |            | 
+         |               |    &#x2F;b      |            | 
+         |               |-----------&amp;gt;|            | 
+         |               |            |            | 
+         |               |           &#x2F;c            | 
+         |               |------------------------&amp;gt;| 
+     ,---+---.          ,+.          ,+.          ,+.
+     |outisde|          |A|          |B|          |C|
+     `-------&amp;#39;          `-&amp;#39;          `-&amp;#39;          `-&amp;#39;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在弄清楚四元组是什么之后，下面进入今天的话题：如何使用&lt;code&gt;BPF&lt;&#x2F;code&gt;来采集四元组。需要说明的是，笔者这里的语言使用的是&lt;code&gt;golang-1.16&lt;&#x2F;code&gt;。&lt;code&gt;golang&lt;&#x2F;code&gt;不同语言版本间的区别，见：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2023&#x2F;03&#x2F;03&#x2F;golang-1-17-%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E7%BA%A6&#x2F;#more&quot;&gt;golang-1.17+调用规约&lt;&#x2F;a&gt;。&lt;br &#x2F;&gt;
+值得注意的是，关于观测服务数据，是有很多解决方案的。本文仅是笔者实践的一种解决方案，在文末会简单提到这种方案的优缺点。&lt;br &#x2F;&gt;
+按照惯例，先看下效果吧：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;# 启动采集
+bpftrace .&#x2F;http.bt
+Attaching 2 probes...  # 未触发请求前，停止在这里
+caller:                # 触发请求后，输出
+  	caller_path: &#x2F;handle
+callee:
+  	method: GET
+  	host: 0.0.0.0:9932
+  	url: &#x2F;echo
+  
+caller:
+  	caller_path: &#x2F;echo
+callee: none
+  
+# 开始服务
+.&#x2F;http_demo &amp;amp;
+# 触发请求
+curl http:&#x2F;&#x2F;0.0.0.0:9932&#x2F;handle
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+</feed>

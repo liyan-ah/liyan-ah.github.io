@@ -1,0 +1,174 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    golang proto3 使用 - 李岩的博客
+  </title><meta name=theme-color><meta content="golang proto3 使用" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="golang proto3 使用" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="golang proto3 使用" property=og:description><meta content=https://liyan-ah.github.io/golang-proto3-shi-yong/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/golang-proto3-shi-yong/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">golang proto3 使用</h1><div class="text-sm antialiased opacity-60"><time>2022-05-19</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-lai-huan-jing>依赖环境</a><li><a href=#shi-li-dai-ma>示例代码</a><li><a href=#zong-jie>总结</a></ul></details></nav><section><blockquote><p>一直都比较赞赏<a rel="noopener nofollow noreferrer external" href=https://developers.google.com/protocol-buffers/docs/proto3 target=_blank><code>protocol buffer</code></a>。由于其表现性强、压缩比高，可以把很多结构都写到<code>proto</code>文件中，同时添加很多的注释。当需要进行进行数据存储时，使用<code>proto</code>序列化结果替代<code>json</code>，可以省去很多的冗余字段。本篇找了一些<code>golang</code>中<code>protocol buffer</code>的使用示例，以及<code>protocol</code>对象与<code>json</code>对象互相转换的示例。</blockquote><span id=continue-reading></span><h1 id=yi-lai-huan-jing>依赖环境</h1><p>这部分主要参照<a rel="noopener nofollow noreferrer external" href=https://developers.google.com/protocol-buffers/docs/gotutorial target=_blank>官网教程</a>来：<ul><li><code>protoc</code> 安装：<br> <a rel="noopener nofollow noreferrer external" href=https://github.com/protocolbuffers/protobuf/releases target=_blank>github-protobuf-releases</a> 下载对应平台的 <code>protoc</code> 编译器即可；<li><code>protoc-gen-go</code> 安装：<br> <code>go install google.golang.org/protobuf/cmd/protoc-gen-go@latest</code> 需要能够安装对应语言的插件，<code>proto</code> 文件才被翻译为对应语言可调用的模块；</ul><h1 id=shi-li-dai-ma>示例代码</h1><p>比较推荐将<code>proto</code>文件单独放入一个仓库。<code>proto</code>一般定义的是需要服务/模块间共享的，所以单独放在一个仓库里便于调用及约定的维护。<pre><code>.
+├── main.go
+└── proto
+    └── user.proto
+</code></pre><pre><code>// main.go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"log"
+	"net/http"
+	"proto/message"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gogo/protobuf/jsonpb"
+	jsoniter "github.com/json-iterator/go"
+	"google.golang.org/protobuf/proto"
+)
+
+func main() {
+	msg := message.UserInfo{UserList: []*message.UserInfo_User{{Username: "test"}}}
+	msg.UserList = append(msg.UserList, &message.UserInfo_User{Username: "test1"})
+
+	// go message 可以直接序列化为 json byte
+	byt, err := jsoniter.Marshal(&msg)
+	if err != nil {
+		log.Fatal("cannot parse to json")
+	}
+	fmt.Println("json result: ", string(byt))
+
+	// 可以将 json 对象反序列化为 go message 对象
+	msg1 := &message.UserInfo{}
+	err = jsonpb.Unmarshal(bytes.NewReader(byt), msg1)
+	if err != nil {
+		log.Fatal("parse failed, ", err)
+	}
+	fmt.Printf("parsed: %+v
+", msg1)
+
+	// protobuf 本身的字符串表征
+	msg1Str := msg1.String()
+	fmt.Println("msg1 string, ", msg1Str)
+    // protobuf 序列化
+	out, err := proto.Marshal(msg1)
+	fmt.Println("msg1 marshal result is, ", string(out))
+	msg2 := message.UserInfo{}
+    // 将序列化后的结果，反序列化为 message 对象
+	proto.Unmarshal(out, &msg2)
+	fmt.Printf("unmarshal result msg2 is: %+v
+", &msg2)
+
+	engine := gin.Default()
+	engine.GET("check", func(c *gin.Context) {
+    	// message 对象可以直接用来作为接口的返回值
+		c.JSON(http.StatusOK, &msg1)
+	})
+
+	srv := &http.Server{}
+	srv.Addr = "0.0.0.0:9988"
+	srv.Handler = engine
+	srv.ListenAndServe()
+}
+
+// proto/user.proto
+syntax = "proto3";
+
+package user_info;
+
+// 对于 golang 的使用说，这里的 go_package 是必须的。表述的是编译后的模块名
+option go_package = "./message";
+
+message UserInfo{
+  message User{
+    string username = 1;
+    uint32 age = 2;
+    string graduate = 3;
+  }
+
+  repeated User user_list = 1;
+}
+</code></pre><p>进行编译:<code>protoc -I./proto user.proto --go_out=./</code>，<pre><code>.
+├── go.mod
+├── go.sum
+├── main.go
+├── message
+│   └── user.pb.go
+└── proto
+    └── user.proto
+
+2 directories, 5 files
+</code></pre><p>执行 <code>go run main.go</code>。<pre><code>go run main.go
+json result:  {"user_list":[{"username":"test"},{"username":"test1"}]}
+parsed: user_list:{username:"test"}  user_list:{username:"test1"}
+msg1 string,  user_list:{username:"test"}  user_list:{username:"test1"}
+msg1 marshal result is,
+
+test
+
+test1
+unmarshal result msg2 is: user_list:{username:"test"}  user_list:{username:"test1"}
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /check_must               --> main.main.func1 (3 handlers)
+</code></pre><h1 id=zong-jie>总结</h1><p><code>protocol buffer</code> 在大多数场景下，都能兼容<code>json</code>对象的使用场景。其劣势为序列化相关操作时额外的性能开销。对于与外部进行交互、不会进行频繁序列化、反序列化的数据，可以考虑优先使用<code>protocol buffer</code>。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/code/>code</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/protobuf/>protobuf</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/challenges-of-bpf-tracing-go/><span class=mr-1.5>←</span><span>challenges of bpf tracing go</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-chang-jian-lei-xing-zi-jie-shu/><span>golang 常见类型字节数</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

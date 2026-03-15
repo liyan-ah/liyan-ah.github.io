@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    Projects - 李岩的博客
+  </title><meta name=theme-color><meta content=Projects name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=Projects property=og:title><meta content=李岩的博客 property=og:site_name><meta content=Projects property=og:description><meta content=https://liyan-ah.github.io/projects/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/projects/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>Projects</h1><div class="not-prose block-bg my-4 flex w-full flex-col rounded-lg px-5 py-1.5"><h3 class="my-2 text-xl font-bold text-black dark:text-white">AliceBot</h3><p>使用 Python 协程编写的聊天机器人框架，拥有较高的执行效率。支持多种聊天协议适配，并提供了一套易于学习的插件语法用于用户编写插件实现聊天机器人具体功能。具有完全的类型注解支持、相对完善的文档和配套工具，支持插件和配置文件热重载。<div class="my-2 flex flex-wrap items-center justify-between"><div class="flex flex-wrap gap-x-2 text-sm opacity-60"><span>#python</span><span>#asyncio</span><span>#chatbot</span></div><div class="flex flex-wrap gap-x-2"><a class=underline href=https://github.com/AliceBotProject/alicebot rel=noopener target=_blank>github</a><a class=underline href=https://docs.alicebot.dev/ rel=noopener target=_blank>docs</a></div></div></div><div class="not-prose block-bg my-4 flex w-full flex-col rounded-lg px-5 py-1.5"><h3 class="my-2 text-xl font-bold text-black dark:text-white">Lucia-lang</h3><p>一个受到了 Lua 和 Python 语言启发的轻量级、可嵌入的动态强类型编程语言。使用 Rust 语言实现了完整的词法分析、语法分析、语义分析、字节码生成和支持 GC 的基于栈的虚拟机。具有错误处理、头等函数、匿名函数、闭包、迭代器、运算符重载、安全导航运算符、尾调用优化等现代语言特性。<div class="my-2 flex flex-wrap items-center justify-between"><div class="flex flex-wrap gap-x-2 text-sm opacity-60"><span>#rust</span><span>#compiler</span><span>#vm</span></div><div class="flex flex-wrap gap-x-2"><a class=underline href=https://github.com/st1020/lucia-lang rel=noopener target=_blank>github</a><a class=underline href=https://crates.io/crates/lucia-lang rel=noopener target=_blank>crates</a><a class=underline href=https://docs.rs/lucia-lang/latest/lucia_lang/ rel=noopener target=_blank>docs</a></div></div></div><div class="not-prose block-bg my-4 flex w-full flex-col rounded-lg px-5 py-1.5"><h3 class="my-2 text-xl font-bold text-black dark:text-white">Kita</h3><p>一个干净、优雅、简单的 Zola 博客主题。基于 hugo-paper 移植，做了不少样式调整并添加了目录、项目页面、存档页面、分类页面、Mermaid 支持、Admonition shortcode 等特性。<div class="my-2 flex flex-wrap items-center justify-between"><div class="flex flex-wrap gap-x-2 text-sm opacity-60"><span>#zola</span><span>#css</span><span>#blog</span></div><div class="flex flex-wrap gap-x-2"><a class=underline href=https://github.com/st1020/kita rel=noopener target=_blank>github</a><a class=underline href=https://st1020.github.io/kita/ rel=noopener target=_blank>demo</a></div></div></div><div class="not-prose block-bg my-4 flex w-full flex-col rounded-lg px-5 py-1.5"><h3 class="my-2 text-xl font-bold text-black dark:text-white">Sophia-doc</h3><p>分析 Python 模块的 Docstring 并自动生成 Markdown 格式的 API 文档的工具，基于 PEP 257 – Docstring Conventions 和 PEP 484 – Type Hints 标准。支持分析 Python 函数或类的的类型注解，用于 AliceBot 项目的 API 文档生成。<div class="my-2 flex flex-wrap items-center justify-between"><div class="flex flex-wrap gap-x-2 text-sm opacity-60"><span>#python</span><span>#docstring</span></div><div class="flex flex-wrap gap-x-2"><a class=underline href=https://github.com/st1020/sophia-doc rel=noopener target=_blank>github</a></div></div></div></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

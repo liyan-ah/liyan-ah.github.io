@@ -1,0 +1,156 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    【译文/effective-rust】第 30 条：不仅仅是单测 - 李岩的博客
+  </title><meta name=theme-color><meta content="本文为 effective-rust 第 30 条译文。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="【译文/effective-rust】第 30 条：不仅仅是单测" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="本文为 effective-rust 第 30 条译文。" property=og:description><meta content=https://liyan-ah.github.io/write-more-than-unit-tests/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/write-more-than-unit-tests/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">【译文/effective-rust】第 30 条：不仅仅是单测</h1><div class="text-sm antialiased opacity-60"><time>2024-09-08</time><span class=mx-1>·</span><span>21min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#dan-yuan-ce-shi>单元测试</a><li><a href=#ji-cheng-ce-shi>集成测试</a><li><a href=#wen-dang-ce-shi>文档测试</a><li><a href=#dai-ma-shi-li>代码示例</a><li><a href=#ji-zhun-ce-shi>基准测试</a><li><a href=#mo-hu-ce-shi>模糊测试</a><li><a href=#ce-shi-de-jian-yi>测试的建议</a><li><a href=#xu-yao-zhu-yi-de-dian>需要注意的点</a> <ul><li><a href=#zhu-shi>注释</a></ul></ul></details></nav><section><blockquote><p>“所有的公司都拥有测试环境。但只有那些幸运的公司拥有独立于测试环境的生产环境。” —— @FearlessSon</blockquote><p>和大多数其他的现代编程语言一样，Rust 也包含一些便于<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/book/ch11-00-testing.html target=_blank>编写测试</a>的特性。借助这些特性，你可以将单测和代码共存。而通过测试，可以提升代码运行准确性的信心。<p>这并非是兜售测试重要性的文章。从测试最基本功能来说，如果代码缺少了测试，它很可能并非如我们所希望的那样运行。本条目是在你已经建立了<strong>为代码编写测试</strong>这一信念的基础上展开的。<p>单元测试（unit tests）以及集成测试（integration tests）是测试领域内的两大重要成员。在接下来的两节内将会介绍。但是，Rust 工具链，也包括它的扩展，允许多种多样的测试形式。本条目将会介绍它们的基本使用流程及应用场景。<h2 id=dan-yuan-ce-shi>单元测试</h2><p>Rust 代码中最常见的测试类型是单元测试：<pre><code data-lang=rust>// ... (code defining `nat_subtract*` functions for natural
+//      number subtraction)
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_nat_subtract() {
+        assert_eq!(nat_subtract(4, 3).unwrap(), 1);
+        assert_eq!(nat_subtract(4, 5), None);
+    }
+
+    #[should_panic]
+    #[test]
+    fn test_something_that_panics() {
+        nat_subtract_unchecked(4, 5);
+    }
+}
+</code></pre><p>这段单测示例体现了 Rust 所有单测都会有的形式：<ul><li>使用模块对单测函数进行封装。<li>每个单测都会使用<code>#[test]</code>属性来进行标志。<li>用来测试的模块使用<code>#[cfg(test)]</code>进行声明，所以单测的代码仅会在测试时生效。</ul><p>示例也展示了一些仅在特定测试中才会出现的形式：<ul><li>这里的测试代码放置在单独的模块里，模块名一般为<code>tests</code>或者<code>test</code>。这个模块可以和逻辑代码放置在一起，或者放置在单独的<em>tests.rs</em>文件里。放置在单独的文件里可以让人更加便捷的区分代码是用来测试的，还是用于一般的功能逻辑。<li>测试的模块可以使用一个通配符<code>use super::*</code>来将父模块的所有依赖都声明到测试模块里。这种操作可以让编写测试代码更加方便（同时依据<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_4/item23-wildcard.html target=_blank>第 23 条</a>来说，通配符的引入是一种要规避的操作）。<li>在模块的一般可达性规则下，单测可以使用所有父模块里包含的内容，无论是否声明为公共的。基于单测对内部功能可访问的特点，可以对代码进行“开箱”测试。<li>测试代码使用<code>expect()</code>或者<code>unwrap()</code>来标志其希望的结果。显然，<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_3/item18-panic.html target=_blank>第 18 条</a>中声明的规则并不适用这些单测的代码。单测中需要使用<code>panic!</code>来标注失败的结果。同样的，测试的代码中也会使用<code>assert_eq!</code>来校验期待的值，并且会在失败时抛出<code>panic</code>。<li>测试代码中使用了一个函数，该函数在一些非法的输入下会造成<code>panic</code>。为了校验该函数的这一功能是否生效，单测的函数中使用了<code>#[should_panic]</code>特性。这一特性在需要测试一个内部函数且希望保持这个函数的各校验规则不发生改变，或者测试一个公共的函数且由于一些原因需要忽略<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_3/item18-panic.html target=_blank>第 18 条</a>中的建议。（这样的函数需要在它的注释文档中有“Panics”小节，就像<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html target=_blank>第 27 条</a>中描述的。）</ul><p><a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html target=_blank>第 27 条</a>中建议不要对已经通过类型表述出的内容。同样的，也不需要对已经由类型进行约束的内容进行测试。如果你的<code>enum</code>类型派生出了不在声明列表中罗列的变量，你可能遇到了比单测失败更加严重的问题。<p>然而，如果你的代码依赖了一些依赖库中的独特功能，对这些功能准备基础的单测会很有用。这里的单测目的并非是重复依赖中已经具备的功能测试，而是尽量早地暴露依赖的包依赖的这些功能发生了变更的风险 —— 尤其是公共的接口约定发生了变化，通常应当通过版本号来表明（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/semver.html target=_blank>第 21 条</a>）。<h2 id=ji-cheng-ce-shi>集成测试</h2><p>Rust 项目中另一种常用到的测试模式是：<em>集成测试</em>（integration tests），测试通常被放置在<code>tests/</code>目录下。这个目录下的每个文件都会作为一个单独的测试程序运行，每个测试程序都会执行其包含的所有以<code>#[test]</code>标志的测试函数。<p>集成测试没有访问包内部内容的权限，因此集成测试仅能覆盖包的公共 API。<h2 id=wen-dang-ce-shi>文档测试</h2><p><a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html target=_blank>第 27 条</a>描述了在注释中包含一小段代码的示例，通常是为了说明特定的公共 API 的使用方式。每段这样的代码都包含在一个隐式的<code>fn main() { ... }</code>函数中，并且可以在<code>cargo test</code>时被执行。这是一种高效的代码添加测试用例的方法，一般被称为<em>文档测试</em>（doc tests）。每个类似的测试都可以通过<code>cargo test --doc &lt;item-name></code>的方式来选择性的执行。<p>定期的通过 CI 系统（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/ci.html target=_blank>第 32 条</a>）来执行这些测试可以确保代码不会离包中期望提供的 API 太远。<h2 id=dai-ma-shi-li>代码示例</h2><p><a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_5/item27-document-public-interfaces.html target=_blank>第 27 条</a>也描述了为公共接口提供示例代码的实践。在<code>examples/</code>目录下的每个 Rust 文件（或者<code>examples</code>目录下每个子目录中的<code>main.rs</code>文件）都可以通过<code>cargo run --example &lt;name></code>或者<code>cargo test --example &lt;name></code>的方式来作为独立的可执行文件运行。<p>这些程序仅能访问包中的公共接口，并且可以说明这些公共接口的使用方式。示例代码并非被设计为测试代码（没有<code>#[test]</code>，没有<code>[cfg(test)]</code>的标注），而且由于处于一些不起眼的角落，它们并不适合放置代码 —— 尤其是，它们并不在<code>cargo test</code>时默认执行。<p>尽管如此，CI 系统（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/ci.html target=_blank>第 32 条</a>）构建并且运行这些示例代码（通过<code>cargo test --examples</code>）仍然是一个很好的实践。通过执行这些代码，可以为那些会影响大多数用户的接口提供一个很好的回归校验机制。特别地，如果你的示例揭示了接口使用的一般方式，那么示例运行的失败往往意味着存在如下的错误：<ul><li>如果这是个高超的错误，它可能会影响很多用户 —— 示例中的代码将会被很多用户复制、粘贴或者参照。<li>如果公共接口发生了变更，那么这些示例也需要参照最新的接口定义来实现。接口的改变往往意味着不兼容。所以当包被发布时，版本号需要随着调整以说明这是个不兼容的升级（<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/semver.html target=_blank>第 21 条</a>）。</ul><p>用户复制、粘贴测试代码的行为意味着示例代码和测试代码的形式有很大的不同。如<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_3/item18-panic.html target=_blank>第 18 条</a>中描述的一样，你可以避免对 Results 进行 unwrap() 使用，从而为用户提供一个很好的参照。同样的，在每个示例代码的<code>main()</code>函数中返回类似<code>Result&lt;(), Box&lt;dyn Error>></code>的结果，并且在内部使用<code>?</code>符号来组织代码（<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_1/item3-transform.html target=_blank>第 3 条</a>）也是一种很好的行为。<h2 id=ji-zhun-ce-shi>基准测试</h2><p>[第 20 条]试图说明极致的代码性能优化并非总是必要的。尽管如此，有时性能肯定时很关键的，并且在这种情况下，衡量以及追踪代码的性能变化是很好的实践。具备定期运行的<em>基准测试</em>（benchmarks）（比如，作为 CI 系统的一部分，<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/ci.html target=_blank>第 32 条</a>）允许你发觉代码或者工具链的变更可以如何影响代码的性能。<p><code>[cargo bench]</code>命令可以运行重复执行特定操作的测试代码，并且计算出这个操作的平均耗时。在撰写本文时，Rust 对基准测试的支持还不太稳定，所以基准测试相关的指令需要通过<code>cargo +nightly bench</code>的方式来执行。（Rust 不稳定的特性，包括本文中使用的<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/unstable-book/library-features/test.html target=_blank>test</a>特性，都描述在 Rust <a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/unstable-book/the-unstable-book.html target=_blank>Unstable Book</a>中。）<p>然而，这里存在着编译器给出错误结果的风险，尤其是当你将操作约束在很简单的代码时。考虑如下一个简单的算数函数：<pre><code data-lang=rust>pub fn factorial(n: u128) -> u128 {
+    match n {
+        0 => 1,
+        n => n * factorial(n - 1),
+    }
+}
+</code></pre><p>这段代码的一个简单的基准测试实现是：<pre><code data-lang=rust>#![feature(test)]
+extern crate test;
+
+#[bench]
+fn bench_factorial(b: &mut test::Bencher) {
+    b.iter(|| {
+        let result = factorial(15);
+        assert_eq!(result, 1_307_674_368_000);
+    });
+}
+</code></pre><p>输出了一段奇妙的结果：<pre><code data-lang=rust>test bench_factorial             ... bench:           0 ns/iter (+/- 0)
+</code></pre><p>由于在测试过程中使用固定的输入以及很少的代码指令，编译器可能会对迭代进行优化并且直接输出计算结果。这就将会导致不切实际的测试结论。<p>使用 <a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/std/hint/fn.black_box.html target=_blank>std::hint::black_box</a> 可以解决这一问题。这是一个标志函数，<a rel="noopener nofollow noreferrer external" href=https://rust-lang.github.io/rfcs/2360-bench-black-box.html target=_blank>编辑器识别后将不</a>对其进行优化。<p>上述基准测试可以变更为如下形式：<pre><code data-lang=rust>#[bench]
+fn bench_factorial(b: &mut test::Bencher) {
+    b.iter(|| {
+        let result = factorial(std::hint::black_box(15));
+        assert_eq!(result, 1_307_674_368_000);
+    });
+}
+</code></pre><p>给出了如下更加接近实际的结果：<pre><code data-lang=rust>test blackboxed::bench_factorial ... bench:          16 ns/iter (+/- 3)
+</code></pre><p><a rel="noopener nofollow noreferrer external" href=https://rust.godbolt.org/ target=_blank>Godbolt 编辑资源管理器</a>也可以通过展示实际的机器码的方式来辅助测试，这样就能让实际执行的优化后的字节码变得清晰以确认是否过度优化而不能得到实际的结果。<p>最后，如果你为 Rust 代码准备了基准测试，<a rel="noopener nofollow noreferrer external" href=https://crates.io/crates/criterion target=_blank>criterion</a>包可能提供了<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/test/bench/struct.Bencher.html target=_blank>test::bench::Bencher</a>的替代品，而且使用起来更加便捷（可以在稳定的 Rust 工具链上运行），功能也更多（支持结果的数据统计及图表）。<h2 id=mo-hu-ce-shi>模糊测试</h2><p>模糊测试（fuzzy testing）是将代码暴露在随机输入中以期能够发现错误，尤其导致异常的场景，的测试方法。从技术校验的角度来说它已经很重要了，而当你的输入会被其他人填充或者攻击时，它将会显得更加重要 —— <strong>所以如果你的代码输入可能暴露给潜在的攻击者时，你应当使用模糊测试</strong>。<p>从历史上来看，C/C++ 代码通过模糊测试发现的往往时内存安全问题，通常会通过结合模糊测试与内存访问模式的运行时结合来检测（比如<a rel="noopener nofollow noreferrer external" href=https://clang.llvm.org/docs/AddressSanitizer.html target=_blank>AddressSanitizer</a>或者<a rel="noopener nofollow noreferrer external" href=https://clang.llvm.org/docs/ThreadSanitizer.html target=_blank>ThreadSanitizer</a>）。<p>Rust 对其中的一些（但并非全部）内存安全问题免疫，尤其是未引入<code>unsafe</code>的代码时（<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_3/item16-unsafe.html target=_blank>第 16 条</a>）。然而，Rust 并不能杜绝全部的错误，触发<code>panic!</code>（<a rel="noopener nofollow noreferrer external" href=https://rustx-labs.github.io/effective-rust-cn/chapter_3/item18-panic.html target=_blank>第 18 条</a>）的代码仍可能引发导致拒绝服务攻击（denial-of-service，DOS）。<p>模糊测试的最佳实践是以<em>覆盖率引导</em>：测试的基础设施监控代码的哪些部分被执行，随机更改输入直至能够触发新的代码路径。“<a rel="noopener nofollow noreferrer external" href=https://lcamtuf.coredump.cx/afl/ target=_blank>American fuzzy lop</a>”（AFL）是其中的佼佼者。但是近些年来，类似的功能已经被引入了 LLVM 的工具链，比如<a rel="noopener nofollow noreferrer external" href=https://llvm.org/docs/LibFuzzer.html target=_blank>libFuzzer</a>。<p>Rust 编译器是在 LLVM 的基础上构建的，因此<a rel="noopener nofollow noreferrer external" href=https://github.com/rust-fuzz/cargo-fuzz target=_blank>cargo-fuzz</a>自然地为 Rust 引入了<code>libFuzzer</code>（仅在部分平台上可用）。<p>模糊测试的首要要求是确定代码的入口点，该入口点需要采用（或者可以适应）任意字节的数据作为输入：<div class=ferris><img height=75 src=../images/ferris/not_desired_behavior.svg width=75></div><pre><code data-lang=rust>/// Determine if the input starts with "FUZZ".
+pub fn is_fuzz(data: &[u8]) -> bool {
+    if data.len() >= 3 /* oops */
+    && data[0] == b'F'
+    && data[1] == b'U'
+    && data[2] == b'Z'
+    && data[3] == b'Z'
+    {
+        true
+    } else {
+        false
+    }
+}
+</code></pre><p>当目标入口点确定后，Rust <a rel="noopener nofollow noreferrer external" href=https://rust-fuzz.github.io/book/ target=_blank>Fuzz Book</a>给出了如何启动测试的说明。它的核心是一个小型的驱动程序，会将目标入口点连接到模糊测试的基础设施上：<pre><code data-lang=rust>// fuzz/fuzz_targets/target1.rs file
+#![no_main]
+use libfuzzer_sys::fuzz_target;
+
+fuzz_target!(|data: &[u8]| {
+    let _ = somecrate::is_fuzz(data);
+});
+</code></pre><p>运行<code>cargo +nightly fuzz run target1</code>将会持续使用随机数据来执行模糊测试的目标函数，直至异常出现。上述示例中，错误将被立即发现：<pre><code data-lang=rust>INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 1607525774
+INFO: Loaded 1 modules: 1624 [0x108219fa0, 0x10821a5f8),
+INFO: Loaded 1 PC tables (1624 PCs): 1624 [0x10821a5f8,0x108220b78),
+INFO:        9 files found in fuzz/corpus/target1
+INFO: seed corpus: files: 9 min: 1b max: 8b total: 46b rss: 38Mb
+#10	INITED cov: 26 ft: 26 corp: 6/22b exec/s: 0 rss: 39Mb
+thread panicked at 'index out of bounds: the len is 3 but the index is 3',
+     testing/src/lib.rs:77:12
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/f77bfb7336f2/library/std/src/panicking.rs:579:5
+   1: core::panicking::panic_fmt
+             at /rustc/f77bfb7336f2/library/core/src/panicking.rs:64:14
+   2: core::panicking::panic_bounds_check
+             at /rustc/f77bfb7336f2/library/core/src/panicking.rs:159:5
+   3: somecrate::is_fuzz
+   4: _rust_fuzzer_test_input
+   5: ___rust_try
+   6: _LLVMFuzzerTestOneInput
+   7: __ZN6fuzzer6Fuzzer15ExecuteCallbackEPKhm
+   8: __ZN6fuzzer6Fuzzer6RunOneEPKhmbPNS_9InputInfoEbPb
+   9: __ZN6fuzzer6Fuzzer16MutateAndTestOneEv
+  10: __ZN6fuzzer6Fuzzer4LoopERNSt3__16vectorINS_9SizedFileENS_
+      16fuzzer_allocatorIS3_EEEE
+  11: __ZN6fuzzer12FuzzerDriverEPiPPPcPFiPKhmE
+  12: _main
+</code></pre><p>导致上述错误的测试数据也给出了。<p>一般来说，模糊测试并不能如此快地发现错误，因此将模糊测试作为 CI 流程中的一部分也是没有意义的。模糊测试的不确定性及随之而来的计算成本意味着你需要考虑如何开展以及何时开展模糊测试 —— 可能仅需要在新的发布版本或者主要变更发生时才运行，或者仅运行确定性的时间<sup class=footnote-reference><a href=#1>1</a></sup>。<p>你也可以通过存储和重用先前模糊测试程序已找到用来触发新的代码路径的语料库的方式来加速模糊测试的执行。这将有助于后续的模糊测试过程将时间放在尝试新的输入上，而非重新测试以前访问过的代码路径。<h2 id=ce-shi-de-jian-yi>测试的建议</h2><p>一般性的建议也适用于 Rust 项目中：<ul><li>由于测试是需要持续进行的，<strong>每次变更后都需要在 CI 中执行单测</strong>（除了模糊测试）。<li>当你在修复一个错误时，<strong>在修复前，准备一个能反映错误的测试用例</strong>。这样当你完成错误的修复时，就可以通过测试用例的执行来说名修复效果。并且在未来不会重新引入。<li>如果你的包中包含了某些功能（[第 26 条]），<strong>对所有可能的功能组合都要进行测试</strong>。<li>更一般性的，如果你的包中包含了任何特殊的配置，（比如，<code>#[cfg(target_os="windows")]</code>），<strong>每种包含了独特配置的平台上的测试都需要运行</strong>。</ul><p>这些建议包含了很多不同类型的测试，在项目中应当选择那些最有价值的测试。<p>如果你有很多测试的代码并且会将你的包推送到<a rel="noopener nofollow noreferrer external" href=https://crates.io/ target=_blank>crates.io</a>中，那么就需要考虑下哪些测试项发布后是有意义的。一般地，<code>cargo</code>项目中会包含单元测试、集成测试、基准测试以及代码示例（但是并没有包含模糊测试，因为<code>cargo-fuzz</code>工具会将模糊测试的内容放置在包的子目录中）等等远超一般用户使用所需要的测试项。如果某些测试项并非是必须的，你可以<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/cargo/reference/manifest.html#the-exclude-and-include-fields target=_blank>移除</a>一些测试项或者将这些测试项（尤其是行为性的测试）移入单独的测试包中。<h2 id=xu-yao-zhu-yi-de-dian>需要注意的点</h2><ul><li>编写单元测试来达到全面测试的目的，包括仅包含内部代码的测试。通过<code>cargo test</code>来运行它们。<li>编写集成测试代码来测试公共的接口。通过<code>cargo test</code>来运行它们。<li>编写文档测试来校验公共接口的调用方式。通过<code>cargo test</code>来调用它们。<li>编写示例代码来完整的说明如何使用包中的公共 API。通过<code>cargo test --exmaples</code>或者<code>cargo run --example &lt;name></code>的方式来运行它们。<li>如果代码对性能有很明确的要求，编写基准测试来确认代码的性能表现。通过<code>cargo bench</code>来执行它们。<li>如果代码会暴露在未被信任的输入中，编写模糊测试来确认对输入的参数的约束。通过<code>cargo fuzz</code>来（持续地）运行它们。</ul><h3 id=zhu-shi>注释</h3><div class=footnote-definition id=1><sup class=footnote-definition-label>1</sup><p>如果你的代码是一个被广泛运用的开源包，<a rel="noopener nofollow noreferrer external" href=https://google.github.io/oss-fuzz/getting-started/accepting-new-projects/ target=_blank>Google OSS-Fuzz program</a>可以为你的项目进行模糊测试。</div><p>原文<a rel="noopener nofollow noreferrer external" href=https://www.lurklurk.org/effective-rust/testing.html target=_blank>点这里</a>查看</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/yi-wen/>译文</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/effective-rust/>effective-rust</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/listen-to-clippy/><span class=mr-1.5>←</span><span>【译文/effective-rust】第 29 条：遵循 Clippy 的建议</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/datafusion-learning-0/><span>Datafusion 学习（0）</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

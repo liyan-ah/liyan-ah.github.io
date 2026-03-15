@@ -1,0 +1,312 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    BPF 获取 LVS FullNat 模式下的 Client IP - 李岩的博客
+  </title><meta name=theme-color><meta content="BPF 获取 LVS FullNat 模式下的 Client IP" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="BPF 获取 LVS FullNat 模式下的 Client IP" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="BPF 获取 LVS FullNat 模式下的 Client IP" property=og:description><meta content=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">BPF 获取 LVS FullNat 模式下的 Client IP</h1><div class="text-sm antialiased opacity-60"><time>2024-01-03</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-xiao-guo>一、效果</a><li><a href=#er-lvs-fullnat>二、LVS FullNat</a><li><a href=#san-bpf-luo-ji>三、BPF 逻辑</a></ul></details></nav><section><blockquote><p>搞项目。</blockquote><p>观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在<code>LVS</code>下面的。这就势必涉及到<code>LVS</code>预设的工作模式下，一般都是<code>FULLNET</code>，需要的<code>real client ip</code>的信息获取方式。<br> 笔者通过调研，实现了一种通过<code>BPF</code>来观测挂载在<code>LVS</code>下的<code>RS</code>被调用<code>TCP</code>连接信息的方式。本文中关于<code>toa</code>的操作及代码定义均引用自<a rel="noopener nofollow noreferrer external" href=https://github.com/Huawei/TCP_option_address/tree/master target=_blank>Huawei/TCP_option_address</a>。</p><span id=continue-reading></span><h1 id=yi-xiao-guo>一、效果</h1><p>先看下采集效果：<p><img alt="upload successful" src=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/tcp-accept.png><h1 id=er-lvs-fullnat>二、LVS FullNat</h1><p>关于<code>LVS</code>的<code>Nat</code>,<code>DR</code>,<code>Tun</code>以及<code>FullNat</code>模式的介绍已经有了很多的资料，比如<a rel="noopener nofollow noreferrer external" href=https://fafucoder.github.io/2021/12/19/linux-lvs/ target=_blank>这篇文章</a>就介绍的很详细。这里笔者附上<code>FullNat</code>模式下的示意图：<p><img alt="upload successful" src=https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/full-nat.png><p>如图所示，如果需要在<code>RS</code>上获取<code>CIP</code>，就涉及到<code>TOA</code>信息的解析。<code>TOA (tcp optional address)</code>是利用<code>tcp</code>协议<code>option</code>字段来传递信息的一种工作方式。关于<code>TOA</code>的约定笔者并没有找到官方的<code>RFC</code>文档。只有一些结构的定义。<pre><code>/* MUST be 4 bytes alignment */
+struct toa_data {
+	__u8 opcode;
+	__u8 opsize;
+	__u16 port;
+	__u32 ip;
+};
+</code></pre><p>同时，<a rel="noopener nofollow noreferrer external" href=https://www.rfc-editor.org/rfc/rfc793.txt target=_blank>rfc793</a>里对<code>TCP header</code>的约定如下，理论上<code>toa_data</code>应该写在<code>Options</code>字段中。<pre><code>    0                   1                   2                   3   
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |          Source Port          |       Destination Port        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        Sequence Number                        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Acknowledgment Number                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Data |           |U|A|P|R|S|F|                               |
+   | Offset| Reserved  |R|C|S|S|Y|I|            Window             |
+   |       |           |G|K|H|T|N|N|                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |           Checksum            |         Urgent Pointer        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Options                    |    Padding    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             data                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                            TCP Header Format
+
+</code></pre><p>一般来说，将<code>real-client ip</code>写入<code>tcp option</code>字段的操作是在<code>LVS</code>上进行的。而解析并且方便<code>RS</code>操作，主要是需要在<code>getname</code>的时候需要返回<code>real-client ip</code>以便于做进一步的业务逻辑，比如按照<code>IP</code>限流等，是<code>RS</code>的<code>toa</code>模块在操作的。一般是在<code>tcp</code>握手的第三个<code>SYN</code>报文处理时，<code>toa.ko</code>通过<code>tcp_v4_syn_recv_sock</code>处理的<code>hook</code>函数方式来触发<code>toa</code>数据的处理。<br> 这里附一段这里的逻辑：<pre><code>static struct sock *
+tcp_v4_syn_recv_sock_toa(struct sock *sk, struct sk_buff *skb,
+			struct request_sock *req, struct dst_entry *dst)
+#endif
+{
+	struct sock *newsock = NULL;
+
+	TOA_DBG("tcp_v4_syn_recv_sock_toa called
+");
+
+	/* call orginal one */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,4,0)
+	newsock = tcp_v4_syn_recv_sock(sk, skb, req, dst, req_unhash, own_req);
+#else
+	newsock = tcp_v4_syn_recv_sock(sk, skb, req, dst);
+#endif
+
+	/* set our value if need */
+	if (NULL != newsock && NULL == newsock->sk_user_data) {
+		newsock->sk_user_data = get_toa_data(skb);
+		if (NULL != newsock->sk_user_data)
+			TOA_INC_STATS(ext_stats, SYN_RECV_SOCK_TOA_CNT);
+		else
+			TOA_INC_STATS(ext_stats, SYN_RECV_SOCK_NO_TOA_CNT);
+		TOA_DBG("tcp_v4_syn_recv_sock_toa: set "
+			"sk->sk_user_data to %p
+",
+			newsock->sk_user_data);
+	}
+	return newsock;
+}
+
+static void *get_toa_data(struct sk_buff *skb)
+{
+	struct tcphdr *th;
+	int length;
+	unsigned char *ptr;
+
+	struct toa_data tdata;
+
+	void *ret_ptr = NULL;
+	unsigned char buff[(15 * 4) - sizeof(struct tcphdr)];
+
+	TOA_DBG("get_toa_data called
+");
+
+	if (NULL != skb) {
+		th = tcp_hdr(skb);
+		length = (th->doff * 4) - sizeof(struct tcphdr);
+		ptr = skb_header_pointer(skb, sizeof(struct tcphdr),
+					length, buff);
+		if (!ptr)
+			return NULL;
+
+		while (length > 0) {
+			int opcode = *ptr++;
+			int opsize;
+			switch (opcode) {
+			case TCPOPT_EOL:
+				return NULL;
+			case TCPOPT_NOP:	/* Ref: RFC 793 section 3.1 */
+				length--;
+				continue;
+			default:
+				opsize = *ptr++;
+				if (opsize &lt; 2)	/* "silly options" */
+					return NULL;
+				if (opsize > length)
+					/* don't parse partial options */
+					return NULL;
+				if (TCPOPT_TOA == opcode &&  // 254
+				    TCPOLEN_TOA == opsize) {  // 8
+					memcpy(&tdata, ptr - 2, sizeof(tdata));
+					TOA_DBG("find toa data: ip = "
+						"%u.%u.%u.%u, port = %u
+",
+						NIPQUAD(tdata.ip),
+						ntohs(tdata.port));
+					memcpy(&ret_ptr, &tdata,
+						sizeof(ret_ptr));
+					TOA_DBG("coded toa data: %p
+",
+						ret_ptr);
+					return ret_ptr;
+				}
+				ptr += opsize - 2;
+				length -= opsize;
+			}
+		}
+	}
+	return NULL;
+}
+
+</code></pre><p>可以看到，这里首先调用了原有的<code>tcp_v4_syn_recv_sock</code>函数，并且在<code>sk_user_data</code>未被占用的情况下，通过<code>get_toa_data</code>的方式，从原始的<code>skb</code>中将<code>toa</code>信息解析出来，并将数据赋值给<code>sk->sk_user_data</code>。<br> 虽然这部分逻辑并不完全理解，但是从逻辑来看，只要读取<code>sk_user_data</code>并且判断其中是否有符合条件的值，即可获取<code>real-client ip</code>。<br> 至此，基本的逻辑就梳理出来了。对应的<code>BPF</code>处理逻辑也就很清晰了。<h1 id=san-bpf-luo-ji>三、BPF 逻辑</h1><p>直接上代码：<pre><code>#define INADDR_LOOPBACK      0x7f000001 /* 127.0.0.1   */
+#define INADDR_LOOPBACK_HOST INADDR_LOOPBACK
+#define INADDR_LOOPBACK_NET  0x0100007f /* 127.0.0.1   */
+
+#define ns2sec(ns) ((ns) / (1000 * 1000 * 1000))
+#ifndef memcpy
+#define memcpy(dest, src, n) __builtin_memcpy((dest), (src), (n))
+#endif
+
+#define MERGE_SEC 10
+
+typedef struct {
+  u8  opcode;
+  u8  opsize;
+  u16 port;
+  u32 ip;
+} toa_data_t;
+
+// 一般 toa 模块里只会填充一个 toa 数据
+#define TCP_OPTION_LEN 1
+
+struct tcp_event {
+  u32        raddr;
+  u32        laddr;
+  u16        rport;
+  u16        lport;
+  int        err;
+  u64        toa_addr;
+  toa_data_t toa_data;
+  u64        sec;
+  u64        ns;
+};
+typedef struct tcp_event tcp_event_t;
+const struct tcp_event*  unused_0x01 __attribute__((unused));
+
+struct {
+  __uint(type, BPF_MAP_TYPE_LRU_HASH);
+  __uint(key_size, sizeof(tcp_event_t));
+  __uint(value_size, sizeof(u64)); // timestamp
+  __uint(max_entries, 1024);
+} tcp_event_map SEC(".maps");
+
+struct {
+  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+  __uint(max_entries, 1024);
+} events SEC(".maps");
+
+enum toa_type {
+  ipopt_toa        = 254, // IP_v4 客户端 IP，目前仅考虑
+};
+
+#define _AF_INET     2 /* internetwork: UDP, TCP, etc. */
+#define _IPPROTO_TCP 6
+
+SEC("kretprobe/inet_csk_accept")
+int kretprobe__inet_csk_accept(struct pt_regs* ctx) {
+  u64          start_ns = bpf_ktime_get_ns();
+  tcp_event_t  event    = {};
+  struct sock* sk       = (struct sock*)PT_REGS_RC(ctx);
+  if (sk == NULL) {
+    return 0;
+  }
+
+  struct sock_common sk_common = {};
+  bpf_probe_read(&sk_common, sizeof(sk_common), (const void*)(sk));
+  if (sk_common.skc_family != _AF_INET) {
+    return 0;
+  }
+  // 不处理本地回环
+  if (sk_common.skc_rcv_saddr == INADDR_LOOPBACK_NET ||
+      sk_common.skc_daddr == INADDR_LOOPBACK_NET) {
+    return 0;
+  }
+
+  event.laddr = bpf_ntohl(sk_common.skc_rcv_saddr);
+  event.raddr = bpf_ntohl(sk_common.skc_daddr);
+  event.lport = sk_common.skc_num;
+  event.rport = bpf_ntohs(sk_common.skc_dport);
+
+  int        err;
+  toa_data_t toa_data[TCP_OPTION_LEN] = {};
+  err = BPF_CORE_READ_INTO(&toa_data, sk, sk_user_data);
+  if (err) {
+    return 0;
+  }
+
+  u8 i = 0;
+#pragma unroll
+  for (i = 0; i &lt; TCP_OPTION_LEN; i++) {
+    if (toa_data[i].opcode != ipopt_toa) {
+      continue;
+    }
+    memcpy(&event.toa_data, &toa_data[i], sizeof(toa_data_t));
+  }
+  u32 raddr = event.raddr;
+  if (event.toa_data.ip != 0 && event.toa_data.port != 0) {
+    // 挂载在 lvs 时，DS 的 IP 会发生变更。这里也给聚合掉。
+    event.raddr = 0;
+  }
+  // remote port 都不要
+  event.toa_data.port = 0;
+  event.rport         = 0;
+  u64  sec            = 0;
+  u64  now_ns         = bpf_ktime_get_ns();
+  u64* last_ns        = (u64*)bpf_map_lookup_elem(&tcp_event_map, &event);
+  if (last_ns != NULL) {
+    sec = ns2sec((now_ns - *last_ns));
+    if (sec &lt;= MERGE_SEC) {
+      return 0;
+    }
+  } else {
+    sec = 99;
+  }
+  bpf_map_update_elem(&tcp_event_map, &event, &now_ns, BPF_ANY);
+  event.sec   = sec;
+  event.raddr = raddr;
+  u64 end_ns  = bpf_ktime_get_ns();
+  event.ns    = end_ns - start_ns;
+
+  bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+
+  return 0;
+}
+
+</code></pre><p>以上，周末愉快。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>bpf</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/lvs/>lvs</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/tcp/>tcp</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/><span class=mr-1.5>←</span><span>如何追踪golang channel?</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/tcp-close-guo-cheng-fen-xi/><span>TCP close 过程分析</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

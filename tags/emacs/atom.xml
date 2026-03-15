@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - emacs</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/emacs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-05-13T10:51:15+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/emacs/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>Emacs 字符操作快捷键</title>
+        <published>2024-05-13T10:51:15+08:00</published>
+        <updated>2024-05-13T10:51:15+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/"/>
+        <id>https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/">&lt;p&gt;Emacs 指令行中，比如 load-file 加载文件时默认会填充当前的目录，可以使用 Ctr-backspace 来较为快速的删除文本。也可以通过光标移动至待删除处，Ctr-k 来直接删除光标（含）之后的所有文本。&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;快捷键&lt;&#x2F;th&gt;&lt;th&gt;功能&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Ctr-backspace&lt;&#x2F;td&gt;&lt;td&gt;删除光标前的一个单词&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Ctr-k&lt;&#x2F;td&gt;&lt;td&gt;删除光标（含）后的所有文本&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>PlantUML-文本化绘制UML多类图表</title>
+        <published>2023-04-21T20:51:00+08:00</published>
+        <updated>2023-04-21T20:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/plantuml-wen-ben-hua-hui-zhi-umlduo-lei-tu-biao/"/>
+        <id>https://liyan-ah.github.io/plantuml-wen-ben-hua-hui-zhi-umlduo-lei-tu-biao/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;笔者一直都是文本编辑器教派的忠实拥趸：期望将所有的任务都通过文本编辑，而非鼠标&#x2F;触摸板等，进行实现。从早年的&lt;code&gt;Vim&lt;&#x2F;code&gt;，到现而今的&lt;code&gt;Emacs&lt;&#x2F;code&gt;，对文本化完成需求是越来越习惯，也越来越依赖了。最近刚好有了些时间，把最近的一些实践整理下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在之前的文章，&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liyan-ah.github.io&#x2F;2023&#x2F;02&#x2F;10&#x2F;emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE&#x2F;&quot;&gt;emacs org-mode 绘制思维导图&lt;&#x2F;a&gt;，中，笔者有提到在探索不跳出&lt;code&gt;Emacs&lt;&#x2F;code&gt;这一文本编辑器的情况下，完成思维导图绘制的需求。在翻了一些文章后，找到了一款神器：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;plantuml.com&#x2F;zh&#x2F;&quot;&gt;PlantUML&lt;&#x2F;a&gt;。其完美的匹配了笔者的需求：&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;不仅是思维导图，工程、文档常用的&lt;code&gt;UML&lt;&#x2F;code&gt;图像也能全部支持文本化表示；&lt;&#x2F;li&gt;
+&lt;li&gt;功能强大，颜色、文本等格式均能支持；&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Emacs&lt;&#x2F;code&gt;友好，而且可以集成到&lt;code&gt;Org-mode&lt;&#x2F;code&gt;里使用。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;而且，&lt;code&gt;PlantUML&lt;&#x2F;code&gt;支持在线使用，意味着能够很方便的获取、使用。这里做下介绍。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs org-mode 绘制思维导图</title>
+        <published>2023-02-10T19:46:21+08:00</published>
+        <updated>2023-02-10T19:46:21+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/"/>
+        <id>https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;yi-lai-nei-rong&quot;&gt;依赖内容&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。&lt;&#x2F;li&gt;
+&lt;li&gt;freemind 软件。用来查看生成的 mm 文件。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;笔者试了一下，&lt;code&gt;Xmind思维导图&lt;&#x2F;code&gt;看起来无法打开&lt;code&gt;mm&lt;&#x2F;code&gt;文件，&lt;code&gt;freemind&lt;&#x2F;code&gt;工作正常。也可能是我操作有问题。&lt;br &#x2F;&gt;
+此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>让emacs在保存文件时自动格式化代码</title>
+        <published>2022-07-15T20:34:00+08:00</published>
+        <updated>2022-07-15T20:34:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/"/>
+        <id>https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liam.page&#x2F;&quot;&gt;liam&lt;&#x2F;a&gt;同学在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;liam.page&#x2F;2020&#x2F;11&#x2F;04&#x2F;Vim-auto-format-codes-on-save&#x2F;&quot;&gt;让 Vim 在保存文件时自动格式化代码&lt;&#x2F;a&gt;一文中展示了保存时自动化格式代码的&lt;code&gt;vim&lt;&#x2F;code&gt;配置。作为&lt;code&gt;emacs&lt;&#x2F;code&gt;用户，自然有自己的解决方案。以下呈现。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs-若干语言 lsp 配置备注</title>
+        <published>2021-10-12T20:26:00+08:00</published>
+        <updated>2021-10-12T20:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;微软推出的&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;microsoft.github.io&#x2F;language-server-protocol&#x2F;#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&quot;&gt;language server protol&lt;&#x2F;a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;&#x2F;code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;&#x2F;code&gt; 中的 rust, golang, python, c&#x2F;c++ lsp 配置&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>org-mode使用备注</title>
+        <published>2021-01-11T21:49:00+08:00</published>
+        <updated>2021-01-11T21:49:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/">&lt;blockquote&gt;
+&lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;以下操作均在&lt;code&gt;org-agenda&lt;&#x2F;code&gt;中的&lt;code&gt;agenda for current week or day&lt;&#x2F;code&gt;视图下快速编辑：&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;操作&lt;&#x2F;th&gt;&lt;th&gt;快捷键&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;变更任务状态&lt;&#x2F;td&gt;&lt;td&gt;t&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加备注&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;添加日记&lt;&#x2F;td&gt;&lt;td&gt;i&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;编辑note&lt;&#x2F;td&gt;&lt;td&gt;z&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;重建agenda&lt;&#x2F;td&gt;&lt;td&gt;r&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开日历&lt;&#x2F;td&gt;&lt;td&gt;a&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;下周任务列表&lt;&#x2F;td&gt;&lt;td&gt;f&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;上周任务列表&lt;&#x2F;td&gt;&lt;td&gt;b&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;打开任务所在原始文件&lt;&#x2F;td&gt;&lt;td&gt;enter&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs! start org-mode! --org-mode使用备注</title>
+        <published>2021-01-10T20:30:00+08:00</published>
+        <updated>2021-01-10T20:30:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;&#x2F;code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;&#x2F;code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;org-modejie-shao&quot;&gt;org-mode介绍&lt;&#x2F;h1&gt;
+&lt;p&gt;在&lt;code&gt;神的编辑器emacs&lt;&#x2F;code&gt;的传说中，往往有&lt;code&gt;org-mode&lt;&#x2F;code&gt;的身影。虽然按照(org官网)&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;orgmode.org&#x2F;&quot;&gt;orgmode&lt;&#x2F;a&gt;官网的描述，&lt;code&gt;org-mode&lt;&#x2F;code&gt;并不仅限于在&lt;code&gt;emacs&lt;&#x2F;code&gt;中使用，如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57800574&quot;&gt;开始使用 Org 模式吧，在没有 Emacs 的情况下&lt;&#x2F;a&gt;这篇文章就详细讲解了在&lt;code&gt;vscode&lt;&#x2F;code&gt;中使用&lt;code&gt;org-mode&lt;&#x2F;code&gt;的方式，但是配合&lt;code&gt;emacs&lt;&#x2F;code&gt;的万物皆系于&lt;code&gt;kbd&lt;&#x2F;code&gt;之上的使用习惯，&lt;code&gt;org-mode&lt;&#x2F;code&gt;确实能够发挥最大的功能。&lt;br &#x2F;&gt;
+&lt;code&gt;org-mode&lt;&#x2F;code&gt;的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>elscreen标签背景颜色</title>
+        <published>2020-12-23T19:23:00+08:00</published>
+        <updated>2020-12-23T19:23:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/"/>
+        <id>https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;使用&lt;code&gt;emacs&lt;&#x2F;code&gt;过程中，配合&lt;code&gt;evil&lt;&#x2F;code&gt;使用，按照&lt;code&gt;tab&lt;&#x2F;code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;&#x2F;code&gt;等任务划分到不同的&lt;code&gt;tab&lt;&#x2F;code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;&#x2F;code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;&#x2F;code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;&#x2F;code&gt;的方法，备注下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在初始文件的最后添加：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;; 选中标签设置为绿底黑字，其他标签为黄底黑字
+(set-face-attribute &amp;#39;elscreen-tab-other-screen-face nil
+                    :background &amp;quot;yellow&amp;quot; :foreground &amp;quot;black&amp;quot;)
+(set-face-attribute &amp;#39;elscreen-tab-current-screen-face nil
+                    :background &amp;quot;green&amp;quot; :foreground &amp;quot;black&amp;quot;)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+</feed>
