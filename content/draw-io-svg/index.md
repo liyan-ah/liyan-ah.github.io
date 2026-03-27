@@ -1,0 +1,70 @@
++++
+title = "一种 draw.io 画图导出为 svg 的方法"
+description = "这段时间使用 draw.io 进行画图，导出的 png 图片较为模糊，而导出的 svg 矢量图又由于 foreignObject 而无法使用。本文记录了解决的方案，可作为参考。"
+date = "2026-03-27T10:41:37+08:00"
+
+[taxonomies]
+categories = ["程序人生"]
+tags = ["draw.io", "svg foreignObject", "typst"]
++++
+
+最近在通过[typst](https://typst.app/docs/)来写一些文档。其中涉及到程序流程示意图的使用。笔者使用的是[draw.io](https://draw.io/)来绘制图像，导出图片后在`typst`文档中引用。使用到程序流程示意图时，`png`图片的展示效果较为模糊，需要使用`svg`图片。此时遇到了一些问题。为了便于叙述及效果展示，下面将一份采用`typst`撰写的说明`pdf`文档进行展示，并在后面附上`typst`原始的格式代码。
+
+## pdf 渲染效果
+<embed src="./typst-svg.pdf" type="application/pdf" width="100%" height="600px" />
+
+
+## typst 原始格式代码
+
+```
+#figure(
+  image("./raw-png.png", width: 100%),
+  caption: "导出为 png 图片使用"
+)<raw-png>
+#h(2em)如@raw-png 是一张使用 draw.io 绘制的图片。在这里可以看到导出的图片较为模糊，作为文献中的图片使用显然不够优雅。一般来说，对于这种技术架构图，使用 svg 图像是更优的选择。
+
+#figure(
+  image("./raw-svg.svg", width: 100%),
+  caption: "使用原始的 svg"
+)<raw-svg>
+
+#h(2em)如@raw-svg 所示，使用原始的 svg 图片导出后是无法直接使用的，编译时会报warning，如@compile-error 所示，并且展示为黑框。
+
+#figure(
+  raw("
+  warning: image contains foreign object
+  ┌─ main.typ:8:2
+  │
+8 │   image('./raw-svg.svg', width: 100%),
+  │   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  │
+  = hint: SVG images with foreign objects might render incorrectly in typst
+  = hint: see https://github.com/typst/typst/issues/1421 for more information
+  ",
+  ),
+  caption: "直接导出svg图片编译时报错"
+)<compile-error>
+
+#figure(
+  image("./convert-labels.svg", width: 100%),
+  caption: "勾选配置后效果"
+)<convert-svg>
+
+按照#link("https://github.com/jgraph/drawio/discussions/5165")[discussion/5165]中描述的，勾选「转换标签为SVG」选项后，同样无法展示，如@convert-svg 所示，效果为黑框。
+
+#figure(
+  image("./pdf2svg.svg", width: 100%),
+  caption: "pdf2svg"
+)<pdf-svg>
+
+将原图像导出为 PDF（注意仅导出本页的内容以及勾选「裁剪」选项），通过 pdf 转 svg 后，可以正常生成，效果如@pdf-svg 所示。这里笔者使用的是#link("https://github.com/dawbarton/pdf2svg")[pdf2svg]工具，直接`pdf2svg ./pdf2svg.pdf pdf2svg.svg`即可实现转换。
+
+#figure(
+  image("./complex.svg", width: 100%),
+  caption: "稍复杂的图片导出格式异常"
+)<complex-svg>
+
+需要注意的是，笔者遇到过稍复杂的图像在本地导出 pdf 图像，其内容出现残缺的问题。可能和本地的环境、对应设备上的版本有关系。将原始的 draw.io 绘图复制到#link("https://draw.io/")[draw.io在线网站]上，从网站上导出 pdf，而后进行转换，得到的 svg 矢量图内容正常。
+```
+
+以上。
