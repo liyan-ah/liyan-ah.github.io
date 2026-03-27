@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - elscreen</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/elscreen/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-12-23T19:23:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/elscreen/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>elscreen标签背景颜色</title>
+        <published>2020-12-23T19:23:00+08:00</published>
+        <updated>2020-12-23T19:23:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/"/>
+        <id>https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;使用&lt;code&gt;emacs&lt;&#x2F;code&gt;过程中，配合&lt;code&gt;evil&lt;&#x2F;code&gt;使用，按照&lt;code&gt;tab&lt;&#x2F;code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;&#x2F;code&gt;等任务划分到不同的&lt;code&gt;tab&lt;&#x2F;code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;&#x2F;code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;&#x2F;code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;&#x2F;code&gt;的方法，备注下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;在初始文件的最后添加：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;; 选中标签设置为绿底黑字，其他标签为黄底黑字
+(set-face-attribute &amp;#39;elscreen-tab-other-screen-face nil
+                    :background &amp;quot;yellow&amp;quot; :foreground &amp;quot;black&amp;quot;)
+(set-face-attribute &amp;#39;elscreen-tab-current-screen-face nil
+                    :background &amp;quot;green&amp;quot; :foreground &amp;quot;black&amp;quot;)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+</feed>

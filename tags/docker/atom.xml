@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - docker</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/docker/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-03-04T15:00:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/docker/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>centos 安装docker并构建golang镜像</title>
+        <published>2022-03-04T15:00:00+08:00</published>
+        <updated>2022-03-04T15:00:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/centos-an-zhuang-dockerbing-gou-jian-golangjing-xiang/"/>
+        <id>https://liyan-ah.github.io/centos-an-zhuang-dockerbing-gou-jian-golangjing-xiang/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;工作需要（抛弃了kubectl搞一套环境的方法），需要在centos8上构建一套docker镜像并运行golang程序。这里记录下docker安装及golang程序打包镜像的过程。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

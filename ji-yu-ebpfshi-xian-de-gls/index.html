@@ -1,0 +1,316 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    基于ebpf实现的gls - 李岩的博客
+  </title><meta name=theme-color><meta content=基于ebpf实现的gls name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=基于ebpf实现的gls property=og:title><meta content=李岩的博客 property=og:site_name><meta content=基于ebpf实现的gls property=og:description><meta content=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">基于ebpf实现的gls</h1><div class="text-sm antialiased opacity-60"><time>2022-11-25</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#ji-ben-gong-neng>基本功能</a><li><a href=#yong-hu-tai-dai-ma-ji-xiao-guo>用户态代码及效果</a><li><a href=#ying-yong>应用</a><li><a href=#ebpf-luo-ji>ebpf 逻辑</a></ul></details></nav><section><blockquote><p>虽然<code>golang</code>并不推荐使用<code>goid</code>来构建<code>gls</code>(<code>goroutine local storage</code>)，仍然有着很多的实现<code>gls</code>并使用的尝试。<a rel="noopener nofollow noreferrer external" href=https://github.com/jtolio/gls target=_blank>github-gls</a>这里是一个常见的实现，基本表述了<code>golang</code>里<code>gls</code>的实现思路：获取<code>goid</code>，基于<code>goid</code>构建一个存储。本文中笔者尝试基于<code>ebpf</code>来构建一个<code>golang</code>的<code>gls</code>。</blockquote><h1 id=ji-ben-gong-neng>基本功能</h1><p>本文中基于<code>ebpf</code>实现的<code>gls</code>具有如下功能：<ul><li>基于<code>goid</code>的存储。即<code>map[goid]=value</code>；<li>基于<code>goroutine</code>派生关系设置的<code>value</code>缺省值。即<code>map[goid=1]=121</code>，且<code>goid=1</code>派生<code>goid=2</code>，则<code>map[goid=2]=map[goid=1]=121</code>；<br> 本文建议参照<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/#more target=_blank>黑魔法-ebpf-对用户空间数据的写入</a>进行理解。</ul><span id=continue-reading></span><h1 id=yong-hu-tai-dai-ma-ji-xiao-guo>用户态代码及效果</h1><pre><code>package main
+
+import (
+	"context"
+	"fmt"
+	"strconv"
+	"sync"
+)
+
+var Len = 5
+
+// 当 info 为空时，使用父 goid 设置的值，否则存入 info
+func Go1(ctx context.Context, info string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	third := Third{}
+	if info != "" {
+		third.Store(info)
+	}
+
+	/* 诸多其他的逻辑 */
+    
+	info1 := third.Get()
+	fmt.Printf("raw info: [%s], info get: [%s]
+", info, info1)
+}
+
+//go:noinline
+func Set(info []byte) {
+	if len(info) > Len {
+		info = info[:Len]
+	}
+	if len(info) &lt; Len {
+		tmp := make([]byte, Len-len(info))
+		info = append(tmp, info...)
+	}
+	fmt.Println("info: ", string(info))
+
+	return
+}
+
+//go:noinline
+func Get(info []byte) []byte {
+	// alalalala, magic come
+	return info
+}
+
+type Third struct {
+	Info string
+}
+
+func (t *Third) Store(info string) {
+	infoByt := []byte(info)
+	// 这里假设是个约束
+	infoByt = infoByt[:Len]
+	Set(infoByt)
+}
+
+func (t *Third) Get() string {
+	infoByt := make([]byte, Len, Len)
+	infoByt = Get(infoByt)
+	return string(infoByt)
+}
+
+func main() {
+	third1 := Third{}
+	info := "12345"
+	third1.Store(info)
+	wg := &sync.WaitGroup{}
+	ctx := context.Background()
+	wg.Add(1)
+	go Go1(ctx, "", wg) // 写入空数据，预期使用父 goid 数据，即 12345
+	for i := 1125; i &lt; 1130; i++ {
+		wg.Add(1)
+		v := strconv.Itoa(i)
+		if i%10 == 0 {
+			v = ""
+		}
+		go Go1(ctx, v, wg)
+	}
+	wg.Wait()
+
+	/* very long handle logic*/
+
+	third2 := Third{}
+	infoGet := third2.Get()
+	fmt.Printf("in main, getInfo, [%s]
+", infoGet)
+}
+</code></pre><p>执行结果为：<pre><code>// 未开启 bpf 
+info:  12345
+info:  1129
+raw info: [1129], info get: []
+info:  1126
+raw info: [1126], info get: []
+info:  1128
+raw info: [1128], info get: []
+raw info: [], info get: []
+info:  1125
+info:  1127
+raw info: [1125], info get: []
+raw info: [1127], info get: []
+in main, getInfo, []
+
+// 开启 bpf
+info:  12345
+info:  1129
+raw info: [], info get: [12345]  // 传入空值，使用父 goid 存入数据
+raw info: [1129], info get: [1129]
+info:  1126
+raw info: [1126], info get: [1126]
+info:  1127
+raw info: [1127], info get: [1127]
+info:  1125
+raw info: [1125], info get: [1125]
+info:  1128
+raw info: [1128], info get: [1128]
+in main, getInfo, [12345]
+</code></pre><p>上述示例对比了开启<code>bpf</code>前后的用户态代码输出。可以看到，当子<code>goroutine</code>缺少某个信息时，可以获取父<code>goroutine</code>的数据作为缺省值。<h1 id=ying-yong>应用</h1><p>意味着我们可以在父<code>goroutine</code>中存入我们需要的数据，而后无论是否创建新的<code>goroutine</code>，均能获取该信息。维护了<code>goroutine session</code>的数据。<h1 id=ebpf-luo-ji>ebpf 逻辑</h1><p>这里仍然附上了<code>ebpf</code>的主要逻辑以便说明实现过程。除了之前文章中涉及的<code>ebpf</code>向用户态写入数据，本文使用了<code>golang</code>创建<code>goroutine</code>相关的<code>uprobe</code>来维护<code>goroutine session</code>状态。<pre><code>struct {
+  __uint(type, BPF_MAP_TYPE_LRU_HASH);
+  __uint(key_size, sizeof(u64));   // pid_tgid
+  __uint(value_size, sizeof(u64)); // parent goid
+  __uint(max_entries, MAX_ENTRIES);
+} go_goid_map SEC(".maps");  // 用来获取 goid 状态
+
+struct {
+  __uint(type, BPF_MAP_TYPE_HASH);
+  __uint(key_size, sizeof(u64));
+  __uint(value_size, sizeof(u8) * 5);
+  __uint(max_entries, 100);
+} info_map SEC(".maps");  // 用来存储 goid->info
+
+struct {
+  __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+} events SEC(".maps");
+
+static __always_inline u64 get_goid(u32 tgid, u32 pid) {
+  unsigned long task_addr = (unsigned long)bpf_get_current_task();
+  unsigned long fsbase    = 0;
+  unsigned long g         = 0;
+  u64           goid      = 0;
+  // 直接基于 偏移量进行处理了
+  // offset(task_struct, thread) = 4992
+  // offset(thread_struct, fsbase) = 40
+  bpf_probe_read(&fsbase, sizeof(fsbase),
+                 (void *)(task_addr + OFF_TASK_THRD + OFF_THRD_FSBASE));
+  bpf_probe_read(&g, sizeof(g), (void *)(fsbase - 8));
+  bpf_probe_read(&goid, sizeof(goid), (void *)(g + GOID_OFFSET));
+  return goid;
+}
+
+SEC("uprobe/main_set")
+int uprobe__main_set(struct pt_regs *ctx) {
+  uintptr_t info_p = 0;
+  u8        info[5];
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  u32       pid      = (u32)(pid_tgid & 0x00FF);
+  u32       tgid     = (u32)(pid_tgid >> 32);
+  u64       goid     = 0;
+
+  goid = get_goid(tgid, pid);
+  SARG(ctx, 0, info_p);
+
+  bpf_probe_read(&info, sizeof(info), (const void *)info_p);
+  bpf_map_update_elem(&info_map, &goid, &info, BPF_ANY);
+
+  event_t event  = {};
+  event.pid_tgid = pid_tgid;
+  memcpy(event.info, info, sizeof(info));
+  bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+
+  return 0;
+}
+
+SEC("uprobe/main_get")
+int uprobe__main_get(struct pt_regs *ctx) {
+  uintptr_t info_p   = 0;
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  u32       pid      = (u32)(pid_tgid & 0x00FF);
+  u32       tgid     = (u32)(pid_tgid >> 32);
+  u64       goid     = 0;
+
+  goid = get_goid(tgid, pid);
+
+  void *r_info_p = NULL;
+  r_info_p       = bpf_map_lookup_elem(&info_map, &goid);
+  if (r_info_p == NULL) {
+    return 0;
+  }
+  event_t event  = {};
+  event.pid_tgid = pid_tgid;
+
+  SARG(ctx, 0, info_p);
+
+  u8 info[5];
+  memcpy(info, r_info_p, sizeof(info));
+
+  memcpy(event.info, info, sizeof(event.info));
+
+  event.res  = bpf_probe_write_user((u8 *)info_p, info, sizeof(info));
+  event.addr = info_p;
+
+  bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+  return 0;
+}
+
+/* golang_runtime_newproc1
+   func newproc1(fn *funcval, argp unsafe.Pointer, narg int32, callergp *g,
+ callerpc uintptr) *g {
+*/
+SEC("uprobe/golang_runtime_newproc1")
+int uprobe__golang_runtime_newproc1(struct pt_regs *ctx) {
+  u64       pid_tgid = bpf_get_current_pid_tgid();
+  uintptr_t g_addr   = 0;
+  u64       cur_goid = 0;
+
+  SARG(ctx, 3, g_addr);
+  bpf_probe_read(&cur_goid, sizeof(cur_goid), (void *)(g_addr + GOID_OFFSET));
+  bpf_map_update_elem(&go_goid_map, &pid_tgid, &cur_goid, BPF_ANY);
+  return 0;
+}
+
+SEC("uprobe/golang_runtime_runqput")
+int uprobe__golang_runtime_runqput(struct pt_regs *ctx) {
+  u64       pid_tgid    = bpf_get_current_pid_tgid();
+  uintptr_t g_addr      = 0;
+  u64      *parent_goid = NULL;
+  u64       child_goid  = 0;
+  void     *v_p         = NULL;
+
+  parent_goid = bpf_map_lookup_elem(&go_goid_map, &pid_tgid);
+  if (parent_goid == NULL) {
+    return 0;
+  }
+
+  // 1. 获取新 goroutine 的 goid
+  SARG(ctx, 1, g_addr);
+  bpf_probe_read(&child_goid, sizeof(child_goid),
+                 (void *)(g_addr + GOID_OFFSET));
+
+  // 2. 设置新 goid 绑定的 caller 信息
+  v_p = bpf_map_lookup_elem(&info_map, parent_goid);
+  if (v_p == NULL) {
+    return 0;
+  }
+  // 设置子 goid 绑定 caller 为 父 goid 信息
+  bpf_map_update_elem(&info_map, &child_goid, v_p, BPF_ANY);
+
+  bpf_map_delete_elem(&go_goid_map, &pid_tgid);
+  return 0;
+}
+</code></pre><p>以上。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>BPF</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/code/>code</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/gls/>gls</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/hei-mo-fa-ebpf-dui-yong-hu-kong-jian-shu-ju-de-xie-ru/><span class=mr-1.5>←</span><span>黑魔法--用 ebpf 构建用户空间数据的桥梁</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/golangchang-jian-lei-xing-jie-xi/><span>golang常见类型作为参数的eBPF解析</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常 - 李岩的博客
+  </title><meta name=theme-color><meta content="BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常" property=og:description><meta content=https://liyan-ah.github.io/bpf-lru-hash-map-ji-hash-map-de-shi-yong-yi-chang/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/bpf-lru-hash-map-ji-hash-map-de-shi-yong-yi-chang/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</h1><div class="text-sm antialiased opacity-60"><time>2024-03-12</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div></header><section><blockquote><p>BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。</blockquote><p><code>LRU_HASH_MAP</code> 在实现的时候，出现了不符合预期的数据驱逐问题：设定一个 512 大小的<code>LRU_HASH_MAP</code>，很可能出现在40-50个<code>key</code>的时候，之前的<code>key</code>就被覆盖。在一段时间未更新时，重新更新也可能会出现异常。总结就是，执行了写入操作，很可能没有写入。这个问题在<a rel="noopener nofollow noreferrer external" href=https://stackoverflow.com/questions/75882443/elements-incorrectly-evicted-from-ebpf-lru-hash-map target=_blank>Elements incorrectly evicted from eBPF LRU hash map</a>有较为详细的描述。</p><span id=continue-reading></span><p>但是，笔者之所以使用<code>LRU_HASH_MAP</code>主要是期望保持整个程序的鲁棒性：期望可以一直写入<code>key</code>而不需对<code>bpf map</code>的状态进行维护。如果使用固定大小的<code>HASH_MAP</code>，当写入的<code>key</code>超过<code>map</code>的预设大小时，测试的<code>demo</code>会出现崩溃的现象。由于<code>LRU_HASH_MAP</code>的功能出现了不符合预期的情况，显然也就需要使用<code>HASH_MAP</code>来替代了。<br> 笔者遇到的需要使用<code>LRU_HASH_MAP</code>的场景有两种：1. 作为配置项。用户态的代码向<code>BPF MAP</code>里写入配置，而后在<code>BPF</code>里使用。2. 作为数据中转。比如涉及多个<code>hook</code>点配合时，就需要使用<code>BPF MAP</code>来存储一些中间数据。对于场景1，可以直接使用<code>HASH_MAP</code>来替代，用户态添加一些检查的措施，定期批量对<code>MAP</code>进行数据清理以及数据写入即可。但是对于场景2，可能会麻烦很多：数据是随时产出的，用户态没有办法控制其产出的频率、周期。目前能想到的是设置一个较大的<code>MAP</code>（这个异常的触发是否和<code>MAP</code>的大小有关？），仍然使用<code>LRU_HASH_MAP</code>；或者设置一个较大的<code>HASH_MAP</code>，然后定时在用户态进行数据的清理。<br> 以上。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>BPF</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bugs/>bugs</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/tcp-close-guo-cheng-fen-xi/><span class=mr-1.5>←</span><span>TCP close 过程分析</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/merge-range/><span>合并区间</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

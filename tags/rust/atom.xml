@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - Rust</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/rust/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-02-12T11:40:14+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/rust/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>一种责任链模式的实现</title>
+        <published>2026-02-12T11:40:14+08:00</published>
+        <updated>2026-02-12T11:40:14+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/handle-chain/"/>
+        <id>https://liyan-ah.github.io/handle-chain/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/handle-chain/">&lt;blockquote&gt;
+&lt;p&gt;许久没有写博客了，25年全年都没有更新。估计26年上半年还会继续占用时间，想写点东西还是比较困难的。今天整理了下遇到的比较优美的代码，发出来赏析下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;责任链模式的常见使用场景是对目标数据需要进行多个独立规则的校验，如请求参数能否解析、参数中的业务指标是否非法、权限信息是否正常等。这种需求一般可以将校验的过程抽象成一个接口，然后将每个校验操作都封装成一个接口的实现，在校验管理器中维护一个注册、校验函数。但是这种方法并不优美，尤其是对于&lt;code&gt;Rust&lt;&#x2F;code&gt;语言来说，&lt;code&gt;Rust&lt;&#x2F;code&gt;本身的链式操作是很优美的，将这些校验操作进行封装，通过链式操作来生效则会比较优雅。&lt;&#x2F;p&gt;
+&lt;p&gt;如下是其中的一个通用实现。这里&lt;code&gt;Handler&lt;&#x2F;code&gt;是抽象出来的处理接口，而&lt;code&gt;HandlerA&lt;&#x2F;code&gt;是其中的一个实现。通过定义&lt;code&gt;HandlerChainExt&lt;&#x2F;code&gt; 接口以及 &lt;code&gt;Chain&lt;&#x2F;code&gt; 结构体，即可实现在不改变&lt;code&gt;Handler&lt;&#x2F;code&gt;定义以及&lt;code&gt;HandlerA&lt;&#x2F;code&gt;实现的前提下完成链式操作。这无疑是非常优雅的。而且通过下面的单测示例可以看到，&lt;code&gt;.and_then&lt;&#x2F;code&gt;的调用方式极其简洁、明了。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;#[cfg(test)]
+mod tests {
+    use std::fmt::Debug;
+
+    use anyhow;
+    use tracing::tracing::debug;
+
+    #[async_trait]
+    trait Handler: Debug + Send + Sync {
+        type WriteInput: Debug + Send + Sync;
+        type WriteOutput: Debug + Send + Sync;
+        async fn check(&amp;amp;self, input: Self::WriteInput) -&amp;gt; anyhow::Result&amp;lt;Self::WriteOutput&amp;gt;;
+    }
+
+    #[derive(Debug)]
+    struct HandlerA {
+        output: String,
+    }
+
+    impl HandlerA {
+        fn new(output: String) -&amp;gt; Self {
+            Self { output }
+        }
+    }
+
+    #[async_trait]
+    impl Handler for HandlerA {
+        type WriteInput = String;
+        type WriteOutput = String;
+
+        async fn check(&amp;amp;self, input: String) -&amp;gt; Result&amp;lt;String, anyhow::Error&amp;gt; {
+            debug!(&amp;quot;handler A, {input}&amp;quot;);
+            println!(&amp;quot;handler A, input: {input}&amp;quot;);
+            println!(&amp;quot;hanlder A, output: {input}|{}&amp;quot;, self.output);
+            Ok(format!(&amp;quot;{input}|{}&amp;quot;, self.output))
+        }
+    }
+
+    trait HandlerChainExt: Handler + Sized {
+        fn and_then&amp;lt;T&amp;gt;(self, next: T) -&amp;gt; Chain&amp;lt;Self, T&amp;gt;
+        where
+            T: Handler,
+        {
+            Chain {
+                first: self,
+                second: next,
+            }
+        }
+    }
+
+    impl&amp;lt;T&amp;gt; HandlerChainExt for T where T: Handler {}
+
+    #[derive(Debug)]
+    struct Chain&amp;lt;T, U&amp;gt; {
+        first: T,
+        second: U,
+    }
+
+    impl&amp;lt;T, U&amp;gt; Chain&amp;lt;T, U&amp;gt; {
+        #[allow(dead_code)]
+        fn new(first: T, second: U) -&amp;gt; Self {
+            Self { first, second }
+        }
+    }
+
+    #[async_trait]
+    impl&amp;lt;T, U&amp;gt; Handler for Chain&amp;lt;T, U&amp;gt;
+    where
+        T: Handler,
+        U: Handler&amp;lt;WriteInput = T::WriteOutput&amp;gt;,
+    {
+        type WriteInput = T::WriteInput;
+        type WriteOutput = U::WriteOutput;
+
+        async fn check(&amp;amp;self, input: Self::WriteInput) -&amp;gt; anyhow::Result&amp;lt;Self::WriteOutput&amp;gt; {
+            let output = self.first.check(input).await?;
+            self.second.check(output).await
+        }
+    }
+
+    #[tokio::test]
+    async fn test_handler_chain() {
+        let handler = HandlerA::new(&amp;quot;aa&amp;quot;.into())
+            .and_then(HandlerA::new(&amp;quot;bb&amp;quot;.into()))
+            .and_then(HandlerA::new(&amp;quot;cc&amp;quot;.into()));
+        assert!(handler
+            .check(&amp;quot;raw_input&amp;quot;.into())
+            .await
+            .is_ok_and(|x| x == &amp;quot;raw_input|aa|bb|cc&amp;quot;));
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;Rust&lt;&#x2F;code&gt;语言的特点使得很多代码实现显得非常优雅，后面再找一些。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>Cargo config 使用备注</title>
+        <published>2024-05-07T11:39:00+08:00</published>
+        <updated>2024-05-07T11:39:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/cargo-config/"/>
+        <id>https://liyan-ah.github.io/cargo-config/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/cargo-config/">&lt;p&gt;本文旨在回答如下问题：&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Rust 项目中，如何配置 dependencies 的路径为指定仓库。&lt;&#x2F;li&gt;
+&lt;li&gt;在不指定 branch 或 version 的情况下，dependencies 会拉取什么版本&#x2F;仓库里的数据。&lt;&#x2F;li&gt;
+&lt;li&gt;Rust 项目中，配置 dependencies 的最佳实践。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;以下为正文。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ru-he-pei-zhi-dependencies-de-lu-jing&quot;&gt;如何配置 dependencies 的路径？&lt;&#x2F;h2&gt;
+&lt;p&gt;出于稳定性考虑，工作中使用的项目，尤其是一些开源的项目，往往无法和社区时刻保持一致。甚至，在选定了一个基线版本后，以周或者年计，主干会持续保持这个版本。有一些效果较好的“新特性”需要合入时，就需要以 patch 的形式合入。同样出于稳定性考虑，
+或者兼容性考虑，服务的依赖，甚至依赖的依赖都是无法进行升级的。如果项目的新特性需要依赖库进行变更，就只能将依赖库的基线版本单独维护，按需合入依赖库的 patch。这样的维护方式看起来较为繁琐，但是能够有效避免项目因依赖库的升级而引入新的问
+题。&lt;br &#x2F;&gt;
+有了这样的需求，对应到 Rust 项目中，就需要对 Cargo.toml 里的 dependencies 配置进行调整，将部分依赖调整为自有库。
+参照&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;specifying-dependencies.html&quot;&gt;reference&#x2F;specifying-dependencies&lt;&#x2F;a&gt;，可以通过如下方式来指定依赖库：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+regex = { version = &amp;quot;1.10.3&amp;quot;, git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;regex.git&amp;quot;, branch = &amp;quot;next&amp;quot;, rev = &amp;quot;0c0990399270277832fbb5b91a1fa118e6f63dba&amp;quot;, tag = &amp;quot;11.10.4&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;除了 git，version、branch、rev 以及 tag 都是可选的，补充四者中的一个参数即可实现分支提交控制的目的。在实践过程中，考虑到分支上的提交是时刻进行的，在确认了基础的功能后，可以考虑发布一个版本。一来可以通过 tag 来进行版本&#x2F;功能的
+发布控制，同时也便于后续的功能梳理以及项目整理关键里程碑可视化。通过 branch 来指定依赖库会比较方便，这种方式对仓库的开发流程管理较为依赖：如果分支上提交了功能异常的代码，项目的编译就会异常。rev 方案也可以唯一指定代码版本，只是看起来
+不像 tag 那样直观。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;dependences-mo-ren-la-qu-shen-me-ban-ben&quot;&gt;dependences 默认拉取什么版本？&lt;&#x2F;h2&gt;
+&lt;p&gt;笔者在近期的工作中，遇到了如下的配置方式：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+regex = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;regex.git&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;这里并没有指定 version, branch 或者 rev。但是在编译项目时也会进行拉取的动作。默认会拉取目标仓库的最新提交（效果和直接 git clone 一致）。&lt;br &#x2F;&gt;
+在复杂的项目中，通常会出现依赖库和依赖库的依赖有重合的情况。而Rust 工程在编译时，会通过校验目标库的 source 信息（Cargo.lock 中生成）来识别两个库是相同。当项目的依赖库的 dependence 配置和项目依赖库的依赖的 dependence 配置不同时，
+就会出现种种类型不兼容的情况。比如，目前有这样的一个项目&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;，其依赖
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;和&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;两个库。同时，&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;又对
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;存在依赖。当&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;使用了&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;，并且将该&lt;code&gt;trait&lt;&#x2F;code&gt;通过引用
+&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;里的函数进行处理时，就涉及到&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;和&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib&quot;&gt;middle-lib&lt;&#x2F;a&gt;对&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib&quot;&gt;trait-lib&lt;&#x2F;a&gt;的引用校验问题：两个库里涉及的&lt;code&gt;Check&lt;&#x2F;code&gt;是否是同一个&lt;code&gt;Trait&lt;&#x2F;code&gt;？就笔者目前的理解来看，由于 rust 里的 trait 采用的不是 duck-typing，因此就需要编译器在编译时对类型进行强校验。在这个小示例中，如果 middle-lib
+的 dependencies 设置如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;而 dep-check 的 dependencies 设置如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+middle-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib.git&amp;quot; } # 注意，这种配置方式在 Cargo.lock 生成后，除非使用 cargo update 触发更新，否则依赖版本不会随着代码提交而更新。
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;dep-check 编译时，其引用的&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;和 middle-lib 里使用的&lt;code&gt;trait_lib::Check&lt;&#x2F;code&gt;就无法认为是同一个（即使实际上代码的提交是同一个）。依赖库的设置可以通过 Cargo.lock 里的 source 来确认。当 dep-check 和 middle-lib 的 Cargo.lock 对 trait-lib 的 source
+配置相同时，就不会出现类型不一致的问题。&lt;br &#x2F;&gt;
+由于使用了 tag &#x2F; rev &#x2F; branch 来作为 dependencies 的配置，一个问题是当 trait-lib 发生更新时，需要同时升级 middle-lib 和 dep-check 这两个仓库。否则就会出现版本不一致而编译失败的情况。如果使用 version 控制，由于 version 实际
+上表示的是一个&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;specifying-dependencies.html#specifying-dependencies-from-cratesio&quot;&gt;范围&lt;&#x2F;a&gt;，只要 update 后的依赖库是同一个版本即可（准确来说，x.y.z 中的 x.y 保持一致即可），可
+以在 cargo update 后检查 dep-check 的 Cargo.lock 中存在几个 trait-lib。在仅存在一个 trait-lib 时，说明依赖库不存在版本冲突，此时不需要更新 middle-lib 中的 Cargo.toml。&lt;&#x2F;p&gt;
+&lt;p&gt;配置的问题在这里有描述：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;cargo&#x2F;issues&#x2F;11490&quot;&gt;The dependency resolution is confused when using git dependency and there&#x27;s a lockfile&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;duck-typing 的接口在校验时还比较简单，只需要检查是否实现了目标类型&#x2F;接口定义的函数即可。但是对于非 duck-typing，情况会复杂些：不同的库里是允许出现同名的 trait 的。如何确定项目中实现的 trait 和引用库中需要的 trait 是同一个 trait？这就需要确保项目中 trait 的来源库和引用库中所需要的 trait 来源库是相同的。而看起来，库是否相同，又是通过 source 来确定的。Cargo.toml 中的 source 毕竟是一个工程里的概念，是如何影响编译的呢？是否是编译过程中，函数签名里带着一些source 信息？还需要进一步的探索，期望能够整理成文档。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;dependences-pei-zhi-de-zui-jia-shi-jian&quot;&gt;dependences 配置的最佳实践？&lt;&#x2F;h2&gt;
+&lt;p&gt;golang 和 rust 都支持通过配置 git 仓库的地址来直接引用，个人还是比较喜欢 rust 的配置方式：通过 Cargo.toml 能够简洁、明了的声明各种依赖的信息，在工程里可以直接使用库名（而非 golang 里的项目地址）。此外，rust 里的 workspace 机制
+对仓库里存在多个 sub-lib 时也能较好的处理依赖的管理。&lt;br &#x2F;&gt;
+下面是一个实践示例&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;dep-check&quot;&gt;dep-check&lt;&#x2F;a&gt;：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[workspace]
+members = [
+    &amp;quot;dep-check&amp;quot;,
+    &amp;quot;dep-run&amp;quot;,
+]
+
+default-members = [&amp;quot;dep-check&amp;quot;]
+resolver = &amp;quot;2&amp;quot;
+
+[workspacepackage]
+name = &amp;quot;dep-check&amp;quot;
+version = &amp;quot;0.1.0&amp;quot;
+edition = &amp;quot;2021&amp;quot;
+
+# See more keys and their definitions at https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;manifest.html
+
+[workspace.dependencies]
+trait-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;trait-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+middle-lib = { git = &amp;quot;https:&#x2F;&#x2F;github.com&#x2F;liyan-ah&#x2F;middle-lib.git&amp;quot;, tag = &amp;quot;1.0.0&amp;quot; }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;对于其中的一个 member:dep-check，其配置为：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;[package]
+name = &amp;quot;dep-check&amp;quot;
+version = &amp;quot;0.1.0&amp;quot;
+edition = &amp;quot;2021&amp;quot;
+
+# See more keys and their definitions at https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;cargo&#x2F;reference&#x2F;manifest.html
+
+[dependencies]
+trait-lib = { workspace = true }
+middle-lib = { workspace = true }
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;这样，就能很便捷的对项目里的依赖进行管理了。&lt;&#x2F;p&gt;
+&lt;p&gt;以上。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>合并区间</title>
+        <published>2024-04-20T17:11:31+08:00</published>
+        <updated>2024-04-20T17:11:31+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/merge-range/"/>
+        <id>https://liyan-ah.github.io/merge-range/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;很久没有找工作的经历了，反而由于种种原因，最近接触了一些候选人。总体的感觉是最近是越来越卷了。
+候选人的的水平明显比笔者毕业的时候高的多，也可能是笔者太菜了。其中一个合并区间的问题，笔者看到了
+一个很有意思的解法。在这里记录下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;《合并区间》问题的思路很明显：排序、合并。笔者最近见到了一种特殊场景下很有意思的解法：在数据范围较小的情况下，使用桶的思想来
+解决，就不再需要进行排序了。算法复杂度也从时间复杂度&lt;code&gt;o(nlgn)&lt;&#x2F;code&gt;降到了&lt;code&gt;o(n)&lt;&#x2F;code&gt;。这里记录下。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs-若干语言 lsp 配置备注</title>
+        <published>2021-10-12T20:26:00+08:00</published>
+        <updated>2021-10-12T20:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;微软推出的&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;microsoft.github.io&#x2F;language-server-protocol&#x2F;#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&quot;&gt;language server protol&lt;&#x2F;a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;&#x2F;code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;&#x2F;code&gt; 中的 rust, golang, python, c&#x2F;c++ lsp 配置&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>
