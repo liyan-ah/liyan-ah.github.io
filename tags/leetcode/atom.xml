@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - leetcode</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/leetcode/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-05-26T14:39:35+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/leetcode/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>3-sum 问题</title>
+        <published>2024-05-26T14:39:35+08:00</published>
+        <updated>2024-05-26T14:39:35+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/3-sum/"/>
+        <id>https://liyan-ah.github.io/3-sum/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/3-sum/">&lt;h2 id=&quot;cong-3-sum-wen-ti-kai-shi-shuo-qi&quot;&gt;从 3-sum 问题开始说起&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;leetcode.cn&#x2F;problems&#x2F;3sum&#x2F;description&#x2F;&quot;&gt;3-sum&lt;&#x2F;a&gt; 问题是 leetcode 中的一个经典问题。笔者最近重新重新回顾了这个问题，尴尬的是
+关键时刻居然没有解出来。今天来重新回顾下。作为数组类问题中的经典问题，笔者认为这里有三个关键点：&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;记得排序。数组问题大多需要进行排序，有序的数组才具有可操作性。&lt;&#x2F;li&gt;
+&lt;li&gt;通过比较，来决定下标移动的位置。在处理 2-sum 过程时，比较当前下标数字的和与目标值的大小来决定下标的下一步移动方向。&lt;&#x2F;li&gt;
+&lt;li&gt;对去重的处理。尴尬的就是这部分的处理过程。以笔者目前写代码的习惯，会直接使用 set 来进行去重。翻了下代码，对这部分的处理确实有点绕。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;围绕第三点，下面给出两个解法。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;set-qu-zhong&quot;&gt;set 去重&lt;&#x2F;h3&gt;
+&lt;p&gt;先看第一种解法，在处理结果集不重复时，使用 HashSet 来处理结果集唯一性的问题：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;impl Solution {
+    pub fn three_sum_n(mut nums: Vec&amp;lt;i32&amp;gt;, sum: i32) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        nums.sort();
+        let mut res = std::collections::HashSet::new();
+        for i in 0..nums.len() {
+            let target = sum - nums[i];
+            let mut left = i + 1;
+            let mut right = nums.len() - 1;
+            while left &amp;lt; right {
+                if nums[left] + nums[right] == target {
+                    &#x2F;&#x2F; 题目中要求的时结果集不重复。直接使用 set 来保证唯一性。
+                    res.insert(vec![nums[i], nums[left], nums[right]]);
+                    &#x2F;&#x2F; 找到一个后，同时移动 left &amp;amp; right 后继续遍历
+                    left += 1;
+                    right -= 1;
+                    continue;
+                }
+                if nums[left] + nums[right] &amp;gt; target {
+                    right -= 1;
+                } else {
+                    left += 1;
+                }
+            }
+        }
+
+        res.into_iter().collect()
+    }
+
+    pub fn three_sum(mut nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        Self::three_sum_n(nums, 0)
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;tong-guo-bi-jiao-lai-qu-zhong&quot;&gt;通过比较来去重&lt;&#x2F;h3&gt;
+&lt;p&gt;第二种解法也是经典解法：在移动下标时，确保当前值和前一个值不同。笔
+者回顾了下自己的思路以及给候选人的建议：先进行去重，然后进行比对。
+先去重的问题就是，像 [0, 0, 0] 这样的结果就会先被去重环节排除
+掉。而题目中没有结果集中的 [x, y, z] x != y &amp;amp;&amp;amp; y != z 的条件。
+正确的去重方式应该是，通过后置位和前置位的对比来允许 [0, 0, 0]的
+候选集能够出现。解题过程如下：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;Rust&quot;&gt;impl Solution {
+    pub fn three_sum_n(mut nums: Vec&amp;lt;i32&amp;gt;, sum: i32) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        nums.sort();
+        let mut res = vec![];
+        for i in 0..nums.len() {
+            &#x2F;&#x2F; 同样需要对 i 进行去重处理
+            if i != 0 &amp;amp;&amp;amp; nums[i] == nums[i-1]{
+                continue;
+            }
+            let target = sum - nums[i];
+            let mut left = i + 1;
+            let mut right = nums.len() - 1;
+            while left &amp;lt; right {
+                &#x2F;&#x2F; 允许第一个 left 值继续处理。第二个值和前置值对比
+                if left != i + 1 &amp;amp;&amp;amp; nums[left] == nums[left - 1] {
+                    left += 1;
+                    continue;
+                }
+                &#x2F;&#x2F; 允许第一个 right 值继续处理。第二个值和前置值对比
+                if right != nums.len() - 1 &amp;amp;&amp;amp; nums[right] == nums[right + 1] {
+                    right -= 1;
+                    continue;
+                }
+
+                if nums[left] + nums[right] == target {
+                    res.push(vec![nums[i], nums[left], nums[right]]);
+                    &#x2F;&#x2F; 找到一个后，同时移动 left &amp;amp; right 后继续遍历
+                    left += 1;
+                    right -= 1;
+                    continue;
+                }
+                if nums[left] + nums[right] &amp;gt; target {
+                    right -= 1;
+                } else {
+                    left += 1;
+                }
+            }
+        }
+        res
+    }
+
+    pub fn three_sum(mut nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; Vec&amp;lt;Vec&amp;lt;i32&amp;gt;&amp;gt; {
+        Self::three_sum_n(nums, 0)
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;yi-xie-gan-xiang&quot;&gt;一些感想&lt;&#x2F;h2&gt;
+&lt;p&gt;最近接触了很多实习生，感觉现在的实习生实力都很强。笔者找工作时，简历里的项目只有小学期的一个项目以及实验室里的一个项目，而且工程量都很小。现在
+的候选人都可以在网上找一些开源项目的教程项目来学习了，而且给开源项目提 PR 的能力也很强。确实超过笔者很多。&lt;br &#x2F;&gt;
+另一点感想是，学校所在的城市对学生的工程能力还是有影响的：北上的研究生工程实践都很多，而且普遍对工程涉及的一些项目（Redis, ES等）都有一些了解。
+而非大厂所在城市的学校，研究生跟着导师做的项目普遍偏学术，而且对工程的了解要少很多。这确实是地利带来的影响，而且确实对候选人的面试有很大的影响。
+还是应该通过适当的实习来接触行业。同样的，工作了也需要不断的提升自己的视野面。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

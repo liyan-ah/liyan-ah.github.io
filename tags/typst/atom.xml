@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - typst</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/typst/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-03-27T10:41:37+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/typst/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>一种 draw.io 画图导出为 svg 的方法</title>
+        <published>2026-03-27T10:41:37+08:00</published>
+        <updated>2026-03-27T10:41:37+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/draw-io-svg/"/>
+        <id>https://liyan-ah.github.io/draw-io-svg/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/draw-io-svg/">&lt;p&gt;最近在通过&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;typst.app&#x2F;docs&#x2F;&quot;&gt;typst&lt;&#x2F;a&gt;来写一些文档。其中涉及到程序流程示意图的使用。笔者使用的是&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;draw.io&#x2F;&quot;&gt;draw.io&lt;&#x2F;a&gt;来绘制图像，导出图片后在&lt;code&gt;typst&lt;&#x2F;code&gt;文档中引用。使用到程序流程示意图时，&lt;code&gt;png&lt;&#x2F;code&gt;图片的展示效果较为模糊，需要使用&lt;code&gt;svg&lt;&#x2F;code&gt;图片。此时遇到了一些问题。为了便于叙述及效果展示，下面将一份采用&lt;code&gt;typst&lt;&#x2F;code&gt;撰写的说明&lt;code&gt;pdf&lt;&#x2F;code&gt;文档进行展示，并在后面附上&lt;code&gt;typst&lt;&#x2F;code&gt;原始的格式代码。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;pdf-xuan-ran-xiao-guo&quot;&gt;pdf 渲染效果&lt;&#x2F;h2&gt;
+&lt;embed src=&quot;.&#x2F;typst-svg.pdf&quot; type=&quot;application&#x2F;pdf&quot; width=&quot;100%&quot; height=&quot;600px&quot; &#x2F;&gt;
+&lt;h2 id=&quot;typst-yuan-shi-ge-shi-dai-ma&quot;&gt;typst 原始格式代码&lt;&#x2F;h2&gt;
+&lt;pre&gt;&lt;code&gt;#figure(
+  image(&amp;quot;.&#x2F;raw-png.png&amp;quot;, width: 100%),
+  caption: &amp;quot;导出为 png 图片使用&amp;quot;
+)&amp;lt;raw-png&amp;gt;
+#h(2em)如@raw-png 是一张使用 draw.io 绘制的图片。在这里可以看到导出的图片较为模糊，作为文献中的图片使用显然不够优雅。一般来说，对于这种技术架构图，使用 svg 图像是更优的选择。
+
+#figure(
+  image(&amp;quot;.&#x2F;raw-svg.svg&amp;quot;, width: 100%),
+  caption: &amp;quot;使用原始的 svg&amp;quot;
+)&amp;lt;raw-svg&amp;gt;
+
+#h(2em)如@raw-svg 所示，使用原始的 svg 图片导出后是无法直接使用的，编译时会报warning，如@compile-error 所示，并且展示为黑框。
+
+#figure(
+  raw(&amp;quot;
+  warning: image contains foreign object
+  ┌─ main.typ:8:2
+  │
+8 │   image(&amp;#39;.&#x2F;raw-svg.svg&amp;#39;, width: 100%),
+  │   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  │
+  = hint: SVG images with foreign objects might render incorrectly in typst
+  = hint: see https:&#x2F;&#x2F;github.com&#x2F;typst&#x2F;typst&#x2F;issues&#x2F;1421 for more information
+  &amp;quot;,
+  ),
+  caption: &amp;quot;直接导出svg图片编译时报错&amp;quot;
+)&amp;lt;compile-error&amp;gt;
+
+#figure(
+  image(&amp;quot;.&#x2F;convert-labels.svg&amp;quot;, width: 100%),
+  caption: &amp;quot;勾选配置后效果&amp;quot;
+)&amp;lt;convert-svg&amp;gt;
+
+按照#link(&amp;quot;https:&#x2F;&#x2F;github.com&#x2F;jgraph&#x2F;drawio&#x2F;discussions&#x2F;5165&amp;quot;)[discussion&#x2F;5165]中描述的，勾选「转换标签为SVG」选项后，同样无法展示，如@convert-svg 所示，效果为黑框。
+
+#figure(
+  image(&amp;quot;.&#x2F;pdf2svg.svg&amp;quot;, width: 100%),
+  caption: &amp;quot;pdf2svg&amp;quot;
+)&amp;lt;pdf-svg&amp;gt;
+
+将原图像导出为 PDF（注意仅导出本页的内容以及勾选「裁剪」选项），通过 pdf 转 svg 后，可以正常生成，效果如@pdf-svg 所示。这里笔者使用的是#link(&amp;quot;https:&#x2F;&#x2F;github.com&#x2F;dawbarton&#x2F;pdf2svg&amp;quot;)[pdf2svg]工具，直接`pdf2svg .&#x2F;pdf2svg.pdf pdf2svg.svg`即可实现转换。
+
+#figure(
+  image(&amp;quot;.&#x2F;complex.svg&amp;quot;, width: 100%),
+  caption: &amp;quot;稍复杂的图片导出格式异常&amp;quot;
+)&amp;lt;complex-svg&amp;gt;
+
+需要注意的是，笔者遇到过稍复杂的图像在本地导出 pdf 图像，其内容出现残缺的问题。可能和本地的环境、对应设备上的版本有关系。将原始的 draw.io 绘图复制到#link(&amp;quot;https:&#x2F;&#x2F;draw.io&#x2F;&amp;quot;)[draw.io在线网站]上，从网站上导出 pdf，而后进行转换，得到的 svg 矢量图内容正常。
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;以上。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

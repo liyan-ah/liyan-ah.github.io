@@ -1,0 +1,202 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    ebpf 采集ebpf 采集tag+tcp五元组 - 李岩的博客
+  </title><meta name=theme-color><meta content="ebpf 采集ebpf 采集tag+tcp五元组" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="ebpf 采集ebpf 采集tag+tcp五元组" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="ebpf 采集ebpf 采集tag+tcp五元组" property=og:description><meta content=https://liyan-ah.github.io/ebpf-cai-ji-caller-func/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/ebpf-cai-ji-caller-func/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">ebpf 采集ebpf 采集tag+tcp五元组</h1><div class="text-sm antialiased opacity-60"><time>2023-02-24</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#shi-xian-xiao-guo>实现效果</a><li><a href=#dai-ma-shi-xian>代码实现</a></ul></details></nav><section><blockquote><p>在这里对文章题目作一些说明。笔者想了很长时间也无法给这篇文章想个恰当的表意题目。实际上使用<code>ebpf</code>来进行服务观测是有在进行的，比如获取目前<code>l1s</code>上的常见的四元组。但是本文不是介绍这部分可观测实践的。文章希望阐述的场景是：采集请求触发里的一些信息（诸如<code>trace</code>及其他<code>header</code>等）并和服务请求下游的传输层五元组(protocol, src-ip, src-port, dst-ip, dst-port)进行关联。这也是最近工作中实际遇到的问题。</blockquote><p>基于<code>ebpf</code>的丰富的特性能够获取服务很多的信息，不同特性的组合更是可以达到极强的数据整合能力。比如通过<code>uprobe</code>便捷的获取业务信息后，结合<code>kprobe</code>来获取系统调用里的内容，可以获取一般侵入式可观测代码无法获取的内容。笔者最近遇到的一个实际问题是：获取服务<code>A</code>的接口<code>/a</code>响应后，向下游<code>B</code>发起的请求时，所使用的传输层五元组，同时带上结合一些<code>/a</code>触发时的一些内容，比如<code>caller_fun</code>或者<code>traceId</code>。<br> 这里值得说明的是，用户态请求的是一个域名。域名的解析是在<code>golang</code>的<code>http</code>里完成的。但是请注意，<code>golang</code>发起<code>tcp</code>请求时，<code>local port</code>设置的是<code>0</code>，然后由内核态的<code>tpc</code>处理来选择一个空闲的<code>port</code>作为<code>socket</code>里的<code>lport</code>。这部分的信息通过代码的埋点显然是无法获取的（详情可参考<a href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5NDgwNA==&mid=2247485577&idx=1&sn=24220fcc3782f61b4a691585251f1c27&chksm=a6e309b2919480a4696c8a2944ad887951100b5068050d354eab40cf0c8f1124b6367176a0a6&scene=21#wechat_redirect" rel="noopener nofollow noreferrer external" target=_blank>TCP连接中客户端的端口号是如何确定的？</a>）。<br> 下面介绍下实现效果及思路。<blockquote><p>关于<code>bpftrace</code>使用的介绍，可以参见：<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/07/22/bpfTrace-%E8%BF%BD%E8%B8%AA-uprobe/#more target=_blank>bpftrace 无侵入遍历golang链表</a>，关于<code>ebpf</code>来进行数据采集的实践，可以参见<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/10/21/ebpf%E9%87%87%E9%9B%86mysql%E8%AF%B7%E6%B1%82%E4%BF%A1%E6%81%AF%E5%8F%8Aebpf%E5%AF%B9%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E6%80%9D%E8%80%83/ target=_blank>ebpf采集mysql请求信息及ebpf对应用安全的思考</a>。</blockquote><span id=continue-reading></span><h1 id=shi-xian-xiao-guo>实现效果</h1><p>服务端启动、触发的效果：<pre><code># 启动目标服务
+./caller_tuple
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /echo                     --> main.Echo (3 handlers)
+# 这里触发一次接口调用
+[GIN] 2023/02/24 - 22:05:29 | 200 |   85.618975ms |       127.0.0.1 | GET      "/echo"
+</code></pre><p><code>bpftrace</code> 采集端的效果：<pre><code># 启动采集
+bpftrace ./caller.bt
+Attaching 3 probes...
+start to gather caller info.
+get caller path: /echo
+# 将 caller_path 和 传输层五元组结合起来（本机的IP实际上是输出的，但是为了信息安全，就使用 0.0.0.0 来代替了）
+caller info: /echo
+3326691  caller_tuple     0.0.0.0                            38610  110.242.68.66                           80
+</code></pre><h1 id=dai-ma-shi-xian>代码实现</h1><p>这里分别上一下目标服务<code>caller_func</code>以及采集脚本<code>caller.bt</code>的代码，来说明下实现思路。<pre><code>// ./caller_tuple/main.go
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type Resp struct {
+	Errno int64  `json:"errno"`
+	Msg   string `json:"msg"`
+}
+
+func Echo(c *gin.Context) {
+	req, _ := http.NewRequest(http.MethodGet, "http://baidu.com", nil)
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		c.JSON(http.StatusOK, &Resp{Errno: 1, Msg: "request error"})
+		return
+	}
+	defer resp.Body.Close()
+	c.JSON(http.StatusOK, &Resp{Errno: 0, Msg: "ok"})
+	return
+}
+
+func main() {
+	r := gin.Default()
+	srv := &http.Server{
+		Addr: "0.0.0.0:3344",
+	}
+	r.GET("/echo", Echo)
+	srv.Handler = r
+	srv.ListenAndServe()
+}
+
+
+// caller_tuple/caller.bt
+#!/usr/bin/env bpftrace
+
+#define AF_INET 2
+
+struct sock_common {
+        union {
+                struct {
+                        __be32 skc_daddr;
+                        __be32 skc_rcv_saddr;
+                };
+        };
+        union {
+                unsigned int skc_hash;
+                __u16 skc_u16hashes[2];
+        };
+        union {
+                struct {
+                        __be16 skc_dport;
+                        __u16 skc_num;
+                };
+        };
+        short unsigned int skc_family;
+};
+
+struct sock {
+        struct sock_common __sk_common;
+};
+
+BEGIN{
+    printf("start to gather caller info.
+");
+    @caller[pid] = "none";
+}
+
+// 这里通过 uprobe 来便捷的获取会话信息。同时将信息写入bpf_map
+uprobe:./caller_tuple:"net/http.serverHandler.ServeHTTP"{
+    $req_ptr = sarg3;
+    $method_ptr = *(uint64*)($req_ptr);
+    $method_len = *(uint64*)($req_ptr+8);
+
+    /* read request.url.Path */
+    $url_ptr = *(uint64*)($req_ptr + 16);
+    $path_ptr = *(uint64*)($url_ptr+56);
+    $path_len = *(uint64*)($url_ptr+64);
+    printf("get caller path: %s
+", str($path_ptr, $path_len));
+    // 这里使用 pid 来作为 key 只是为了实现方便。实际可以采取其他更有区分性的内容。
+    @caller_ptr[pid]=$path_ptr;
+    @caller_len[pid]=$path_len;
+}
+
+// 通过 kprobe 来获取用户态无法获取的内容。同时通过 bpf_map 来控制生效及内容的交互。
+kprobe:tcp_connect
+{
+    if (@caller_ptr[pid] == 0){
+        return;
+    }
+    $ptr = @caller_ptr[pid];
+    $len = @caller_len[pid];
+    printf("caller info: %s
+", str($ptr, $len));
+    @caller_ptr[pid] = 0;
+    @caller_len[pid] = 0;
+
+  $sk = ((struct sock *) arg0);
+  $inet_family = $sk->__sk_common.skc_family;
+
+  if ($inet_family == AF_INET) {
+    $daddr = ntop($sk->__sk_common.skc_daddr);
+    $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+    $lport = $sk->__sk_common.skc_num;
+    $dport = $sk->__sk_common.skc_dport;
+    $dport = (((($dport) >> 8) & 0xff) | ((($dport) & 0xff) &lt;&lt; 8));
+    printf("%-8d %-16s ", pid, comm);
+    printf("%-39s %-6d %-39s %-6d
+", $saddr, $lport, $daddr, $dport);
+  }
+}
+</code></pre><p>这样就达到了笔者的目标。这只是<code>ebpf</code>应用的一个简单的场景，更多的<code>metric</code>采集内容仍在进行。<br> 以上，周末愉快！</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>bpf</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/tcp/>tcp</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/><span class=mr-1.5>←</span><span>emacs org-mode 绘制思维导图</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/><span>go-1.17+ 调用规约</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

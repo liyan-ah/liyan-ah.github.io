@@ -1,0 +1,114 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    一种 draw.io 画图导出为 svg 的方法 - 李岩的博客
+  </title><meta name=theme-color><meta content="这段时间使用 draw.io 进行画图，导出的 png 图片较为模糊，而导出的 svg 矢量图又由于 foreignObject 而无法使用。本文记录了解决的方案，可作为参考。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="一种 draw.io 画图导出为 svg 的方法" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="这段时间使用 draw.io 进行画图，导出的 png 图片较为模糊，而导出的 svg 矢量图又由于 foreignObject 而无法使用。本文记录了解决的方案，可作为参考。" property=og:description><meta content=https://liyan-ah.github.io/draw-io-svg/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/draw-io-svg/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">一种 draw.io 画图导出为 svg 的方法</h1><div class="text-sm antialiased opacity-60"><time>2026-03-27</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#pdf-xuan-ran-xiao-guo>pdf 渲染效果</a><li><a href=#typst-yuan-shi-ge-shi-dai-ma>typst 原始格式代码</a></ul></details></nav><section><p>最近在通过<a rel="noopener nofollow noreferrer external" href=https://typst.app/docs/ target=_blank>typst</a>来写一些文档。其中涉及到程序流程示意图的使用。笔者使用的是<a rel="noopener nofollow noreferrer external" href=https://draw.io/ target=_blank>draw.io</a>来绘制图像，导出图片后在<code>typst</code>文档中引用。使用到程序流程示意图时，<code>png</code>图片的展示效果较为模糊，需要使用<code>svg</code>图片。此时遇到了一些问题。为了便于叙述及效果展示，下面将一份采用<code>typst</code>撰写的说明<code>pdf</code>文档进行展示，并在后面附上<code>typst</code>原始的格式代码。<h2 id=pdf-xuan-ran-xiao-guo>pdf 渲染效果</h2><embed height=600px src=./typst-svg.pdf type=application/pdf width=100%><h2 id=typst-yuan-shi-ge-shi-dai-ma>typst 原始格式代码</h2><pre><code>#figure(
+  image("./raw-png.png", width: 100%),
+  caption: "导出为 png 图片使用"
+)&lt;raw-png>
+#h(2em)如@raw-png 是一张使用 draw.io 绘制的图片。在这里可以看到导出的图片较为模糊，作为文献中的图片使用显然不够优雅。一般来说，对于这种技术架构图，使用 svg 图像是更优的选择。
+
+#figure(
+  image("./raw-svg.svg", width: 100%),
+  caption: "使用原始的 svg"
+)&lt;raw-svg>
+
+#h(2em)如@raw-svg 所示，使用原始的 svg 图片导出后是无法直接使用的，编译时会报warning，如@compile-error 所示，并且展示为黑框。
+
+#figure(
+  raw("
+  warning: image contains foreign object
+  ┌─ main.typ:8:2
+  │
+8 │   image('./raw-svg.svg', width: 100%),
+  │   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  │
+  = hint: SVG images with foreign objects might render incorrectly in typst
+  = hint: see https://github.com/typst/typst/issues/1421 for more information
+  ",
+  ),
+  caption: "直接导出svg图片编译时报错"
+)&lt;compile-error>
+
+#figure(
+  image("./convert-labels.svg", width: 100%),
+  caption: "勾选配置后效果"
+)&lt;convert-svg>
+
+按照#link("https://github.com/jgraph/drawio/discussions/5165")[discussion/5165]中描述的，勾选「转换标签为SVG」选项后，同样无法展示，如@convert-svg 所示，效果为黑框。
+
+#figure(
+  image("./pdf2svg.svg", width: 100%),
+  caption: "pdf2svg"
+)&lt;pdf-svg>
+
+将原图像导出为 PDF（注意仅导出本页的内容以及勾选「裁剪」选项），通过 pdf 转 svg 后，可以正常生成，效果如@pdf-svg 所示。这里笔者使用的是#link("https://github.com/dawbarton/pdf2svg")[pdf2svg]工具，直接`pdf2svg ./pdf2svg.pdf pdf2svg.svg`即可实现转换。
+
+#figure(
+  image("./complex.svg", width: 100%),
+  caption: "稍复杂的图片导出格式异常"
+)&lt;complex-svg>
+
+需要注意的是，笔者遇到过稍复杂的图像在本地导出 pdf 图像，其内容出现残缺的问题。可能和本地的环境、对应设备上的版本有关系。将原始的 draw.io 绘图复制到#link("https://draw.io/")[draw.io在线网站]上，从网站上导出 pdf，而后进行转换，得到的 svg 矢量图内容正常。
+</code></pre><p>以上。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/draw-io/>draw.io</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/svg-foreignobject/>svg foreignObject</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/typst/>typst</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/http-protocol/><span class=mr-1.5>←</span><span>大模型使用中遇到的坑——HTTP query 参数探讨</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/li-ma-dou-de-ji-yi-gong-dian/><span>利玛窦的记忆宫殿</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

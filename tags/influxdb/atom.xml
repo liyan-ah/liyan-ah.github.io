@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - influxdb</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/influxdb/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-04-28T20:10:58+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/influxdb/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>Parquet 文件结构与在存储系统中的应用</title>
+        <published>2026-04-28T20:10:58+08:00</published>
+        <updated>2026-04-28T20:10:58+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/parquet-arch/"/>
+        <id>https://liyan-ah.github.io/parquet-arch/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;开始搞存储了，项目中用到的很多基础知识还是欠缺的。期望通过这个系列的博客来总结下。本文聚焦于 Parquet 这种列式存储格式——从 CMU 15-445 的知识体系出发，看看它为什么长这样，以及 InfluxDB 系统是如何使用它的。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;</summary>
+        
+    </entry>
+</feed>

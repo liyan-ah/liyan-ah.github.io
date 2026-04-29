@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - safety</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/safety/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-10-21T19:48:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/safety/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>ebpf采集mysql请求信息及ebpf对应用安全的思考</title>
+        <published>2022-10-21T19:48:00+08:00</published>
+        <updated>2022-10-21T19:48:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/ebpfcai-ji-mysqlqing-qiu-xin-xi-ji-ebpfdui-ying-yong-an-quan-de-si-kao/"/>
+        <id>https://liyan-ah.github.io/ebpfcai-ji-mysqlqing-qiu-xin-xi-ji-ebpfdui-ying-yong-an-quan-de-si-kao/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;本文笔者继续介绍&lt;code&gt;ebpf&lt;&#x2F;code&gt; 的应用：使用&lt;code&gt;bpftrace&lt;&#x2F;code&gt;采集&lt;code&gt;mysql&lt;&#x2F;code&gt;连接信息，包括数据库地址、&lt;code&gt;db_name&lt;&#x2F;code&gt;、&lt;code&gt;user_name&lt;&#x2F;code&gt;。在展示采集操作的同时，附上对&lt;code&gt;ebpf&lt;&#x2F;code&gt;对云时代应用安全的一些思考。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;mu-biao&quot;&gt;目标&lt;&#x2F;h1&gt;
+&lt;p&gt;使用&lt;code&gt;bpftrace&lt;&#x2F;code&gt;对一个运行中进程的&lt;code&gt;mysql&lt;&#x2F;code&gt;请求进行采集，目标采集内容包括数据库地址、&lt;code&gt;db_name&lt;&#x2F;code&gt;、&lt;code&gt;user_name&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

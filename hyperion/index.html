@@ -1,0 +1,76 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    海伯利安 - 李岩的博客
+  </title><meta name=theme-color><meta content=时间；诗人；机器人 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=海伯利安 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=时间；诗人；机器人 property=og:description><meta content=https://liyan-ah.github.io/hyperion/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/hyperion/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">海伯利安</h1><div class="text-sm antialiased opacity-60"><time>2025-11-27</time><span class=mx-1>·</span><span>8min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#hai-bo-li-an-jie-shao>《海伯利安》介绍</a><li><a href=#jie-xuan>节选</a></ul></details></nav><section><h2 id=hai-bo-li-an-jie-shao>《海伯利安》介绍</h2><p>《海伯利安》是美国作家丹·西蒙斯科幻小说《海伯利安的诗篇》中的第一部作品。这篇小说的想象力丰富，设定奇异。不同于与之齐名的《银河帝国》系列小说在一个世界观下以一系列中短篇小说组织的特点，《海伯利安的诗篇》中的每一部都沿着一个主线展开。《海伯利安》作为第一部，将整个系列的世界观和设定都放置在了六个人的叙述中。由于没有单独的段落来系统性的说明整个世界的架构（《银河帝国》的第一步的第一章则系统性的介绍了银河帝国的组成、危机以及谢顿要做的事情），《海伯利安》的六篇故事看着是稍显晦涩的，但是每一部分又都非常的精彩。将《海伯利安》阅读完成后，会对惊叹于作者的设定，同时对时间、诗人以及机器人（人工智能）都有一些思考。<p>《海伯利安》，未来的世界（宇宙）由人类和技术内核（人工智能）共同治理。在海伯利安这颗星球，突然出现了一个逆熵场。在逆熵场周围出现了一个被称为“伯劳”的机器人。围绕着“伯劳”崇拜，诞生了本地的宗教。某一天，“霸主”选择了七位朝圣者到海伯利安朝圣，希望为了弄清逆熵场以及“伯劳”的目的。七位朝圣者从靠近海伯利安星球开始，到抵达逆熵场的前几个小时，轮流叙述了自己的故事。<p>书中的若干设定：<ul><li><p>远距传输器。未来世界的一种科技，由人工智能推动研发、管理。可以让使用者从一个地方瞬间移动到另外一处，实现瞬间的星际旅行。人类借助远距传输器将已知世界的主要部分连接起来。</p><li><p>时间债。与远距传输器相关的一个概念。在远距传输器无法覆盖的地方，人类仍然需要使用传统的运载器具。运载器通过“霍金驱动器”以接近光速的速度运行，依据相对论效应，运载器上的时间可能只过了几天、几周，但是外界的时间可能已经过了几年、几十年甚至更长的时间。这样，乘坐运载器旅行的人和外部在时间上就会脱节。</p><li><p>逆熵场。世界是熵增的，正常情况下时间会一直向前、宇宙会逐步无序。但是逆熵场的存在逆转了时间的流向——明天是昨天的重复。</p></ul><h2 id=jie-xuan>节选</h2><p>本部分介绍《海伯利安》的第四个叙述人：学者的故事。我们都希望时间能够走的慢一些，或者回到年轻的时候。但是当时间真的开始回退时，可能并非如此美好。<p>索尔·温特伯是一位研究犹太文化的学者，与妻子萨莱和女儿瑞秋过着幸福的生活。瑞秋聪明伶俐，在索尔任教的大学从事考古研究。悲剧的种子在一次家庭度假时埋下。他们前往海伯利安星球，在著名的“光阴冢”附近野餐。瑞秋独自一人在时光冢周围探索，不小心进入了“时间潮汐”的范围。回到家园后，瑞秋开始出现异常。她先是忘记了一些小事，然后情况急剧恶化。经过医学检查，他们得到了一个绝望的诊断：逆时症。她的记忆不是变得模糊，而是精确地、一天一天地倒带。今天，她会忘记昨天发生的事情；明天，她会忘记今天和昨天。她的记忆库像一个被从末尾开始擦除的录像带。不仅是记忆，她的生理年龄和心智也在同步倒退。一个27岁的成熟女性，逐渐变回20岁的大学生、16岁的高中生、10岁的孩童……最终将退行至婴儿时期。任何试图向她解释或灌输新知识的努力都是徒劳的。今天教会她的东西，明天她会忘得一干二净。她唯一能保留的，是她在发病前就已经掌握的知识和记忆。每一天，温特伯都要重新向女儿解释发生了什么；每一天，他都要忍受着看着女儿却无法被她以“父亲”的身份完整认知的痛苦。当瑞秋的年龄倒退到不认识他的时候，他不得不雇佣保姆来照顾她，自己则躲在幕后，以“慈祥的叔叔”身份出现。直到有一天，温特伯经历了诡异的梦境，在梦中，一个“燃烧的荆棘”或“声音”与他对话。这个神秘存在（后来暗示可能与技术内核或伯劳本身有关）给了他一个可怕的选择：他必须带着倒退成婴儿的瑞秋前往海伯利安，进入光阴冢，并心甘情愿地让伯劳用一根长长的金属刺刺穿瑞秋的身体。作为交换，瑞秋将在正常的时间流中重生，获得一个没有逆时症的全新人生。<p>学者的故事是对“时间”这一概念的精彩演绎。不同于遵循基本物理假设的硬科幻，丹·西蒙斯的《海伯利安》完全是以科幻的主题在写抒情故事。也正是这样，会给人更大的触动。<pre><code>这些人是谁呵，都去赶祭祀？
+这做牺牲的小牛，对天名叫，
+你要迁它到哪儿，神秘的祭祀？
+花环缀满着它光滑的身腰。
+是从哪个傍河傍海的小镇，
+或哪个静静地堡寨山村，
+来了这些人，在这敬神的清早？
+呵，小镇，你的街道永远恬静；
+再也不可能回来一个灵魂
+告诉人你何以是这么寂寥。
+</code></pre></section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/du-shu/>读书</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/ke-huan/>科幻</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/ren-gong-zhi-neng/>人工智能</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/mao-dun-lun/><span class=mr-1.5>←</span><span>矛盾论</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/jian-shang/><span>翦商</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - debug</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/debug/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-08-18T17:26:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/debug/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>redisgo 连接报错</title>
+        <published>2021-08-18T17:26:00+08:00</published>
+        <updated>2021-08-18T17:26:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/"/>
+        <id>https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/">&lt;blockquote&gt;
+&lt;p&gt;记一次&lt;code&gt;redisgo&lt;&#x2F;code&gt;库使用时，连接远程&lt;code&gt;redis&lt;&#x2F;code&gt;服务写数据报错的问题。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;redis&lt;&#x2F;code&gt;写数据时，出现报错&lt;code&gt;write: broken pipe&lt;&#x2F;code&gt;及&lt;code&gt;write: connection reset by peer&lt;&#x2F;code&gt;。看着都是网络的问题，使用&lt;code&gt;redis-cli&lt;&#x2F;code&gt;可以登陆并且执行查询等操作。经过排查，是写的数据量过大，导致写数据持续时间过长，排查的思路是猜想-&amp;gt;验证&lt;code&gt;@A@&lt;&#x2F;code&gt;。&lt;br &#x2F;&gt;
+对于多个数据可以进行拆分。对于单个完整的数据，还没有太好的拆分思路（或许基于 &lt;code&gt;pb&lt;&#x2F;code&gt; 进行压缩，会是个好方式？）&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;can-kao-wen-zhang&quot;&gt;参考文章&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;xieganyu3460&#x2F;article&#x2F;details&#x2F;82884346&quot;&gt;python redis读写报错：Broken Pipe Error Redis&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
