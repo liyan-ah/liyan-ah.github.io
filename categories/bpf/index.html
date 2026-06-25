@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    李岩的博客
+  </title><meta name=theme-color><meta content=努力做个程序员 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=李岩的博客 property=og:title><meta content=努力做个程序员 property=og:description><meta content=https://liyan-ah.github.io property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>#BPF</h1><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</h2><div class="not-prose my-1 truncate"><blockquote><p>BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。</blockquote><p><code>LRU_HASH_MAP</code> 在实现的时候，出现了不符合预期的数据驱逐问题：设定一个 512 大小的<code>LRU_HASH_MAP</code>，很可能出现在40-50个<code>key</code>的时候，之前的<code>key</code>就被覆盖。在一段时间未更新时，重新更新也可能会出现异常。总结就是，执行了写入操作，很可能没有写入。这个问题在<a rel="noopener nofollow noreferrer external" href=https://stackoverflow.com/questions/75882443/elements-incorrectly-evicted-from-ebpf-lru-hash-map target=_blank>Elements incorrectly evicted from eBPF LRU hash map</a>有较为详细的描述。</div><div class="text-sm antialiased opacity-60"><time>2024-03-12</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/bpf-lru-hash-map-ji-hash-map-de-shi-yong-yi-chang/>BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">TCP close 过程分析</h2><div class="not-prose my-1 truncate"><blockquote><p>最近做了一些 TCP 连接观测相关的项目，又到了一个节奏点上了。这里趁着这个机会，做一些总结，同时描述一下 tcp close 过程中的一些疑惑。</blockquote><p>在一些场景下，对服务的调用观测是很有价值的。笔者最近实践了使用<code>tcp_close</code>对服务主被调信息的观测，在这里作一下记录。</div><div class="text-sm antialiased opacity-60"><time>2024-02-24</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/tcp-close-guo-cheng-fen-xi/>TCP close 过程分析</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">如何追踪golang channel?</h2><div class="not-prose my-1 truncate"><blockquote><p>2023年就要结束了，算起来距离上一次更新也有很久了。搜肠刮肚，总得在23年结束前再搞两篇总结，算是有始有终。总结今年，总还是绕不过 BPF，golang。既然如此，就对BPF观测golang这个话题再往下挖掘下，先做第一篇文章。下旬如果有时间并且顺利的话，希望能把BPF的原理总结完成。</blockquote><p>在<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2023/03/29/cljb83dmh003dkcs61joe1kfh/#more target=_blank>无侵入观测服务拓扑四元组的一种实现</a>中，笔者有提到追踪<code>golang</code>处理过程的两个无法解决的问题是<code>golang</code>里的<code>channel</code>处理以及<code>goroutine pool</code>。再深究下，这两个问题实际上都可以归纳到对<code>channel</code>的处理，因为很多<code>goroutine pool</code>都离不了<code>channel</code>的使用，比如<a rel="noopener nofollow noreferrer external" href=https://github.com/Jeffail/tunny target=_blank>Jeffail/tunny</a>这个库。<br> 本文将会构建一个<code>channel</code>的追踪的方案。</div><div class="text-sm antialiased opacity-60"><time>2023-12-08</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/>如何追踪golang channel?</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">BPF追踪Go程序的挑战</h2><div class="not-prose my-1 truncate"><blockquote><p>原文地址<a rel="noopener nofollow noreferrer external" href=https://blog.0x74696d.com/posts/challenges-of-bpf-tracing-go/ target=_blank>Challenges of BPF Tracing Go</a>。翻译不尽如人意，继续努力。</blockquote><h1 id=bpfzhui-zong-gocheng-xu-de-tiao-zhan>BPF追踪Go程序的挑战</h1><p>当大家对<code>Go 1.17</code>语言调用规约(<code>function calling convention</code>)调整带来的性能优化感到兴奋时，我却遗憾的看到<code>Go 1.17</code>并没有让<code>BPF uretprobe</code>变得可行。事实证明，我还没有完全意识到<code>Go</code>的可调整的栈空间会让事情变得多复杂。</div><div class="text-sm antialiased opacity-60"><time>2023-06-25</time><span class=mx-1>·</span><span>13min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/golang/>BPF追踪Go程序的挑战</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">go-1.17+ 调用规约</h2><div class="not-prose my-1 truncate"><blockquote><p><code>go-1.17</code>是一个很不友好的版本，这里我指的是函数调用规约的变更。在此之前，虽然栈传参比较奇怪，但是在掌握了规律后，参数信息很好获取。升级到<code>go-1.17</code>之后，笔者发现变更后的寄存器传值方式并不是系统的调用规约，至少和<code>C/C++</code>的是完全不一致的。这个问题使得笔者在处理<code>ebpf</code>方案时，始终无法覆盖<code>go-1.17+</code>的版本。虽然短期不会造成影响，线上服务使用的大多还在<code>go-1.16</code>以下，但是这始终是一个绕不过去的问题。近期通过查阅资料和参考其他开源项目里对这部分内容的处理，整理了一下<code>go-1.17+</code>的调用规约。</blockquote><p><code>go</code>在<code>1.17</code>之前使用的是内存栈来传递参数，这种传参的方式使得<code>golang</code>的语言设计很灵活：<code>golang</code>函数的多返回值能够很容易的实现。同样的，由于<code>golang</code>需要这样灵活的能力，是的系统默认的调用规约方式并不适用。在<a rel="noopener nofollow noreferrer external" href=https://go.googlesource.com/proposal/+/refs/changes/78/248178/1/design/40724-register-calling.md target=_blank>Proposal: Register-based Go calling convention</a>文章里对这个问题进行了详细的讨论，总结起来是<code>golang</code>的特性使得使用系统默认规约并不能带来多语言交互上的收益，且<code>golang</code>希望保持独特。<br> 本文下面会给出总结的调用规约，并且给出验证程序。本文档的整理所基于的平台是<code>x86_64</code>的<code>centos8</code>系统。其他架构下，寄存器名称可能不同。</div><div class="text-sm antialiased opacity-60"><time>2023-03-03</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/golang-1-17-can-shu-diao-yong-gui-yue/>go-1.17+ 调用规约</a></section><nav class="not-prose mt-16 flex font-bold"><a class="ml-auto rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/categories/bpf/page/2/>Next Page →</a></nav></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

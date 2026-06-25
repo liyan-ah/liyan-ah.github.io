@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - lvs</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/lvs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-01-03T16:15:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/lvs/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>BPF 获取 LVS FullNat 模式下的 Client IP</title>
+        <published>2024-01-03T16:15:00+08:00</published>
+        <updated>2024-01-03T16:15:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/"/>
+        <id>https://liyan-ah.github.io/bpf-huo-qu-lvs-fullnet-mo-shi-xia-de-client-ip/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;搞项目。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;观测服务的请求调用需求是客观存在的。一般是需要观测服务的主动发起的调用信息，但是偶尔也会遇到需要观测服务被调用信息的需求。但是一般待采集的服务都是挂载在&lt;code&gt;LVS&lt;&#x2F;code&gt;下面的。这就势必涉及到&lt;code&gt;LVS&lt;&#x2F;code&gt;预设的工作模式下，一般都是&lt;code&gt;FULLNET&lt;&#x2F;code&gt;，需要的&lt;code&gt;real client ip&lt;&#x2F;code&gt;的信息获取方式。&lt;br &#x2F;&gt;
+笔者通过调研，实现了一种通过&lt;code&gt;BPF&lt;&#x2F;code&gt;来观测挂载在&lt;code&gt;LVS&lt;&#x2F;code&gt;下的&lt;code&gt;RS&lt;&#x2F;code&gt;被调用&lt;code&gt;TCP&lt;&#x2F;code&gt;连接信息的方式。本文中关于&lt;code&gt;toa&lt;&#x2F;code&gt;的操作及代码定义均引用自&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Huawei&#x2F;TCP_option_address&#x2F;tree&#x2F;master&quot;&gt;Huawei&#x2F;TCP_option_address&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

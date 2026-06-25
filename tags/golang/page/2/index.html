@@ -1,0 +1,66 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    李岩的博客
+  </title><meta name=theme-color><meta content=努力做个程序员 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=李岩的博客 property=og:title><meta content=努力做个程序员 property=og:description><meta content=https://liyan-ah.github.io property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><h1 class=mb-16>#golang</h1><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">基于ebpf实现的gls</h2><div class="not-prose my-1 truncate"><blockquote><p>虽然<code>golang</code>并不推荐使用<code>goid</code>来构建<code>gls</code>(<code>goroutine local storage</code>)，仍然有着很多的实现<code>gls</code>并使用的尝试。<a rel="noopener nofollow noreferrer external" href=https://github.com/jtolio/gls target=_blank>github-gls</a>这里是一个常见的实现，基本表述了<code>golang</code>里<code>gls</code>的实现思路：获取<code>goid</code>，基于<code>goid</code>构建一个存储。本文中笔者尝试基于<code>ebpf</code>来构建一个<code>golang</code>的<code>gls</code>。</blockquote><h1 id=ji-ben-gong-neng>基本功能</h1><p>本文中基于<code>ebpf</code>实现的<code>gls</code>具有如下功能：<ul><li>基于<code>goid</code>的存储。即<code>map[goid]=value</code>；<li>基于<code>goroutine</code>派生关系设置的<code>value</code>缺省值。即<code>map[goid=1]=121</code>，且<code>goid=1</code>派生<code>goid=2</code>，则<code>map[goid=2]=map[goid=1]=121</code>；<br> 本文建议参照<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/11/04/%E9%BB%91%E9%AD%94%E6%B3%95-ebpf-%E5%AF%B9%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%99%E5%85%A5/#more target=_blank>黑魔法-ebpf-对用户空间数据的写入</a>进行理解。</ul></div><div class="text-sm antialiased opacity-60"><time>2022-11-25</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/ji-yu-ebpfshi-xian-de-gls/>基于ebpf实现的gls</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">bpftrace 无侵入遍历golang链表</h2><div class="not-prose my-1 truncate"><blockquote><p><code>bpftrace</code> 基于 <code>bcc</code> 进行开发的工具，语法简洁、功能强大。用其分析<code>Linux</code> 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用<code>bpftrace</code>无侵入遍历链表成员的方式，介绍<code>bpftrace</code> <code>attach uprobe</code> 的使用。更多使用说明见:<a rel="noopener nofollow noreferrer external" href=https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md target=_blank>bpftrace官网使用文档</a></blockquote></div><div class="text-sm antialiased opacity-60"><time>2022-07-22</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/>bpftrace 无侵入遍历golang链表</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">golang 常见类型字节数</h2><div class="not-prose my-1 truncate"><blockquote><p><code>ebpf</code> 分析<code>golang</code>程序时，离不开对参数大小的判断。这里列出来一些基本类型的大小，并通过汇编对应验证函数的方式来肯定判断结果。</blockquote><h1 id=xin-xi>信息</h1><p>这里列出基本类型及其作为参数传递时，占用的空间大小如下表。<table><thead><tr><th>类型<th>长度<th>说明<tbody><tr><td>指针<td>8B<td>64位机为 8Byte, 32位机位4Byte<tr><td>context<td>16B<td>interface 类型。其中，前8B是类型信息，后8B是对象的指针信息<tr><td>interface<td>16B<td>2 个指针，详见<a rel="noopener nofollow noreferrer external" href=https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface/ target=_blank>draveness-go-interface</a>，或者 runtime/runtime2.go iface/eface 定义<tr><td>int64<td>8B<td>-<tr><td>int<td>8B<td>64位机为 8Byte, 32位机位4Byte<tr><td>string<td>16B<td>8B 地址 + 8B string长度<tr><td>slice<td>24B<td>8B地址 + 8B slice 成员数量 + 8B slice capability<tr><td>func<td>8B<td>func 作为函数参数时，传递的是 func 的地址</table><p>需要注意的是，作为函数参数传递时，golang会对参数按照 8B 进行对齐。</div><div class="text-sm antialiased opacity-60"><time>2022-06-06</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/golang-chang-jian-lei-xing-zi-jie-shu/>golang 常见类型字节数</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">emacs-若干语言 lsp 配置备注</h2><div class="not-prose my-1 truncate"><blockquote><p>微软推出的<a href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20" rel="noopener nofollow noreferrer external" target=_blank>language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</blockquote></div><div class="text-sm antialiased opacity-60"><time>2021-10-12</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/>emacs-若干语言 lsp 配置备注</a></section><section class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"><h2 class="my-0! pb-1 leading-none! font-bold">go-simplejson 插入数组</h2><div class="not-prose my-1 truncate"><blockquote><p><a rel="noopener nofollow noreferrer external" href=https://github.com/bitly/go-simplejson target=_blank>go-simplejson</a>是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。</blockquote></div><div class="text-sm antialiased opacity-60"><time>2021-07-22</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div><a class="absolute inset-0 text-[0px]" href=https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/>go-simplejson 插入数组</a></section><nav class="not-prose mt-16 flex font-bold"><a class="rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/tags/golang/>← Prev Page</a><a class="ml-auto rounded-full bg-black px-4 py-3 text-sm text-white no-underline duration-100 active:scale-95 dark:bg-white/80 dark:text-black" href=https://liyan-ah.github.io/tags/golang/page/3/>Next Page →</a></nav></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

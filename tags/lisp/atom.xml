@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - lisp</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/lisp/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2019-06-03T22:42:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/lisp/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>lisp-do循环</title>
+        <published>2019-06-03T22:42:00+08:00</published>
+        <updated>2019-06-03T22:42:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-doxun-huan/"/>
+        <id>https://liyan-ah.github.io/lisp-doxun-huan/</id>
+        
+        <summary type="html">&lt;p&gt;lisp中，do循环形象如下:&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;(do (variable-definition*)
+    (end-test-form result-form*)
+    statement*);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-let变量声明</title>
+        <published>2019-05-30T22:51:00+08:00</published>
+        <updated>2019-05-30T22:51:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-letbian-liang-sheng-ming/"/>
+        <id>https://liyan-ah.github.io/lisp-letbian-liang-sheng-ming/</id>
+        
+        <summary type="html">&lt;p&gt;lisp声明、使用变量的一种方法，是使用&lt;code&gt;let&lt;&#x2F;code&gt;语句。&lt;br &#x2F;&gt;
+形如：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;(let ((variable declare1) (variable declare2) (...))
+;  (varaible used here));
+(defun foo(x)
+  (format t &amp;quot;Parameter: ~a~%&amp;quot; x)
+  (let ((x 2))
+    (format t &amp;quot;Outer LET: ~a~%&amp;quot; x)
+    (let ((x 3))
+      (format t &amp;quot;Inner LET: ~a~%&amp;quot; x))
+    (format t &amp;quot;Outer LET: ~a~%&amp;quot; x))
+  (format t &amp;quot;Parameter: ~a~%&amp;quot; x));
+
+(foo 10);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-lambda函数</title>
+        <published>2019-05-29T23:28:00+08:00</published>
+        <updated>2019-05-29T23:28:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-lambdahan-shu/"/>
+        <id>https://liyan-ah.github.io/lisp-lambdahan-shu/</id>
+        
+        <summary type="html">&lt;p&gt;lisp中的lambda表达式，显然和python中的很相似。&lt;br &#x2F;&gt;
+参照《实用common lisp编程》：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;按照 min max, 步长step为参数的fn计算的长度输出 *
+(defun plot (fn min max step)
+  (loop for i from min to max by step do
+        (loop repeat (funcall fn i) do (format t &amp;quot;*&amp;quot;))
+        (format t &amp;quot;~%&amp;quot;)))
+
+(plot #&amp;#39;exp 0 4 1&#x2F;2);
+(plot #&amp;#39;(lambda (x) (* 2 x)) 0 10 1);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>clisp编译</title>
+        <published>2019-05-28T22:16:00+08:00</published>
+        <updated>2019-05-28T22:16:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/clispbian-yi/"/>
+        <id>https://liyan-ah.github.io/clispbian-yi/</id>
+        
+        <summary type="html">&lt;p&gt;目前，lisp的开发环境基本上被&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;common-lisp.net&#x2F;project&#x2F;lispbox&#x2F;&quot;&gt;lispbox&lt;&#x2F;a&gt;所垄断。所以本文来说一&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;clisp.sourceforge.io&#x2F;&quot;&gt;CLISP&lt;&#x2F;a&gt;，C语言实现的LISP解释器的安装。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>lisp-hello world</title>
+        <published>2019-05-28T21:52:00+08:00</published>
+        <updated>2019-05-28T21:52:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/lisp-hello-world/"/>
+        <id>https://liyan-ah.github.io/lisp-hello-world/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/lisp-hello-world/">&lt;p&gt;lisp语言的基本表达式为S-表达式。这与受&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;ALGOL&quot;&gt;Algol&lt;&#x2F;a&gt;语言影响的C系语言有很大的不同。显然，这很有趣：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;;the bellow is hello world function in lisp
+  (defun hello-world()
+    &amp;quot;hello world function in lisp&amp;quot;
+    (format t &amp;quot;hello, world!&amp;quot;));```
+由&amp;lt;code&amp;gt;()&amp;lt;&#x2F;code&amp;gt;所包围的内容，为*列表*，其余内容为原子。显然，lisp表达式有很多列表表示（List Processing)。&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+</feed>

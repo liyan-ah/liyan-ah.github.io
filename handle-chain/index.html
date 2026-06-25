@@ -1,0 +1,157 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    一种责任链模式的实现 - 李岩的博客
+  </title><meta name=theme-color><meta content=责任链模式是代码实现中经常使用的设计模式。在涉及到策略处理或者其他的接口实现时，使用责任链模式可以大幅的降低处理的复杂度，而且可以让代码变得更加优美。 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=一种责任链模式的实现 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=责任链模式是代码实现中经常使用的设计模式。在涉及到策略处理或者其他的接口实现时，使用责任链模式可以大幅的降低处理的复杂度，而且可以让代码变得更加优美。 property=og:description><meta content=https://liyan-ah.github.io/handle-chain/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/handle-chain/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">一种责任链模式的实现</h1><div class="text-sm antialiased opacity-60"><time>2026-02-12</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><section><blockquote><p>许久没有写博客了，25年全年都没有更新。估计26年上半年还会继续占用时间，想写点东西还是比较困难的。今天整理了下遇到的比较优美的代码，发出来赏析下。</blockquote><p>责任链模式的常见使用场景是对目标数据需要进行多个独立规则的校验，如请求参数能否解析、参数中的业务指标是否非法、权限信息是否正常等。这种需求一般可以将校验的过程抽象成一个接口，然后将每个校验操作都封装成一个接口的实现，在校验管理器中维护一个注册、校验函数。但是这种方法并不优美，尤其是对于<code>Rust</code>语言来说，<code>Rust</code>本身的链式操作是很优美的，将这些校验操作进行封装，通过链式操作来生效则会比较优雅。<p>如下是其中的一个通用实现。这里<code>Handler</code>是抽象出来的处理接口，而<code>HandlerA</code>是其中的一个实现。通过定义<code>HandlerChainExt</code> 接口以及 <code>Chain</code> 结构体，即可实现在不改变<code>Handler</code>定义以及<code>HandlerA</code>实现的前提下完成链式操作。这无疑是非常优雅的。而且通过下面的单测示例可以看到，<code>.and_then</code>的调用方式极其简洁、明了。<pre><code data-lang=Rust>#[cfg(test)]
+mod tests {
+    use std::fmt::Debug;
+
+    use anyhow;
+    use tracing::tracing::debug;
+
+    #[async_trait]
+    trait Handler: Debug + Send + Sync {
+        type WriteInput: Debug + Send + Sync;
+        type WriteOutput: Debug + Send + Sync;
+        async fn check(&self, input: Self::WriteInput) -> anyhow::Result&lt;Self::WriteOutput>;
+    }
+
+    #[derive(Debug)]
+    struct HandlerA {
+        output: String,
+    }
+
+    impl HandlerA {
+        fn new(output: String) -> Self {
+            Self { output }
+        }
+    }
+
+    #[async_trait]
+    impl Handler for HandlerA {
+        type WriteInput = String;
+        type WriteOutput = String;
+
+        async fn check(&self, input: String) -> Result&lt;String, anyhow::Error> {
+            debug!("handler A, {input}");
+            println!("handler A, input: {input}");
+            println!("hanlder A, output: {input}|{}", self.output);
+            Ok(format!("{input}|{}", self.output))
+        }
+    }
+
+    trait HandlerChainExt: Handler + Sized {
+        fn and_then&lt;T>(self, next: T) -> Chain&lt;Self, T>
+        where
+            T: Handler,
+        {
+            Chain {
+                first: self,
+                second: next,
+            }
+        }
+    }
+
+    impl&lt;T> HandlerChainExt for T where T: Handler {}
+
+    #[derive(Debug)]
+    struct Chain&lt;T, U> {
+        first: T,
+        second: U,
+    }
+
+    impl&lt;T, U> Chain&lt;T, U> {
+        #[allow(dead_code)]
+        fn new(first: T, second: U) -> Self {
+            Self { first, second }
+        }
+    }
+
+    #[async_trait]
+    impl&lt;T, U> Handler for Chain&lt;T, U>
+    where
+        T: Handler,
+        U: Handler&lt;WriteInput = T::WriteOutput>,
+    {
+        type WriteInput = T::WriteInput;
+        type WriteOutput = U::WriteOutput;
+
+        async fn check(&self, input: Self::WriteInput) -> anyhow::Result&lt;Self::WriteOutput> {
+            let output = self.first.check(input).await?;
+            self.second.check(output).await
+        }
+    }
+
+    #[tokio::test]
+    async fn test_handler_chain() {
+        let handler = HandlerA::new("aa".into())
+            .and_then(HandlerA::new("bb".into()))
+            .and_then(HandlerA::new("cc".into()));
+        assert!(handler
+            .check("raw_input".into())
+            .await
+            .is_ok_and(|x| x == "raw_input|aa|bb|cc"));
+    }
+}
+</code></pre><p><code>Rust</code>语言的特点使得很多代码实现显得非常优雅，后面再找一些。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/dai-ma-zhi-mei/>代码之美</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/rust/>Rust</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/she-ji-mo-shi/>设计模式</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/ze-ren-lian-mo-shi/>责任链模式</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/jian-shang/><span class=mr-1.5>←</span><span>翦商</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/migrate-blog-from-hugo-to-zola/><span>从Hugo到Zola——又一次博客迁移</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

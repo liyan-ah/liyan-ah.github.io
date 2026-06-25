@@ -1,0 +1,130 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    go-simplejson 插入数组 - 李岩的博客
+  </title><meta name=theme-color><meta content="go-simplejson 插入数组" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="go-simplejson 插入数组" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="go-simplejson 插入数组" property=og:description><meta content=https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/go-simplejson-cha-ru-shu-zu/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">go-simplejson 插入数组</h1><div class="text-sm antialiased opacity-60"><time>2021-07-22</time><span class=mx-1>·</span><span>1min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#wen-ti-miao-shu>问题描述</a><li><a href=#wen-ti-pai-cha>问题排查</a><li><a href=#jie-jue-fang-an>解决方案</a></ul></details></nav><section><blockquote><p><a rel="noopener nofollow noreferrer external" href=https://github.com/bitly/go-simplejson target=_blank>go-simplejson</a>是go lang语言中操作json非常方便的开源库。最近使用simplejson进行数据插入操作时遇到了问题，经过排查后最终解决。现记录如下。</blockquote><span id=continue-reading></span><h1 id=wen-ti-miao-shu>问题描述</h1><pre><code>// 创建了一个json对象J，需要从其他地方获取剩余json信息后，插入到J中的data字段中。初始版本如下：
+import (
+	"fmt"
+
+	simplejson "github.com/bitly/go-simplejson"
+)
+
+func main() {
+	js, _ := simplejson.NewJson([]byte(`
+{
+"errno": 0,
+"errmsg": "test"
+}`))
+
+	var js_2 = new(simplejson.Json)
+	*js_2 = *js
+	jsArr := []*simplejson.Json{}
+	js1, _ := simplejson.NewJson([]byte(`{"num": 1}`))
+	js2, _ := simplejson.NewJson([]byte(`{"num": 2}`))
+	jsArr = append(jsArr, js1)
+	jsArr = append(jsArr, js2)
+	js.Set("data", jsArr)
+	js.Get("data").GetIndex(0).Set("test", 1)
+	jsB, _ := js.MarshalJSON()
+	fmt.Println(string(jsB)) 
+}
+// % go run js_check.go
+// {"data":[{"num":1},{"num":2}],"errmsg":"test","errno":0}
+</code></pre><h1 id=wen-ti-pai-cha>问题排查</h1><p>经过<code>dlv</code>逐行调试，实际问题出在<code>js.Get("data").GetIndex(0).Set("test", 1)</code>中。跳转至定义，该操作实际做如下转换:<pre><code>arr, ok := js.Get("data").data.([]interface{})
+if ok {
+    &simplejson.Json(arr[index]).Set("test", 1)
+}
+</code></pre><p>这里由于<code>jsArr</code>是<code>[]*simplejson.Json</code>，类型断言为<code>[]interface{}</code>失败。所以无法正常设置值。查看<code>simplejson.go</code>，其中的<code>Json</code>对象结构如下：<pre><code>type Json struct {
+    data interface{}
+}
+</code></pre><p>其实可以通过<code>js.Interface()</code>获取其中的真实数据。<h1 id=jie-jue-fang-an>解决方案</h1><p>变更为如下代码即可：<pre><code>package main
+
+import (
+	"fmt"
+
+	simplejson "github.com/bitly/go-simplejson"
+)
+
+func main() {
+	js, _ := simplejson.NewJson([]byte(`
+{
+"errno": 0,
+"errmsg": "test"
+}`))
+
+	var js_2 = new(simplejson.Json)
+	*js_2 = *js
+	jsArr := []interface{}{}
+	js1, _ := simplejson.NewJson([]byte(`{"num": 1}`))
+	js2, _ := simplejson.NewJson([]byte(`{"num": 2}`))
+	jsArr = append(jsArr, js1.Interface())
+	jsArr = append(jsArr, js2.Interface())
+	js.Set("data", jsArr)
+	js.Get("data").GetIndex(0).Set("test", 1)
+	jsB, _ := js.MarshalJSON()
+	fmt.Println(string(jsB))
+}
+// % go run js_check.go
+// {"data":[{"num":1,"test":1},{"num":2}],"errmsg":"test","errno":0}
+</code></pre></section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/simplejson/>simplejson</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/httpji-websocketxing-neng-dui-bi/><span class=mr-1.5>←</span><span>http及websocket性能对比</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/php-7-1sheng-ji-zhi-7-4jian-rong-xing/><span>PHP-7.1升级至7.4兼容性</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

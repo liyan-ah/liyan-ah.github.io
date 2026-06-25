@@ -1,0 +1,121 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    让emacs在保存文件时自动格式化代码 - 李岩的博客
+  </title><meta name=theme-color><meta content=让emacs在保存文件时自动格式化代码 name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content=让emacs在保存文件时自动格式化代码 property=og:title><meta content=李岩的博客 property=og:site_name><meta content=让emacs在保存文件时自动格式化代码 property=og:description><meta content=https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">让emacs在保存文件时自动格式化代码</h1><div class="text-sm antialiased opacity-60"><time>2022-07-15</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#pei-zhi>配置</a></ul></details></nav><section><blockquote><p><a rel="noopener nofollow noreferrer external" href=https://liam.page/ target=_blank>liam</a>同学在<a rel="noopener nofollow noreferrer external" href=https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/ target=_blank>让 Vim 在保存文件时自动格式化代码</a>一文中展示了保存时自动化格式代码的<code>vim</code>配置。作为<code>emacs</code>用户，自然有自己的解决方案。以下呈现。</blockquote><span id=continue-reading></span><h1 id=pei-zhi>配置</h1><p><code>emacs</code>进行<code>c/c++</code>的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把<a rel="noopener nofollow noreferrer external" href=https://microsoft.github.io/language-server-protocol/ target=_blank><code>lsp</code></a>配置也一并带上了，不同于<a rel="noopener nofollow noreferrer external" href=https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/ target=_blank>emacs-若干语言 lsp 配置备注</a>里的<code>eglot</code>，这里使用的是<code>ccls</code>。直接上配置吧，比较简单：<pre><code>;; 使用国内 elpa 源来加速插件安装
+(defun w-install(pkg)
+  ;; would be a wrapper for package-install
+  (require 'package)
+  (setq package-archives
+	'(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+	   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+  (package-initialize)
+  (package-refresh-contents)
+  (unless (package-installed-p pkg)
+    (package-install pkg)))
+
+;; 辅助判断插件安装通用函数
+(defun ensure-package-installed (&rest packages)
+  "Assure every package was installed, ask for installation if it's not.
+a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+          (if (package-installed-p package)
+              nil
+            (if (y-or-n-p (format "Package %s is missing. Install it?" package))
+                (w-install package)
+              package)))
+   packages))
+
+;; clang-format 在文件保存时格式化代码
+(ensure-package-installed 'clang-format)
+(defun clang-format-on-save-hook()
+  "Create a buffer local save hook."
+  (add-hook 'before-save-hook
+            (lambda ()
+              (when (locate-dominating-file "." ".clang-format")
+                (clang-format-buffer))
+              ;; Continue to save
+              nil)
+            nil
+            ;; Buffer local hook.
+            t))
+
+;; Run this hook for c-mode-hook and c++-mode-hook
+(add-hook 'c-mode-hook   (lambda () (clang-format-on-save-hook)))
+(add-hook 'c++-mode-hook (lambda () (clang-format-on-save-hook)))
+;; create default clang-format file
+;; https://releases.llvm.org/3.6.2/tools/docs/ClangFormatStyleOptions.html
+;; clang-format -style=llvm -dump-config > .clang-format
+
+;; 另外，这里列出使用的 lsp-language-server 配置。
+;; 服务端使用 ccls，客户端则使用 ccls.el。同时将 ccls 作为 c-mode 的hook运行
+;; https://github.com/MaskRay/ccls/wiki/Build
+;; set up lsp-mode for c/c++
+(ensure-package-installed 'ccls)
+(use-package ccls
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda() (require 'ccls) (lsp))))
+
+</code></pre><p>代码格式部分则主要由<code>.clang-format</code>文件控制。其配置方法可以参见官网：<a rel="noopener nofollow noreferrer external" href=https://clang.llvm.org/docs/ClangFormat.html target=_blank>ClangFormat</a>。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/emacs/>emacs</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/lsp/>lsp</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/c-mode/>c-mode</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/clang-format/>clang-format</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/golang-chang-jian-lei-xing-zi-jie-shu/><span class=mr-1.5>←</span><span>golang 常见类型字节数</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/><span>bpftrace 无侵入遍历golang链表</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

@@ -1,0 +1,144 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    bpftrace 遍历 golang 链表（go17+） - 李岩的博客
+  </title><meta name=theme-color><meta content="bpftrace 遍历 golang 链表（go17+）" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="bpftrace 遍历 golang 链表（go17+）" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="bpftrace 遍历 golang 链表（go17+）" property=og:description><meta content=https://liyan-ah.github.io/bpftrace-bian-li-golang-lian-biao-go17/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/bpftrace-bian-li-golang-lian-biao-go17/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">bpftrace 遍历 golang 链表（go17+）</h1><div class="text-sm antialiased opacity-60"><time>2023-11-18</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#yi-zhi-xing-xiao-guo>一、执行效果</a><li><a href=#er-dai-ma>二、代码</a></ul></details></nav><section><blockquote><p>不出意外的，之前提到的 ELF 文件解析内容又拖延了。目前还不知道什么时候有时间能够把希望完成的几篇文章给搞完。翻一翻目前的博客，已经有很久没有更新了。那就水一篇文章吧。目前算是项目里的低谷期，希望能够重拾程序员的意义。</blockquote><p>在<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/07/22/cljb83dlm000ckcs6bp7thrf9/#more target=_blank>bpftrace 无侵入遍历golang链表</a>里，笔者展示了使用<code>bpftrace</code>来遍历<code>golang</code>链表的方法。由于<code>go-17</code>和<code>go-16</code>的函数调用规约存在不同，因此<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2022/07/22/cljb83dlm000ckcs6bp7thrf9/#more target=_blank>bpftrace 无侵入遍历golang链表</a>并不适用于<code>go-17</code>。其实这个问题在<a rel="noopener nofollow noreferrer external" href=https://liyan-ah.github.io/2023/03/03/cljb83dm2001mkcs68hgf9o2s/#more target=_blank>go-1.17+ 调用规约</a>已经提到了解决方案。本文给一个实例，算是更进一步的延伸这个话题，希望能够起到一些效果。</p><span id=continue-reading></span><h1 id=yi-zhi-xing-xiao-guo>一、执行效果</h1><pre><code>$ sudo bpftrace ./link.bt
+Attaching 1 probe...    // 在触发目标程序前，停止在这里
+// 触发目标程序后，输出
+== enter main.showNode
+name: Alice, age: 11
+name: Bob, age: 12
+name: Claire, age: 13
+== end
+
+// 目标程序执行结果
+$ ./link
+name: Alice, age: 11
+name: Bob, age: 12
+name: Claire, age: 13
+</code></pre><p>需要注意的是，笔者的验证环境为：<pre><code>Linux 4.18.0-193.el8.x86_64
+go version go1.17 linux/amd64
+bpftrace v0.14.0-72-g6761-dirty
+</code></pre><p>由于不同的<code>CPU</code>架构下，寄存器的信息会有所不同。本文中所涉及的代码示例仅在<code>amd64</code>里有效。<h1 id=er-dai-ma>二、代码</h1><p>本文涉及两部分代码：目标的<code>go</code>代码以及<code>bpftrace</code>代码。<pre><code>// link/main.go
+package main
+
+import "fmt"
+
+type Node struct {
+	Name string
+	Age  int64
+	Next *Node
+}
+
+//go:noinline
+func showNode(head *Node) {
+	var cur = head
+	for cur != nil {
+		fmt.Printf("name: %s, age: %d
+", cur.Name, cur.Age)
+		cur = cur.Next
+	}
+	return
+}
+
+func main() {
+	var node = &Node{
+		Name: "Alice",
+		Age:  11,
+		Next: &Node{
+			Name: "Bob",
+			Age:  12,
+			Next: &Node{
+				Name: "Claire",
+				Age:  13,
+				Next: nil,
+			},
+		},
+	}
+	showNode(node)
+}
+</code></pre><p><code>bpftrace</code>代码为：<pre><code>// link/link.bt
+// 这里，符号使用双引号包裹起来是个好习惯
+uprobe:./link:"main.showNode"
+{
+  printf("== enter main.showNode
+");
+  $head_ptr = reg("ax");
+  unroll(10){
+    $name_ptr = *(uint64*)($head_ptr+0);
+    $name_len = *(uint64*)($head_ptr+8);
+    $age_v = *(int64*)($head_ptr+16);
+    printf("name: %s, age: %d
+", str($name_ptr, $name_len), $age_v);
+
+    // set head = next
+    $head_ptr = *(uint64*)($head_ptr+24);
+    if ($head_ptr == 0){
+        printf("== end
+");
+        return;
+    }
+  }
+}
+</code></pre><p>以上。周末愉快。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpftrace/>bpftrace</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/ebpf-tail-calls/><span class=mr-1.5>←</span><span>eBPF tail-calls示例</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/wei-shen-me-wo-men-wu-fa-zhui-zong-golang-channel/><span>如何追踪golang channel?</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

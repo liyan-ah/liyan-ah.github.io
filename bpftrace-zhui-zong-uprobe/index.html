@@ -1,0 +1,169 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    bpftrace 无侵入遍历golang链表 - 李岩的博客
+  </title><meta name=theme-color><meta content="bpftrace 无侵入遍历golang链表" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="bpftrace 无侵入遍历golang链表" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="bpftrace 无侵入遍历golang链表" property=og:description><meta content=https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/bpftrace-zhui-zong-uprobe/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">bpftrace 无侵入遍历golang链表</h1><div class="text-sm antialiased opacity-60"><time>2022-07-22</time><span class=mx-1>·</span><span>2min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#zhi-xing-jie-guo>执行结果</a><li><a href=#shi-li-shuo-ming>示例说明</a></ul></details></nav><section><blockquote><p><code>bpftrace</code> 基于 <code>bcc</code> 进行开发的工具，语法简洁、功能强大。用其分析<code>Linux</code> 环境下的程序会很方便。本文构造了一个入参为链表头节点的函数使用场景，通过使用<code>bpftrace</code>无侵入遍历链表成员的方式，介绍<code>bpftrace</code> <code>attach uprobe</code> 的使用。更多使用说明见:<a rel="noopener nofollow noreferrer external" href=https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md target=_blank>bpftrace官网使用文档</a></blockquote><span id=continue-reading></span><h1 id=zhi-xing-jie-guo>执行结果</h1><p>下面直接给出执行结果。可以看到，通过<code>bpftrace</code>脚本输出的结果与代码中实际遍历的结果相同。<pre><code>sudo ./handle.bt  // 先启动监听
+Attaching 1 probe...  // 启动后停止在这里
+=== enter main.handle.  // 目标程序执行后输出
+name: Alice
+age : 10
+name: Bob
+age : 11
+name: Claire
+age : 12
+=== total node: 3
+
+./demo  // 再执行目标程序
+cur name: Alice, cur aget: 10
+cur name: Bob, cur aget: 11
+cur name: Claire, cur aget: 12
+</code></pre><h1 id=shi-li-shuo-ming>示例说明</h1><p>系统环境如下：<pre><code>Linux 4.18.0-193.6.3.el8_2.v1.2.x86_64
+bpftrace v0.14.0-72-g6761-dirty
+go version go1.16.15 linux/amd64
+</code></pre><p>示例环境目录：<pre><code>.
+├── demo
+├── go.mod
+├── handle.bt
+└── main.go
+</code></pre><p>其中：<pre><code>// main.go
+package main
+
+import (
+    "context"
+    "fmt"
+)
+
+type Student struct {
+    Name string
+    Age  int64
+    // Comment [600]Byte 这样会使得这个问题变得很麻烦，hhh
+    Next *Student
+}
+
+// 添加如下配置以防止函数被编译优化掉
+//go:noinline
+func handle(ctx context.Context, student *Student) {
+    for cur := student; cur != nil; cur = cur.Next {
+        fmt.Printf("cur name: %s, cur aget: %d
+", cur.Name, cur.Age)
+    }
+    return
+}
+
+func main() {
+    first := &Student{
+        Name: "Alice",
+        Age:  10,
+        Next: &Student{
+            Name: "Bob",
+            Age:  11,
+            Next: &Student{
+                Name: "Claire",
+                Age:  13,
+                Next: nil,
+            }}}
+    handle(context.Background(), first)
+}
+</code></pre><pre><code>// handle.bt
+#!/bin/bpftrace
+
+// 当目标结构体较小时(使得整体栈开销 &lt; 512Byte)，可以直接构造使用
+struct student{
+    u64 name_ptr;
+    u64 name_length;
+    long  age;
+    struct student *next;
+};
+
+uprobe:./demo:"main.handle"
+{
+    printf("=== enter main.handle.
+");
+
+    $cur = (struct student *)sarg2;
+    if ($cur == 0){
+        printf("input param is nil.
+");
+        return;
+    }
+    $node_count = 1;
+    unroll(10){  // 这里定义的最大节点数量为10
+        printf("name: %s
+", str($cur->name_ptr, $cur->name_length));
+        printf("age : %d
+", $cur->age);
+        $cur = $cur->next;
+        if ($cur == 0){
+            printf("=== total node: %d
+", $node_count);
+            return;
+        }
+        $node_count += 1;
+    }
+
+    printf("==== meet max
+");
+    return;
+}
+</code></pre><p>在编译完成<code>main.go</code>后，通过<code>sudo bpftrace -l "uprobe:./demo:*" > uprobe.info</code>的方式，可以获取<code>demo</code>中所有可以<code>attach</code>的<code>uprobe</code>信息。这里说明下取<code>student*</code>指针值时，为什么取<code>sarg3</code>。<code>bpftrace</code>中对内存传参的参数支持是<code>sarg0, sarg1, sarg2...</code>，且每个参数实际只对应<code>8Byte</code>大小的空间。对于<code>func handle(ctx context.Context, student *Student)</code>函数来说，由于<code>context.Context</code>实际占用<code>2*8Byte</code>的空间（见<a rel="noopener nofollow noreferrer external" href=https://blacker1230.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/ target=_blank>golang常见类型字节数</a>)，因此需要使用<code>sarg2</code>来取<code>student</code>的值，而非直觉上的<code>sarg1</code>。<br> 整个过程比较简单、明了。只要拥有<code>root</code>权限，基本上可以对系统内的任何进程进行详细的分析。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/bpf/>bpf</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/uprobe/>uprobe</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/bpf/>bpf</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/><span class=mr-1.5>←</span><span>让emacs在保存文件时自动格式化代码</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/x86-64-chuan-can-fang-shi/><span>x86_64 寄存器传参方式</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

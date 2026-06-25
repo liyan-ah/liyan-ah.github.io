@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - problem</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/problem/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-04-20T17:11:31+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/problem/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>合并区间</title>
+        <published>2024-04-20T17:11:31+08:00</published>
+        <updated>2024-04-20T17:11:31+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/merge-range/"/>
+        <id>https://liyan-ah.github.io/merge-range/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;很久没有找工作的经历了，反而由于种种原因，最近接触了一些候选人。总体的感觉是最近是越来越卷了。
+候选人的的水平明显比笔者毕业的时候高的多，也可能是笔者太菜了。其中一个合并区间的问题，笔者看到了
+一个很有意思的解法。在这里记录下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;《合并区间》问题的思路很明显：排序、合并。笔者最近见到了一种特殊场景下很有意思的解法：在数据范围较小的情况下，使用桶的思想来
+解决，就不再需要进行排序了。算法复杂度也从时间复杂度&lt;code&gt;o(nlgn)&lt;&#x2F;code&gt;降到了&lt;code&gt;o(n)&lt;&#x2F;code&gt;。这里记录下。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

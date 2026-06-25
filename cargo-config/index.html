@@ -1,0 +1,104 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    Cargo config 使用备注 - 李岩的博客
+  </title><meta name=theme-color><meta content="本文备注下如何配置 Cargo dependencies 为指定仓库。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="Cargo config 使用备注" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="本文备注下如何配置 Cargo dependencies 为指定仓库。" property=og:description><meta content=https://liyan-ah.github.io/cargo-config/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/cargo-config/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">Cargo config 使用备注</h1><div class="text-sm antialiased opacity-60"><time>2024-05-07</time><span class=mx-1>·</span><span>9min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#ru-he-pei-zhi-dependencies-de-lu-jing>如何配置 dependencies 的路径？</a><li><a href=#dependences-mo-ren-la-qu-shen-me-ban-ben>dependences 默认拉取什么版本？</a><li><a href=#dependences-pei-zhi-de-zui-jia-shi-jian>dependences 配置的最佳实践？</a></ul></details></nav><section><p>本文旨在回答如下问题：<ol><li>Rust 项目中，如何配置 dependencies 的路径为指定仓库。<li>在不指定 branch 或 version 的情况下，dependencies 会拉取什么版本/仓库里的数据。<li>Rust 项目中，配置 dependencies 的最佳实践。</ol><p>以下为正文。<h2 id=ru-he-pei-zhi-dependencies-de-lu-jing>如何配置 dependencies 的路径？</h2><p>出于稳定性考虑，工作中使用的项目，尤其是一些开源的项目，往往无法和社区时刻保持一致。甚至，在选定了一个基线版本后，以周或者年计，主干会持续保持这个版本。有一些效果较好的“新特性”需要合入时，就需要以 patch 的形式合入。同样出于稳定性考虑， 或者兼容性考虑，服务的依赖，甚至依赖的依赖都是无法进行升级的。如果项目的新特性需要依赖库进行变更，就只能将依赖库的基线版本单独维护，按需合入依赖库的 patch。这样的维护方式看起来较为繁琐，但是能够有效避免项目因依赖库的升级而引入新的问 题。<br> 有了这样的需求，对应到 Rust 项目中，就需要对 Cargo.toml 里的 dependencies 配置进行调整，将部分依赖调整为自有库。 参照<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html target=_blank>reference/specifying-dependencies</a>，可以通过如下方式来指定依赖库：<pre><code data-lang=Rust>[dependencies]
+regex = { version = "1.10.3", git = "https://github.com/rust-lang/regex.git", branch = "next", rev = "0c0990399270277832fbb5b91a1fa118e6f63dba", tag = "11.10.4" }
+</code></pre><p>除了 git，version、branch、rev 以及 tag 都是可选的，补充四者中的一个参数即可实现分支提交控制的目的。在实践过程中，考虑到分支上的提交是时刻进行的，在确认了基础的功能后，可以考虑发布一个版本。一来可以通过 tag 来进行版本/功能的 发布控制，同时也便于后续的功能梳理以及项目整理关键里程碑可视化。通过 branch 来指定依赖库会比较方便，这种方式对仓库的开发流程管理较为依赖：如果分支上提交了功能异常的代码，项目的编译就会异常。rev 方案也可以唯一指定代码版本，只是看起来 不像 tag 那样直观。<h2 id=dependences-mo-ren-la-qu-shen-me-ban-ben>dependences 默认拉取什么版本？</h2><p>笔者在近期的工作中，遇到了如下的配置方式：<pre><code data-lang=Rust>[dependencies]
+regex = { git = "https://github.com/rust-lang/regex.git" }
+</code></pre><p>这里并没有指定 version, branch 或者 rev。但是在编译项目时也会进行拉取的动作。默认会拉取目标仓库的最新提交（效果和直接 git clone 一致）。<br> 在复杂的项目中，通常会出现依赖库和依赖库的依赖有重合的情况。而Rust 工程在编译时，会通过校验目标库的 source 信息（Cargo.lock 中生成）来识别两个库是相同。当项目的依赖库的 dependence 配置和项目依赖库的依赖的 dependence 配置不同时， 就会出现种种类型不兼容的情况。比如，目前有这样的一个项目<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/dep-check target=_blank>dep-check</a>，其依赖 <a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/trait-lib target=_blank>trait-lib</a>和<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/middle-lib target=_blank>middle-lib</a>两个库。同时，<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/middle-lib target=_blank>middle-lib</a>又对 <a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/trait-lib target=_blank>trait-lib</a>存在依赖。当<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/dep-check target=_blank>dep-check</a>使用了<code>trait_lib::Check</code>，并且将该<code>trait</code>通过引用 <a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/middle-lib target=_blank>middle-lib</a>里的函数进行处理时，就涉及到<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/dep-check target=_blank>dep-check</a>和<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/middle-lib target=_blank>middle-lib</a>对<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/trait-lib target=_blank>trait-lib</a>的引用校验问题：两个库里涉及的<code>Check</code>是否是同一个<code>Trait</code>？就笔者目前的理解来看，由于 rust 里的 trait 采用的不是 duck-typing，因此就需要编译器在编译时对类型进行强校验。在这个小示例中，如果 middle-lib 的 dependencies 设置如下：<pre><code data-lang=Rust>[dependencies]
+trait-lib = { git = "https://github.com/liyan-ah/trait-lib.git", tag = "1.0.0" }
+</code></pre><p>而 dep-check 的 dependencies 设置如下：<pre><code data-lang=Rust>[dependencies]
+trait-lib = { git = "https://github.com/liyan-ah/trait-lib.git", tag = "1.0.0" }
+middle-lib = { git = "https://github.com/liyan-ah/middle-lib.git" } # 注意，这种配置方式在 Cargo.lock 生成后，除非使用 cargo update 触发更新，否则依赖版本不会随着代码提交而更新。
+</code></pre><p>dep-check 编译时，其引用的<code>trait_lib::Check</code>和 middle-lib 里使用的<code>trait_lib::Check</code>就无法认为是同一个（即使实际上代码的提交是同一个）。依赖库的设置可以通过 Cargo.lock 里的 source 来确认。当 dep-check 和 middle-lib 的 Cargo.lock 对 trait-lib 的 source 配置相同时，就不会出现类型不一致的问题。<br> 由于使用了 tag / rev / branch 来作为 dependencies 的配置，一个问题是当 trait-lib 发生更新时，需要同时升级 middle-lib 和 dep-check 这两个仓库。否则就会出现版本不一致而编译失败的情况。如果使用 version 控制，由于 version 实际 上表示的是一个<a rel="noopener nofollow noreferrer external" href=https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-cratesio target=_blank>范围</a>，只要 update 后的依赖库是同一个版本即可（准确来说，x.y.z 中的 x.y 保持一致即可），可 以在 cargo update 后检查 dep-check 的 Cargo.lock 中存在几个 trait-lib。在仅存在一个 trait-lib 时，说明依赖库不存在版本冲突，此时不需要更新 middle-lib 中的 Cargo.toml。<p>配置的问题在这里有描述：<a rel="noopener nofollow noreferrer external" href=https://github.com/rust-lang/cargo/issues/11490 target=_blank>The dependency resolution is confused when using git dependency and there's a lockfile</a>。<blockquote><p>duck-typing 的接口在校验时还比较简单，只需要检查是否实现了目标类型/接口定义的函数即可。但是对于非 duck-typing，情况会复杂些：不同的库里是允许出现同名的 trait 的。如何确定项目中实现的 trait 和引用库中需要的 trait 是同一个 trait？这就需要确保项目中 trait 的来源库和引用库中所需要的 trait 来源库是相同的。而看起来，库是否相同，又是通过 source 来确定的。Cargo.toml 中的 source 毕竟是一个工程里的概念，是如何影响编译的呢？是否是编译过程中，函数签名里带着一些source 信息？还需要进一步的探索，期望能够整理成文档。</blockquote><h2 id=dependences-pei-zhi-de-zui-jia-shi-jian>dependences 配置的最佳实践？</h2><p>golang 和 rust 都支持通过配置 git 仓库的地址来直接引用，个人还是比较喜欢 rust 的配置方式：通过 Cargo.toml 能够简洁、明了的声明各种依赖的信息，在工程里可以直接使用库名（而非 golang 里的项目地址）。此外，rust 里的 workspace 机制 对仓库里存在多个 sub-lib 时也能较好的处理依赖的管理。<br> 下面是一个实践示例<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/dep-check target=_blank>dep-check</a>：<pre><code data-lang=Rust>[workspace]
+members = [
+    "dep-check",
+    "dep-run",
+]
+
+default-members = ["dep-check"]
+resolver = "2"
+
+[workspacepackage]
+name = "dep-check"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace.dependencies]
+trait-lib = { git = "https://github.com/liyan-ah/trait-lib.git", tag = "1.0.0" }
+middle-lib = { git = "https://github.com/liyan-ah/middle-lib.git", tag = "1.0.0" }
+</code></pre><p>对于其中的一个 member:dep-check，其配置为：<pre><code data-lang=Rust>[package]
+name = "dep-check"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+trait-lib = { workspace = true }
+middle-lib = { workspace = true }
+</code></pre><p>这样，就能很便捷的对项目里的依赖进行管理了。<p>以上。</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>Code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/rust/>Rust</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/cargo/>Cargo</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/merge-range/><span class=mr-1.5>←</span><span>合并区间</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/><span>Emacs 字符操作快捷键</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

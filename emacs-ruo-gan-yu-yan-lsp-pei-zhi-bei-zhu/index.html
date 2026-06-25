@@ -1,0 +1,121 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    emacs-若干语言 lsp 配置备注 - 李岩的博客
+  </title><meta name=theme-color><meta content="emacs-若干语言 lsp 配置备注" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="emacs-若干语言 lsp 配置备注" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="emacs-若干语言 lsp 配置备注" property=og:description><meta content=https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">emacs-若干语言 lsp 配置备注</h1><div class="text-sm antialiased opacity-60"><time>2021-10-12</time><span class=mx-1>·</span><span>4min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#rust>rust</a><li><a href=#golang>golang</a><li><a href=#python>python</a><li><a href=#c-c>c/c++</a><li><a href=#shi-yong-de-yi-dian-bei-zhu>使用的一点备注</a> <ul><li><a href=#lsp-de-guan-li-dan-wei-shi-wen-jian-mu-lu>lsp 的管理单位是文件目录</a><li><a href=#qi-ta-bei-zhu>其他备注</a></ul><li><a href=#can-kao-wen-xian>参考文献</a></ul></details></nav><section><blockquote><p>微软推出的<a href="https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20" rel="noopener nofollow noreferrer external" target=_blank>language server protol</a> 确实提升了文本编辑器的使用体验。就 <code>emacs</code> 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 <code>emacs</code> 中的 rust, golang, python, c/c++ lsp 配置</blockquote><span id=continue-reading></span><h1 id=rust>rust</h1><p>这里使用 <code>rust-analyzer</code> 作为 <code>rust</code> 的语言服务器，在安装 <code>rust-mode</code>后，通过绑定语言服务器信息，即可在打开由 <code>cargo</code> 创建的工程时，顺利进入 <code>lsp-mode</code>。需要关注的是，在非<code>cargo</code>创建的项目中，笔者的<code>lsp-mode</code>使用体验很差，甚至缺少代码补充、语法提示等功能。可能是<code>rust-analyzer</code>主要是针对<code>cargo</code>项目进行的设置，也可能是笔者设置的问题。<pre><code>;; config for rust-lsp for emacs
+;; rls install address: https://github.com/rust-lang-nursery/rls
+(unless (package-installed-p 'rust-mode)
+  (w-install 'rust-mode))
+(add-to-list 'auto-mode-alist '("\.rs\'" . rust-mode))
+(add-hook 'rust-mode-hook 'lsp)
+(unless (package-installed-p 'rustic)
+  (w-install 'rustic))
+(unless (package-installed-p 'cargo)
+  (w-install 'cargo))
+(use-package rustic) ; lsp-compatible rust mode
+(add-hook 'rust-mode-hook 'rustic-mode)
+(add-hook 'rustic-mode-hook
+  (lambda ()
+    (setq rustic-lsp-server 'rust-analyzer) ; not rls
+    (setq lsp-rust-analyzer-server-command '("/opt/homebrew/bin/rust-analyzer"))
+                                        ;(setq rustic-format-on-save t) ; has annoying bug move point to other buffer bug
+  (setq rustic-indent-offset 4)
+    (setq rustic-match-angle-brackets nil)
+    ;; thought this would be better, was wrong.
+    ;(setq rustic-compile-display-method 'popwin:display-buffer-1) ; display if possible in popup-win
+    ))
+(use-package cargo)
+(setq lsp-rust-server 'rust-analyzer)
+</code></pre><h1 id=golang>golang</h1><p><code>golang</code>作为谷歌的亲儿子，是拥有官方维护的语言服务器的。而且<code>gopls</code>的使用体验非常好，完全不逊色与目前用户较多的<code>goland</code>及<code>vscode</code>。配合<code>dlv-mode</code>使用，在调试上笔者认为能够更加的贴合<code>unix</code>风格，也更加方便。<pre><code>;; Go - lsp-mode
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; go install github.com/golang/tools/cmd/gopls
+;;(require 'lsp-mode)
+(setq lsp-ui-mode nil)
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Start LSP Mode and YASnippet mode
+(add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook #'yas-minor-mode)
+</code></pre><h1 id=python>python</h1><p><code>python</code>的语言服务器，笔者目前使用的是<code>lsp-python-ms</code>进行配置的。这个插件解决了很多<code>python lsp</code>的问题（实际上，在碰到这个插件之前，笔者一度要放弃安装<code>python lsp</code>）。由于<code>python</code>是解释型语言，对象的成员都较为灵活，一般编码阶段很难确认对象的成员及其确切的类型。所以在<code>pylsp</code>使用过程中，往往会碰到无法有效提示的情况。满足一般提示需求吧。<pre><code>;;; set env for python
+;; copied from
+;; https://gitee.com/nutora-emacs/lsp-python-ms
+;; python lsp-server use python-lsp-server
+;; install as: pip3 install python-lsp-server
+(ensure-package-installed 'lsp-python-ms)
+(require 'lsp-python-ms)
+(setq lsp-python-ms-auto-install-server t)
+(add-hook 'python-mode-hook #'lsp)
+</code></pre><h1 id=c-c>c/c++</h1><p>实际上，笔者很喜欢<code>c/c++</code>的语言服务器，简单、方便，安装时无比的顺畅。完全符合笔者对<code>c</code>语言简单、强大、靠谱的印象。<pre><code>;; set up lsp-mode for c/c++
+;; brew install llvm
+;; https://clangd.llvm.org/installation
+(unless (package-installed-p 'eglot)
+  (w-install 'eglot))
+(require 'eglot)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+</code></pre><h1 id=shi-yong-de-yi-dian-bei-zhu>使用的一点备注</h1><p>这里唠叨一点<h2 id=lsp-de-guan-li-dan-wei-shi-wen-jian-mu-lu>lsp 的管理单位是文件目录</h2><p>这里对于<code>golang</code>及<code>rust</code>尤为明显。在使用<code>emacs</code>打开一个关联了有效语言服务器的文件时，底部会提示为当前文件选择一个工作目录。尤其是，当路径<code>A</code>已经设为工作目录时，再将<code>A/B</code>设为工作目录，<code>A/B</code>的打开状态是会出现异常的。所以尽量保持每个工作目录的独特。<br> 这里附上一些<code>emacs lsp-mode</code>中笔者常用的函数：<table><thead><tr><th>指令<th>说明<tbody><tr><td><code>lsp-workspace-folders-remove</code><td>将工作目录移除<tr><td><code>lsp-workspace-folders-add</code><td>添加工作目录<tr><td><code>lsp-workspace-restart</code><td>重启工作目录</table><h2 id=qi-ta-bei-zhu>其他备注</h2><p>当安装了一个语言的<code>lsp</code>服务及对应的<code>emacs</code>客户端配置时，如果打开对应语言的文件发现<code>lsp</code>没有生效，且打开<code>toggle-debug-on-error</code>设置开启也没有发现任何报错，笔者建议重启<code>emacs</code>。似乎<code>emacs</code>热加载功能往往不会如人所愿。<h1 id=can-kao-wen-xian>参考文献</h1><p><a rel="noopener nofollow noreferrer external" href=https://emacs-lsp.github.io/lsp-mode/ target=_blank>emacs lsp mode</a><br> 及其他网络文献</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/code/>code</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/emacs/>emacs</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/lsp/>lsp</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/golang/>golang</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/rust/>rust</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/python/>python</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/c-c/>c/c++</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/redisgo-lian-jie-bao-cuo/><span class=mr-1.5>←</span><span>redisgo 连接报错</span></a><a class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline" href=https://liyan-ah.github.io/quicxie-yi/><span>Quic协议</span><span class=ml-1.5>→</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>

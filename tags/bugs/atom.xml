@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - bugs</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/bugs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-12T11:02:00+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/bugs/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>BPF LRU_HASH_MAP 及 HASH_MAP 的使用异常</title>
+        <published>2024-03-12T11:02:00+08:00</published>
+        <updated>2024-03-12T11:02:00+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/bpf-lru-hash-map-ji-hash-map-de-shi-yong-yi-chang/"/>
+        <id>https://liyan-ah.github.io/bpf-lru-hash-map-ji-hash-map-de-shi-yong-yi-chang/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;BPF 技术看起来还有很多不易察觉的缺陷。最近又踩了一个坑。记录下。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;code&gt;LRU_HASH_MAP&lt;&#x2F;code&gt; 在实现的时候，出现了不符合预期的数据驱逐问题：设定一个 512 大小的&lt;code&gt;LRU_HASH_MAP&lt;&#x2F;code&gt;，很可能出现在40-50个&lt;code&gt;key&lt;&#x2F;code&gt;的时候，之前的&lt;code&gt;key&lt;&#x2F;code&gt;就被覆盖。在一段时间未更新时，重新更新也可能会出现异常。总结就是，执行了写入操作，很可能没有写入。这个问题在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;75882443&#x2F;elements-incorrectly-evicted-from-ebpf-lru-hash-map&quot;&gt;Elements incorrectly evicted from eBPF LRU hash map&lt;&#x2F;a&gt;有较为详细的描述。&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 大模型实践</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/da-mo-xing-shi-jian/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-03-15T17:24:25+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/da-mo-xing-shi-jian/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>大模型使用中遇到的坑——HTTP query 参数探讨</title>
+        <published>2026-03-15T17:24:25+08:00</published>
+        <updated>2026-03-15T17:24:25+08:00</updated>
+        
+        <author>
+          <name>
+            
+              李岩
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/http-protocol/"/>
+        <id>https://liyan-ah.github.io/http-protocol/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/http-protocol/">&lt;p&gt;大模型就像是一个无所不知的助手，给它的任何任务都可以快速的完成。通过收集一些和大模型交互过程中不符合预期的案例，既可以提升和大模型的协作效率，也可以对自己的知识进行检验。&lt;&#x2F;p&gt;
+&lt;p&gt;最近遇到的一个案例是，需要提供一个&lt;code&gt;HTTP&lt;&#x2F;code&gt;服务的接口，同事使用大模型给出的接口定义示例是：&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code data-lang=&quot;http&quot;&gt;GET &#x2F;path?a=1&amp;amp;b=2&amp;amp;a=2&amp;amp;a=3
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;这里的问题，在&lt;code&gt;query&lt;&#x2F;code&gt;参数中出现了&lt;code&gt;a&lt;&#x2F;code&gt;的多次赋值。这个接口很可能是大模型结合代码中实际使用的服务框架给出来的，服务框架中对&lt;code&gt;query&lt;&#x2F;code&gt;参数重复时，可能会返回所有的值而非第一个或者最后一个。本文章就对&lt;code&gt;HTTP&lt;&#x2F;code&gt;的&lt;code&gt;query&lt;&#x2F;code&gt;参数进行说明吧。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;xie-yi-yue-ding&quot;&gt;协议约定&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;HTTP&lt;&#x2F;code&gt;的结构在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.rfc-editor.org&#x2F;rfc&#x2F;rfc3986#page-16&quot;&gt;rfc3986#page-16&lt;&#x2F;a&gt;中约定如下所示，&lt;code&gt;query&lt;&#x2F;code&gt;部分，也就是&lt;code&gt;URI&lt;&#x2F;code&gt;中&lt;code&gt;?&lt;&#x2F;code&gt;之后、&lt;code&gt;#&lt;&#x2F;code&gt;之前的这部分，则是我们要关注的。但是在[rfc3968]中没有进一步的对&lt;code&gt;qeury&lt;&#x2F;code&gt;的约定。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;  foo:&#x2F;&#x2F;example.com:8042&#x2F;over&#x2F;there?name=ferret#nose
+  \_&#x2F;   \______________&#x2F;\_________&#x2F; \_________&#x2F; \__&#x2F;
+   |           |            |            |        |
+scheme     authority       path        query   fragment
+   |   _____________________|__
+  &#x2F; \ &#x2F;                        \
+  urn:example:animal:ferret:nose
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;对&lt;code&gt;HTTP&#x2F;1.1&lt;&#x2F;code&gt;的约定则可以在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.rfc-editor.org&#x2F;rfc&#x2F;rfc7230.html&quot;&gt;rfc7230&lt;&#x2F;a&gt;中找到，其中定义的&lt;code&gt;HTTP&lt;&#x2F;code&gt;协议如下的（1）所示。通过对&lt;code&gt;HTTP-message&lt;&#x2F;code&gt;继续拆解，本次我们关注的&lt;code&gt;query&lt;&#x2F;code&gt;则是在&lt;code&gt;request-target&lt;&#x2F;code&gt;部分。&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;（1）
+HTTP-message   = start-line
+                 *( header-field CRLF )
+                 CRLF
+                 [ message-body ]
+
+（2）
+start-line     = request-line &#x2F; status-line
+
+（3）
+request-line   = method SP request-target SP HTTP-version CRLF
+
+（4）
++---------+-------------------------------------------------+-------+
+| Method  | Description                                     | Sec.  |
++---------+-------------------------------------------------+-------+
+| GET     | Transfer a current representation of the target | 4.3.1 |
+|         | resource.                                       |       |
+| HEAD    | Same as GET, but only transfer the status line  | 4.3.2 |
+|         | and header section.                             |       |
+| POST    | Perform resource-specific processing on the     | 4.3.3 |
+|         | request payload.                                |       |
+| PUT     | Replace all current representations of the      | 4.3.4 |
+|         | target resource with the request payload.       |       |
+| DELETE  | Remove all current representations of the       | 4.3.5 |
+|         | target resource.                                |       |
+| CONNECT | Establish a tunnel to the server identified by  | 4.3.6 |
+|         | the target resource.                            |       |
+| OPTIONS | Describe the communication options for the      | 4.3.7 |
+|         | target resource.                                |       |
+| TRACE   | Perform a message loop-back test along the path | 4.3.8 |
+|         | to the target resource.                         |       |
++---------+-------------------------------------------------+-------+
+
+（5）
+request-target = origin-form
+               &#x2F; absolute-form
+               &#x2F; authority-form
+               &#x2F; asterisk-form
+               
+（6）
+origin-form    = absolute-path [ &amp;quot;?&amp;quot; query ]
+
+请求 http:&#x2F;&#x2F;www.example.org&#x2F;where?q=now 的 HTTP-message 为：
+GET &#x2F;where?q=now HTTP&#x2F;1.1
+Host: www.example.org
+
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;对&lt;code&gt;request-target&lt;&#x2F;code&gt;部分在定义在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.rfc-editor.org&#x2F;rfc&#x2F;rfc7230.html#section-5.3&quot;&gt;rfc7230#5.3&lt;&#x2F;a&gt;，这里列举了四种&lt;code&gt;request-target&lt;&#x2F;code&gt;类型。一般业务使用时填充的是&lt;code&gt;origin-form&lt;&#x2F;code&gt;，在设置了代理的情况下会使用&lt;code&gt;absolute-form&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;这里的问题是，&lt;code&gt;HTTP&lt;&#x2F;code&gt;原始约定中没有对&lt;code&gt;query&lt;&#x2F;code&gt;的格式进行约定。&lt;code&gt;query&lt;&#x2F;code&gt;的具体解析方式依赖于&lt;code&gt;http-server&lt;&#x2F;code&gt;的具体实现，这就会产生一些细微的差异。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;http-server-shi-xian&quot;&gt;http-server 实现&lt;&#x2F;h2&gt;
+&lt;p&gt;通过大模型的汇总，常见的处理模式如下：&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align: left&quot;&gt;处理方式&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: left&quot;&gt;示例&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: left&quot;&gt;典型框架&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;最后值优先&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;code&gt;a=1&amp;amp;a=2&lt;&#x2F;code&gt; → &lt;code&gt;a=2&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;PHP（默认）、Express.js&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;第一值优先&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;code&gt;a=1&amp;amp;a=2&lt;&#x2F;code&gt; → &lt;code&gt;a=1&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;较少见&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;数组&#x2F;列表&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;code&gt;a=1&amp;amp;a=2&lt;&#x2F;code&gt; → &lt;code&gt;a=[1, 2]&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;Python、Ruby、Java Spring&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;合并为字符串&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;code&gt;a=1&amp;amp;a=2&lt;&#x2F;code&gt; → &lt;code&gt;a=&quot;1,2&quot;&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;某些旧系统&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;报错&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;返回 400 Bad Request&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: left&quot;&gt;严格验证的 API&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;可以看到，具体的语言、框架可能对&lt;code&gt;query&lt;&#x2F;code&gt;中重复参数的处理不同。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ying-xiang&quot;&gt;影响&lt;&#x2F;h2&gt;
+&lt;p&gt;这个重复参数的接口约定没有实际使用，我们最终采取了&lt;code&gt;POST&lt;&#x2F;code&gt;+&lt;code&gt;json request body&lt;&#x2F;code&gt;的方式来约定了一版新的接口，使用了更为确定且清晰的约定。假设使用了大模型给出的原始版本，可能客户端的大模型会按照接口的约定来设定请求、服务端的大模型大模型按照接口的约定来进行处理。假设未来对这个服务的接口进行重构，新的语言&#x2F;框架对于重复参数仅取最后一个值，而客户端感知不到这一变更，这就会产生功能上的混淆。&lt;&#x2F;p&gt;
+&lt;p&gt;或许在使用大模型进行编程时，至少需要对接口的约定进行详尽的沟通，或者让大模型判断下潜在的兼容性影响。可能添加一些&lt;code&gt;SKILL&lt;&#x2F;code&gt;会好一些。大模型使用带来的一个影响是代码量的膨胀、服务数量的膨胀，在宏观角度下、大模型的&lt;code&gt;SKILL&lt;&#x2F;code&gt;不完全相同，一些细微的概念或者约定的差异可能就会给系统带来影响。又或者，未来程序员需要维护大模型的统一&lt;code&gt;SKILL&lt;&#x2F;code&gt;，其他的&lt;code&gt;agent&lt;&#x2F;code&gt;则在这一共享&lt;code&gt;SKILL&lt;&#x2F;code&gt;的共识下进行协作。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
