@@ -14,16 +14,16 @@ path = "about"
 王羲之（兰亭集序）
 </p>
 
-{% admonition(type="success", title="基础信息") %}
+{% <admonition type="success" title="基础信息"> %}
 
 - 后端工程师
 - 混迹于信息科技企业
 - 人菜瘾大
 - Github：<https://github.com/liyan-ah>
 
-{% end %}
+{% </admonition> %}
 
-{% admonition(type="note", title="专业知识") %}
+{% <admonition type="note" title="专业知识"> %}
 
 <details>
 <summary>行业知识</summary>
@@ -104,9 +104,9 @@ path = "about"
 - Learning...
 </details>
 
-{% end %}
+{% </admonition> %}
 
-{% admonition(type="tip", title="兴趣爱好") %}
+{% <admonition type="tip" title="兴趣爱好"> %}
 
 - 运动
   - 爬山
@@ -114,4 +114,4 @@ path = "about"
 - 读书
 - 电影
 
-{% end %}
+{% </admonition> %}

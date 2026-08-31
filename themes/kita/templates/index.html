@@ -1,13 +1,8 @@
-{% import "macros.html" as macros %}
 <!doctype html>
 <html class="not-ready lg:text-base" lang="{{ lang }}">
   {% include "partials/head.html" %}
   <body class="text-black duration-200 ease-out dark:text-white">
     {% include "partials/header.html" %}
-
-    <!-- Body Start inject -->
-    {% include "injects/body_start.html" ignore missing %}
-
     <div class="flex">
       <div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div>
       <aside
@@ -31,8 +26,5 @@
     </div>
 
     {% include "partials/footer.html" %}
-
-    <!-- Body End inject -->
-    {% include "injects/body_end.html" ignore missing %}
   </body>
 </html>

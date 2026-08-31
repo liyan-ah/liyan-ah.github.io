@@ -1,4 +1,3 @@
-{% import "macros.html" as macros %}
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -6,13 +5,13 @@
 
   <!-- Title -->
   <title>
-    {% if page.title %}{{ page.title }} - {{ config.title }}{% else %}{{ config.title }}{% endif %}
+    {% if page?.title %}{{ page.title }} - {{ config.title }}{% else %}{{ config.title }}{% endif %}
   </title>
 
   <!-- Meta -->
   <meta name="theme-color" />
 
-  {% if page %}
+  {% if page is defined %}
   <!-- Author -->
   {% set page_title = page.title | default(value=config.title) %}
   <!---->
@@ -36,16 +35,7 @@
   <meta property="og:site_name" content="{{ config.title }}" />
   <meta property="og:description" content="{{ description }}" />
   <meta property="og:url" content="{{ page.permalink }}" />
-  {% if page.extra.cover.image %}
-  <!---->
-  {% set image = page.extra.cover.image %}
-  <!---->
-  {% elif config.extra.social_image %}
-  <!---->
-  {% set image = config.extra.social_image %}
-  <!---->
-  {% endif %}
-  <!---->
+  {% set image = page.extra?.cover?.image | default(value=config.extra?.social_image) %}
   {% if image %}
   <meta property="og:image" content="{{ get_url(path=image) }}" />
   {% endif %}
@@ -61,7 +51,7 @@
   <meta property="og:title" content="{{ config.title }}" />
   <meta property="og:description" content="{{ description }}" />
   <meta property="og:url" content="{{ get_url(path=``) }}" />
-  {% if config.extra.social_image %}
+  {% if config.extra?.social_image %}
   <meta property="og:image" content="{{ get_url(path=config.extra.social_image) }}" />
   {% endif %}
   <!---->
@@ -71,26 +61,24 @@
   <link rel="preload stylesheet" as="style" href="{{ get_url(path=`main.css`) }}" />
   <style>
     :root {
-      --bg: {{ config.extra.style.bg_color | default(value="#f4f4f5") }};
-      --bg-dark: {{ config.extra.style.bg_dark_color | default(value="#18181b") }};
-      --header: {{ config.extra.style.header_color | default(value="#e4e4e7") }};
-      --header-dark: {{ config.extra.style.header_dark_color | default(value="#27272a") }};
+      --bg: {{ config.extra?.style?.bg_color | default(value="#f4f4f5") }};
+      --bg-dark: {{ config.extra?.style?.bg_dark_color | default(value="#18181b") }};
+      --header: {{ config.extra?.style?.header_color | default(value="#e4e4e7") }};
+      --header-dark: {{ config.extra?.style?.header_dark_color | default(value="#27272a") }};
     }
   </style>
 
-  {% if section.path is defined and section.path == "/" and (paginator is undefined or
-  paginator.current_index == 1) %}
+  {% if section?.path == "/" and (paginator is undefined or paginator.current_index == 1) %}
   <!-- Avatar -->
   {% if config.extra.profile.avatar_url %}
   <link rel="preload" as="image" href="{{ get_url(path=config.extra.profile.avatar_url) }}" />
   {% endif %}
 
   <!-- Social List -->
-  {% if config.extra.profile.social and section.path == "/" and (paginator is undefined or
-  paginator.current_index == 1) %}
+  {% if config.extra.profile.social and section?.path == "/" and (paginator is undefined or paginator.current_index == 1) %}
   <!---->
   {% for social in config.extra.profile.social %}
-  <link rel="preload" as="image" href="{{ macros::get_social_icon(icon=social.name) }}" />
+  <link rel="preload" as="image" href="{{<get_social_icon icon={social.name} />}}" />
   {% endfor %}
   <!---->
   {% endif %}
@@ -101,7 +89,7 @@
   <link rel="preload" as="image" href="{{ get_url(path=`icons/theme.svg`) }}" />
 
   <!-- Math -->
-  {% if page.extra.math | default(value=config.extra.math) %}
+  {% if page?.extra?.math | default(value=config.extra?.math) %}
   <!---->
   {% include "partials/math.html" %}
   <!---->
@@ -109,7 +97,7 @@
   <!---->
 
   <!-- Mermaid -->
-  {% if page.extra.mermaid | default(value=config.extra.mermaid) %}
+  {% if page?.extra?.mermaid | default(value=config.extra?.mermaid) %}
   <!---->
   {% include "partials/mermaid.html" %}
   <!---->
@@ -142,8 +130,8 @@
   {% endif %}
 
   <!-- Canonical -->
-  <link rel="canonical" href="{{ page.permalink | default(value=get_url(path=``)) }}" />
+  <link rel="canonical" href="{{ page?.permalink | default(value=get_url(path=``)) }}" />
 
   <!-- Head inject -->
-  {% include "injects/head.html" ignore missing %}
+  {% include "injects/head.html" %}
 </head>

@@ -43,6 +43,12 @@ taxonomies = [
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
 
+# Preserve literal Tera delimiters in historical articles that do not use content components.
+skip_content_templating = [
+    "migrate-blog-from-hugo-to-zola/index.md",
+    "golang-proto3-使用/index.md",
+]
+
 [markdown]
 # Whether to do syntax highlighting
 #highlighting = true
