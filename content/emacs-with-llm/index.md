@@ -185,4 +185,4 @@ Respond in Chinese unless requested otherwise."))
 (global-set-key (kbd "C-x t") 'ellama-define-word)
 ```
 
-以上。本文成文后，使用 Agent 模式进行通顺行检查。
+以上。本文成文后，使用 Agent 模式进行通顺性检查。
