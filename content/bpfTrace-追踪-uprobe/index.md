@@ -135,5 +135,5 @@ uprobe:./demo:"main.handle"
     return;
 }
 ```
-在编译完成`main.go`后，通过`sudo bpftrace -l "uprobe:./demo:*" > uprobe.info`的方式，可以获取`demo`中所有可以`attach`的`uprobe`信息。这里说明下取`student*`指针值时，为什么取`sarg3`。`bpftrace`中对内存传参的参数支持是`sarg0, sarg1, sarg2...`，且每个参数实际只对应`8Byte`大小的空间。对于`func handle(ctx context.Context, student *Student)`函数来说，由于`context.Context`实际占用`2*8Byte`的空间（见[golang常见类型字节数](https://blacker1230.github.io/2022/06/06/golang-%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B%E5%AD%97%E8%8A%82%E6%95%B0/))，因此需要使用`sarg2`来取`student`的值，而非直觉上的`sarg1`。  
+在编译完成`main.go`后，通过`sudo bpftrace -l "uprobe:./demo:*" > uprobe.info`的方式，可以获取`demo`中所有可以`attach`的`uprobe`信息。这里说明下取`student*`指针值时，为什么取`sarg3`。`bpftrace`中对内存传参的参数支持是`sarg0, sarg1, sarg2...`，且每个参数实际只对应`8Byte`大小的空间。对于`func handle(ctx context.Context, student *Student)`函数来说，由于`context.Context`实际占用`2*8Byte`的空间（见[golang常见类型字节数](@/golang-常见类型字节数/index.md))，因此需要使用`sarg2`来取`student`的值，而非直觉上的`sarg1`。<br />
 整个过程比较简单、明了。只要拥有`root`权限，基本上可以对系统内的任何进程进行详细的分析。

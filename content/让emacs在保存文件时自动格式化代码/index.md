@@ -12,7 +12,7 @@ categories = ["程序人生"]
 <!--more-->
 
 # 配置
-`emacs`进行`c/c++`的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把[`lsp`](https://microsoft.github.io/language-server-protocol/)配置也一并带上了，不同于[emacs-若干语言 lsp 配置备注](https://blacker1230.github.io/2021/10/12/emacs-%E8%8B%A5%E5%B9%B2%E8%AF%AD%E8%A8%80-lsp-%E9%85%8D%E7%BD%AE%E5%A4%87%E6%B3%A8/)里的`eglot`，这里使用的是`ccls`。直接上配置吧，比较简单：
+`emacs`进行`c/c++`的开发，离不开支持代码自动补全、库函数联想等功能，所以本文顺带把[`lsp`](https://microsoft.github.io/language-server-protocol/)配置也一并带上了，不同于[emacs-若干语言 lsp 配置备注](@/emacs-若干语言-lsp-配置备注/index.md)里的`eglot`，这里使用的是`ccls`。直接上配置吧，比较简单：
 ```
 ;; 使用国内 elpa 源来加速插件安装
 (defun w-install(pkg)
