@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - LLM</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/llm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-10-13T20:39:29+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/llm/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>Emacs 中配置大模型</title>
+        <published>2026-10-13T20:39:29+08:00</published>
+        <updated>2026-10-13T20:39:29+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-with-llm/"/>
+        <id>https://liyan-ah.github.io/emacs-with-llm/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/emacs-with-llm/">&lt;p&gt;更精准的英文/文本翻译？
+大模型对话本地存档？
+完美融入已有的 Emacs 体系，使用大模型进行加持？
+在大模型时代，让 Emacs 再次起飞！&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-dong-ji&quot;&gt;配置动机&lt;/h2&gt;
+&lt;p&gt;大模型时代，一切都变化得如此之快。在这样的背景下，在 Emacs 中拥抱大模型也是一种情怀。笔者对大模型的使用有两种模式：chat 模式，一般是一些信息的确认，充当搜索引擎结果的总结和汇总，如确认一些书籍的信息，或者和大模型讨论一些观点；agent 模式，coding 工作或者是要基于已有的一些知识来推进工作，如结合已有的文章来调整新博文的行文思路，确保尽量和此前的博文保持一致。&lt;/p&gt;
+&lt;p&gt;此前这两种模式均是在外部的网页或者其他编辑器里执行的，一度让笔者的 Emacs 处于空闲状态，日常的工作都不在 Emacs 中进行了。最近痛定思痛，还是好好调研一下，调整现有的 Emacs 配置，引入大模型来进行增强。&lt;/p&gt;
+&lt;h2 id=&quot;shi-xian-xiao-guo&quot;&gt;实现效果&lt;/h2&gt;
+&lt;p&gt;通过配置本地小模型和服务商的大模型，达到了如下的效果。&lt;/p&gt;
+&lt;h3 id=&quot;da-mo-xing-dui-hua&quot;&gt;大模型对话&lt;/h3&gt;
+&lt;p&gt;可以完全可以将所有的大模型对话在本地进行存档。所有的大模型对话都记录在 Emacs 的 Buffer 中（在本地有对应的文件路径），需要的话，可以随时进行存档。&lt;/p&gt;
+&lt;p&gt;如下是一段调用 chat 模式的对话记录，这段对话存储在本地的特定文件中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;** User:
+你是哪个模型，参数怎么样？
+
+** Assistant:
+我是 Qwen 模型的一个实例，是阿里云提供的超大规模预训练语言模型之一。它
+基于 T5 系列的架构进行设计和开发，并经过大量的数据增强、微调等步骤以提
+升其性能。
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;rong-ru-emacs-ti-xi&quot;&gt;融入 Emacs 体系&lt;/h3&gt;
+&lt;p&gt;可以完美的融入已有的 Emacs 体系。首先，可以在 Org 生态中进行扩展，将大模型作为一种语言嵌入到 Org Babel 中。结合快捷键，就可以在 Org 文档撰写的时候插入一段大模型的对话，或者和大模型做一下讨论。&lt;/p&gt;
+&lt;p&gt;如下是一个调用本地小模型的示例，可以在文档撰写的时候，插入一些调用大模型生成的内容。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;北宋和南宋的兵制有一些明显的变化
+#+BEGIN_SRC llm :results output raw :model local-low-power
+对北宋、南宋的兵制进行一下介绍，并且做下比较
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+宋朝是中国历史上一个非常重要的时期，对于军事制度和战争策略有着深远的影响。以下是对北宋、南宋两代兵制简要描述及其主要特点及对比分析：
+
+### 北宋
+
+,**兵制概况：**
+- 宋初时实行的“五卫精锐”与“九天策御法”的军事体系是其典型特征。
+- 以骑兵和步兵为主要作战力量，配之弓箭、长枪等装备。
+
+#### 特点：
+1. **战车制度**：宋朝曾有战车使用史迹记载。这是一种结合了轻便战术与机械化战争的尝试。
+2. **军事节度使**：军队由地方节度使掌控，并受中央直接指挥，这表明当时已经出现了初步的地方军权。
+
+### 南宋
+
+#### 特点：
+1. 由于北方战事频繁导致大量兵员南下。南方气候和地理环境对兵种配置产生影响。
+2. **舟船与火器**：水路运输发达以及火炮的广泛使用，是南宋军事策略中的特色。
+3. **军队编组变化**：由“厢军”（即府州地方武装）为主向以中央派遣将领为领导机构转变。
+
+### 比较分析：
+1. 从整体来看，两代兵制都体现了对步骑并重的重视。但南宋时期的骑兵逐渐退化，而舟船和火器则成为南方军事的主要优势。
+2. 南宋时期由于地理环境的影响（尤其是长江三角洲），战场环境发生了较大变化，这使得水上作战方式得到了更广泛的运用与推广。
+
+总的来说，北宋时期的兵制以战车作为亮点之一，并且地方军权有所加强。而南宋的兵制则更加倾向于根据南方气候和地形进行调整，特别强调舟船使用及火器发展的重要性。
+
+通过这种历史分析可以看出，在不同地理环境下的战争环境中产生的军事策略是具有高度灵活性与适应性的特点。
+#+end_example
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在其他文本模式下，也可以选择一段文本，发送给大模型进行解释，或者进一步的对话讨论。如对「南宋的兵制」进行单独的讨论。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;** User:
+南宋的兵制
+
+** Assistant:
+《宋史》是中国历史上的重要典籍之一，记载了大量关于宋代的历史、政治和社
+会经济等方面的内容。如果你想要了解南宋时期的军事制度或者相关情况，可以
+参考以下几点：
+
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;zuo-wei-yi-xie-gong-ju-diao-yong&quot;&gt;作为一些工具调用&lt;/h3&gt;
+&lt;p&gt;可以作为更精准的英文/文本翻译。此前笔者的英文翻译绑定的是在线翻译接口，存在调用稳定性的问题。引入大模型后，可以使用本地的小模型来处理文本的解释、翻译。&lt;/p&gt;
+&lt;p&gt;如下述结果是调用本地模型处理的&lt;code&gt;manifest&lt;/code&gt; 结果&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;The term &amp;#39;manifest&amp;#39; is not inherently defined in the current
+context. It could refer to various things depending on its intended
+use or application:
+
+1) In software development, a Manifest file typically contains
+metadata about an executable program such as author information and
+copyright details.  2) A Manifest File format may be used for
+exchanging data between systems over HTTP by specifying headers that
+identify each component of the web page.  3) It could also denote
+specific documentation related to certain processes or products. 
+
+If you have a particular context in mind, please provide more details
+so I can give you an accurate definition and implementation example as
+per your requirement.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样一来，就初步将大模型引入到了笔者的 Emacs 生态中。在浏览 RSS 资讯时，也可以随时调出大模型来做进一步的讨论、信息确认。&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-si-lu&quot;&gt;配置思路&lt;/h2&gt;
+&lt;p&gt;首先是模型的部署、选择。笔者采用的是本地小模型+大模型服务商接口两种方式。一般的轻量级任务使用本地的小模型，更加深入的探索则需要使用在线的大模型来处理。本地小模型使用&lt;code&gt;ollama&lt;/code&gt;进行部署，选择&lt;code&gt;qwen2.5:1.5b&lt;/code&gt;小模型，笔记本运行没有压力。在线模型则是使用&lt;code&gt;deepseek&lt;/code&gt;，基本满足日常使用。&lt;/p&gt;
+&lt;p&gt;其次是如何落到 Emacs 生态中。Emacs 生态下也有一些大模型的扩展，笔者选择的是&lt;code&gt;ellama&lt;/code&gt;。使用较为灵活，支持设定不同的&lt;code&gt;provider&lt;/code&gt;以定义本地小模型和在线大模型。实际使用时，也可以灵活的选择不同的 provider 来处理对话。&lt;/p&gt;
+&lt;p&gt;然后是配置的绑定。这一点就要结合个人的使用需求了。比如，下面是笔者的配置，可供参考。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;; evil visual state 下把选区发送给 ellama chat。
+(defun my/ellama-ask-selection-operator (beg end)
+  &amp;quot;把选区 BEG..END 直接发送给 ellama chat。&amp;quot;
+  (ellama-chat (buffer-substring-no-properties beg end)))
+
+(evil-define-operator my/ellama-ask-selection (beg end _type)
+  &amp;quot;Evil operator：将当前可视选区发送给 ellama chat。&amp;quot;
+  :move-point nil
+  (interactive &amp;quot;&amp;lt;R&amp;gt;&amp;quot;)
+  (my/ellama-ask-selection-operator beg end))
+
+;; C-c C-x a：evil visual state（含 Ctrl-v block 选区）内发送选区，
+(define-key evil-visual-state-map (kbd &amp;quot;C-c C-x a&amp;quot;) #&amp;#39;my/ellama-ask-selection)
+
+;; 定义一种 llm babel 类型，在 org mode 中可以调用。并且定义一个插入的快捷键。
+(defun org-babel-execute:llm (body params)
+  &amp;quot;Org Babel llm 代码块执行器。
+BODY 是块内提示词文本，PARAMS 可携带 :model 参数。
+支持 :model local-low-power / cloud-deepseek，省略则用默认 provider。&amp;quot;
+  (let* ((model-arg (cdr (assq :model params)))
+         (chosen-provider (my/ellama-resolve-provider model-arg))
+         ;; 用 llm-make-chat-prompt 构造合规的 chat-prompt 对象
+         ;; 系统约束放入 :context，用户提示词作为 content
+         (prompt (llm-make-chat-prompt
+                  body
+                  :context
+                  &amp;quot;You are a rigid LLM backend running inside an Org-mode Babel block.
+Process the request directly.
+Do not wrap the output in markdown code blocks unless requested.
+No conversational filler, no greetings.
+Respond in Chinese unless requested otherwise.&amp;quot;))
+         ;; llm-chat 同步阻塞调用，返回完整字符串
+         (response (llm-chat chosen-provider prompt)))
+    (if (stringp response)
+        (string-trim response)
+      &amp;quot;Error: 未能获取到有效的模型回复。&amp;quot;)))
+
+(defun my/org-insert-llm-src-block (prompt)
+  &amp;quot;在当前行之后插入一个 llm Org Babel block，并写入 PROMPT。
+交互调用时从 minibuffer 读取 PROMPT。&amp;quot;
+  (interactive (list (read-string &amp;quot;LLM 提示词: &amp;quot;)))
+  (unless (derived-mode-p &amp;#39;org-mode)
+    (user-error &amp;quot;该命令只能在 Org mode 中使用&amp;quot;))
+  (end-of-line)
+  (unless (bolp)
+    (insert &amp;quot;\n&amp;quot;))
+  (insert &amp;quot;#+BEGIN_SRC llm\n&amp;quot; prompt &amp;quot;\n#+END_SRC\n&amp;quot;)
+  (forward-line -1)
+  (end-of-line))
+
+(with-eval-after-load &amp;#39;org
+  (define-key org-mode-map (kbd &amp;quot;C-c C-x l&amp;quot;) #&amp;#39;my/org-insert-llm-src-block))
+
+;; 使用 ellama-define-word 来进行文本翻译、解释
+(global-set-key (kbd &amp;quot;C-x t&amp;quot;) &amp;#39;ellama-define-word)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上。本文成文后，使用 Agent 模式进行通顺性检查。&lt;/p&gt;
+</content>
+        
+    </entry>
+</feed>

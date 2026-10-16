@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - 人生的意义</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/ren-sheng-de-yi-yi/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-07-06T14:55:26+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/ren-sheng-de-yi-yi/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>不愿富</title>
+        <published>2026-07-06T14:55:26+08:00</published>
+        <updated>2026-07-06T14:55:26+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/bu-yuan-fu/"/>
+        <id>https://liyan-ah.github.io/bu-yuan-fu/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/bu-yuan-fu/">&lt;blockquote&gt;
+&lt;p&gt;摘自笑林广记·古艳部·不愿富
+一鬼托生时，冥王判作富人。鬼曰：不愿富也。但求一生衣食不缺，无是无非，烧清香，吃苦茶，安闲过日足矣。冥王曰：要银子便再给你几万，这样安闲清福，却不许你享。&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+        
+    </entry>
+</feed>

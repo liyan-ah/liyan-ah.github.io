@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title>李岩的博客 - Emacs</title>
+    <subtitle>努力做个程序员</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://liyan-ah.github.io/tags/emacs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://liyan-ah.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-10-16T17:25:28+08:00</updated>
+    <id>https://liyan-ah.github.io/tags/emacs/atom.xml</id>
+    <entry xml:lang="zh-CN">
+        <title>将 Emacs 打造成 RSS 阅读器</title>
+        <published>2026-10-16T17:25:28+08:00</published>
+        <updated>2026-10-16T17:25:28+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-with-rss/"/>
+        <id>https://liyan-ah.github.io/emacs-with-rss/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/emacs-with-rss/">&lt;h2 id=&quot;pei-zhi-dong-ji&quot;&gt;配置动机&lt;/h2&gt;
+&lt;p&gt;大模型时代极大地释放了生产力，至少，一些较为繁琐、重复度高的&lt;code&gt;Paper Work&lt;/code&gt;可以减少很多了。随之而来的是更多的空闲时间。就笔者的观察来看，从今年的3、4月份开始，突然之间好像大家都处于一种空转的状态，似乎所有的事情都委托给了大模型，又似乎有很多事情要做。但是还在编码的人确实是少了：无论如何，现在古法编程是一件很奢侈的事情。还有就是，食堂里吃饭的人越来越少了。技术群里的讨论内容也愈加地丰富起来——只是不再讨论技术了。笔者本人的工作模式也变成了回消息、和大模型/Agent对话、等待执行结果的状态。&lt;/p&gt;
+&lt;p&gt;在这样的背景下，实际上是有一些精力来折腾一些东西的。日常工作中，笔者折腾了一种 Agent 场景下基于索引的知识库管理系统，让 Agent 在执行任务之前使用倒排做一个简单的过往知识加载（而不是RAG，更轻量一些。项目地址：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/liyan-ah/memroute&quot;&gt;github/memroute&lt;/a&gt;）。工具使用上，在&lt;a href=&quot;https://liyan-ah.github.io/emacs-with-llm/&quot;&gt;Emacs 里配置了大模型生态&lt;/a&gt;，紧跟时代的潮流了。此外就是拥抱 RSS 生态，折腾了下 Emacs 的配置，将其作为 RSS 阅读器使用。&lt;/p&gt;
+&lt;p&gt;使用 Emacs 作为 RSS 阅读器有两个收益。首先是 RSS 的优势。目前的资讯信息确实太多了，笔者以为每天读一点新闻、看一点技术博客、阅读一些有趣的文章就足够了。使用 RSS 可以确保在可控的范围内——RSS阅读器里——获取受限的信息。其次就是 Emacs 生态的优势。这样一来，又可以贯彻&lt;code&gt;LIVE IN EMACS&lt;/code&gt;的哲学了，同时也方便上下文的切换：都在 Emacs 中完成了，而且借助自定义的快捷键，使用非常方便。&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-xiao-guo&quot;&gt;配置效果&lt;/h2&gt;
+&lt;p&gt;笔者使用的是&lt;code&gt;elfeed.el&lt;/code&gt;把 Emacs 配置成 RSS 阅读器。配置好 RSS 源之后，可以唤出&lt;code&gt;*elfeed-search*&lt;/code&gt;缓冲区，浏览 RSS 推文。效果如下（全文本）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2026-10-16 The insider trading you&amp;#39;re allowed to do                               Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 Last rites for Gentoo&amp;#39;s Chromium package                               Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 The Folders Programming Language                                       Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 Pi 抛出全新 Agent Harness，还把自己骂了一年的 MCP 装进了核心           InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Linus用Claude Code改Linux内核，大神也没兜住代码里的Bug                 InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Pizza Bot：开源的后台 AI 智能体收件箱                                  InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 AI 写完代码，谁来验证？手淘 TEKO “写—验—修”自主闭环的工程实践｜QCon上 InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Any window from your Mac, on your iPhone and iPad                      Hacker News Top Stories (hackernews,unread)
+2026-10-16 GitLab 漏洞遭利用，可实现未认证数据外泄                                InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 RPKI now protects 70% of internet routes                               Hacker News Top Stories (hackernews,unread)
+2026-10-16 Business accounts will consent to Meta scraping their websites Startin Hacker News Top Stories (hackernews,unread)
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里的每一行自然是一个推文了。同时，&lt;code&gt;elfeed&lt;/code&gt; 在配置 RSS 源时，是支持自定义 tag 的。在查看推文时，也支持使用 tag 进行过滤，和一般的 RSS 阅读器功能类似，只是可以全部通过编辑器在&lt;code&gt;Emacs&lt;/code&gt;中的几个窗口里完成配置、更新、拉取。&lt;/p&gt;
+&lt;p&gt;选择想看的推文后，即可直接跳转，查看详情。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Title: 从外资流向看中国市场新引力
+Author: 周泽将
+Date: Fri, 16 Oct 2026 00:00:00 CST
+Feed: 求是（求是网）·经济
+Tags: economy, qiushi
+Link: https://www.qstheory.cn/20261016/5afc50f2e8cc4a938b7bdb3b615659d2/c.html
+
+  新技术加快落地，创新生态不断完善，绿色发展释放机遇，制度型开放稳定预期，正在共同塑造中国经济的新引力
+
+  近期，新一批重大外资项目密集投产。广东佛山，德国企业赛威投资超百亿元的华南智能制造基地开始运营；江苏昆山，美国汽车零部件供应商
+天纳克的全球创新中心启用。外资加速投向新产业、新赛道，彰显中国仍是全球投资热土。
+
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里笔者配置了图片显示的开关，默认情况下是不会渲染图片的。可以通过快捷键来切换图片显示。&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-shi-li&quot;&gt;配置示例&lt;/h2&gt;
+&lt;p&gt;这里附上笔者的部分配置以作为借鉴。同时安利一下&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://quanwenrss.com/&quot;&gt;quanwenrss&lt;/a&gt;。笔者在寻找 RSS 源时，经常遇到的问题是 RSS 推文中只包含少量的摘要以及一个网络链接。完整内容还需要二次跳转才能获取。此时就能体会到全文 RSS 的便捷了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;; 设置 elfeed 源，同时添加 tag 信息。
+(setq elfeed-feeds
+      &amp;#39;((&amp;quot;https://plink.anyfeeder.com/zhihu/daily&amp;quot; zhihu)
+        (&amp;quot;https://feed.quanwenrss.com/feed/hbrchina-home.xml&amp;quot; hbrchina)
+        (&amp;quot;https://plink.anyfeeder.com/infoq/recommend&amp;quot; infoq-cn tech)
+        (&amp;quot;https://wechat2rss.xlab.app/feed/4025ea55575daf8bfd8227e68b28d9638b073267.xml&amp;quot; bytedance tech)))
+
+;; 绑定键位
+(global-set-key (kbd &amp;quot;C-c C-x w&amp;quot;) &amp;#39;elfeed)
+
+;; 进入 elfeed 时自动刷新一次订阅（异步，不阻塞界面）
+(add-hook &amp;#39;elfeed-search-mode-hook #&amp;#39;elfeed-update)
+
+;; elfeed 阅读视图默认不加载图片（weixin/经济学人等源图多，纯文字更快）。
+;; 只作用于 elfeed 的正文 buffer，不影响 eww 等其他 shr 使用场景；
+;; 需要看某篇文章的图时在阅读视图里执行 M-x my/elfeed-toggle-images
+;; （或按 T）即可切换图片开关并重新渲染当前条目。
+(add-hook &amp;#39;elfeed-show-mode-hook
+          (lambda () (setq-local shr-inhibit-images t)))
+(defun my/elfeed-toggle-images ()
+  &amp;quot;切换当前 elfeed 条目的图片加载并重新渲染。&amp;quot;
+  (interactive)
+  (unless (derived-mode-p &amp;#39;elfeed-show-mode)
+    (user-error &amp;quot;该命令只能在 elfeed 阅读视图中使用&amp;quot;))
+  (setq-local shr-inhibit-images (not shr-inhibit-images))
+  (elfeed-show-refresh))
+(with-eval-after-load &amp;#39;elfeed-show
+  (define-key elfeed-show-mode-map (kbd &amp;quot;T&amp;quot;) #&amp;#39;my/elfeed-toggle-images))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上。周末愉快～&lt;/p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>Emacs 中配置大模型</title>
+        <published>2026-10-13T20:39:29+08:00</published>
+        <updated>2026-10-13T20:39:29+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-with-llm/"/>
+        <id>https://liyan-ah.github.io/emacs-with-llm/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/emacs-with-llm/">&lt;p&gt;更精准的英文/文本翻译？
+大模型对话本地存档？
+完美融入已有的 Emacs 体系，使用大模型进行加持？
+在大模型时代，让 Emacs 再次起飞！&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-dong-ji&quot;&gt;配置动机&lt;/h2&gt;
+&lt;p&gt;大模型时代，一切都变化得如此之快。在这样的背景下，在 Emacs 中拥抱大模型也是一种情怀。笔者对大模型的使用有两种模式：chat 模式，一般是一些信息的确认，充当搜索引擎结果的总结和汇总，如确认一些书籍的信息，或者和大模型讨论一些观点；agent 模式，coding 工作或者是要基于已有的一些知识来推进工作，如结合已有的文章来调整新博文的行文思路，确保尽量和此前的博文保持一致。&lt;/p&gt;
+&lt;p&gt;此前这两种模式均是在外部的网页或者其他编辑器里执行的，一度让笔者的 Emacs 处于空闲状态，日常的工作都不在 Emacs 中进行了。最近痛定思痛，还是好好调研一下，调整现有的 Emacs 配置，引入大模型来进行增强。&lt;/p&gt;
+&lt;h2 id=&quot;shi-xian-xiao-guo&quot;&gt;实现效果&lt;/h2&gt;
+&lt;p&gt;通过配置本地小模型和服务商的大模型，达到了如下的效果。&lt;/p&gt;
+&lt;h3 id=&quot;da-mo-xing-dui-hua&quot;&gt;大模型对话&lt;/h3&gt;
+&lt;p&gt;可以完全可以将所有的大模型对话在本地进行存档。所有的大模型对话都记录在 Emacs 的 Buffer 中（在本地有对应的文件路径），需要的话，可以随时进行存档。&lt;/p&gt;
+&lt;p&gt;如下是一段调用 chat 模式的对话记录，这段对话存储在本地的特定文件中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;** User:
+你是哪个模型，参数怎么样？
+
+** Assistant:
+我是 Qwen 模型的一个实例，是阿里云提供的超大规模预训练语言模型之一。它
+基于 T5 系列的架构进行设计和开发，并经过大量的数据增强、微调等步骤以提
+升其性能。
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;rong-ru-emacs-ti-xi&quot;&gt;融入 Emacs 体系&lt;/h3&gt;
+&lt;p&gt;可以完美的融入已有的 Emacs 体系。首先，可以在 Org 生态中进行扩展，将大模型作为一种语言嵌入到 Org Babel 中。结合快捷键，就可以在 Org 文档撰写的时候插入一段大模型的对话，或者和大模型做一下讨论。&lt;/p&gt;
+&lt;p&gt;如下是一个调用本地小模型的示例，可以在文档撰写的时候，插入一些调用大模型生成的内容。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;北宋和南宋的兵制有一些明显的变化
+#+BEGIN_SRC llm :results output raw :model local-low-power
+对北宋、南宋的兵制进行一下介绍，并且做下比较
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+宋朝是中国历史上一个非常重要的时期，对于军事制度和战争策略有着深远的影响。以下是对北宋、南宋两代兵制简要描述及其主要特点及对比分析：
+
+### 北宋
+
+,**兵制概况：**
+- 宋初时实行的“五卫精锐”与“九天策御法”的军事体系是其典型特征。
+- 以骑兵和步兵为主要作战力量，配之弓箭、长枪等装备。
+
+#### 特点：
+1. **战车制度**：宋朝曾有战车使用史迹记载。这是一种结合了轻便战术与机械化战争的尝试。
+2. **军事节度使**：军队由地方节度使掌控，并受中央直接指挥，这表明当时已经出现了初步的地方军权。
+
+### 南宋
+
+#### 特点：
+1. 由于北方战事频繁导致大量兵员南下。南方气候和地理环境对兵种配置产生影响。
+2. **舟船与火器**：水路运输发达以及火炮的广泛使用，是南宋军事策略中的特色。
+3. **军队编组变化**：由“厢军”（即府州地方武装）为主向以中央派遣将领为领导机构转变。
+
+### 比较分析：
+1. 从整体来看，两代兵制都体现了对步骑并重的重视。但南宋时期的骑兵逐渐退化，而舟船和火器则成为南方军事的主要优势。
+2. 南宋时期由于地理环境的影响（尤其是长江三角洲），战场环境发生了较大变化，这使得水上作战方式得到了更广泛的运用与推广。
+
+总的来说，北宋时期的兵制以战车作为亮点之一，并且地方军权有所加强。而南宋的兵制则更加倾向于根据南方气候和地形进行调整，特别强调舟船使用及火器发展的重要性。
+
+通过这种历史分析可以看出，在不同地理环境下的战争环境中产生的军事策略是具有高度灵活性与适应性的特点。
+#+end_example
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在其他文本模式下，也可以选择一段文本，发送给大模型进行解释，或者进一步的对话讨论。如对「南宋的兵制」进行单独的讨论。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;** User:
+南宋的兵制
+
+** Assistant:
+《宋史》是中国历史上的重要典籍之一，记载了大量关于宋代的历史、政治和社
+会经济等方面的内容。如果你想要了解南宋时期的军事制度或者相关情况，可以
+参考以下几点：
+
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;zuo-wei-yi-xie-gong-ju-diao-yong&quot;&gt;作为一些工具调用&lt;/h3&gt;
+&lt;p&gt;可以作为更精准的英文/文本翻译。此前笔者的英文翻译绑定的是在线翻译接口，存在调用稳定性的问题。引入大模型后，可以使用本地的小模型来处理文本的解释、翻译。&lt;/p&gt;
+&lt;p&gt;如下述结果是调用本地模型处理的&lt;code&gt;manifest&lt;/code&gt; 结果&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;The term &amp;#39;manifest&amp;#39; is not inherently defined in the current
+context. It could refer to various things depending on its intended
+use or application:
+
+1) In software development, a Manifest file typically contains
+metadata about an executable program such as author information and
+copyright details.  2) A Manifest File format may be used for
+exchanging data between systems over HTTP by specifying headers that
+identify each component of the web page.  3) It could also denote
+specific documentation related to certain processes or products. 
+
+If you have a particular context in mind, please provide more details
+so I can give you an accurate definition and implementation example as
+per your requirement.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样一来，就初步将大模型引入到了笔者的 Emacs 生态中。在浏览 RSS 资讯时，也可以随时调出大模型来做进一步的讨论、信息确认。&lt;/p&gt;
+&lt;h2 id=&quot;pei-zhi-si-lu&quot;&gt;配置思路&lt;/h2&gt;
+&lt;p&gt;首先是模型的部署、选择。笔者采用的是本地小模型+大模型服务商接口两种方式。一般的轻量级任务使用本地的小模型，更加深入的探索则需要使用在线的大模型来处理。本地小模型使用&lt;code&gt;ollama&lt;/code&gt;进行部署，选择&lt;code&gt;qwen2.5:1.5b&lt;/code&gt;小模型，笔记本运行没有压力。在线模型则是使用&lt;code&gt;deepseek&lt;/code&gt;，基本满足日常使用。&lt;/p&gt;
+&lt;p&gt;其次是如何落到 Emacs 生态中。Emacs 生态下也有一些大模型的扩展，笔者选择的是&lt;code&gt;ellama&lt;/code&gt;。使用较为灵活，支持设定不同的&lt;code&gt;provider&lt;/code&gt;以定义本地小模型和在线大模型。实际使用时，也可以灵活的选择不同的 provider 来处理对话。&lt;/p&gt;
+&lt;p&gt;然后是配置的绑定。这一点就要结合个人的使用需求了。比如，下面是笔者的配置，可供参考。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;; evil visual state 下把选区发送给 ellama chat。
+(defun my/ellama-ask-selection-operator (beg end)
+  &amp;quot;把选区 BEG..END 直接发送给 ellama chat。&amp;quot;
+  (ellama-chat (buffer-substring-no-properties beg end)))
+
+(evil-define-operator my/ellama-ask-selection (beg end _type)
+  &amp;quot;Evil operator：将当前可视选区发送给 ellama chat。&amp;quot;
+  :move-point nil
+  (interactive &amp;quot;&amp;lt;R&amp;gt;&amp;quot;)
+  (my/ellama-ask-selection-operator beg end))
+
+;; C-c C-x a：evil visual state（含 Ctrl-v block 选区）内发送选区，
+(define-key evil-visual-state-map (kbd &amp;quot;C-c C-x a&amp;quot;) #&amp;#39;my/ellama-ask-selection)
+
+;; 定义一种 llm babel 类型，在 org mode 中可以调用。并且定义一个插入的快捷键。
+(defun org-babel-execute:llm (body params)
+  &amp;quot;Org Babel llm 代码块执行器。
+BODY 是块内提示词文本，PARAMS 可携带 :model 参数。
+支持 :model local-low-power / cloud-deepseek，省略则用默认 provider。&amp;quot;
+  (let* ((model-arg (cdr (assq :model params)))
+         (chosen-provider (my/ellama-resolve-provider model-arg))
+         ;; 用 llm-make-chat-prompt 构造合规的 chat-prompt 对象
+         ;; 系统约束放入 :context，用户提示词作为 content
+         (prompt (llm-make-chat-prompt
+                  body
+                  :context
+                  &amp;quot;You are a rigid LLM backend running inside an Org-mode Babel block.
+Process the request directly.
+Do not wrap the output in markdown code blocks unless requested.
+No conversational filler, no greetings.
+Respond in Chinese unless requested otherwise.&amp;quot;))
+         ;; llm-chat 同步阻塞调用，返回完整字符串
+         (response (llm-chat chosen-provider prompt)))
+    (if (stringp response)
+        (string-trim response)
+      &amp;quot;Error: 未能获取到有效的模型回复。&amp;quot;)))
+
+(defun my/org-insert-llm-src-block (prompt)
+  &amp;quot;在当前行之后插入一个 llm Org Babel block，并写入 PROMPT。
+交互调用时从 minibuffer 读取 PROMPT。&amp;quot;
+  (interactive (list (read-string &amp;quot;LLM 提示词: &amp;quot;)))
+  (unless (derived-mode-p &amp;#39;org-mode)
+    (user-error &amp;quot;该命令只能在 Org mode 中使用&amp;quot;))
+  (end-of-line)
+  (unless (bolp)
+    (insert &amp;quot;\n&amp;quot;))
+  (insert &amp;quot;#+BEGIN_SRC llm\n&amp;quot; prompt &amp;quot;\n#+END_SRC\n&amp;quot;)
+  (forward-line -1)
+  (end-of-line))
+
+(with-eval-after-load &amp;#39;org
+  (define-key org-mode-map (kbd &amp;quot;C-c C-x l&amp;quot;) #&amp;#39;my/org-insert-llm-src-block))
+
+;; 使用 ellama-define-word 来进行文本翻译、解释
+(global-set-key (kbd &amp;quot;C-x t&amp;quot;) &amp;#39;ellama-define-word)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上。本文成文后，使用 Agent 模式进行通顺性检查。&lt;/p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>Emacs 字符操作快捷键</title>
+        <published>2024-05-13T10:51:15+08:00</published>
+        <updated>2024-05-13T10:51:15+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/"/>
+        <id>https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/emacs-zi-fu-cao-zuo-kuai-jie-jian/">&lt;p&gt;Emacs 指令行中，比如 load-file 加载文件时默认会填充当前的目录，可以使用 Ctr-backspace 来较为快速的删除文本。也可以通过光标移动至待删除处，Ctr-k 来直接删除光标（含）之后的所有文本。&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;快捷键&lt;/th&gt;&lt;th&gt;功能&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Ctr-backspace&lt;/td&gt;&lt;td&gt;删除光标前的一个单词&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Ctr-k&lt;/td&gt;&lt;td&gt;删除光标（含）后的所有文本&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>PlantUML-文本化绘制UML多类图表</title>
+        <published>2023-04-21T20:51:00+08:00</published>
+        <updated>2023-04-21T20:51:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/plantuml-wen-ben-hua-hui-zhi-umlduo-lei-tu-biao/"/>
+        <id>https://liyan-ah.github.io/plantuml-wen-ben-hua-hui-zhi-umlduo-lei-tu-biao/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;笔者一直都是文本编辑器教派的忠实拥趸：期望将所有的任务都通过文本编辑，而非鼠标/触摸板等，进行实现。从早年的&lt;code&gt;Vim&lt;/code&gt;，到现而今的&lt;code&gt;Emacs&lt;/code&gt;，对文本化完成需求是越来越习惯，也越来越依赖了。最近刚好有了些时间，把最近的一些实践整理下。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在之前的文章，&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://liyan-ah.github.io/2023/02/10/emacs-org-mode%E7%BB%98%E5%88%B6%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/&quot;&gt;emacs org-mode 绘制思维导图&lt;/a&gt;，中，笔者有提到在探索不跳出&lt;code&gt;Emacs&lt;/code&gt;这一文本编辑器的情况下，完成思维导图绘制的需求。在翻了一些文章后，找到了一款神器：&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://plantuml.com/zh/&quot;&gt;PlantUML&lt;/a&gt;。其完美的匹配了笔者的需求：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不仅是思维导图，工程、文档常用的&lt;code&gt;UML&lt;/code&gt;图像也能全部支持文本化表示；&lt;/li&gt;
+&lt;li&gt;功能强大，颜色、文本等格式均能支持；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Emacs&lt;/code&gt;友好，而且可以集成到&lt;code&gt;Org-mode&lt;/code&gt;里使用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;而且，&lt;code&gt;PlantUML&lt;/code&gt;支持在线使用，意味着能够很方便的获取、使用。这里做下介绍。&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs org-mode 绘制思维导图</title>
+        <published>2023-02-10T19:46:21+08:00</published>
+        <updated>2023-02-10T19:46:21+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/"/>
+        <id>https://liyan-ah.github.io/emacs-org-modehui-zhi-si-wei-dao-tu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;工作中难免会搞一些思维导图，一些小的需求又不希望切换窗口到另外一个界面去特地绘制。使用 emacs 来整理思维导图可以提升一些的效率，在当前窗口（文本编辑器）里即可完成简单思维导图的绘制。同时可以便于对工作内容进行归档（比如把相关的文本都放到一起）。live in emacs.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;yi-lai-nei-rong&quot;&gt;依赖内容&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;org-contrib 扩展文件。用来将 org-mode 格式的文本转换成 freemind mm 文件。&lt;/li&gt;
+&lt;li&gt;freemind 软件。用来查看生成的 mm 文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;笔者试了一下，&lt;code&gt;Xmind思维导图&lt;/code&gt;看起来无法打开&lt;code&gt;mm&lt;/code&gt;文件，&lt;code&gt;freemind&lt;/code&gt;工作正常。也可能是我操作有问题。&lt;br /&gt;
+此外，生成的思维导图展现样式肯定没有目前专业的思维导图工具丰富，如果有正式的使用需求，还是首先考虑下专业的思维导图工具。&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>让emacs在保存文件时自动格式化代码</title>
+        <published>2022-07-15T20:34:00+08:00</published>
+        <updated>2022-07-15T20:34:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/"/>
+        <id>https://liyan-ah.github.io/rang-emacszai-bao-cun-wen-jian-shi-zi-dong-ge-shi-hua-dai-ma/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://liam.page/&quot;&gt;liam&lt;/a&gt;同学在&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://liam.page/2020/11/04/Vim-auto-format-codes-on-save/&quot;&gt;让 Vim 在保存文件时自动格式化代码&lt;/a&gt;一文中展示了保存时自动化格式代码的&lt;code&gt;vim&lt;/code&gt;配置。作为&lt;code&gt;emacs&lt;/code&gt;用户，自然有自己的解决方案。以下呈现。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs-若干语言 lsp 配置备注</title>
+        <published>2021-10-12T20:26:00+08:00</published>
+        <updated>2021-10-12T20:26:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/emacs-ruo-gan-yu-yan-lsp-pei-zhi-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;微软推出的&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://microsoft.github.io/language-server-protocol/#:~:text=Language%20Server%20Protocol.%20The%20Language%20Server%20Protocol%20%28LSP%29,is%20to%20support%20rich%20code%20navigation%20in%20&quot;&gt;language server protol&lt;/a&gt; 确实提升了文本编辑器的使用体验。就 &lt;code&gt;emacs&lt;/code&gt; 的使用而言，配合各个语言的 lsp 实现，能够减少配置语言开发环境的难度。这里记录一下使用 &lt;code&gt;emacs&lt;/code&gt; 中的 rust, golang, python, c/c++ lsp 配置&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>org-mode使用备注</title>
+        <published>2021-01-11T21:49:00+08:00</published>
+        <updated>2021-01-11T21:49:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/</id>
+        
+        <content type="html" xml:base="https://liyan-ah.github.io/org-modeshi-yong-bei-zhu/">&lt;blockquote&gt;
+&lt;p&gt;org-mode agenda界面变更任务状态、添加备注、添加日记（每日总结）、编辑记录&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;以下操作均在&lt;code&gt;org-agenda&lt;/code&gt;中的&lt;code&gt;agenda for current week or day&lt;/code&gt;视图下快速编辑：&lt;/p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;操作&lt;/th&gt;&lt;th&gt;快捷键&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;变更任务状态&lt;/td&gt;&lt;td&gt;t&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;添加备注&lt;/td&gt;&lt;td&gt;z&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;添加日记&lt;/td&gt;&lt;td&gt;i&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;编辑note&lt;/td&gt;&lt;td&gt;z&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;重建agenda&lt;/td&gt;&lt;td&gt;r&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;打开日历&lt;/td&gt;&lt;td&gt;a&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;下周任务列表&lt;/td&gt;&lt;td&gt;f&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;上周任务列表&lt;/td&gt;&lt;td&gt;b&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;打开任务所在原始文件&lt;/td&gt;&lt;td&gt;enter&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>emacs! start org-mode! --org-mode使用备注</title>
+        <published>2021-01-10T20:30:00+08:00</published>
+        <updated>2021-01-10T20:30:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/org-modshi-yong-bei-zhu/"/>
+        <id>https://liyan-ah.github.io/org-modshi-yong-bei-zhu/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;为了更好的&lt;code&gt;live in emacs&lt;/code&gt;，一款合适的日程管理工具总是需要的。在挣扎了若干次后，最终还是把&lt;code&gt;org-mode&lt;/code&gt;这一优秀的日程管理工具捡起来了。本文简单记录下使用的方法。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;org-modejie-shao&quot;&gt;org-mode介绍&lt;/h1&gt;
+&lt;p&gt;在&lt;code&gt;神的编辑器emacs&lt;/code&gt;的传说中，往往有&lt;code&gt;org-mode&lt;/code&gt;的身影。虽然按照(org官网)&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://orgmode.org/&quot;&gt;orgmode&lt;/a&gt;官网的描述，&lt;code&gt;org-mode&lt;/code&gt;并不仅限于在&lt;code&gt;emacs&lt;/code&gt;中使用，如&lt;a rel=&quot;noopener nofollow noreferrer external&quot; target=&quot;_blank&quot; href=&quot;https://zhuanlan.zhihu.com/p/57800574&quot;&gt;开始使用 Org 模式吧，在没有 Emacs 的情况下&lt;/a&gt;这篇文章就详细讲解了在&lt;code&gt;vscode&lt;/code&gt;中使用&lt;code&gt;org-mode&lt;/code&gt;的方式，但是配合&lt;code&gt;emacs&lt;/code&gt;的万物皆系于&lt;code&gt;kbd&lt;/code&gt;之上的使用习惯，&lt;code&gt;org-mode&lt;/code&gt;确实能够发挥最大的功能。&lt;br /&gt;
+&lt;code&gt;org-mode&lt;/code&gt;的基本功能包括设置待办事项、设置待办的标签、查看日历、查看某一天的待办及进度。基本上，满足了对优秀日程管理工具的所有想象。&lt;/p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="zh-CN">
+        <title>elscreen标签背景颜色</title>
+        <published>2020-12-23T19:23:00+08:00</published>
+        <updated>2020-12-23T19:23:00+08:00</updated>
+        
+        <author>
+          <name>李岩</name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/"/>
+        <id>https://liyan-ah.github.io/elscreenbiao-qian-bei-jing-yan-se/</id>
+        
+        <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;使用&lt;code&gt;emacs&lt;/code&gt;过程中，配合&lt;code&gt;evil&lt;/code&gt;使用，按照&lt;code&gt;tab&lt;/code&gt;的划分，将编辑、浏览、&lt;code&gt;leetcode&lt;/code&gt;等任务划分到不同的&lt;code&gt;tab&lt;/code&gt;便于切换及管理。美中不足的是，模拟标签的&lt;code&gt;elscreen&lt;/code&gt;默认将其他标签的颜色设置成&lt;code&gt;:background blue  :foreground black&lt;/code&gt;的配色，每次切换任务时，都需要重复确认需要跳转到哪个标签，就比较麻烦了。查找了一下重置&lt;code&gt;face-attribute&lt;/code&gt;的方法，备注下。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在初始文件的最后添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;;; 选中标签设置为绿底黑字，其他标签为黄底黑字
+(set-face-attribute &amp;#39;elscreen-tab-other-screen-face nil
+                    :background &amp;quot;yellow&amp;quot; :foreground &amp;quot;black&amp;quot;)
+(set-face-attribute &amp;#39;elscreen-tab-current-screen-face nil
+                    :background &amp;quot;green&amp;quot; :foreground &amp;quot;black&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;</summary>
+        
+    </entry>
+</feed>

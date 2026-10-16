@@ -1,0 +1,120 @@
+<!doctype html><html class="not-ready lg:text-base" lang=zh-CN><head><meta charset=utf-8><meta content="IE=edge" http-equiv=X-UA-Compatible><meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name=viewport><title>
+    将 Emacs 打造成 RSS 阅读器 - 李岩的博客
+  </title><meta name=theme-color><meta content="在 AI 时代，回归到 RSS 阅读，也是一种潮流。" name=description><meta content=李岩 name=author><meta content=website property=og:type><meta content="将 Emacs 打造成 RSS 阅读器" property=og:title><meta content=李岩的博客 property=og:site_name><meta content="在 AI 时代，回归到 RSS 阅读，也是一种潮流。" property=og:description><meta content=https://liyan-ah.github.io/emacs-with-rss/ property=og:url><meta content=https://liyan-ah.github.io/./favicon.svg property=og:image><link rel="preload stylesheet" as=style href=https://liyan-ah.github.io/main.css><style>:root{--bg:#f4f4f5;--bg-dark:#18181b;--header:#e4e4e7;--header-dark:#27272a}</style><link as=image href=https://liyan-ah.github.io/icons/theme.svg rel=preload><link href=https://liyan-ah.github.io/favicon.ico rel=icon><link href=https://liyan-ah.github.io/apple-touch-icon.png rel=apple-touch-icon><link href=https://liyan-ah.github.io/atom.xml rel=alternate title=Atom type=application/atom+xml><link href=https://liyan-ah.github.io/emacs-with-rss/ rel=canonical><link href=https://liyan-ah.github.io/custom.css rel=stylesheet><script>(function() {
+    function addFootnoteTitle() {
+        document.querySelectorAll('.footnote-reference a').forEach(link => {
+            const id = link.getAttribute('href')?.replace('#', '');
+            if (id) {
+                const definition = document.getElementById(id);
+                if (definition) {
+                    const p = definition.querySelector('p');
+                    if (p) {
+                        const text = p.textContent.trim();
+                        link.setAttribute('title', text);
+                    }
+                }
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addFootnoteTitle);
+    } else {
+        addFootnoteTitle();
+    }
+})();</script><body class="text-black duration-200 ease-out dark:text-white"><header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"><div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between"><div class="flex justify-between"><div class="flex items-center"><a class="text-2xl font-semibold" href=https://liyan-ah.github.io>李岩的博客</a><div class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert" aria-label=Dark role=button></div></div><div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" aria-label=Menu role=button></div></div><script>// base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });</script><nav class="flex w-full items-center lg:w-auto"><ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/archive>文章</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/tags>标签</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/categories>分类</a><li><a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href=https://liyan-ah.github.io/about>关于</a></ul></nav></div></header><div class=flex><div class="order-1 hidden w-[calc((100%-var(--container-3xl))/2)] lg:block"></div><aside class="sticky top-0 order-3 mt-48 hidden h-min w-[calc((100%-var(--container-3xl))/2)] lg:block"></aside><main class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg order-2 mx-auto min-h-[calc(100vh-9rem)] w-full max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"><article><header class=mb-16><h1 class="my-0! pb-2.5">将 Emacs 打造成 RSS 阅读器</h1><div class="text-sm antialiased opacity-60"><time>2026-10-16</time><span class=mx-1>·</span><span>3min</span><span class=mx-1>·</span><span>李岩</span></div></header><nav class="block-bg prose-a:secondary-link mb-12 flex rounded-lg p-2 text-lg"><details><summary class="cursor-pointer py-1 pl-4"><span class=ml-2>Table of Contents</span></summary> <ul class=mx-2><li><a href=#pei-zhi-dong-ji>配置动机</a><li><a href=#pei-zhi-xiao-guo>配置效果</a><li><a href=#pei-zhi-shi-li>配置示例</a></ul></details></nav><section><h2 id=pei-zhi-dong-ji>配置动机</h2><p>大模型时代极大地释放了生产力，至少，一些较为繁琐、重复度高的<code>Paper Work</code>可以减少很多了。随之而来的是更多的空闲时间。就笔者的观察来看，从今年的3、4月份开始，突然之间好像大家都处于一种空转的状态，似乎所有的事情都委托给了大模型，又似乎有很多事情要做。但是还在编码的人确实是少了：无论如何，现在古法编程是一件很奢侈的事情。还有就是，食堂里吃饭的人越来越少了。技术群里的讨论内容也愈加地丰富起来——只是不再讨论技术了。笔者本人的工作模式也变成了回消息、和大模型/Agent对话、等待执行结果的状态。<p>在这样的背景下，实际上是有一些精力来折腾一些东西的。日常工作中，笔者折腾了一种 Agent 场景下基于索引的知识库管理系统，让 Agent 在执行任务之前使用倒排做一个简单的过往知识加载（而不是RAG，更轻量一些。项目地址：<a rel="noopener nofollow noreferrer external" href=https://github.com/liyan-ah/memroute target=_blank>github/memroute</a>）。工具使用上，在<a href=https://liyan-ah.github.io/emacs-with-llm/>Emacs 里配置了大模型生态</a>，紧跟时代的潮流了。此外就是拥抱 RSS 生态，折腾了下 Emacs 的配置，将其作为 RSS 阅读器使用。<p>使用 Emacs 作为 RSS 阅读器有两个收益。首先是 RSS 的优势。目前的资讯信息确实太多了，笔者以为每天读一点新闻、看一点技术博客、阅读一些有趣的文章就足够了。使用 RSS 可以确保在可控的范围内——RSS阅读器里——获取受限的信息。其次就是 Emacs 生态的优势。这样一来，又可以贯彻<code>LIVE IN EMACS</code>的哲学了，同时也方便上下文的切换：都在 Emacs 中完成了，而且借助自定义的快捷键，使用非常方便。<h2 id=pei-zhi-xiao-guo>配置效果</h2><p>笔者使用的是<code>elfeed.el</code>把 Emacs 配置成 RSS 阅读器。配置好 RSS 源之后，可以唤出<code>*elfeed-search*</code>缓冲区，浏览 RSS 推文。效果如下（全文本）：<pre><code>2026-10-16 The insider trading you're allowed to do                               Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 Last rites for Gentoo's Chromium package                               Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 The Folders Programming Language                                       Hacker News Top Stories (hackernews,tech,unread)
+2026-10-16 Pi 抛出全新 Agent Harness，还把自己骂了一年的 MCP 装进了核心           InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Linus用Claude Code改Linux内核，大神也没兜住代码里的Bug                 InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Pizza Bot：开源的后台 AI 智能体收件箱                                  InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 AI 写完代码，谁来验证？手淘 TEKO “写—验—修”自主闭环的工程实践｜QCon上 InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 Any window from your Mac, on your iPhone and iPad                      Hacker News Top Stories (hackernews,unread)
+2026-10-16 GitLab 漏洞遭利用，可实现未认证数据外泄                                InfoQ 推荐 (infoq-cn,tech,unread)
+2026-10-16 RPKI now protects 70% of internet routes                               Hacker News Top Stories (hackernews,unread)
+2026-10-16 Business accounts will consent to Meta scraping their websites Startin Hacker News Top Stories (hackernews,unread)
+...
+</code></pre><p>这里的每一行自然是一个推文了。同时，<code>elfeed</code> 在配置 RSS 源时，是支持自定义 tag 的。在查看推文时，也支持使用 tag 进行过滤，和一般的 RSS 阅读器功能类似，只是可以全部通过编辑器在<code>Emacs</code>中的几个窗口里完成配置、更新、拉取。<p>选择想看的推文后，即可直接跳转，查看详情。<pre><code>Title: 从外资流向看中国市场新引力
+Author: 周泽将
+Date: Fri, 16 Oct 2026 00:00:00 CST
+Feed: 求是（求是网）·经济
+Tags: economy, qiushi
+Link: https://www.qstheory.cn/20261016/5afc50f2e8cc4a938b7bdb3b615659d2/c.html
+
+  新技术加快落地，创新生态不断完善，绿色发展释放机遇，制度型开放稳定预期，正在共同塑造中国经济的新引力
+
+  近期，新一批重大外资项目密集投产。广东佛山，德国企业赛威投资超百亿元的华南智能制造基地开始运营；江苏昆山，美国汽车零部件供应商
+天纳克的全球创新中心启用。外资加速投向新产业、新赛道，彰显中国仍是全球投资热土。
+
+...
+
+</code></pre><p>这里笔者配置了图片显示的开关，默认情况下是不会渲染图片的。可以通过快捷键来切换图片显示。<h2 id=pei-zhi-shi-li>配置示例</h2><p>这里附上笔者的部分配置以作为借鉴。同时安利一下<a rel="noopener nofollow noreferrer external" href=https://quanwenrss.com/ target=_blank>quanwenrss</a>。笔者在寻找 RSS 源时，经常遇到的问题是 RSS 推文中只包含少量的摘要以及一个网络链接。完整内容还需要二次跳转才能获取。此时就能体会到全文 RSS 的便捷了。<pre><code>;; 设置 elfeed 源，同时添加 tag 信息。
+(setq elfeed-feeds
+      '(("https://plink.anyfeeder.com/zhihu/daily" zhihu)
+        ("https://feed.quanwenrss.com/feed/hbrchina-home.xml" hbrchina)
+        ("https://plink.anyfeeder.com/infoq/recommend" infoq-cn tech)
+        ("https://wechat2rss.xlab.app/feed/4025ea55575daf8bfd8227e68b28d9638b073267.xml" bytedance tech)))
+
+;; 绑定键位
+(global-set-key (kbd "C-c C-x w") 'elfeed)
+
+;; 进入 elfeed 时自动刷新一次订阅（异步，不阻塞界面）
+(add-hook 'elfeed-search-mode-hook #'elfeed-update)
+
+;; elfeed 阅读视图默认不加载图片（weixin/经济学人等源图多，纯文字更快）。
+;; 只作用于 elfeed 的正文 buffer，不影响 eww 等其他 shr 使用场景；
+;; 需要看某篇文章的图时在阅读视图里执行 M-x my/elfeed-toggle-images
+;; （或按 T）即可切换图片开关并重新渲染当前条目。
+(add-hook 'elfeed-show-mode-hook
+          (lambda () (setq-local shr-inhibit-images t)))
+(defun my/elfeed-toggle-images ()
+  "切换当前 elfeed 条目的图片加载并重新渲染。"
+  (interactive)
+  (unless (derived-mode-p 'elfeed-show-mode)
+    (user-error "该命令只能在 elfeed 阅读视图中使用"))
+  (setq-local shr-inhibit-images (not shr-inhibit-images))
+  (elfeed-show-refresh))
+(with-eval-after-load 'elfeed-show
+  (define-key elfeed-show-mode-map (kbd "T") #'my/elfeed-toggle-images))
+</code></pre><p>以上。周末愉快～</section><hr><footer class="mt-12 flex flex-col"><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Categories </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/categories/cheng-xu-ren-sheng/>程序人生</a></div><div class="mb-2 flex flex-wrap"><span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/rss/>RSS</a><a class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline" href=https://liyan-ah.github.io/tags/emacs/>Emacs</a></div></footer><nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg"><a class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline" href=https://liyan-ah.github.io/emacs-with-llm/><span class=mr-1.5>←</span><span>Emacs 中配置大模型</span></a></nav></article></main></div><footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60"><div class="mr-auto basis-full lg:basis-1/2"> © 2019 - 2026<a class=link href=https://liyan-ah.github.io> 李岩 </a> |<a class=link href=https://creativecommons.org/licenses/by-sa/4.0/ rel=noopener target=_blank> CC BY-SA 4.0 </a></div><div class="flex basis-full lg:basis-1/2 lg:justify-end"><a class="link mr-6 lg:ml-6" href=https://www.getzola.org/ rel=noopener target=_blank> Powered by Zola </a><a class=link href=https://github.com/st1020/kita rel=noopener target=_blank>✎ Kita</a></div></footer>
